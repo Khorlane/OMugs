@@ -308,7 +308,8 @@ bool Room::IsRoomType(CString RoomId, CString RoomType)
   SqlStatement  = "Select ";
   SqlStatement += "  RoomType ";
   SqlStatement += "From RoomType ";
-  SqlStatement += "Where RoomType = '" + RoomType + "'";
+  SqlStatement += "Where RoomId   = '" + RoomId   + "'";
+  SqlStatement += "  And RoomType = '" + RoomType + "'";
 
   SqlResult = sqlite3_prepare(pWorldDb, SqlStatement, SqlStatement.GetLength(), &pStmt, NULL);
   if (SqlResult != SQLITE_OK)

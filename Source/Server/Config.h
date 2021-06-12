@@ -71,7 +71,7 @@
 #define MAX_INPUT_LENGTH        1024   // Maximun string length received from player
 #define MAX_ROOMS               8192   // Must be a multiple of 8
 #define MAX_ROOMS_CHAR          MAX_ROOMS/8 // 8 rooms represented by each byte
-#define PORT_NBR                7777   // Listening on this port for connections - might need to kill iphlpsvc as it uses port 7777
+#define PORT_NBR                7777   // Listening on this port for connections - might need to kill Windows Service 'iphlpsvc' as it uses port 7777
 
 #define SAFE_ROOM               "JesseSquare8"
 #define START_ROOM              "Welcome226"

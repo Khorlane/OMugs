@@ -619,6 +619,11 @@ void Communication::SockRecv()
           pDnodeActor->pPlayer->Hunger = 0;
           pDnodeActor->pPlayer->Thirst = 0;
         }
+        if (pDnodeActor->pPlayer->Admin)
+        { // Admin immune from hunger and thirst
+          pDnodeActor->pPlayer->Hunger = 0;
+          pDnodeActor->pPlayer->Thirst = 0;
+        }
         if (pDnodeActor->pPlayer->Hunger > 99)
         { // Player is hungry
           pDnodeActor->pPlayer->Hunger = 100;
