@@ -1034,7 +1034,7 @@ void Object::RemoveObjFromRoom(CString ObjectId)
     AfxMessageBox("Object::RemoveObjFromRoom - Object not removed", MB_ICONSTOP);
     _endthread();
   }
-  BytesInFile = RoomObjFileTmp.GetLength();
+  BytesInFile = (int) RoomObjFileTmp.GetLength();
   RoomObjFile.Close();
   RoomObjFileTmp.Close();
   CFile::Remove(RoomObjFileName);

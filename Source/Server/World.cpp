@@ -482,7 +482,7 @@ void World::MakeMobilesMove()
                        CFile::typeText);
   if (Success1)
   { // RoomMobList file exists, but is it empty?
-    RoomMobListFileSize = RoomMobListFile.GetLength();
+    RoomMobListFileSize = (int) RoomMobListFile.GetLength();
     RoomMobListFile.Close();
     if (RoomMobListFileSize == 0)
     { // Nothing in the MobList file
@@ -501,7 +501,7 @@ void World::MakeMobilesMove()
   }
   if (Success2)
   { // RoomMobMove file exists, but is it empty?
-    RoomMobMoveFileSize = RoomMobMoveFile.GetLength();
+    RoomMobMoveFileSize = (int) RoomMobMoveFile.GetLength();
     RoomMobMoveFile.Close();
     if (RoomMobMoveFileSize == 0)
     { // Nothing in the MobMove file
@@ -627,7 +627,7 @@ void World::MakeMobilesMove1()
     TmpStr += "\n";
     RoomMobListFile.WriteString(TmpStr);
   }
-  RoomMobListFileSize = RoomMobListFile.GetLength();
+  RoomMobListFileSize = (int) RoomMobListFile.GetLength();
   RoomMobListFile.Close();
   if (RoomMobListFileSize == 0)
   { // No mobiles are moving, MobMove file is empty

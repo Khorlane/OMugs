@@ -470,7 +470,7 @@ void Mobile::DeleteMobPlayer(CString PlayerName, CString MobileId)
     MobPlayerFileTmp.WriteString(Stuff);
     MobPlayerFile.ReadString(Stuff);
   }
-  BytesInFile = MobPlayerFileTmp.GetLength();
+  BytesInFile = (int) MobPlayerFileTmp.GetLength();
   MobPlayerFile.Close();
   MobPlayerFileTmp.Close();
   CFile::Remove(MobPlayerFileName);
@@ -924,7 +924,7 @@ void Mobile::RemoveMobFromRoom(CString RoomId, CString MobileId)
     AfxMessageBox("Mobile::RemoveMobFromRoom - Mobile not removed", MB_ICONSTOP);
     _endthread();
   }
-  BytesInFile = RoomMobTmpFile.GetLength();
+  BytesInFile = (int) RoomMobTmpFile.GetLength();
   RoomMobFile.Close();
   RoomMobTmpFile.Close();
   CFile::Remove(RoomMobFileName);

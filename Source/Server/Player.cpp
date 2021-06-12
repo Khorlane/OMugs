@@ -139,8 +139,8 @@ float Player::CalcLevelExperienceAdd(int Level, float BaseExp)
   float AddExp;
   float LogLevel;
 
-  LogLevel = log10(Level+20);
-  AddExp   = pow(BaseExp,LogLevel)*(Level/10000.0);
+  LogLevel = (float) log10(Level+20);
+  AddExp   = (float) pow(BaseExp,LogLevel)*(Level/10000.0f);
   return AddExp;
 }
 
@@ -548,7 +548,7 @@ void Player::ParsePlayerStuff()
     // Experience
     if (Stuff.Left(11) == "Experience:")
     {
-      Experience = atof(Stuff.Right(Stuff.GetLength()-11));
+      Experience = (float) atof(Stuff.Right(Stuff.GetLength()-11));
     }
     else
     // GoToArrive
@@ -1255,7 +1255,7 @@ bool Player::PlayerRoomHasNotBeenHere()
   }
   RoomNbr = atoi(RoomNbrStr);
   // Has player been here?
-  PlayerRoomCharPos = ceil(RoomNbr/8.0)-1;
+  PlayerRoomCharPos = (int) ceil(RoomNbr/8.0)-1;
   PlayerRoomBitPos  = RoomNbr-(PlayerRoomCharPos*8)-1;
   PlayerRoomChar    = PlayerRoomString.GetAt(PlayerRoomCharPos);
   PlayerRoomCharToBitsConvert();
@@ -1288,7 +1288,7 @@ void Player::PlayerRoomCharToBitsConvert()
   PlayerRoomBits.reset();
   for (BitPos=7; BitPos>=0; BitPos--)
   { // For each bit
-    Remainder = Char - pow(2,BitPos);
+    Remainder = (int) Char - (int) pow(2,BitPos);
     if (Remainder > -1)
     { // Set bit on
       PlayerRoomBits.set(BitPos);
@@ -1310,7 +1310,7 @@ void Player::PlayerRoomBitsToCharConvert()
   { // For each bit
     if (PlayerRoomBits.test(BitPos))
     { // Bit is set
-      PlayerRoomChar = PlayerRoomChar + pow(2,BitPos);
+      PlayerRoomChar = (int) PlayerRoomChar + (unsigned char) pow(2,BitPos);
     }
   }
 }

@@ -24,6 +24,7 @@
 
 extern CString HomeDir;
 
+#pragma warning(disable : 4995)
 CDaoDatabase  MapDatabase;
 CDaoRecordset RoomsRecordset(&MapDatabase);
 CDaoRecordset ExitsRecordset(&MapDatabase);
