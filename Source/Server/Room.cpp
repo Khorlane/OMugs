@@ -305,27 +305,36 @@ bool Room::IsRoom(CString RoomId)
 
 bool Room::IsRoomType(CString RoomId, CString RoomType)
 {
-  SqlStatement  = "Select ";
-  SqlStatement += "  RoomType ";
-  SqlStatement += "From RoomType ";
-  SqlStatement += "Where RoomId   = '" + RoomId   + "'";
-  SqlStatement += "  And RoomType = '" + RoomType + "'";
+  CStdioFile RoomFile;
+  CString    RoomFileName;
+  CString    Stuff;
+  int        Success;
 
-  SqlResult = sqlite3_prepare(pWorldDb, SqlStatement, SqlStatement.GetLength(), &pStmt, NULL);
-  if (SqlResult != SQLITE_OK)
-  {
-    AfxMessageBox("Room::IsRoomType - Prepare failed");
+  RoomFileName = ROOMS_DIR;
+  RoomFileName += RoomId;
+  RoomFileName += ".txt";
+  Success = RoomFile.Open(RoomFileName,
+    CFile::modeRead |
+    CFile::typeText);
+  if (!Success)
+  { // No such file???, But there should be, This is bad!
+    AfxMessageBox("Room::IsRoomType - Room does not exist", MB_ICONSTOP);
     _endthread();
   }
-  SqlNotFound = true;
-  SqlResult = sqlite3_step(pStmt);
-  if (SqlResult == SQLITE_ROW)
-  {
-    SqlNotFound = false;
-  }
-  sqlite3_finalize(pStmt);
 
-  if (SqlNotFound)
+  // RoomType
+  RoomFile.ReadString(Stuff);
+  RoomFile.ReadString(Stuff);
+  if (Stuff.Left(9) != "RoomType:")
+  { // Very bad, where did the RoomType go anyway?
+    AfxMessageBox("Room::IsRoomType - RoomType: not found", MB_ICONSTOP);
+    _endthread();
+  }
+  Stuff = Utility::GetWords(Stuff, 2);
+  Stuff.TrimLeft();
+  Stuff.TrimRight();
+  RoomFile.Close();
+  if (Stuff != RoomType)
   { // No matching RoomType found
     return false;
   }
