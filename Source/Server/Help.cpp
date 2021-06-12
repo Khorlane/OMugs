@@ -25,7 +25,7 @@ extern Dnode   *pDnodeActor;
 extern CString  CmdStr;
 
 ifstream   HelpFile;
-CString    HelpText;
+string     HelpText;
 
 /***********************************************************
 * Help constructor                                         *
@@ -54,26 +54,29 @@ Help::~Help()
 bool Help::IsHelp()
 {
   bool    Found;
-  CString HelpLookup;
-  CString TmpStr;
+  string  TmpStr;
+  string  HelpLookup;
 
+  string  sCmdStr;
+  sCmdStr = ConvertCStringToString(CmdStr);
+  
   Found = false;
   if (!OpenFile())
   { // If the file isn't there, then all Helps are not found, doh!
     return false;
   }
-  HelpLookup = Utility::GetWord(CmdStr, 2);
-  HelpLookup.MakeLower();
+  HelpLookup = StrGetWord(sCmdStr, 2);
+  HelpLookup = StrMakeLower(HelpLookup);
   HelpText = "Not Done";
   while (HelpText != "End of Help")
   { // Loop until Help is found or end of file
     ReadLine();
-    HelpText.TrimLeft();
-    HelpText.TrimLeft();
-    if (HelpText.Left(5) == "Help:")
+    HelpText = StrTrimLeft(HelpText);
+    TmpStr   = StrLeft(HelpText,5);
+    if (TmpStr == "Help:")
     { // Ok, a Help entry has been found
-      TmpStr = StrRight((LPCTSTR)HelpText, HelpText.GetLength() - 5).c_str();
-      TmpStr.MakeLower();
+      TmpStr = StrRight(HelpText, HelpText.length()-5);
+      TmpStr = StrMakeLower(TmpStr);
       if (TmpStr == HelpLookup)
       { // THE Help entry has been found, show it to player
         Found = true;
@@ -136,7 +139,7 @@ void Help::ReadLine()
   string Buffer;
 
   getline (HelpFile, Buffer);
-  HelpText = Buffer.c_str();
+  HelpText = Buffer;
 }
 
 /***********************************************************
@@ -145,23 +148,17 @@ void Help::ReadLine()
 
 void Help::ShowHelp()
 {
-  while (StrLeft((LPCSTR)HelpText,13) != "Related help:")
+  string TmpStr;
+
+  TmpStr = StrLeft(HelpText, 13);
+  while (TmpStr != "Related help:")
   {
     ReadLine();
-    pDnodeActor->PlayerOut += HelpText;
+    pDnodeActor->PlayerOut += ConvertStringToCString(HelpText);
     pDnodeActor->PlayerOut += "\r\n";
+    TmpStr = StrLeft(HelpText, 13);
   }
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
-}
-
-string Help::StrLeft(string Str1, int Len)
-{
-  return Str1.substr(0,Len);
-}
-
-string Help::StrRight(string Str1, int Len)
-{
-  return Str1.substr(Str1.length()-Len, Len);
 }

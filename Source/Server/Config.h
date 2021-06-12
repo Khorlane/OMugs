@@ -26,6 +26,9 @@
 #include <iostream>         // std::getline
 #include <fstream>          // std::fstream
 #include <string>           // std::string
+#include <algorithm>        // Functions used on ranges of elements (see StrMakeLower)
+#include <cctype>           // String functions like tolower, toupper
+#include <sstream>          // String 'stream' functions (see StrGetWord)
 
 /***********************************************************
 * Macros                                                   *
@@ -230,5 +233,14 @@ struct ResWordStruct
   CString       ResWord;
   EnumTokenCode TokenCode;
 };
+
+std::string ConvertCStringToString(CString Str1);
+CString     ConvertStringToCString(std::string  Str1);
+std::string StrLeft(std::string Str1, int Len);
+std::string StrRight(std::string Str1, int Len);
+std::string StrTrimLeft(std::string Str1);
+std::string StrTrimRight(std::string Str1);
+std::string StrMakeLower(std::string Str1);
+std::string StrGetWord(std::string Str1, int WordNbr);
 
 #endif
