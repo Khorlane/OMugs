@@ -136,6 +136,7 @@ CString Room::GetRoomName(CString RoomId)
 CString Room::GetValidMobRoomExits(CString RoomId)
 {
   CString ValidMobExits;
+  CString TmpStr;
 
   SqlStatement  = "Select ";
   SqlStatement += "  a.ExitToRoomId ";
@@ -157,7 +158,8 @@ CString Room::GetValidMobRoomExits(CString RoomId)
   while (SqlResult == SQLITE_ROW)
   {
     SqlNotFound = false;
-    ValidMobExits += sqlite3_column_text(pStmt, 0);
+    TmpStr = sqlite3_column_text(pStmt, 0);
+    ValidMobExits += TmpStr;
     ValidMobExits += " ";
     SqlResult = sqlite3_step(pStmt);
   }

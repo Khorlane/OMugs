@@ -660,7 +660,7 @@ void World::MakeMobilesMove2()
   int        MobCount;
   CString    MobileId;
   CString    MobileIdCheck;
-  bool       MobListNotCompleted;
+  bool       MobListNotCompleted = false;
   int        PositionOfDot;
   int        RandomPct;
   CString    RoomId;
