@@ -67,7 +67,7 @@ void BigDog()
   }
   // Log game startup
   Log::OpenLogFile();
-  LogBuf = "OMugs version 2005.04.26 has started";
+  LogBuf = "OMugs version 2021.04.09 has started";
   Log::LogIt(LogBuf);
   LogBuf  = "Home directory is ";
   LogBuf += HomeDir;
