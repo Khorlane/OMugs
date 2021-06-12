@@ -17,15 +17,18 @@
 #include "stdafx.h"         // precompiled headers
 #include "BigDog.h"
 
+using namespace std;
+
 /***********************************************************
 * Globals                                                  *
 ************************************************************/
 
-extern CString HomeDir;
+CString   HomeDir; 
+string    ScriptFileName;
+CString 	SqlStatement;
 
 Calendar *pCalendar;
 sqlite3  *pWorldDb;
-CString 	SqlStatement;
 bool      StateConnections;
 bool      StateRunning;
 bool      StateStopping;
@@ -67,7 +70,9 @@ void BigDog()
   }
   // Log game startup
   Log::OpenLogFile();
-  LogBuf = "OMugs version 2021.04.09 has started";
+  LogBuf  = "OMugs version ";
+  LogBuf += VERSION ;
+  LogBuf += " has started";
   Log::LogIt(LogBuf);
   LogBuf  = "Home directory is ";
   LogBuf += HomeDir;

@@ -17,12 +17,14 @@
 #include "stdafx.h"         // precompiled headers
 #include "Token.h"
 
+using namespace std;
+
 /***********************************************************
 * Global variables                                         *
 ************************************************************/
 
 extern EnumCharCode CharCodeMap[128];
-extern CString      ScriptFileName;
+extern string       ScriptFileName;
 
 /***********************************************************
 * Token constructor                                        *
@@ -202,7 +204,7 @@ void Token::GetSpecialToken(Buffer *pBuffer, Token *pToken)
       TokenCode = tcError;
       ch = pBuffer->GetNextChar();
       LogBuf  = "Osi - Token::GetSpecialToken - Unrecognized special character - ";
-      LogBuf += ScriptFileName;
+      LogBuf += ScriptFileName.c_str();
       Log::LogIt(LogBuf);
       _endthread();
   }
@@ -297,7 +299,7 @@ void Token::LoadResWordTable(CString ResWord, EnumTokenCode TokenCode)
   if (ResWordCount >= MAX_RES_WORDS)
   {
     LogBuf  = "Osi - Token::LoadResWordTable - Reserved word table limit exceeded - ";
-    LogBuf += ScriptFileName;
+    LogBuf += ScriptFileName.c_str();
     Log::LogIt(LogBuf);
     _endthread();
   }

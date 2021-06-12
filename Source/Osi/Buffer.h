@@ -29,7 +29,7 @@ class Buffer
 
 // Public functions
   public:
-    Buffer(CString ScriptFileName);
+    Buffer();
     ~Buffer();
     char            GetCurrentChar();
     char            GetNextChar();
@@ -38,7 +38,7 @@ class Buffer
   private:
     void            CloseScriptFile();
     void            GetScriptLine();
-    void            OpenScriptFile(CString ScriptFileName);
+    void            OpenScriptFile();
 
 // Private variables
   private:

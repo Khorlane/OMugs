@@ -6452,6 +6452,9 @@ void Communication::LogonGreeting()
     AfxMessageBox("Communication::LogonGreeting - Open Greeting file failed (read)", MB_ICONSTOP);
     _endthread();
   }
+  pDnodeActor->PlayerOut += "Version ";
+  pDnodeActor->PlayerOut += VERSION;
+  pDnodeActor->PlayerOut += "\r\n";
   GreetingFile.ReadString(Stuff);
   while (Stuff != "End of Greeting")
   {

@@ -22,6 +22,9 @@
 #include "Player.h"
 #include "Utility.h"
 
+#include <string>
+using namespace std;
+
 /***********************************************************
 * Define Help class                                        *
 ************************************************************/
@@ -41,6 +44,8 @@ class Help
     bool    static  OpenFile();
     void    static  ReadLine();
     void    static  ShowHelp();
+    static  string  StrLeft(string Str1, int Len);
+    static  string  StrRight(string Str1, int Len);
 };
 
 #endif

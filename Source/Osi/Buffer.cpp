@@ -17,21 +17,23 @@
 #include "stdafx.h"         // precompiled headers
 #include "Buffer.h"
 
+using namespace std;
+
 /***********************************************************
 * Global variables                                         *
 ************************************************************/
 
-CString       ScriptFileName;
+extern string       ScriptFileName;
 unsigned char CurrentLineNumber;
 
 /***********************************************************
 * Buffer constructor                                       *
 ************************************************************/
 
-Buffer::Buffer(CString ScriptFileName)
+Buffer::Buffer()
 {
   CurrentLineNumber = 0;
-  OpenScriptFile(ScriptFileName);
+  OpenScriptFile();
   GetScriptLine();
   GetNextChar();
 }
@@ -111,15 +113,15 @@ void Buffer::GetScriptLine()
 * Open script file                                         *
 ************************************************************/
 
-void Buffer::OpenScriptFile(CString ScriptFileName)
+void Buffer::OpenScriptFile()
 {
-  Success = ScriptFile.Open(ScriptFileName,
+  Success = ScriptFile.Open(ScriptFileName.c_str(),
                  CFile::modeRead |
                  CFile::typeText);
   if(!Success)
   {
     LogBuf  = "Osi - Buffer::OpenScriptFile - Failed to open ";
-    LogBuf += ScriptFileName;
+    LogBuf += ScriptFileName.c_str();
     Log::LogIt(LogBuf);
   }
 }

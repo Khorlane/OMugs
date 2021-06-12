@@ -31,7 +31,7 @@ class Parser
 
 // Public functions
   public:
-    Parser(CString ScriptFileName);
+    Parser();
     ~Parser();
     Icode          *GetIcodePtr();
     Symbol         *GetSymbolRootPtr();

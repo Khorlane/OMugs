@@ -18,21 +18,22 @@
 #include "Config.h"
 #include "Scanner.h"
 
+using namespace std;
+
 /***********************************************************
 * Global variables                                         *
 ************************************************************/
 
 EnumCharCode CharCodeMap[128];
-
-extern CString ScriptFileName;
+extern string ScriptFileName;
 
 /***********************************************************
 * Scanner constructor                                      *
 ************************************************************/
 
-Scanner::Scanner(CString ScriptFileName)
+Scanner::Scanner()
 {
-  pBuffer = new Buffer(ScriptFileName);
+  pBuffer = new Buffer();
   // Initialize character code map
   for (i =   0; i <  128; ++i)
     CharCodeMap[i] = ccError;
@@ -138,7 +139,7 @@ void Scanner::SkipWhiteSpace()
         else
         { // Unexpected end of file
           LogBuf  = "Osi - Scanner::SkipWhiteSpace - Unexpected end of file - ";
-          LogBuf += ScriptFileName;
+          LogBuf += ScriptFileName.c_str();
           Log::LogIt(LogBuf);
           _endthread();
         }

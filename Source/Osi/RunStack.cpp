@@ -17,11 +17,13 @@
 #include "stdafx.h"         // precompiled headers
 #include "RunStack.h"
 
+using namespace std;
+
 /***********************************************************
 * Globals                                                  *
 ************************************************************/
 
-extern CString ScriptFileName;
+extern string ScriptFileName;
 
 /***********************************************************
 * RunStack constructor                                     *
@@ -62,7 +64,7 @@ void RunStack::Push(float PushValue)
   else
   {
     LogBuf  = "Osi - RunStack::Push - Runtime stack size exceeded - ";
-    LogBuf += ScriptFileName;
+    LogBuf += ScriptFileName.c_str();
     Log::LogIt(LogBuf);
     _endthread();
   }

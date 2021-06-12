@@ -24,7 +24,7 @@
 extern Dnode   *pDnodeActor;
 extern CString  CmdStr;
 
-CStdioFile HelpFile;
+ifstream   HelpFile;
 CString    HelpText;
 
 /***********************************************************
@@ -72,7 +72,7 @@ bool Help::IsHelp()
     HelpText.TrimLeft();
     if (HelpText.Left(5) == "Help:")
     { // Ok, a Help entry has been found
-      TmpStr = HelpText.Right(HelpText.GetLength() - 5);
+      TmpStr = StrRight((LPCTSTR)HelpText, HelpText.GetLength() - 5).c_str();
       TmpStr.MakeLower();
       if (TmpStr == HelpLookup)
       { // THE Help entry has been found, show it to player
@@ -103,7 +103,7 @@ bool Help::IsHelp()
 
 void Help::CloseFile()
 {
-  HelpFile.Close();
+  HelpFile.close();
 }
 
 /***********************************************************
@@ -112,15 +112,12 @@ void Help::CloseFile()
 
 bool Help::OpenFile()
 {
-  CString HelpFileName;
-  int     Success;
+  string HelpFileName;
   
   HelpFileName =  HELP_DIR;
   HelpFileName += "Help.txt";
-  Success = HelpFile.Open(HelpFileName,
-            CFile::modeRead |
-            CFile::typeText);
-  if(Success)
+  HelpFile.open(HelpFileName);
+  if(HelpFile.is_open())
   {
     return true;
   }
@@ -136,7 +133,10 @@ bool Help::OpenFile()
 
 void Help::ReadLine()
 {
-  HelpFile.ReadString(HelpText);
+  string Buffer;
+
+  getline (HelpFile, Buffer);
+  HelpText = Buffer.c_str();
 }
 
 /***********************************************************
@@ -145,7 +145,7 @@ void Help::ReadLine()
 
 void Help::ShowHelp()
 {
-  while (HelpText.Left(13 )!= "Related help:")
+  while (StrLeft((LPCSTR)HelpText,13) != "Related help:")
   {
     ReadLine();
     pDnodeActor->PlayerOut += HelpText;
@@ -154,4 +154,14 @@ void Help::ShowHelp()
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
+}
+
+string Help::StrLeft(string Str1, int Len)
+{
+  return Str1.substr(0,Len);
+}
+
+string Help::StrRight(string Str1, int Len)
+{
+  return Str1.substr(Str1.length()-Len, Len);
 }

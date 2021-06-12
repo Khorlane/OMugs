@@ -30,7 +30,7 @@ class Scanner
 
 // Public functions
   public:
-    Scanner(CString ScriptFileName);
+    Scanner();
     ~Scanner();
     void            GetToken(Token *pToken);
 

@@ -17,6 +17,8 @@
 #include "stdafx.h"         // precompiled headers
 #include "World.h"
 
+using namespace std;
+
 /***********************************************************
 * Globals                                                  *
 ************************************************************/
@@ -24,7 +26,7 @@
 extern Dnode   *pDnodeSrc;
 extern Dnode   *pDnodeTgt;
 extern CString  HomeDir;
-extern CString  ScriptFileName;
+extern string   ScriptFileName;
 
 ////////////////////////////////////////////////////////////
 // Public functions static                                //
@@ -1016,12 +1018,12 @@ void World::Osi(CString ScriptType, CString ScriptId)
   ScriptFileName += ScriptId;
   ScriptFileName += ".txt";
   // Does the script file exist?
-  if (!CFile::GetStatus(ScriptFileName, FileStatus))
+  if (!CFile::GetStatus(ScriptFileName.c_str(), FileStatus))
   { // No script file, nothing to do
     return;
   }
   // Parse script
-  pParser = new Parser(ScriptFileName);
+  pParser = new Parser();
   pParser->Parse();
 
   // Declare an array of Symbol pointers

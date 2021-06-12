@@ -23,10 +23,15 @@
 #include <bitset>           // Allows bit manipulation
 #include <math.h>           // Math functions like pow, ceil, floor
 #include <afxdao.h>         // Allows access to ACCESS databases
+#include <iostream>         // std::getline
+#include <fstream>          // std::fstream
+#include <string>           // std::string
 
 /***********************************************************
 * Macros                                                   *
 ************************************************************/
+
+#define VERSION           "2021.05.21"
 
 #define MAC                    300.0f  // Maximum Armor Class
 #define MDRP                    60.0f  // Maximum Damage Reduction Percent
@@ -153,7 +158,7 @@ enum EnumCharCode
   ccError
 };
 
-// Oso Token codes
+// Osi Token codes
 enum EnumTokenCode
 {
   tcDummy,
