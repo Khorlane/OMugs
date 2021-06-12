@@ -1,0 +1,27 @@
+# Ignore these directories
+.vs/
+Debug/
+Doc/
+Library/
+Log/
+Players/
+Res/
+Running/
+Tmp/
+Utility/
+WebSite/
+
+# Ignore these files
+HomeDir.txt
+ReadMe.txt
+sqlite3.dll
+*.aps
+*.clw
+*.dsp
+*.dsw
+*.ncb
+*.opt
+*.plg
+*.rc
+*.sln
+*.vcxproj*
