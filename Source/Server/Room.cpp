@@ -135,36 +135,43 @@ CString Room::GetRoomName(CString RoomId)
 
 CString Room::GetValidMobRoomExits(CString RoomId)
 {
-  CString ValidMobExits;
-  CString TmpStr;
+  CString    ExitToRoomId;
+  CStdioFile RoomFile;
+  CString    RoomFileName;
+  CString    Stuff;
+  int        Success;
+  CString    ValidMobExits;
 
-  SqlStatement  = "Select ";
-  SqlStatement += "  a.ExitToRoomId ";
-  SqlStatement += "From RoomExit a ";
-  SqlStatement += "Where a.RoomId = '" + RoomId + "' ";
-  SqlStatement += "  And a.ExitToRoomId Not In ";
-  SqlStatement += "      (Select b.RoomId ";
-  SqlStatement += "       From RoomType b";
-  SqlStatement += "       Where b.RoomType = 'NoNPC')";
-  SqlResult = sqlite3_prepare(pWorldDb, SqlStatement, SqlStatement.GetLength(), &pStmt, NULL);
-  if (SqlResult != SQLITE_OK)
-  {
-    AfxMessageBox("Room::GetValidMobRoomExits - Prepare failed");
+  RoomFileName = ROOMS_DIR;
+  RoomFileName += RoomId;
+  RoomFileName += ".txt";
+  Success = RoomFile.Open(RoomFileName,
+    CFile::modeRead |
+    CFile::typeText);
+  if (!Success)
+  { // No such file???, But there should be, This is bad!
+    AfxMessageBox("Room::GetValidMobRoomExits - Room does not exist", MB_ICONSTOP);
     _endthread();
   }
-  SqlNotFound = true;
   ValidMobExits = "";
-  SqlResult = sqlite3_step(pStmt);
-  while (SqlResult == SQLITE_ROW)
-  {
-    SqlNotFound = false;
-    TmpStr = sqlite3_column_text(pStmt, 0);
-    ValidMobExits += TmpStr;
-    ValidMobExits += " ";
-    SqlResult = sqlite3_step(pStmt);
+  Stuff = "Not Done";
+  while (Stuff != "End of Exits")
+  { // Loop - process all exits
+    RoomFile.ReadString(Stuff);
+    if (Stuff.Left(13) == "ExitToRoomId:")
+    { // An Exit has been found
+      ExitToRoomId = Utility::GetWord(Stuff, 2);
+      if (ExitToRoomId == "VineyardPath382")
+        Success = 100;
+      if (!Room::IsRoomType(ExitToRoomId, "NoNPC"))
+      { // And it's a valid Mob Exit
+        ValidMobExits += ExitToRoomId;
+        ValidMobExits += " ";
+      }
+    }
   }
-  sqlite3_finalize(pStmt);
   ValidMobExits.TrimRight();
+  RoomFile.Close();
   return ValidMobExits;
 }
 
