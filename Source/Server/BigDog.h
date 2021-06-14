@@ -28,6 +28,4 @@
 #include "Validate.h"
 #include "WhoIsOnline.h"
 
-#include "Sqlite3.h"
-
 #endif

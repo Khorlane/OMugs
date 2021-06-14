@@ -21,8 +21,6 @@
 #include "Log.h"
 #include "Utility.h"
 
-#include "Sqlite3.h"
-
 /***********************************************************
 * Define Validate class                                    *
 ************************************************************/
@@ -34,9 +32,6 @@ class Validate
   public:
     Validate();
     ~Validate();
-    void    static  InsertWorldRoomExit(CString RoomId, CString ExitToRoomId);
-    void    static  InsertWorldRoomTerrain(CString RoomId, CString RoomTerrain);
-    void    static  InsertWorldRoomType(CString RoomId, CString RoomType);
     void    static  LogValErr(CString Message, CString FileName);
     bool    static  ValidateIt(CString ValidationType);
     void    static  ValidateAll();

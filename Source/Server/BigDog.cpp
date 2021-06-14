@@ -25,10 +25,8 @@ using namespace std;
 
 CString   HomeDir; 
 string    ScriptFileName;
-CString 	SqlStatement;
 
 Calendar *pCalendar;
-sqlite3  *pWorldDb;
 bool      StateConnections;
 bool      StateRunning;
 bool      StateStopping;
@@ -109,8 +107,6 @@ void BigDog()
   CString      LogBuf;
   int          MobHealTick;
   CFileStatus  FileStatus;
-  CString      Sqlite3DatabaseFileName;
-  int          Sqlite3Result;
   CString      StopItFileName;
   CString      TmpStr;
   bool         ValErr;
@@ -148,24 +144,6 @@ void BigDog()
   StateStopping    = false;
   srand((unsigned)time(NULL)); // Seed random number generator
   PACMN = 1.0f / MAC * MDRP / 100.0f;
-  // Open Sqlite3 database
-  Sqlite3DatabaseFileName = SQLITE3_DATABASE_DIR;
-  Sqlite3DatabaseFileName += "World.db";
-  if (!CFile::GetStatus(Sqlite3DatabaseFileName, FileStatus))
-  { // Sqlite3 database not found
-    AfxMessageBox("BigDog - Sqlite3 database file not found", MB_ICONSTOP);
-    Log::CloseLogFile();
-    _endthread();
-  }
-  Sqlite3Result = sqlite3_open(Sqlite3DatabaseFileName, &pWorldDb);
-  if(Sqlite3Result != SQLITE_OK)
-  {
-		TmpStr.Format("%s", sqlite3_errmsg(pWorldDb));
-    ErrorMsg = "Can't open database: " + TmpStr;
-    AfxMessageBox(ErrorMsg);
-    Log::CloseLogFile();
-    _endthread();
-  }
   // Validate library files
   ValErr = Validate::ValidateIt("All");
   if (ValErr)
@@ -181,7 +159,6 @@ void BigDog()
   while (StateRunning)
   { // Game runs until it is stopped
     Sleep(MILLI_SECONDS_TO_SLEEP);
-    Utility::DoSqlStatement("Begin");
     pCalendar->AdvanceTime();
     if (!StateStopping)
     { // Game is not stopping, but should it be?
@@ -232,7 +209,6 @@ void BigDog()
       pWhoIsOnline = new WhoIsOnline(HomeDir);
       delete pWhoIsOnline;
     }
-    Utility::DoSqlStatement("Commit");
   }
   // Game has stopped so clean up
   Descriptor::ClearDescriptor();
@@ -240,16 +216,6 @@ void BigDog()
   pWhoIsOnline = new WhoIsOnline(HomeDir);
   delete pWhoIsOnline;
   delete pCalendar;
-  Sqlite3Result = sqlite3_close(pWorldDb);
-  if (Sqlite3Result == 0)
-  {
-    Log::LogIt("Sqlite3 database closed");
-  }
-  else
-  {
-    AfxMessageBox("BigDog - Sqlite3 database close failed", MB_ICONSTOP);
-    _endthread();
-  }
   Log::LogIt("OMugs has stopped");
   Log::CloseLogFile();
 }

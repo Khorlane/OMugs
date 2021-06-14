@@ -108,7 +108,6 @@
 #define WORLD_MAP_DIR           ".\\Library\\World\\Map\\"
 #define WORLD_MOBILES_DIR       ".\\Library\\World\\Mobiles\\"
 
-#define SQLITE3_DATABASE_DIR    ".\\Running\\"
 #define CONTROL_DIR             ".\\Running\\Control\\"
 #define CONTROL_EVENTS_DIR      ".\\Running\\Control\\Events\\"
 #define CONTROL_MOB_INWORLD_DIR ".\\Running\\Control\\Mobiles\\InWorld\\"

@@ -19,8 +19,6 @@
 
 #include "Communication.h"
 
-#include "Sqlite3.h"
-
 /***********************************************************
 * Define Room class                                        *
 ************************************************************/
@@ -32,7 +30,6 @@ class Room
   public:
     Room();
     ~Room();
-    void    static  DoSqlStatement(CString SqlStatement);
     int     static  FetchRows(void *NotUsed, int ColCount, char **ColValue, char **ColName);
     CString static  GetRoomId(CString RoomId);
     CString static  GetRoomName(CString RoomId);

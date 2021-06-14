@@ -21,9 +21,7 @@
 * Globals                                                  *
 ************************************************************/
 
-extern sqlite3 *pWorldDb;
 extern CString  HomeDir;
-extern CString  SqlStatement;
 extern bool     StateRunning;
 
 bool ValErr;
@@ -47,48 +45,6 @@ Validate::~Validate()
 ////////////////////////////////////////////////////////////
 // Public functions static                                //
 ////////////////////////////////////////////////////////////
-
-void Validate::InsertWorldRoomExit(CString RoomId, CString ExitToRoomId)
-{
-	SqlStatement  = "INSERT INTO RoomExit (RoomId, ExitToRoomId) VALUES (";
-  SqlStatement += "'";
-  SqlStatement += RoomId;
-  SqlStatement += "'";
-  SqlStatement += ",";
-  SqlStatement += "'";
-  SqlStatement += ExitToRoomId;
-  SqlStatement += "'";
-  SqlStatement += ")";
-  Utility::DoSqlStatement(SqlStatement);
-}
-
-void Validate::InsertWorldRoomTerrain(CString RoomId, CString RoomTerrain)
-{
-	SqlStatement  = "INSERT INTO RoomTerrain (RoomId, RoomTerrain) VALUES (";
-  SqlStatement += "'";
-  SqlStatement += RoomId;
-  SqlStatement += "'";
-  SqlStatement += ",";
-  SqlStatement += "'";
-  SqlStatement += RoomTerrain;
-  SqlStatement += "'";
-  SqlStatement += ")";
-  Utility::DoSqlStatement(SqlStatement);
-}
-
-void Validate::InsertWorldRoomType(CString RoomId, CString RoomType)
-{
-	SqlStatement  = "INSERT INTO RoomType (RoomId, RoomType) VALUES (";
-  SqlStatement += "'";
-  SqlStatement += RoomId;
-  SqlStatement += "'";
-  SqlStatement += ",";
-  SqlStatement += "'";
-  SqlStatement += RoomType;
-  SqlStatement += "'";
-  SqlStatement += ")";
-  Utility::DoSqlStatement(SqlStatement);
-}
 
 /***********************************************************
  * Log Validation Error                                    *
@@ -653,12 +609,6 @@ void Validate::ValidateLibraryRooms()
 
   LogBuf = "Begin validation LibraryRooms";
   Log::LogIt(LogBuf);
-  Utility::DoSqlStatement("Begin");
-  Utility::DoSqlStatement("Delete From RoomExit");
-  Utility::DoSqlStatement("Delete From RoomType");
-  Utility::DoSqlStatement("Delete From RoomTerrain");
-  Utility::DoSqlStatement("Commit");
-  Utility::DoSqlStatement("Begin");
   if (_chdir(ROOMS_DIR))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateLibraryRooms - Change directory to ROOMS_DIR failed", MB_ICONSTOP);
@@ -735,7 +685,6 @@ void Validate::ValidateLibraryRooms()
           { // Valid RoomType
             if (TmpStr != "None")
             { // Exclude RoomType of 'None'
-              InsertWorldRoomType(RoomId, TmpStr);
             }
           }
           else
@@ -755,7 +704,6 @@ void Validate::ValidateLibraryRooms()
       { // Terrain validation
         if (Utility::IsWord(FieldValue, "Inside Street Road Field Forest Swamp Desert Hill Mountain"))
         { // Valid Terrain
-          InsertWorldRoomTerrain(RoomId, FieldValue);
         }
         else
         { // Invalid Terrain
@@ -778,7 +726,6 @@ void Validate::ValidateLibraryRooms()
         if(Success)
         { // ExitToRoomId file found, don't leave it open
           ExitToRoomIdFile.Close();
-          InsertWorldRoomExit(RoomId, FieldValue);
         }
         else
         { // ExitToRoom file not found
@@ -799,7 +746,6 @@ void Validate::ValidateLibraryRooms()
     }
     RoomFile.Close();
   }
-  Utility::DoSqlStatement("Commit");
   LogBuf = "Done  validating LibraryRooms";
   Log::LogIt(LogBuf);
 }

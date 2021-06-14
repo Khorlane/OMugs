@@ -24,7 +24,6 @@
 extern Dnode   *pDnodeActor;
 extern Dnode   *pDnodeSrc;
 extern Dnode   *pDnodeTgt;
-extern sqlite3 *pWorldDb;
 
 ////////////////////////////////////////////////////////////
 // Public functions static                                //
@@ -78,27 +77,6 @@ CString Utility::DeleteWord(CString String, int WordNbr)
     String.Delete(Pos-2, Len+1);
   }
   return String;
-}
-
-/***********************************************************
-* Execute an SQL statement                                 *
-************************************************************/
-
-void Utility::DoSqlStatement(CString SqlStatement)
-{
-  char    *SqlErrorMsg;
-  CString  ErrorMsg;
-  CString  TmpStr;
-  int      Result;
-
-  Result = sqlite3_exec(pWorldDb, SqlStatement, NULL, 0, &SqlErrorMsg);
-	if(Result != SQLITE_OK)
-  { // Sql Error
-    TmpStr.Format("%s", SqlErrorMsg);
-    ErrorMsg = "SQL error: " + TmpStr;
-    AfxMessageBox(ErrorMsg);
-    _endthread();
-  }
 }
 
 /***********************************************************

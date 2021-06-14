@@ -32,7 +32,6 @@ class Utility
   public:
     static  int     CalcPct(int Dividend, int Divisor);
     static  CString DeleteWord(CString String, int WordNbr);
-    static  void    DoSqlStatement(CString SqlStatement);
     static  CString FormatCommas(CString String);
     static  CString GetHomeDir();
     static  int     GetRandomNumber(int Limit);

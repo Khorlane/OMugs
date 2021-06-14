@@ -24,15 +24,10 @@
 extern Dnode   *pDnodeActor;
 extern Dnode   *pDnodeSrc;
 extern Dnode   *pDnodeTgt;
-extern sqlite3 *pWorldDb;
 extern CString  CmdStr;
 extern CString  MudCmd;
-extern CString  SqlStatement;
 
-sqlite3_stmt *pStmt;
 CStdioFile    RoomFile;
-bool          SqlNotFound;
-int           SqlResult;
 
 /***********************************************************
 * Room constructor                                         *
