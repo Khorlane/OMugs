@@ -32,6 +32,7 @@ class Log
     ~Log();
     void    static  CloseLogFile();
     void    static  LogIt(CString LogBuf);
+    void    static  LogIt(std::string LogBuf);
     void    static  OpenLogFile();
 };
 

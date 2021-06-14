@@ -69,6 +69,13 @@ void Log::LogIt(CString LogBuf)
   LogFile.Flush();
 }
 
+void Log::LogIt(std::string LogBuf)
+{
+  CString csLogBuf;
+  csLogBuf = ConvertStringToCString(LogBuf);
+  LogIt(csLogBuf);
+}
+
 /***********************************************************
 * Open log file                                            *
 ************************************************************/

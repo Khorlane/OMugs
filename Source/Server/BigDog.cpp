@@ -94,6 +94,23 @@ string StrGetWord(string Str1, int WordNbr)
   return "";
 }
 
+bool FileExist(const std::string Name)
+{
+  bool Exist;
+
+  ifstream f(Name.c_str());
+  if (f.is_open())
+  {
+    Exist = true;
+    f.close();
+  }
+  else
+  {
+    Exist = false;
+  }
+  return Exist;
+}
+
 /***********************************************************
  * BigDog                                                  *
  ***********************************************************/
@@ -101,14 +118,11 @@ string StrGetWord(string Str1, int WordNbr)
 void BigDog()
 {
   WhoIsOnline *pWhoIsOnline;
-  CString      ErrorMsg;
   int          EventTick;
-  CString      GoGoGoFileName;
-  CString      LogBuf;
+  string       GoGoGoFileName;
+  string       LogBuf;
   int          MobHealTick;
-  CFileStatus  FileStatus;
-  CString      StopItFileName;
-  CString      TmpStr;
+  string       StopItFileName;
   bool         ValErr;
   int          WhoIsOnlineTick;
 
@@ -122,9 +136,9 @@ void BigDog()
   StopItFileName += "StopIt";
   GoGoGoFileName  = CONTROL_DIR;
   GoGoGoFileName += "GoGoGo";
-  if (CFile::GetStatus(StopItFileName, FileStatus))
+  if (FileExist(StopItFileName))
   { // If StopIt file exists, Rename it to GoGoGo
-    CFile::Rename(StopItFileName, GoGoGoFileName);
+    rename(StopItFileName.c_str(), GoGoGoFileName.c_str());
   }
   // Log game startup
   Log::OpenLogFile();
@@ -148,7 +162,8 @@ void BigDog()
   ValErr = Validate::ValidateIt("All");
   if (ValErr)
   { // Validation failed
-    Log::LogIt("OMugs has stopped");
+    LogBuf = "OMugs has stopped";
+    Log::LogIt(LogBuf);
     Log::CloseLogFile();
     return;
   }
@@ -162,7 +177,7 @@ void BigDog()
     pCalendar->AdvanceTime();
     if (!StateStopping)
     { // Game is not stopping, but should it be?
-      if (CFile::GetStatus(StopItFileName, FileStatus))
+      if (FileExist(StopItFileName))
       { // StopIt file was found, Stop the game
         StateStopping = true;
         LogBuf = "Game is stopping";
@@ -174,7 +189,8 @@ void BigDog()
       Communication::SockCheckForNewConnections();
       if (StateConnections && Dnode::GetCount() == 1)
       { // No players connected
-        Log::LogIt("No Connections - going to sleep");
+        LogBuf = "No Connections - going to sleep";
+        Log::LogIt(LogBuf);
         StateConnections = false;
       }
     }
@@ -216,6 +232,7 @@ void BigDog()
   pWhoIsOnline = new WhoIsOnline(HomeDir);
   delete pWhoIsOnline;
   delete pCalendar;
-  Log::LogIt("OMugs has stopped");
+  LogBuf = "OMugs has stopped";
+  Log::LogIt(LogBuf);
   Log::CloseLogFile();
 }
