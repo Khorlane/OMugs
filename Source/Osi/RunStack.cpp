@@ -17,8 +17,6 @@
 #include "stdafx.h"         // precompiled headers
 #include "RunStack.h"
 
-using namespace std;
-
 /***********************************************************
 * Globals                                                  *
 ************************************************************/

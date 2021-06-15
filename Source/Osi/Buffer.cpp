@@ -17,8 +17,6 @@
 #include "stdafx.h"         // precompiled headers
 #include "Buffer.h"
 
-using namespace std;
-
 /***********************************************************
 * Global variables                                         *
 ************************************************************/

@@ -17,8 +17,6 @@
 #include "stdafx.h"         // precompiled headers
 #include "World.h"
 
-using namespace std;
-
 /***********************************************************
 * Globals                                                  *
 ************************************************************/

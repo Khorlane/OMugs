@@ -17,8 +17,6 @@
 #include "stdafx.h"         // precompiled headers
 #include "BigDog.h"
 
-using namespace std;
-
 /***********************************************************
 * Globals                                                  *
 ************************************************************/

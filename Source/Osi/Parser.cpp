@@ -17,8 +17,6 @@
 #include "stdafx.h"         // precompiled headers
 #include "Parser.h"
 
-using namespace std;
-
 /***********************************************************
 * Globals                                                  *
 ************************************************************/

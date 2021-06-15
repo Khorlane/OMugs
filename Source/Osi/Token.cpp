@@ -17,8 +17,6 @@
 #include "stdafx.h"         // precompiled headers
 #include "Token.h"
 
-using namespace std;
-
 /***********************************************************
 * Global variables                                         *
 ************************************************************/

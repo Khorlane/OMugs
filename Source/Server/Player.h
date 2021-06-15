@@ -23,6 +23,8 @@
 #include "Log.h"
 #include "Object.h"
 
+using namespace std;
+
 /***********************************************************
 * Define Player class                                      *
 ************************************************************/
@@ -88,7 +90,7 @@ class Player
 
     // Exploration tracking variables
     int             PlayerRoomBitPos;
-    std::bitset<8>  PlayerRoomBits;   // To remove "std::" add "using namespace std" to config.h
+    bitset<8>       PlayerRoomBits;
     unsigned char   PlayerRoomChar;
     int             PlayerRoomCharPos;
     CString         PlayerRoomString;
