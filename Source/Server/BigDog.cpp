@@ -23,7 +23,7 @@ using namespace std;
 * Globals                                                  *
 ************************************************************/
 
-CString   HomeDir; 
+string    HomeDir; 
 string    ScriptFileName;
 
 Calendar *pCalendar;
@@ -126,7 +126,7 @@ void BigDog()
   bool         ValErr;
   int          WhoIsOnlineTick;
 
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("BigDog - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -222,14 +222,14 @@ void BigDog()
     if (WhoIsOnlineTick >= WHO_IS_ONLINE_TICK)
     { // Time to see who is online
       WhoIsOnlineTick = 0;
-      pWhoIsOnline = new WhoIsOnline(HomeDir);
+      pWhoIsOnline = new WhoIsOnline(HomeDir.c_str());
       delete pWhoIsOnline;
     }
   }
   // Game has stopped so clean up
   Descriptor::ClearDescriptor();
   Communication::SockClosePort(PORT_NBR);
-  pWhoIsOnline = new WhoIsOnline(HomeDir);
+  pWhoIsOnline = new WhoIsOnline(HomeDir.c_str());
   delete pWhoIsOnline;
   delete pCalendar;
   LogBuf = "OMugs has stopped";

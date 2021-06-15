@@ -22,7 +22,7 @@
 ************************************************************/
 
 extern Dnode   *pDnodeActor;
-extern CString  HomeDir;
+extern string   HomeDir;
 
 /***********************************************************
 * Object constructor                                       *
@@ -1279,7 +1279,7 @@ void Object::WhereObjPlayerEqu(CString ObjectIdSearch)
     }
     PlayerEquFile.Close();
   }
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("Object::WhereObjPlayerEqu - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -1348,7 +1348,7 @@ void Object::WhereObjPlayerObj(CString ObjectIdSearch)
     }
     PlayerObjFile.Close();
   }
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("Object::WhereObjPlayerObj - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -1418,7 +1418,7 @@ void Object::WhereObjRoomObj(CString ObjectIdSearch)
     }
     RoomObjFile.Close();
   }
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("Object::WhereObj - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();

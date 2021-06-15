@@ -17,6 +17,8 @@
 #include "stdafx.h"         // precompiled headers
 #include "Mobile.h"
 
+using namespace std;
+
 /***********************************************************
 * Globals                                                  *
 ************************************************************/
@@ -24,7 +26,7 @@
 extern Dnode   *pDnodeActor;
 extern Dnode   *pDnodeSrc;
 extern Dnode   *pDnodeTgt;
-extern CString  HomeDir;
+extern string   HomeDir;
 
 /***********************************************************
 * Mobile constructor                                       *
@@ -274,7 +276,7 @@ int Mobile::CountMobOldWayNotUsedNow(CString MobileIdSearch)
     }
     RoomMobFile.Close();
   }
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("Mobile::CountMob - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -1189,7 +1191,7 @@ void Mobile::WhereMob(CString MobileIdSearch)
     }
     RoomMobFile.Close();
   }
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("Mobile::WhereMob - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();

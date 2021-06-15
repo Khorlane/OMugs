@@ -233,13 +233,15 @@ struct ResWordStruct
   EnumTokenCode TokenCode;
 };
 
-std::string ConvertCStringToString(CString Str1);
-CString     ConvertStringToCString(std::string  Str1);
-std::string StrLeft(std::string Str1, int Len);
-std::string StrRight(std::string Str1, int Len);
-std::string StrTrimLeft(std::string Str1);
-std::string StrTrimRight(std::string Str1);
-std::string StrMakeLower(std::string Str1);
-std::string StrGetWord(std::string Str1, int WordNbr);
+using namespace std;
+
+string  ConvertCStringToString(CString Str1);
+CString ConvertStringToCString(string  Str1);
+string  StrLeft(string Str1, int Len);
+string  StrRight(string Str1, int Len);
+string  StrTrimLeft(string Str1);
+string  StrTrimRight(string Str1);
+string  StrMakeLower(string Str1);
+string  StrGetWord(string Str1, int WordNbr);
 
 #endif

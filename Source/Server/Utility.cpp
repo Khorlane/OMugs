@@ -115,27 +115,26 @@ CString Utility::FormatCommas(CString String)
  * Get home directory                                      *
  ***********************************************************/
 
-CString Utility::GetHomeDir()
+string Utility::GetHomeDir()
 {
-  CString    HomeDir;
-  CStdioFile HomeDirFile;
-  CString    HomeDirFileName;
-  int        Success;
+  string     HomeDir;
+  ifstream   HomeDirFile;
+  string     HomeDirFileName;
+  string     Buffer;
 
   // Read HomeDir file - must be in same dir as OMugs.exe
   HomeDirFileName  = "HomeDir";
   HomeDirFileName += ".txt";
-  Success = HomeDirFile.Open(HomeDirFileName,
-                   CFile::modeRead |
-                   CFile::typeText);
-  if(!Success)
+  HomeDirFile.open(HomeDirFileName);
+  if(!HomeDirFile.is_open())
   {
     AfxMessageBox("Utility::GetHomeDir - Open HomeDir file failed (read)", MB_ICONSTOP);
     _endthread();
   }
-  HomeDirFile.ReadString(HomeDir);
-  HomeDirFile.Close();
-  return HomeDir;
+  getline(HomeDirFile, Buffer);
+  HomeDir = Buffer;
+  HomeDirFile.close();
+  return HomeDir.c_str();
 }
 
 /***********************************************************

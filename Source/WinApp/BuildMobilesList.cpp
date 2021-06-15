@@ -24,7 +24,7 @@
 extern BuildMobiles     *pBuildMobiles;
 extern BuildMobilesList *pBuildMobilesList;
 extern CWnd             *pCMainFrame;
-extern CString           HomeDir;
+extern string            HomeDir;
 
 /***********************************************************
 * BuildMobilesList constructor                             *
@@ -149,7 +149,7 @@ void BuildMobilesList::PopulateList()
   BOOL    MoreFiles;
   CFileFind   FileList;
 
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("BuildMobileList::PopulateList - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -162,7 +162,7 @@ void BuildMobilesList::PopulateList()
   }
   // Get a list of all Mobile files
   MoreFiles = FileList.FindFile("*.*");
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change to home directory failed
     AfxMessageBox("BuildMobileList::PopulateList - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();

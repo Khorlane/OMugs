@@ -17,6 +17,8 @@
 #include "stdafx.h"         // precompiled headers
 #include "Log.h"
 
+using namespace std;
+
 /***********************************************************
 * Globals                                                  *
 ************************************************************/
@@ -69,7 +71,7 @@ void Log::LogIt(CString LogBuf)
   LogFile.Flush();
 }
 
-void Log::LogIt(std::string LogBuf)
+void Log::LogIt(string LogBuf)
 {
   CString csLogBuf;
   csLogBuf = ConvertStringToCString(LogBuf);

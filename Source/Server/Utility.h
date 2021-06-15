@@ -33,7 +33,7 @@ class Utility
     static  int     CalcPct(int Dividend, int Divisor);
     static  CString DeleteWord(CString String, int WordNbr);
     static  CString FormatCommas(CString String);
-    static  CString GetHomeDir();
+    static  std::string  GetHomeDir();
     static  int     GetRandomNumber(int Limit);
     static  CString GetSqlStmt(CString SqlStmtId);
     static  CString GetWord(CString String, int WordNbr);

@@ -21,7 +21,7 @@
 * Globals                                                  *
 ************************************************************/
 
-extern CString HomeDir;
+extern string  HomeDir;
 
 /***********************************************************
 * COMugsApp message map                                    *

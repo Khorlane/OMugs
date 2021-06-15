@@ -21,7 +21,7 @@
 * Globals                                                  *
 ************************************************************/
 
-extern CString  HomeDir;
+extern string   HomeDir;
 extern bool     StateRunning;
 
 bool ValErr;
@@ -168,7 +168,7 @@ void Validate::ValidateLibraryLoot()
   }
   // Get list of all LibraryLoot files
   MoreFiles = FileList.FindFile("*.*");
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateLibraryLoot - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -260,7 +260,7 @@ void Validate::ValidateLibraryMobiles()
   }
   // Get list of all LibraryMobiles files
   MoreFiles = FileList.FindFile("*.*");
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateLibraryMobiles - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -426,7 +426,7 @@ void Validate::ValidateLibraryObjects()
   }
   // Get list of all LibarryObjects files
   MoreFiles = FileList.FindFile("*.*");
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateLibraryObjects - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -616,7 +616,7 @@ void Validate::ValidateLibraryRooms()
   }
   // Get list of all LibraryRooms files
   MoreFiles = FileList.FindFile("*.*");
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateRooms - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -782,7 +782,7 @@ void Validate::ValidateLibraryShops()
   }
   // Get list of all LibraryShops files
   MoreFiles = FileList.FindFile("*.*");
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateLibraryShops - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -894,7 +894,7 @@ void Validate::ValidateLibraryWorldMobiles()
   }
   // Get list of all LibraryWorldMobiles files
   MoreFiles = FileList.FindFile("*.*");
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateLibraryWorldMobiles - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -1021,7 +1021,7 @@ void Validate::ValidateRunningPlayers()
   }
   // Get list of all RunningPlayers files
   MoreFiles = FileList.FindFile("*.*");
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateRunningPlayers - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -1142,7 +1142,7 @@ void Validate::ValidateRunningPlayersPlayerEqu()
   }
   // Get list of all RunningPlayersPlayerEqu files
   MoreFiles = FileList.FindFile("*.*");
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateRunningPlayersPlayerEqu - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -1249,7 +1249,7 @@ void Validate::ValidateRunningPlayersPlayerObj()
   }
   // Get list of all RunningPlayersPlayerObj files
   MoreFiles = FileList.FindFile("*.*");
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateRunningPlayersPlayerObj - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -1343,7 +1343,7 @@ void Validate::ValidateRunningRoomMob()
   }
   // Get list of all RunningRoomMob files
   MoreFiles = FileList.FindFile("*.*");
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateRunningRoomMob - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -1472,7 +1472,7 @@ void Validate::ValidateRunningRoomObj()
   }
   // Get list of all RunningRoomObj files
   MoreFiles = FileList.FindFile("*.*");
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateRunningRoomObj - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();

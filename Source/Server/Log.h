@@ -19,6 +19,8 @@
 
 #include "Config.h"
 
+using namespace std;
+
 /***********************************************************
 * Define Log class                                         *
 ************************************************************/
@@ -32,7 +34,7 @@ class Log
     ~Log();
     void    static  CloseLogFile();
     void    static  LogIt(CString LogBuf);
-    void    static  LogIt(std::string LogBuf);
+    void    static  LogIt(string LogBuf);
     void    static  OpenLogFile();
 };
 

@@ -22,7 +22,7 @@
 * Globals                                                  *
 ************************************************************/
 
-extern CString HomeDir;
+extern string HomeDir;
 
 #pragma warning(disable : 4995)
 CDaoDatabase  MapDatabase;
@@ -140,7 +140,7 @@ void GenerateRooms::Init()
   //* Delete existing room files *
   //******************************
   // Change to home directory
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("GenerateRooms::Init - Change to home directory failed (1)");
     _endthread();
@@ -164,7 +164,7 @@ void GenerateRooms::Init()
     CFile::Remove(RoomFileName);
   }
   // Change back to home directory
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("GenerateRooms::Init - Change to home directory failed (2)");
     _endthread();
@@ -184,7 +184,7 @@ void GenerateRooms::OpenRecordsets()
   //* Open map database *
   //*********************
   // Change to home directory
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("GenerateRooms::OpenRecordsets - Change to home directory failed");
     _endthread();;

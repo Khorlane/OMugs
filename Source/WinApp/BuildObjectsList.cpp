@@ -24,7 +24,7 @@
 extern BuildObjects     *pBuildObjects;
 extern BuildObjectsList *pBuildObjectsList;
 extern CWnd             *pCMainFrame;
-extern CString           HomeDir;
+extern string            HomeDir;
 
 /***********************************************************
 * BuildObjectsList constructor                             *
@@ -177,7 +177,7 @@ void BuildObjectsList::OnSelchangeObjectsList()
 
 void BuildObjectsList::PopulateList()
 {
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("BuildObjectList::PopulateList - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -189,7 +189,7 @@ void BuildObjectsList::PopulateList()
   }
   // Get a list of all Object files
   MoreFiles = FileList.FindFile("*.*");
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change to home directory failed
     AfxMessageBox("BuildObjectList::PopulateList - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();

@@ -17,11 +17,13 @@
 #include "stdafx.h"
 #include "LineCount.h"
 
+using namespace std;
+
 /***********************************************************
 * Globals                                                  *
 ************************************************************/
 
-extern CString HomeDir;
+extern string  HomeDir;
 
 /***********************************************************
 * LineCount constructor                                    *
@@ -114,7 +116,7 @@ void LineCount::GetSourceCodeFiles(CString ParentDir, CString SourceCodeDir, CSt
   Stuff += "\n";
   LineCountFile.WriteString(Stuff);
   // Change to home directory so that following change to source directory will work
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("LineCount::GetSourceCodeFiles - Change to home directory failed");
     _endthread();;
@@ -128,7 +130,7 @@ void LineCount::GetSourceCodeFiles(CString ParentDir, CString SourceCodeDir, CSt
   }
   MoreFiles = FileList.FindFile(WildCard);
   // Change back to home directory
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("LineCount::GetSourceCodeFiles - Change to home directory failed (1)");
     _endthread();
@@ -152,7 +154,7 @@ void LineCount::GetSourceCodeFiles(CString ParentDir, CString SourceCodeDir, CSt
   LineCountFile.WriteString(Stuff);
   LineCountTotal3 += LineCountTotal2;
   // Change to home directory
-  if (_chdir(HomeDir))
+  if (_chdir(HomeDir.c_str()))
   { // Change directory failed
     AfxMessageBox("LineCount::GetSourceCodeFiles - Change to home directory failed (2)");
     _endthread();;
