@@ -30,6 +30,8 @@
 #include <cctype>           // String functions like tolower, toupper
 #include <sstream>          // String 'stream' functions (see StrGetWord)
 
+using namespace std;
+
 /***********************************************************
 * Macros                                                   *
 ************************************************************/
@@ -232,8 +234,6 @@ struct ResWordStruct
   CString       ResWord;
   EnumTokenCode TokenCode;
 };
-
-using namespace std;
 
 string  ConvertCStringToString(CString Str1);
 CString ConvertStringToCString(string  Str1);

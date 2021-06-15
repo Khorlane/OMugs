@@ -28,6 +28,4 @@
 #include "Validate.h"
 #include "WhoIsOnline.h"
 
-using namespace std;
-
 #endif

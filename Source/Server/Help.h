@@ -22,9 +22,6 @@
 #include "Player.h"
 #include "Utility.h"
 
-#include <string>
-using namespace std;
-
 /***********************************************************
 * Define Help class                                        *
 ************************************************************/
