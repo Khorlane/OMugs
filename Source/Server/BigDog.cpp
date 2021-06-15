@@ -94,7 +94,7 @@ string StrGetWord(string Str1, int WordNbr)
   return "";
 }
 
-bool FileExist(const std::string Name)
+bool FileExist(string Name)
 {
   bool Exist;
 
