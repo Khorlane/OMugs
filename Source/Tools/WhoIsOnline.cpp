@@ -76,20 +76,20 @@ void WhoIsOnline::GetPlayers(CString HomeDir)
 {
   OpenStatsWho();
   // Change to home directory so that following change to player directory will work
-  if (_chdir(HomeDir))
+  if (ChgDir((LPCTSTR)HomeDir))
   { // Change directory failed
     AfxMessageBox("WhoIsOnline::GetPlayers - Change to home directory failed", MB_ICONSTOP);
     _endthread();
   }
   // Change to player directory to get file list
-  if (_chdir(PLAYER_DIR))
+  if (ChgDir(PLAYER_DIR))
   { // Change directory failed
     AfxMessageBox("WhoIsOnline::GetPlayers - Change to player directory failed", MB_ICONSTOP);
     _endthread();
   }
   MoreFiles = FileList.FindFile("*.*");
   // Change back to home directory
-  if (_chdir(HomeDir))
+  if (ChgDir((LPCTSTR)HomeDir))
   { // Change directory failed
     AfxMessageBox("WhoIsOnline::GetPlayers - Change to home directory failed", MB_ICONSTOP);
     _endthread();

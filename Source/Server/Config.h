@@ -243,5 +243,5 @@ string  StrTrimLeft(string Str1);
 string  StrTrimRight(string Str1);
 string  StrMakeLower(string Str1);
 string  StrGetWord(string Str1, int WordNbr);
-
+bool    ChgDir(string Dir);
 #endif

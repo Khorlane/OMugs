@@ -1238,7 +1238,7 @@ void Object::WhereObjPlayerEqu(CString ObjectIdSearch)
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += "---------------------------";
   pDnodeActor->PlayerOut += "\r\n";
-  if (_chdir(PLAYER_EQU_DIR))
+  if (ChgDir(PLAYER_EQU_DIR))
   { // Change directory failed
     AfxMessageBox("Object::WhereObjPlayerEqu - Change directory to PLAYER_EQU_DIR failed", MB_ICONSTOP);
     _endthread();
@@ -1279,7 +1279,7 @@ void Object::WhereObjPlayerEqu(CString ObjectIdSearch)
     }
     PlayerEquFile.Close();
   }
-  if (_chdir(HomeDir.c_str()))
+  if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("Object::WhereObjPlayerEqu - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -1307,7 +1307,7 @@ void Object::WhereObjPlayerObj(CString ObjectIdSearch)
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += "---------------------------";
   pDnodeActor->PlayerOut += "\r\n";
-  if (_chdir(PLAYER_OBJ_DIR))
+  if (ChgDir(PLAYER_OBJ_DIR))
   { // Change directory failed
     AfxMessageBox("Object::WhereObjPlayerObj - Change directory to PLAYER_OBJ_DIR failed", MB_ICONSTOP);
     _endthread();
@@ -1348,7 +1348,7 @@ void Object::WhereObjPlayerObj(CString ObjectIdSearch)
     }
     PlayerObjFile.Close();
   }
-  if (_chdir(HomeDir.c_str()))
+  if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("Object::WhereObjPlayerObj - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -1377,7 +1377,7 @@ void Object::WhereObjRoomObj(CString ObjectIdSearch)
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += "----------------";
   pDnodeActor->PlayerOut += "\r\n";
-  if (_chdir(ROOM_OBJ_DIR))
+  if (ChgDir(ROOM_OBJ_DIR))
   { // Change directory failed
     AfxMessageBox("Object::WhereObjRoomObj - Change directory to ROOM_OBJ_DIR failed", MB_ICONSTOP);
     _endthread();
@@ -1418,7 +1418,7 @@ void Object::WhereObjRoomObj(CString ObjectIdSearch)
     }
     RoomObjFile.Close();
   }
-  if (_chdir(HomeDir.c_str()))
+  if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("Object::WhereObj - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();

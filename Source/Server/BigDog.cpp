@@ -109,6 +109,16 @@ bool FileExist(string Name)
   return Exist;
 }
 
+bool ChgDir(string Dir)
+{
+  return _chdir(Dir.c_str());
+}
+
+void Rename(string File1, string File2)
+{
+  rename(File1.c_str(), File2.c_str());
+}
+
 /***********************************************************
  * BigDog                                                  *
  ***********************************************************/
@@ -124,7 +134,7 @@ void BigDog()
   bool         ValErr;
   int          WhoIsOnlineTick;
 
-  if (_chdir(HomeDir.c_str()))
+  if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("BigDog - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -136,7 +146,7 @@ void BigDog()
   GoGoGoFileName += "GoGoGo";
   if (FileExist(StopItFileName))
   { // If StopIt file exists, Rename it to GoGoGo
-    rename(StopItFileName.c_str(), GoGoGoFileName.c_str());
+    Rename(StopItFileName, GoGoGoFileName);
   }
   // Log game startup
   Log::OpenLogFile();

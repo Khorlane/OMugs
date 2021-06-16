@@ -149,20 +149,20 @@ void BuildMobilesList::PopulateList()
   BOOL    MoreFiles;
   CFileFind   FileList;
 
-  if (_chdir(HomeDir.c_str()))
+  if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("BuildMobileList::PopulateList - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
   }
 
-  if (_chdir(MOBILES_DIR))
+  if (ChgDir(MOBILES_DIR))
   { // Change directory failed
     AfxMessageBox("BuildMobileList::PopulateList - Change directory to MOB_DIR failed", MB_ICONSTOP);
     _endthread();
   }
   // Get a list of all Mobile files
   MoreFiles = FileList.FindFile("*.*");
-  if (_chdir(HomeDir.c_str()))
+  if (ChgDir(HomeDir))
   { // Change to home directory failed
     AfxMessageBox("BuildMobileList::PopulateList - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();

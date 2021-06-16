@@ -61,13 +61,13 @@ void World::CreateSpawnMobileEvents()
   CString    WorldMobileFileName;
   int        Years;
 
-  if (_chdir(WORLD_MOBILES_DIR))
+  if (ChgDir(WORLD_MOBILES_DIR))
   { // Change directory failed
     AfxMessageBox("World::CreateSpawnMobileEvents - Change directory to WORLD_MOBILES_DIR failed", MB_ICONSTOP);
     _endthread();
   }
   MoreFiles = FileList.FindFile("*.*");
-  if (_chdir(HomeDir.c_str()))
+  if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("World::CreateSpawnMobileEvents - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -233,14 +233,14 @@ void World::CheckSpawnMobileEvents()
 
   CurrentTime = CTime::GetCurrentTime();
   CheckTime.Format("%d", CurrentTime);
-  if (_chdir(CONTROL_EVENTS_DIR))
+  if (ChgDir(CONTROL_EVENTS_DIR))
   { // Change directory failed
     AfxMessageBox("World::CheckSpawnMobileEvents - Change directory to CONTROL_EVENTS_DIR failed", MB_ICONSTOP);
     _endthread();
   }
   // Event files starting with 'M' are 'spawn mobile' events
   MoreFiles = FileList.FindFile("M*.*");
-  if (_chdir(HomeDir.c_str()))
+  if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("World::CheckSpawnMobileEvents - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -324,14 +324,14 @@ void World::HealMobiles()
   CString    RoomId;
   CString    Stuff;
 
-  if (_chdir(MOB_STATS_HPT_DIR))
+  if (ChgDir(MOB_STATS_HPT_DIR))
   { // Change directory failed
     AfxMessageBox("World::HealMobiles - Change directory to MOB_STATS_HPT_DIR failed", MB_ICONSTOP);
     _endthread();
   }
   // Get a list of all MobStats\HitPoints files
   MoreFiles = FileList.FindFile("*.*");
-  if (_chdir(HomeDir.c_str()))
+  if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("World::HealMobiles - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -388,7 +388,7 @@ bool World::HealMobilesFightCheck(CString Dir, CString MobileId)
   MobFighting = false;
   if (Dir == "MobPlayer")
   { // Checking MobPlayer
-    if (_chdir(MOB_PLAYER_DIR))
+    if (ChgDir(MOB_PLAYER_DIR))
     { // Change directory failed
       AfxMessageBox("World::HealMobilesFightCheck - Change directory to MOB_PLAYER_DIR failed", MB_ICONSTOP);
       _endthread();
@@ -396,7 +396,7 @@ bool World::HealMobilesFightCheck(CString Dir, CString MobileId)
   }
   if (Dir == "PlayerMob")
   { // Checking PlayerMob
-    if (_chdir(PLAYER_MOB_DIR))
+    if (ChgDir(PLAYER_MOB_DIR))
     { // Change directory failed
       AfxMessageBox("World::HealMobilesFightCheck - Change directory to PLAYER_MOB_DIR failed", MB_ICONSTOP);
       _endthread();
@@ -404,7 +404,7 @@ bool World::HealMobilesFightCheck(CString Dir, CString MobileId)
   }
   // Get a list of all MobPlayer files
   MoreFiles = FileList.FindFile("*.*");
-  if (_chdir(HomeDir.c_str()))
+  if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("World::HealMobilesFightCheck - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -565,14 +565,14 @@ void World::MakeMobilesMove1()
     AfxMessageBox("World::MakeMobilesMove1 - Create RoomMobList file failed", MB_ICONSTOP);
     _endthread();
   }
-  if (_chdir(ROOM_MOB_DIR))
+  if (ChgDir(ROOM_MOB_DIR))
   { // Change directory failed
     AfxMessageBox("World::MakeMobilesMove1 - Change directory to ROOM_MOB_DIR failed", MB_ICONSTOP);
     _endthread();
   }
   // Get a list of all RoomMob files
   MoreFiles = FileList.FindFile("*.*");
-  if (_chdir(HomeDir.c_str()))
+  if (ChgDir(HomeDir))
   { // Change to home directory failed
     AfxMessageBox("World::MakeMobilesMove1 - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();

@@ -232,7 +232,7 @@ int Mobile::CountMobOldWayNotUsedNow(CString MobileIdSearch)
 
   Count = 0;
   MobileIdSearch.MakeLower();
-  if (_chdir(ROOM_MOB_DIR))
+  if (ChgDir(ROOM_MOB_DIR))
   { // Change directory failed
     AfxMessageBox("Mobile::WhereMob - Change directory to ROOM_MOB_DIR failed", MB_ICONSTOP);
     _endthread();
@@ -274,7 +274,7 @@ int Mobile::CountMobOldWayNotUsedNow(CString MobileIdSearch)
     }
     RoomMobFile.Close();
   }
-  if (_chdir(HomeDir.c_str()))
+  if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("Mobile::CountMob - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
@@ -1137,7 +1137,7 @@ void Mobile::WhereMob(CString MobileIdSearch)
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += "-------";
   pDnodeActor->PlayerOut += "\r\n";
-  if (_chdir(ROOM_MOB_DIR))
+  if (ChgDir(ROOM_MOB_DIR))
   { // Change directory failed
     AfxMessageBox("Mobile::WhereMob - Change directory to ROOM_MOB_DIR failed", MB_ICONSTOP);
     _endthread();
@@ -1189,7 +1189,7 @@ void Mobile::WhereMob(CString MobileIdSearch)
     }
     RoomMobFile.Close();
   }
-  if (_chdir(HomeDir.c_str()))
+  if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("Mobile::WhereMob - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();

@@ -140,13 +140,13 @@ void GenerateRooms::Init()
   //* Delete existing room files *
   //******************************
   // Change to home directory
-  if (_chdir(HomeDir.c_str()))
+  if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("GenerateRooms::Init - Change to home directory failed (1)");
     _endthread();
   }
   // Change to rooms directory
-  if (_chdir(ROOMS_DIR))
+  if (ChgDir(ROOMS_DIR))
   { // Change directory failed
     AfxMessageBox("GenerateRooms::Init - Change to rooms directory failed");
     _endthread();
@@ -164,7 +164,7 @@ void GenerateRooms::Init()
     CFile::Remove(RoomFileName);
   }
   // Change back to home directory
-  if (_chdir(HomeDir.c_str()))
+  if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("GenerateRooms::Init - Change to home directory failed (2)");
     _endthread();
@@ -184,7 +184,7 @@ void GenerateRooms::OpenRecordsets()
   //* Open map database *
   //*********************
   // Change to home directory
-  if (_chdir(HomeDir.c_str()))
+  if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("GenerateRooms::OpenRecordsets - Change to home directory failed");
     _endthread();;

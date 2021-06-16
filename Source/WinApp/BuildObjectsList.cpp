@@ -177,19 +177,19 @@ void BuildObjectsList::OnSelchangeObjectsList()
 
 void BuildObjectsList::PopulateList()
 {
-  if (_chdir(HomeDir.c_str()))
+  if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("BuildObjectList::PopulateList - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
   }
-  if (_chdir(OBJECTS_DIR))
+  if (ChgDir(OBJECTS_DIR))
   { // Change directory failed
     AfxMessageBox("BuildObjectList::PopulateList - Change directory to OBJECTS_DIR failed", MB_ICONSTOP);
     _endthread();
   }
   // Get a list of all Object files
   MoreFiles = FileList.FindFile("*.*");
-  if (_chdir(HomeDir.c_str()))
+  if (ChgDir(HomeDir))
   { // Change to home directory failed
     AfxMessageBox("BuildObjectList::PopulateList - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();

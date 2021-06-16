@@ -114,21 +114,21 @@ void LineCount::GetSourceCodeFiles(CString ParentDir, CString SourceCodeDir, CSt
   Stuff += "\n";
   LineCountFile.WriteString(Stuff);
   // Change to home directory so that following change to source directory will work
-  if (_chdir(HomeDir.c_str()))
+  if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("LineCount::GetSourceCodeFiles - Change to home directory failed");
     _endthread();;
   }
   // Change to source code directory to get file list
   SourceCodeDir  = ParentDir + SourceCodeDir + "\\";
-  if (_chdir(SourceCodeDir))
+  if (ChgDir((LPCTSTR)SourceCodeDir))
   { // Change directory failed
     AfxMessageBox("LineCount::GetSourceCodeFiles - Change to source directory failed");
     _endthread();
   }
   MoreFiles = FileList.FindFile(WildCard);
   // Change back to home directory
-  if (_chdir(HomeDir.c_str()))
+  if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("LineCount::GetSourceCodeFiles - Change to home directory failed (1)");
     _endthread();
@@ -152,7 +152,7 @@ void LineCount::GetSourceCodeFiles(CString ParentDir, CString SourceCodeDir, CSt
   LineCountFile.WriteString(Stuff);
   LineCountTotal3 += LineCountTotal2;
   // Change to home directory
-  if (_chdir(HomeDir.c_str()))
+  if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("LineCount::GetSourceCodeFiles - Change to home directory failed (2)");
     _endthread();;
