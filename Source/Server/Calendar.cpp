@@ -23,7 +23,10 @@
 
 Calendar::Calendar()
 {
-  TimeToAdvanceHour = CTime::GetCurrentTime() + REAL_MINUTES_PER_HOUR * 60;
+  time_t Timer;
+
+  time(&Timer);
+  TimeToAdvanceHour = Timer + REAL_MINUTES_PER_HOUR * 60;
   Year      = 1;
   Month     = 1;
   Day       = 1;
@@ -59,11 +62,14 @@ Calendar::~Calendar()
 
 void Calendar::AdvanceTime()
 {
-  if (CTime::GetCurrentTime() < TimeToAdvanceHour)
+  time_t NowSec;
+
+  time(&NowSec);
+  if (NowSec < TimeToAdvanceHour)
   { // Not time to advance the hour
     return;
   }
-  TimeToAdvanceHour = CTime::GetCurrentTime() + REAL_MINUTES_PER_HOUR * 60;
+  TimeToAdvanceHour = NowSec + REAL_MINUTES_PER_HOUR * 60;
   Hour++;
   if (Hour > HOURS_PER_DAY)
   {

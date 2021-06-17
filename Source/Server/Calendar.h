@@ -71,7 +71,7 @@ class Calendar
     CString         MonthNamesFileName;
     CString         Stuff;
     int             Success;
-    CTime           TimeToAdvanceHour;
+    time_t          TimeToAdvanceHour;
     int             Year;
 };
 

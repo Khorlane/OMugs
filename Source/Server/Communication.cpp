@@ -4561,22 +4561,56 @@ void Communication::DoPassword()
 
 void Communication::DoPlayed()
 {
-  CString   BirthDay;
-  CString   PlayerAge;
-  CTimeSpan PlayerAgeTime;
-  CString   TimePlayed;
+  char   Buffer[100];
+  int    Days;
+  int    Hours;
+  int    Minutes;
+  int    Seconds;
+  int    n;
+  string BirthDay;
+  string PlayerAge;
+  string TimePlayed;
+  time_t BornSec;
+  time_t NowSec;
+  time_t PlayerAgeSec;
+  time_t TimePlayedSec;
 
-  pDnodeActor->pPlayer->Save(); // This is here due to lazyness, Save() updates TimePlayed
-  BirthDay      = pDnodeActor->pPlayer->Born.Format("%A, %B %d, %Y, %I:%M:%S %p");
-  PlayerAgeTime = CTime::GetCurrentTime() - pDnodeActor->pPlayer->Born;
-  PlayerAge     = PlayerAgeTime.Format( "Your age: %D days, %H hours, %M minutes, %S seconds" );
-  TimePlayed    = pDnodeActor->pPlayer->TimePlayed.Format( "You've played: %D days, %H hours, %M minutes, %S seconds" );
-  pDnodeActor->PlayerOut += PlayerAge;
+  pDnodeActor->pPlayer->Save(); // Save() updates TimePlayed
+  NowSec        = time(0);
+  BornSec       = pDnodeActor->pPlayer->Born.GetTime();
+  PlayerAgeSec  = NowSec - BornSec;
+  TimePlayedSec = pDnodeActor->pPlayer->TimePlayed.GetTimeSpan();
+  // Birthday
+  BirthDay = ctime(&BornSec);
+  // Age
+  n        = (int) PlayerAgeSec;
+  Days     = n / (24 * 3600);
+  n        = n % (24 * 3600);
+  Hours    = n / 3600;
+  n       %= 3600;
+  Minutes  = n / 60;
+  n       %= 60;
+  Seconds  = n;
+  sprintf(Buffer, "Your age: %d days, %d hours, %d minutes, %d seconds", Days, Hours, Minutes, Seconds);
+  PlayerAge = Buffer;
+  // TimePlayed
+  n        = (int)TimePlayedSec;
+  Days     = n / (24 * 3600);
+  n        = n % (24 * 3600);
+  Hours    = n / 3600;
+  n       %= 3600;
+  Minutes  = n / 60;
+  n       %= 60;
+  Seconds  = n;
+  sprintf(Buffer, "You've played: %d days, %d hours, %d minutes, %d seconds", Days, Hours, Minutes, Seconds);
+  TimePlayed = Buffer;
+
+  pDnodeActor->PlayerOut += PlayerAge.c_str();
   pDnodeActor->PlayerOut += "\r\n";
-  pDnodeActor->PlayerOut += TimePlayed;
+  pDnodeActor->PlayerOut += TimePlayed.c_str();
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += "Your birthday is: ";
-  pDnodeActor->PlayerOut += BirthDay;
+  pDnodeActor->PlayerOut += BirthDay.c_str();
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();

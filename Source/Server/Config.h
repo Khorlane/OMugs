@@ -29,6 +29,7 @@
 #include <algorithm>        // Functions used on ranges of elements (see StrMakeLower)
 #include <cctype>           // String functions like tolower, toupper
 #include <sstream>          // String 'stream' functions (see StrGetWord)
+#include <time.h>           // Time functions
 
 using namespace std;
 
