@@ -47,9 +47,11 @@ class Calendar
     void            SaveTime();
 
 // Private variables
-    CStdioFile      CalendarFile;
+    char            Buffer[100];
+    ifstream        CalendarFileInp;
     bool            CalendarFileIsOpen;
-    CString         CalendarFileName;
+    string          CalendarFileName;
+    ofstream        CalendarFileOut;
     int             Day;
     CStringArray    DayOfMonth;
     CStdioFile      DayOfMonthFile;
@@ -64,7 +66,7 @@ class Calendar
     CStringArray    HourNames;
     CStdioFile      HourNamesFile;
     CString         HourNamesFileName;
-    CString         LogBuf;
+    string          LogBuf;
     int             Month;
     CStringArray    MonthNames;
     CStdioFile      MonthNamesFile;

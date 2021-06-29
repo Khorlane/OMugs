@@ -133,7 +133,7 @@ CString Calendar::GetTime()
 
 void Calendar::CloseCalendarFile()
 {
-  CalendarFile.Close();
+  CalendarFileInp.close();
 }
 
 /***********************************************************
@@ -142,7 +142,10 @@ void Calendar::CloseCalendarFile()
 
 void Calendar::GetStartTime()
 {
-  CalendarFile.ReadString(Stuff);
+  string Buffer;
+
+  getline (CalendarFileInp, Buffer);
+  Stuff = ConvertStringToCString(Buffer);
   CloseCalendarFile();
   Year      = atoi(Utility::GetWord(Stuff, 1));
   Month     = atoi(Utility::GetWord(Stuff, 2));
@@ -192,9 +195,10 @@ void Calendar::GetStartTime()
 void Calendar::OpenCalendarFile()
 {
   CalendarFileIsOpen = false;
-  CalendarFileName = CONTROL_DIR;
-  CalendarFileName += "Calendar.txt";
-  if (!CFile::GetStatus(CalendarFileName, FileStatus))
+  CalendarFileName   = CONTROL_DIR;
+  CalendarFileName  += "Calendar.txt";
+  CalendarFileInp.open(CalendarFileName);
+  if (!CalendarFileInp.is_open())
   { // Calendar file does not exist
     LogBuf = "Calendar file not found.";
     Log::LogIt(LogBuf);
@@ -202,18 +206,8 @@ void Calendar::OpenCalendarFile()
     Log::LogIt(LogBuf);
 	  return;
   }
-  Success = CalendarFile.Open(CalendarFileName,
-                   CFile::modeRead |
-                   CFile::typeText);
-  if(Success)
-  { // Open was successful
-    CalendarFileIsOpen = true;
-  }
-  else
-  { // Open failed, something is bad wrong
-    AfxMessageBox("Calendar::OpenCalendarFile - Failed", MB_ICONSTOP);
-    _endthread();
-  }
+  // Open was successful
+  CalendarFileIsOpen = true;
 }
 
 /***********************************************************
@@ -334,16 +328,16 @@ void Calendar::LoadMonthNamesArray()
 
 void Calendar::SaveTime()
 {
-  Success = CalendarFile.Open(CalendarFileName,
-                   CFile::modeCreate |
-                   CFile::modeWrite  |
-                   CFile::typeText);
-  if(!Success)
+  CalendarFileName  = CONTROL_DIR;
+  CalendarFileName += "Calendar.txt";
+  CalendarFileOut.open(CalendarFileName);
+  if (!CalendarFileOut.is_open())
   { // Open failed
-    AfxMessageBox("Calendar::SaveTime open file - Failed", MB_ICONSTOP);
+    LogBuf = "Calendar::SaveTime - Open calendar file - Failed";
+    Log::LogIt(LogBuf);
     _endthread();
   }
-  Stuff.Format("%d %d %d %d %d", Year, Month, Day, Hour, DayOfWeek);
-  CalendarFile.WriteString(Stuff);
-  CloseCalendarFile();
+  sprintf(Buffer, "%d %d %d %d %d", Year, Month, Day, Hour, DayOfWeek);
+  CalendarFileOut.write(Buffer, strlen(Buffer));
+  CalendarFileOut.close();
 }

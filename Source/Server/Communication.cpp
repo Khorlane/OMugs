@@ -5682,7 +5682,7 @@ void Communication::DoTrain()
       else
       { // Player has specified everything correctly for untrain, check money
         if (pDnodeActor->pPlayer->Silver < atoi(UNTRAIN_COST))
-        { // No axe skill
+        { // Not enough money
           pDnodeActor->PlayerOut += "You do not have ";
           pDnodeActor->PlayerOut += UNTRAIN_COST;
           pDnodeActor->PlayerOut += " pieces of silver!";
