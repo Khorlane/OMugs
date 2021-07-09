@@ -53,4 +53,7 @@ public:
 	DECLARE_MESSAGE_MAP()
 };
 
+inline CWnd  *pCMainFrame;
+inline void		BigDog();
+
 #endif

@@ -21,11 +21,6 @@
 * Globals                                                  *
 ************************************************************/
 
-extern BuildMobiles     *pBuildMobiles;
-extern BuildMobilesList *pBuildMobilesList;
-extern CWnd             *pCMainFrame;
-extern string            HomeDir;
-
 /***********************************************************
 * BuildMobilesList constructor                             *
 ************************************************************/

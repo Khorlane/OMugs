@@ -21,15 +21,8 @@
 * Globals                                                  *
 ************************************************************/
 
-BuildMobiles     *pBuildMobiles               = NULL;
-BuildMobilesList *pBuildMobilesList           = NULL;
-BuildObjects     *pBuildObjects               = NULL;
-BuildObjectsList *pBuildObjectsList           = NULL;
-CWnd             *pCMainFrame                 = NULL;
 bool              MenuControlStartGameEnabled = true;
 bool              MenuControlStopGameEnabled  = false;
-
-extern void BigDog();
 
 /***********************************************************
 * Implement dynamic                                        *

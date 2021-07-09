@@ -21,11 +21,6 @@
 * Globals                                                  *
 ************************************************************/
 
-extern BuildObjects     *pBuildObjects;
-extern BuildObjectsList *pBuildObjectsList;
-extern CWnd             *pCMainFrame;
-extern string            HomeDir;
-
 /***********************************************************
 * BuildObjectsList constructor                             *
 ************************************************************/

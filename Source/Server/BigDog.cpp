@@ -21,15 +21,6 @@
 * Globals                                                  *
 ************************************************************/
 
-string    HomeDir; 
-string    ScriptFileName;
-
-Calendar *pCalendar;
-bool      StateConnections;
-bool      StateRunning;
-bool      StateStopping;
-float     PACMN; // Percent Armor Class Magic Number
-
 string ConvertCStringToString(CString Str1)
 {
   return (LPCTSTR)Str1;
@@ -131,7 +122,6 @@ void BigDog()
   string       LogBuf;
   int          MobHealTick;
   string       StopItFileName;
-  bool         ValErr;
   int          WhoIsOnlineTick;
 
   if (ChgDir(HomeDir))

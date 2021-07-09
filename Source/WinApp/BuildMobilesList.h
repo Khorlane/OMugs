@@ -71,4 +71,6 @@ class BuildMobilesList : public CDialog
     CString         MobileId;
 };
 
+inline BuildMobilesList *pBuildMobilesList;
+
 #endif

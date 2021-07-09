@@ -95,4 +95,6 @@ class BuildObjects : public CDialog
     CString         WeaponType;
 };
 
+inline BuildObjects *pBuildObjects;
+
 #endif

@@ -89,4 +89,11 @@ class Dnode
     int             StatsTick;
 };
 
+inline Dnode *pDnodeActor;
+inline Dnode *pDnodeSrc;
+inline Dnode *pDnodeTgt;
+
+inline Dnode *pDnodeCursor;
+inline Dnode *pDnodeHead;
+
 #endif

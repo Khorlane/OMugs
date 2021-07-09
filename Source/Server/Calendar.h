@@ -77,4 +77,6 @@ class Calendar
     int             Year;
 };
 
+inline Calendar *pCalendar;
+
 #endif

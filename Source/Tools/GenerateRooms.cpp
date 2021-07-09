@@ -22,8 +22,6 @@
 * Globals                                                  *
 ************************************************************/
 
-extern string HomeDir;
-
 #pragma warning(disable : 4995)
 CDaoDatabase  MapDatabase;
 CDaoRecordset RoomsRecordset(&MapDatabase);

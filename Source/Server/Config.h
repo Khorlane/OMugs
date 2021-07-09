@@ -229,13 +229,18 @@ union EnumDataValue
   char   *pString;
 };
 
-// Osi Reserverd words
+// Osi reserverd words
 struct ResWordStruct
 {
   CString       ResWord;
   EnumTokenCode TokenCode;
 };
 
+/***********************************************************
+* Globals                                                  *
+************************************************************/
+
+// Functions
 string  ConvertCStringToString(CString Str1);
 CString ConvertStringToCString(string  Str1);
 string  StrLeft(string Str1, int Len);
@@ -246,5 +251,18 @@ string  StrMakeLower(string Str1);
 string  StrGetWord(string Str1, int WordNbr);
 bool    ChgDir(string Dir);
 void    Rename(string File1, string File2);
+
+// Variables
+inline EnumCharCode   CharCodeMap[128];
+inline CString        CmdStr;
+inline unsigned char  CurrentLineNumber;
+inline string         HomeDir;
+inline CString        MudCmd;
+inline float          PACMN;                // Percent Armor Class Magic Number
+inline string         ScriptFileName;
+inline bool           StateConnections;
+inline bool           StateRunning;
+inline bool           StateStopping;
+inline bool           ValErr;
 
 #endif

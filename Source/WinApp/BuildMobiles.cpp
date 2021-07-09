@@ -21,9 +21,6 @@
 * Globals                                                  *
 ************************************************************/
 
-extern BuildMobiles     *pBuildMobiles;
-extern BuildMobilesList *pBuildMobilesList;
-
 /***********************************************************
 * BuildMobiles constructor                                 *
 ************************************************************/

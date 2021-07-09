@@ -21,11 +21,6 @@
 * Globals                                                  *
 ************************************************************/
 
-extern Dnode   *pDnodeSrc;
-extern Dnode   *pDnodeTgt;
-extern string   HomeDir;
-extern string   ScriptFileName;
-
 ////////////////////////////////////////////////////////////
 // Public functions static                                //
 ////////////////////////////////////////////////////////////

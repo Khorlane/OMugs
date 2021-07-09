@@ -21,9 +21,6 @@
 * Globals                                                  *
 ************************************************************/
 
-extern BuildObjects     *pBuildObjects;
-extern BuildObjectsList *pBuildObjectsList;
-
 /***********************************************************
 * BuildObjects constructor                                 *
 ************************************************************/

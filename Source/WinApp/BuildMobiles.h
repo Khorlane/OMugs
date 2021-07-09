@@ -111,4 +111,6 @@ class BuildMobiles : public CDialog
     int             Success;
 };
 
+inline BuildMobiles *pBuildMobiles;
+
 #endif

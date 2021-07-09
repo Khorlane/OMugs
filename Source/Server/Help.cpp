@@ -21,9 +21,6 @@
 * Globals                                                  *
 ************************************************************/
 
-extern Dnode   *pDnodeActor;
-extern CString  CmdStr;
-
 ifstream   HelpFile;
 string     HelpText;
 

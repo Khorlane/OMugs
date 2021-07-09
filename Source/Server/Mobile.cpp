@@ -21,11 +21,6 @@
 * Globals                                                  *
 ************************************************************/
 
-extern Dnode   *pDnodeActor;
-extern Dnode   *pDnodeSrc;
-extern Dnode   *pDnodeTgt;
-extern string   HomeDir;
-
 /***********************************************************
 * Mobile constructor                                       *
 ************************************************************/

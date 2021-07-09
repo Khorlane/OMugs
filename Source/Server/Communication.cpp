@@ -21,20 +21,10 @@
 * Globals                                                  *
 ************************************************************/
 
-extern Calendar *pCalendar;
-extern bool      StateConnections;
-extern bool      StateRunning;
-extern bool      StateStopping;
-
-Dnode           *pDnodeActor;
 Dnode           *pDnodeOthers;
-Dnode           *pDnodeSrc;
-Dnode           *pDnodeTgt;
-CString          CmdStr;
 fd_set           ExcSet;
 fd_set           InpSet;
 int              ListenSocket;
-CString          MudCmd;
 fd_set           OutSet;
 CStringArray     ValidCmds;
 

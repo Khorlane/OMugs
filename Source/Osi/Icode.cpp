@@ -21,7 +21,6 @@
 * Global                                                   *
 ************************************************************/
 
-extern unsigned char CurrentLineNumber;
 // Vector for tokens not found in symbol table
 char *SymbolStrings[] =
 {
