@@ -227,7 +227,7 @@ void Calendar::LoadDayNamesArray()
   }
   DayNames.clear();
   getline(DayNamesFile, Stuff);
-  while (Stuff != "")
+  while (DayNamesFile.peek() != EOF)
   { // Read all day names
     DayNames.push_back(Stuff);
     getline(DayNamesFile, Stuff);
@@ -253,7 +253,7 @@ void Calendar::LoadDayOfMonthArray()
   }
   DayOfMonth.clear();
   getline(DayOfMonthFile, Stuff);
-  while (Stuff != "")
+  while (DayOfMonthFile.peek() != EOF)
   { // Read all day of month
     DayOfMonth.push_back(Stuff);
     getline(DayOfMonthFile, Stuff);
@@ -279,7 +279,7 @@ void Calendar::LoadHourNamesArray()
   }
   HourNames.clear();
   getline(HourNamesFile, Stuff);
-  while (Stuff != "")
+  while (HourNamesFile.peek() != EOF)
   { // Read all hour names
     HourNames.push_back(Stuff);
     getline(HourNamesFile, Stuff);
@@ -305,7 +305,7 @@ void Calendar::LoadMonthNamesArray()
   }
   MonthNames.clear();
   getline(MonthNamesFile, Stuff);
-  while (Stuff != "")
+  while (MonthNamesFile.peek() != EOF)
   { // Read all month names
     MonthNames.push_back(Stuff);
     getline(MonthNamesFile, Stuff);

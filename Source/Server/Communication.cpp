@@ -752,34 +752,38 @@ void Communication::SockRecv()
 
 void Communication::Color()
 {
+  string sPlayerOut;
+
   if (!pDnodeActor->PlayerStatePlaying)
   { // Player's color variable is not available
     return;
   }
+  sPlayerOut = ConvertCStringToString(pDnodeActor->PlayerOut);
   if (pDnodeActor->pPlayer->Color)
   { // Player has turned color on
-    pDnodeActor->PlayerOut.Replace("&N", Normal);
-    pDnodeActor->PlayerOut.Replace("&K", BrightBlack);
-    pDnodeActor->PlayerOut.Replace("&R", BrightRed);
-    pDnodeActor->PlayerOut.Replace("&G", BrightGreen);
-    pDnodeActor->PlayerOut.Replace("&Y", BrightYellow);
-    pDnodeActor->PlayerOut.Replace("&B", BrightBlue);
-    pDnodeActor->PlayerOut.Replace("&M", BrightMagenta);
-    pDnodeActor->PlayerOut.Replace("&C", BrightCyan);
-    pDnodeActor->PlayerOut.Replace("&W", BrightWhite);
+    StrReplace(sPlayerOut, "&N", Normal);
+    StrReplace(sPlayerOut, "&K", BrightBlack);
+    StrReplace(sPlayerOut, "&R", BrightRed);
+    StrReplace(sPlayerOut, "&G", BrightGreen);
+    StrReplace(sPlayerOut, "&Y", BrightYellow);
+    StrReplace(sPlayerOut, "&B", BrightBlue);
+    StrReplace(sPlayerOut, "&M", BrightMagenta);
+    StrReplace(sPlayerOut, "&C", BrightCyan);
+    StrReplace(sPlayerOut, "&W", BrightWhite);
   }
   else
   { // Strip out color codes
-    pDnodeActor->PlayerOut.Replace("&N", "");
-    pDnodeActor->PlayerOut.Replace("&K", "");
-    pDnodeActor->PlayerOut.Replace("&R", "");
-    pDnodeActor->PlayerOut.Replace("&G", "");
-    pDnodeActor->PlayerOut.Replace("&Y", "");
-    pDnodeActor->PlayerOut.Replace("&B", "");
-    pDnodeActor->PlayerOut.Replace("&M", "");
-    pDnodeActor->PlayerOut.Replace("&C", "");
-    pDnodeActor->PlayerOut.Replace("&W", "");
+    StrReplace(sPlayerOut, "&N", "");
+    StrReplace(sPlayerOut, "&K", "");
+    StrReplace(sPlayerOut, "&R", "");
+    StrReplace(sPlayerOut, "&G", "");
+    StrReplace(sPlayerOut, "&Y", "");
+    StrReplace(sPlayerOut, "&B", "");
+    StrReplace(sPlayerOut, "&M", "");
+    StrReplace(sPlayerOut, "&C", "");
+    StrReplace(sPlayerOut, "&W", "");
   }
+  pDnodeActor->PlayerOut = ConvertStringToCString(sPlayerOut);
 }
 
 /***********************************************************

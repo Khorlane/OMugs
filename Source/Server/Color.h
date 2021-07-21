@@ -73,14 +73,14 @@
 * Color constants                                          *
 ************************************************************/
 
-const CString Normal        = NORMAL;
-const CString BrightBlack   = BBLACK;
-const CString BrightRed     = BRED;
-const CString BrightGreen   = BGREEN;
-const CString BrightYellow  = BYELLOW;
-const CString BrightBlue    = BBLUE;
-const CString BrightMagenta = BMAGENTA;
-const CString BrightCyan    = BCYAN;
-const CString BrightWhite   = BWHITE;
+const string Normal        = NORMAL;
+const string BrightBlack   = BBLACK;
+const string BrightRed     = BRED;
+const string BrightGreen   = BGREEN;
+const string BrightYellow  = BYELLOW;
+const string BrightBlue    = BBLUE;
+const string BrightMagenta = BMAGENTA;
+const string BrightCyan    = BCYAN;
+const string BrightWhite   = BWHITE;
 
 #endif

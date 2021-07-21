@@ -242,16 +242,17 @@ struct ResWordStruct
 ************************************************************/
 
 // Functions
+bool    ChgDir(string Dir);
 string  ConvertCStringToString(CString Str1);
 CString ConvertStringToCString(string  Str1);
+void    Rename(string File1, string File2);
+string  StrGetWord(string Str1, int WordNbr);
 string  StrLeft(string Str1, int Len);
+string  StrMakeLower(string Str1);
+void    StrReplace(string& str, const string& from, const string& to);
 string  StrRight(string Str1, int Len);
 string  StrTrimLeft(string Str1);
 string  StrTrimRight(string Str1);
-string  StrMakeLower(string Str1);
-string  StrGetWord(string Str1, int WordNbr);
-bool    ChgDir(string Dir);
-void    Rename(string File1, string File2);
 
 // Variables
 inline EnumCharCode   CharCodeMap[128];
