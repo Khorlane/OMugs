@@ -14,7 +14,7 @@
 * Includes                                                 *
 ************************************************************/
 
-#include "stdafx.h"         // precompiled headers
+#include "stdafx.h" // This is only here to speed up compiles
 #include "Violence.h"
 
 /***********************************************************

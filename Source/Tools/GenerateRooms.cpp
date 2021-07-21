@@ -15,7 +15,7 @@
 * Includes                                                 *
 ************************************************************/
 
-#include "stdafx.h"
+#include "stdafx.h" // This is only here to speed up compiles
 #include "GenerateRooms.h"
 
 /***********************************************************
