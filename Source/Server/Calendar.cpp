@@ -98,26 +98,27 @@ void Calendar::AdvanceTime()
 * Get time                                                 *
 ************************************************************/
 
-CString Calendar::GetTime()
+string Calendar::GetTime()
 {
   FormattedDateTime = "";
 
-  Stuff = DayNames.GetAt(DayOfWeek-1);
+  Stuff = DayNames[DayOfWeek-1];
   FormattedDateTime += Stuff;
   FormattedDateTime += ", ";
 
-  Stuff = MonthNames.GetAt(Month-1);
+  Stuff = MonthNames[Month-1];
   FormattedDateTime += Stuff;
   FormattedDateTime += " ";
 
-  Stuff = DayOfMonth.GetAt(Day-1);
+  Stuff = DayOfMonth[Day-1];
   FormattedDateTime += Stuff;
   FormattedDateTime += ", ";
 
-  Stuff.Format("%d, ", Year);
+  sprintf(Buffer, "%d ", Year);
+  Stuff = Buffer;
   FormattedDateTime += Stuff;
 
-  Stuff = HourNames.GetAt(Hour-1);
+  Stuff = HourNames[Hour-1];
   FormattedDateTime += Stuff;
 
   return FormattedDateTime;
@@ -142,16 +143,15 @@ void Calendar::CloseCalendarFile()
 
 void Calendar::GetStartTime()
 {
-  string Buffer;
+  string x;
 
-  getline (CalendarFileInp, Buffer);
-  Stuff = ConvertStringToCString(Buffer);
+  getline (CalendarFileInp, Stuff);
   CloseCalendarFile();
-  Year      = atoi(Utility::GetWord(Stuff, 1));
-  Month     = atoi(Utility::GetWord(Stuff, 2));
-  Day       = atoi(Utility::GetWord(Stuff, 3));
-  Hour      = atoi(Utility::GetWord(Stuff, 4));
-  DayOfWeek = atoi(Utility::GetWord(Stuff, 5));
+  Year      = stoi(StrGetWord(Stuff, 1));
+  Month     = stoi(StrGetWord(Stuff, 2));
+  Day       = stoi(StrGetWord(Stuff, 3));
+  Hour      = stoi(StrGetWord(Stuff, 4));
+  DayOfWeek = stoi(StrGetWord(Stuff, 5));
   if (Year <= 0)
   { // Invalid year
     Year = 1;
@@ -183,7 +183,8 @@ void Calendar::GetStartTime()
     Log::LogIt(LogBuf);
   }
   LogBuf = "Start date and time is: ";
-  Stuff.Format("Year: %d Month: %d Day: %d Hour: %d Day of Week: %d", Year, Month, Day, Hour, DayOfWeek);
+  sprintf(Buffer, "Year: %d Month: %d Day: %d Hour: %d Day of Week: %d", Year, Month, Day, Hour, DayOfWeek);
+  Stuff = Buffer;
   LogBuf += Stuff;
   Log::LogIt(LogBuf);
 }
@@ -202,9 +203,9 @@ void Calendar::OpenCalendarFile()
   { // Calendar file does not exist
     LogBuf = "Calendar file not found.";
     Log::LogIt(LogBuf);
-	  LogBuf = "Forcing start date to Year: 1 Month: 1 Day: 1 Hour: 1 Day of Week: 1";
+    LogBuf = "Forcing start date to Year: 1 Month: 1 Day: 1 Hour: 1 Day of Week: 1";
     Log::LogIt(LogBuf);
-	  return;
+    return;
   }
   // Open was successful
   CalendarFileIsOpen = true;
@@ -218,22 +219,20 @@ void Calendar::LoadDayNamesArray()
 {
   DayNamesFileName =  DAY_NAMES_DIR;
   DayNamesFileName += "DayNames.txt";
-  Success = DayNamesFile.Open(DayNamesFileName,
-                   CFile::modeRead |
-                   CFile::typeText);
-  if(!Success)
+  DayNamesFile.open(DayNamesFileName);
+  if(!DayNamesFile.is_open())
   { // Open failed
     AfxMessageBox("Calendar::LoadDayNamesArray - Open Day Names file failed (read)", MB_ICONSTOP);
     _endthread();
   }
-  DayNames.RemoveAll();
-  DayNamesFile.ReadString(Stuff);
+  DayNames.clear();
+  getline(DayNamesFile, Stuff);
   while (Stuff != "")
   { // Read all day names
-    DayNames.Add(Stuff);
-    DayNamesFile.ReadString(Stuff);
+    DayNames.push_back(Stuff);
+    getline(DayNamesFile, Stuff);
   }
-  DayNamesFile.Close();
+  DayNamesFile.close();
   LogBuf = "DayNames array loaded";
   Log::LogIt(LogBuf);
 }
@@ -244,24 +243,22 @@ void Calendar::LoadDayNamesArray()
 
 void Calendar::LoadDayOfMonthArray()
 {
-  DayOfMonthFileName =  DAY_NAMES_DIR;
+  DayOfMonthFileName  =  DAY_NAMES_DIR;
   DayOfMonthFileName += "DayOfMonth.txt";
-  Success = DayOfMonthFile.Open(DayOfMonthFileName,
-                     CFile::modeRead |
-                     CFile::typeText);
-  if(!Success)
+  DayOfMonthFile.open(DayOfMonthFileName);
+  if(!DayOfMonthFile.is_open())
   { // Open failed
     AfxMessageBox("Calendar::LoadDayOfMonthArray - Open Day Of Month file failed (read)", MB_ICONSTOP);
     _endthread();
   }
-  DayOfMonth.RemoveAll();
-  DayOfMonthFile.ReadString(Stuff);
+  DayOfMonth.clear();
+  getline(DayOfMonthFile, Stuff);
   while (Stuff != "")
   { // Read all day of month
-    DayOfMonth.Add(Stuff);
-    DayOfMonthFile.ReadString(Stuff);
+    DayOfMonth.push_back(Stuff);
+    getline(DayOfMonthFile, Stuff);
   }
-  DayOfMonthFile.Close();
+  DayOfMonthFile.close();
   LogBuf = "DayOfMonth array loaded";
   Log::LogIt(LogBuf);
 }
@@ -274,22 +271,20 @@ void Calendar::LoadHourNamesArray()
 {
   HourNamesFileName =  HOUR_NAMES_DIR;
   HourNamesFileName += "HourNames.txt";
-  Success = HourNamesFile.Open(HourNamesFileName,
-                     CFile::modeRead |
-                     CFile::typeText);
-  if(!Success)
+  HourNamesFile.open(HourNamesFileName);
+  if(!HourNamesFile.is_open())
   { // Open failed
     AfxMessageBox("Calendar::LoadHourNamesArray - Open Hour Names file failed (read)", MB_ICONSTOP);
     _endthread();
   }
-  HourNames.RemoveAll();
-  HourNamesFile.ReadString(Stuff);
+  HourNames.clear();
+  getline(HourNamesFile, Stuff);
   while (Stuff != "")
   { // Read all hour names
-    HourNames.Add(Stuff);
-    HourNamesFile.ReadString(Stuff);
+    HourNames.push_back(Stuff);
+    getline(HourNamesFile, Stuff);
   }
-  HourNamesFile.Close();
+  HourNamesFile.close();
   LogBuf = "HourNames array loaded";
   Log::LogIt(LogBuf);
 }
@@ -302,22 +297,20 @@ void Calendar::LoadMonthNamesArray()
 {
   MonthNamesFileName =  MONTH_NAMES_DIR;
   MonthNamesFileName += "MonthNames.txt";
-  Success = MonthNamesFile.Open(MonthNamesFileName,
-                     CFile::modeRead |
-                     CFile::typeText);
-  if(!Success)
+  MonthNamesFile.open(MonthNamesFileName);
+  if (!MonthNamesFile.is_open())
   { // Open failed
     AfxMessageBox("Calendar::LoadMonthNamesArray - Open Month Names file failed (read)", MB_ICONSTOP);
     _endthread();
   }
-  MonthNames.RemoveAll();
-  MonthNamesFile.ReadString(Stuff);
+  MonthNames.clear();
+  getline(MonthNamesFile, Stuff);
   while (Stuff != "")
   { // Read all month names
-    MonthNames.Add(Stuff);
-    MonthNamesFile.ReadString(Stuff);
+    MonthNames.push_back(Stuff);
+    getline(MonthNamesFile, Stuff);
   }
-  MonthNamesFile.Close();
+  MonthNamesFile.close();
   LogBuf = "MonthNames array loaded";
   Log::LogIt(LogBuf);
 }

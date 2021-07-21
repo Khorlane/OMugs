@@ -788,7 +788,7 @@ void Communication::Color()
 
 void Communication::CommandArrayLoad()
 {
-	CString    LogBuf;
+  CString    LogBuf;
   CString    Stuff;
   int        Success;
   CStdioFile ValidCmdsFile;
@@ -823,7 +823,7 @@ void Communication::CommandArrayLoad()
 
 CString Communication::CommandCheck(CString MudCmdChk)
 {
-	CString CommandCheckResult;
+  CString CommandCheckResult;
   CString ValCmd;
   CString ValCmdInfo;
   CString WhoCanDo;
@@ -841,7 +841,7 @@ CString Communication::CommandCheck(CString MudCmdChk)
     { // Found the command
       if (WhoCanDo == "all")
       { // Anyone can do this command
-				CommandCheckResult = "Ok";
+        CommandCheckResult = "Ok";
         break;
       }
       else
@@ -4647,9 +4647,9 @@ void Communication::DoQuit()
 
 void Communication::DoRefresh()
 {
-	CString TmpStr;
+  CString TmpStr;
 
-	if (Utility::WordCount(CmdStr) > 2)
+  if (Utility::WordCount(CmdStr) > 2)
   { // Invalid command format
     pDnodeActor->PlayerOut += "You may refresh only one thing at time.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4666,17 +4666,17 @@ void Communication::DoRefresh()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();      
     return;
   }
-	TmpStr.MakeLower();
+  TmpStr.MakeLower();
   if (TmpStr == "commands")
   { // Refresh commands array
-		CommandArrayLoad();
+    CommandArrayLoad();
     pDnodeActor->PlayerOut += "Commands have been refreshed.";
     pDnodeActor->PlayerOut += "\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();     
-		return;
-	}
-	// Refresh target not valid
+    return;
+  }
+  // Refresh target not valid
   pDnodeActor->PlayerOut += "Refresh what??";
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
@@ -5479,7 +5479,7 @@ void Communication::DoTime()
   pDnodeActor->PlayerOut += "\r\n";
   // Game time
   pDnodeActor->PlayerOut += "Current game time is: ";
-  pDnodeActor->PlayerOut += pCalendar->GetTime();
+  pDnodeActor->PlayerOut += ConvertStringToCString(pCalendar->GetTime());
   pDnodeActor->PlayerOut += "\r\n";
   // Prompt
   pDnodeActor->pPlayer->CreatePrompt();

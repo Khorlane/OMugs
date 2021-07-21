@@ -599,7 +599,7 @@ void World::MakeMobilesMove1()
   y = RoomMobList.GetUpperBound();
   int i, j;
   i = 0;
-	while( i < (y - 1) )
+  while( i < (y - 1) )
   {
     j = i + 1;
     while( j < y )

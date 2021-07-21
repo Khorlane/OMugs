@@ -33,7 +33,7 @@ class Calendar
     Calendar();
     ~Calendar();
     void            AdvanceTime();
-    CString         GetTime();
+    string          GetTime();
 
 // Private functions
   private:
@@ -53,30 +53,29 @@ class Calendar
     string          CalendarFileName;
     ofstream        CalendarFileOut;
     int             Day;
-    CStringArray    DayOfMonth;
-    CStdioFile      DayOfMonthFile;
-    CString         DayOfMonthFileName;
+    vector<string>  DayOfMonth;
+    ifstream        DayOfMonthFile;
+    string          DayOfMonthFileName;
     int             DayOfWeek;
-    CStringArray    DayNames;
-    CStdioFile      DayNamesFile;
-    CString         DayNamesFileName;
-    CFileStatus     FileStatus;
-    CString         FormattedDateTime;
+    vector<string>  DayNames;
+    ifstream        DayNamesFile;
+    string          DayNamesFileName;
+    string          FormattedDateTime;
     int             Hour;
-    CStringArray    HourNames;
-    CStdioFile      HourNamesFile;
-    CString         HourNamesFileName;
+    vector<string>  HourNames;
+    ifstream        HourNamesFile;
+    string          HourNamesFileName;
     string          LogBuf;
     int             Month;
-    CStringArray    MonthNames;
-    CStdioFile      MonthNamesFile;
-    CString         MonthNamesFileName;
-    CString         Stuff;
+    vector<string>  MonthNames;
+    ifstream        MonthNamesFile;
+    string          MonthNamesFileName;
+    string          Stuff;
     int             Success;
     time_t          TimeToAdvanceHour;
     int             Year;
 };
 
-inline Calendar *pCalendar;
+inline Calendar    *pCalendar;
 
 #endif

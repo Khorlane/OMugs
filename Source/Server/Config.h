@@ -30,6 +30,7 @@
 #include <cctype>           // String functions like tolower, toupper
 #include <sstream>          // String 'stream' functions (see StrGetWord)
 #include <time.h>           // Time functions
+#include <vector>           // Vector stuff
 
 using namespace std;
 
