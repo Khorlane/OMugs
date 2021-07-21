@@ -29,7 +29,7 @@ int     Symbol::SymbolCount   = 0;
 * Symbol constructor                                       *
 ************************************************************/
 
-Symbol::Symbol(CString Name)
+Symbol::Symbol(string Name)
 {
   pSymbolLeft  = NULL;
   pSymbolRight = NULL;
@@ -51,7 +51,7 @@ Symbol::~Symbol()
 * Enter a symbol into the symbol table                     *
 ************************************************************/
 
-Symbol *Symbol::EnterSymbol(CString Name)
+Symbol *Symbol::EnterSymbol(string Name)
 {
   SymbolCount++;
   if (SymbolCount == 1)
@@ -111,7 +111,7 @@ int Symbol::GetSymbolIndex()
 /***********************************************************
 * Get symbol's name                                        *
 ************************************************************/
-CString Symbol::GetSymbolName()
+string Symbol::GetSymbolName()
 {
   return SymbolName;
 }
@@ -121,7 +121,7 @@ CString Symbol::GetSymbolName()
 * Search for symbol in the symbol table                    *
 ************************************************************/
 
-Symbol *Symbol::SearchSymbol(CString Name)
+Symbol *Symbol::SearchSymbol(string Name)
 {
   pSymbolCursor = this;
   while (pSymbolCursor)

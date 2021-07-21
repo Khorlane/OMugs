@@ -211,7 +211,7 @@ void Executor::ExecuteAssignment()
   Symbol       *pSymbolToBeAssigned;
   Symbol       *pSymbolCursorString;
   unsigned char SymbolIndex;
-  CString       SymbolName;
+  string        SymbolName;
   
   pSymbolToBeAssigned = pSymbolCursor;
   GetToken(); // '='
@@ -234,7 +234,7 @@ void Executor::ExecuteAssignment()
       SymbolIndex = (int) pRunStack->Pop();
       pSymbolCursorString = pIcode->GetVectorSymbolCursorPtr(SymbolIndex);
       SymbolName = pSymbolCursorString->GetSymbolName();
-      pSymbolToBeAssigned->SymbolDataValue.pString = SymbolName.GetBuffer(0);
+      pSymbolToBeAssigned->SymbolDataValue.pString = &*SymbolName.begin();
       break;
     }
   }
@@ -410,7 +410,7 @@ void Executor::ExecuteSimpleExpression()
 void Executor::ExecuteTerm()
 { //                |   |             
   // Result = 5 + 4 * 3 / (2 + 1) == 9
-  CString       LogBuf;
+  string        LogBuf;
   EnumTokenCode MultiplyDivideOperator;
   float         Operand1;
   float         Operand2;

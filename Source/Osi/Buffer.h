@@ -44,7 +44,7 @@ class Buffer
   private:
     char            ch;
     int             InputPosition;
-    CString         LogBuf;
+    string          LogBuf;
     CStdioFile      ScriptFile;
     CString         Stuff;
     int             Success;

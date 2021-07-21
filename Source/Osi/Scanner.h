@@ -43,7 +43,7 @@ class Scanner
     Buffer         *pBuffer;
     char            ch;
     int             i;
-    CString         LogBuf;
+    string          LogBuf;
 
 };
 

@@ -47,11 +47,11 @@ class Token
     EnumTokenCode   GetTokenCode();
     EnumDataType    GetTokenDataType();
     EnumDataValue   GetTokenDataValue();
-    CString         GetTokenString();
+    string          GetTokenString();
 
 // Private functions
   private:
-    void            LoadResWordTable(CString ResWord, EnumTokenCode TokenCode);
+    void            LoadResWordTable(string ResWord, EnumTokenCode TokenCode);
 
 // Private variables
   private:
@@ -59,11 +59,11 @@ class Token
     int             DigitCount;
     bool            DigitCountError;
     int             i;
-    CString         LogBuf;
+    string          LogBuf;
     EnumTokenCode   TokenCode;      // tcBraceL, tcBraceR, tcElse, etc.....
     EnumDataType    TokenDataType;  // tyInteger, tyFloat, tyCharacter, tyString
     EnumDataValue   TokenDataValue; //   .Integer, .Real,   .Character, .pString
-    CString         TokenString;    // Variable names, literals, strings, operators (+ - * / etc)
+    string          TokenString;    // Variable names, literals, strings, operators (+ - * / etc)
     int             ResWordCount;
     ResWordStruct   ResWordTable[MAX_RES_WORDS];
 };

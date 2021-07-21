@@ -255,7 +255,7 @@ EnumDataValue Token::GetTokenDataValue()
 * Get token string                                         *
 ************************************************************/
 
-CString Token::GetTokenString()
+string Token::GetTokenString()
 {
   return TokenString;
 }
@@ -289,7 +289,7 @@ void Token::GetWordToken(Buffer *pBuffer, Token *pToken)
 * Load reserved word table                                 *
 ************************************************************/
 
-void Token::LoadResWordTable(CString ResWord, EnumTokenCode TokenCode)
+void Token::LoadResWordTable(string ResWord, EnumTokenCode TokenCode)
 {
   if (ResWordCount >= MAX_RES_WORDS)
   {

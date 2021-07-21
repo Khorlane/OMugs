@@ -28,15 +28,15 @@ class Symbol
 
 // Public functions
   public:
-    Symbol(CString Name);
+    Symbol(string Name);
     ~Symbol();
 
-    Symbol         *EnterSymbol(CString Name);
+    Symbol         *EnterSymbol(string Name);
     static  int     GetSymbolCount();
     int             GetSymbolIndex();
     static  Symbol *GetSymbolInsertPtr();
-    CString         GetSymbolName();
-    Symbol         *SearchSymbol(CString Name);
+    string          GetSymbolName();
+    Symbol         *SearchSymbol(string Name);
     void            ConvertSymbolTable(Symbol *vpNodes[]);
 
 // Public variables
@@ -57,7 +57,7 @@ class Symbol
     Symbol         *pSymbolLeft;
     Symbol         *pSymbolNew;
     Symbol         *pSymbolRight;
-    CString         SymbolName;
+    string          SymbolName;
     unsigned char   SymbolIndex;
 };
 

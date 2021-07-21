@@ -233,7 +233,7 @@ union EnumDataValue
 // Osi reserverd words
 struct ResWordStruct
 {
-  CString       ResWord;
+  string        ResWord;
   EnumTokenCode TokenCode;
 };
 
