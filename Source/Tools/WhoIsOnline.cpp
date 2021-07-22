@@ -21,7 +21,7 @@
 * WhoIsOnline constructor                                  *
 ************************************************************/
 
-WhoIsOnline::WhoIsOnline(CString HomeDir)
+WhoIsOnline::WhoIsOnline(string HomeDir)
 {
   GetPlayers(HomeDir);
 }
@@ -42,8 +42,10 @@ void WhoIsOnline::CloseStatsWho()
   // Write last line of xml
   Stuff  = "</webstats>";
   Stuff += "\n";
-  StatsWhoFile.WriteString(Stuff);
-  StatsWhoFile.Close();
+  copy(Stuff.begin(), Stuff.end(), Buffer);
+  Buffer[Stuff.size()] = '\0';
+  StatsWhoFile.write(Buffer, strlen(Buffer));
+  StatsWhoFile.close();
 }
 
 /***********************************************************
@@ -53,11 +55,8 @@ void WhoIsOnline::OpenStatsWho()
 {
   StatsWhoFileName  = WEB_SITE_DIR;
   StatsWhoFileName += "StatsWho.xml";
-  Success = StatsWhoFile.Open(StatsWhoFileName,
-                   CFile::modeCreate |
-                   CFile::modeWrite  |
-                   CFile::typeText);
-  if(!Success)
+  StatsWhoFile.open(StatsWhoFileName);
+  if(!StatsWhoFile.is_open())
   { // Create file failed
     AfxMessageBox("WhoIsOnline::OpenStatsWho - Create StatsWho file failed", MB_ICONSTOP);
     _endthread();
@@ -65,44 +64,21 @@ void WhoIsOnline::OpenStatsWho()
   // Write first line of xml
   Stuff = "<webstats>";
   Stuff += "\n";
-  StatsWhoFile.WriteString(Stuff);
+  copy(Stuff.begin(), Stuff.end(), Buffer);
+  Buffer[Stuff.size()] = '\0';
+  StatsWhoFile.write(Buffer, strlen(Buffer));
 }
 
 /***********************************************************
  * Get players                                             *
  ***********************************************************/
 
-void WhoIsOnline::GetPlayers(CString HomeDir)
+void WhoIsOnline::GetPlayers(string HomeDir)
 {
   OpenStatsWho();
-  // Change to home directory so that following change to player directory will work
-  if (ChgDir((LPCTSTR)HomeDir))
-  { // Change directory failed
-    AfxMessageBox("WhoIsOnline::GetPlayers - Change to home directory failed", MB_ICONSTOP);
-    _endthread();
-  }
-  // Change to player directory to get file list
-  if (ChgDir(PLAYER_DIR))
-  { // Change directory failed
-    AfxMessageBox("WhoIsOnline::GetPlayers - Change to player directory failed", MB_ICONSTOP);
-    _endthread();
-  }
-  MoreFiles = FileList.FindFile("*.*");
-  // Change back to home directory
-  if (ChgDir((LPCTSTR)HomeDir))
-  { // Change directory failed
-    AfxMessageBox("WhoIsOnline::GetPlayers - Change to home directory failed", MB_ICONSTOP);
-    _endthread();
-  }
-  // FileList now contains a list of all players
-  while (MoreFiles)
-  { // For each player file
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
-    { // Skip directories
-      continue;
-    }
-    PlayerFileName = FileList.GetFileName();
+  for (const auto &entry : filesystem::directory_iterator(PLAYER_DIR))
+  {
+    PlayerFileName = entry.path().filename().string();
     ParsePlayer();
   }
   CloseStatsWho();
@@ -115,10 +91,8 @@ void WhoIsOnline::GetPlayers(CString HomeDir)
 void WhoIsOnline::ParsePlayer()
 { 
   PlayerFileName = PLAYER_DIR + PlayerFileName;
-  Success = PlayerFile.Open(PlayerFileName,
-                 CFile::modeRead |
-                 CFile::typeText);
-  if(!Success)
+  PlayerFile.open(PlayerFileName);
+  if(!PlayerFile.is_open())
   { // We don't care, just return
     return;
   }
@@ -128,46 +102,46 @@ void WhoIsOnline::ParsePlayer()
   Level     = "";
   Online    = "";
   Title     = "";
-  PlayerFile.ReadString(Stuff);
-  while (Stuff != "")
+  getline(PlayerFile, Stuff);
+  while (PlayerFile.peek() != EOF)
   { // Name
-    if (Stuff.Left(5) == "Name:")
+    if (StrLeft(Stuff, 5) == "Name:")
     {
-      Name = Stuff.Right(Stuff.GetLength()-5);
+      Name = StrRight(Stuff, Stuff.length()-5);
     }
     else
     // AFK
-    if(Stuff.Left(4) == "AFK:")
+    if (StrLeft(Stuff, 4) == "AFK:")
     {
-      Afk = Stuff.Right(Stuff.GetLength()-4);
+      Afk = StrRight(Stuff, Stuff.length()-4);
     }
     else
     // Invisible
-    if (Stuff.Left(10) == "Invisible:")
+    if (StrLeft(Stuff, 10) == "Invisible:")
     {
-      Invisible = Stuff.Right(Stuff.GetLength()-10);
+      Invisible = StrRight(Stuff, Stuff.length()-10);
     }
     else
     // Level
-    if (Stuff.Left(6) == "Level:")
+    if (StrLeft(Stuff, 6) == "Level:")
     {
-      Level = Stuff.Right(Stuff.GetLength()-6);
+      Level = StrRight(Stuff, Stuff.length()-6);
     }
     else
     // Online
-    if (Stuff.Left(7) == "Online:")
+    if (StrLeft(Stuff, 7) == "Online:")
     {
-      Online = Stuff.Right(Stuff.GetLength()-7);
+      Online = StrRight(Stuff, Stuff.length()-7);
     }
     else
     // Title
-    if (Stuff.Left(6) == "Title:")
+    if (StrLeft(Stuff, 6) == "Title:")
     {
-      Title = Stuff.Right(Stuff.GetLength()-6);
+      Title = StrRight(Stuff, Stuff.length()-6);
     }
-    PlayerFile.ReadString(Stuff);
+    getline(PlayerFile, Stuff);
   }
-  PlayerFile.Close();
+  PlayerFile.close();
   if (Online != "Yes")
   {
     return;
@@ -203,21 +177,21 @@ void WhoIsOnline::ParsePlayer()
   Stuff += "\n";
   // Title
   Stuff += "<title>";
-  if (Title.GetLength() < 1)
+  if (Title.length() < 1)
   { // No title
     Stuff += "_";
   }
   else
   { // Title - strip out color codes
-    Title.Replace("&N", "");
-    Title.Replace("&K", "");
-    Title.Replace("&R", "");
-    Title.Replace("&G", "");
-    Title.Replace("&Y", "");
-    Title.Replace("&B", "");
-    Title.Replace("&M", "");
-    Title.Replace("&C", "");
-    Title.Replace("&W", "");
+    StrReplace(Title, "&N", "");
+    StrReplace(Title, "&K", "");
+    StrReplace(Title, "&R", "");
+    StrReplace(Title, "&G", "");
+    StrReplace(Title, "&Y", "");
+    StrReplace(Title, "&B", "");
+    StrReplace(Title, "&M", "");
+    StrReplace(Title, "&C", "");
+    StrReplace(Title, "&W", "");
     Stuff += Title;
   }
   Stuff += "</title>";
@@ -226,5 +200,7 @@ void WhoIsOnline::ParsePlayer()
   Stuff += "</stat>";
   Stuff += "\n";
   // Write it
-  StatsWhoFile.WriteString(Stuff);
+  copy(Stuff.begin(), Stuff.end(), Buffer);
+  Buffer[Stuff.size()] = '\0';
+  StatsWhoFile.write(Buffer, strlen(Buffer));
 }

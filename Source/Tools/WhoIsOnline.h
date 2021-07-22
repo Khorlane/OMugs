@@ -28,7 +28,7 @@ class WhoIsOnline
 
 // Public functions
   public:
-    WhoIsOnline(CString HomeDir);
+    WhoIsOnline(string HomeDir);
     ~WhoIsOnline();
 
 // Private functions
@@ -36,24 +36,22 @@ class WhoIsOnline
     void            CloseStatsWho();
     void            OpenStatsWho();
     void            ParsePlayer();
-    void            GetPlayers(CString HomeDir);
+    void            GetPlayers(string HomeDir);
 
 // Private variables
   private:
-    CString         Afk;
-    CFileFind       FileList;
-    CString         Invisible;
-    CString         Level;
-    BOOL            MoreFiles;
-    CString         Name;
-    CString         Online;
-    CStdioFile      PlayerFile;
-    CString         PlayerFileName;
-    CStdioFile      StatsWhoFile;
-    CString         StatsWhoFileName;
-    CString         Stuff;
-    int             Success;
-    CString         Title;
+    string          Afk;
+    char            Buffer[100];
+    string          Invisible;
+    string          Level;
+    string          Name;
+    string          Online;
+    ifstream        PlayerFile;
+    string          PlayerFileName;
+    ofstream        StatsWhoFile;
+    string          StatsWhoFileName;
+    string          Stuff;
+    string          Title;
 };
 
 #endif

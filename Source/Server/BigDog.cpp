@@ -127,14 +127,14 @@ void BigDog()
     if (WhoIsOnlineTick >= WHO_IS_ONLINE_TICK)
     { // Time to see who is online
       WhoIsOnlineTick = 0;
-      pWhoIsOnline = new WhoIsOnline(HomeDir.c_str());
+      pWhoIsOnline = new WhoIsOnline(HomeDir);
       delete pWhoIsOnline;
     }
   }
   // Game has stopped so clean up
   Descriptor::ClearDescriptor();
   Communication::SockClosePort(PORT_NBR);
-  pWhoIsOnline = new WhoIsOnline(HomeDir.c_str());
+  pWhoIsOnline = new WhoIsOnline(HomeDir);
   delete pWhoIsOnline;
   delete pCalendar;
   LogBuf = "OMugs has stopped";

@@ -31,6 +31,7 @@
 #include <sstream>          // String 'stream' functions (see StrGetWord)
 #include <time.h>           // Time functions
 #include <vector>           // Vector stuff
+#include <filesystem>       // Needed to get file system info, like all files in a directory
 
 using namespace std;
 
@@ -249,7 +250,7 @@ void    Rename(string File1, string File2);
 string  StrGetWord(string Str1, int WordNbr);
 string  StrLeft(string Str1, int Len);
 string  StrMakeLower(string Str1);
-void    StrReplace(string& str, const string& from, const string& to);
+void    StrReplace(string &str, const string &from, const string &to);
 string  StrRight(string Str1, int Len);
 string  StrTrimLeft(string Str1);
 string  StrTrimRight(string Str1);
