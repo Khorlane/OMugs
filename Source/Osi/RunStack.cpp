@@ -60,7 +60,7 @@ void RunStack::Push(float PushValue)
   else
   {
     LogBuf  = "Osi - RunStack::Push - Runtime stack size exceeded - ";
-    LogBuf += ScriptFileName.c_str();
+    LogBuf += ScriptFileName;
     Log::LogIt(LogBuf);
     _endthread();
   }

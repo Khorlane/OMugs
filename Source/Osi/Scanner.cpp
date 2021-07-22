@@ -134,7 +134,7 @@ void Scanner::SkipWhiteSpace()
         else
         { // Unexpected end of file
           LogBuf  = "Osi - Scanner::SkipWhiteSpace - Unexpected end of file - ";
-          LogBuf += ScriptFileName.c_str();
+          LogBuf += ScriptFileName;
           Log::LogIt(LogBuf);
           _endthread();
         }

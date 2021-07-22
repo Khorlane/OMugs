@@ -94,7 +94,7 @@ void Parser::Parse()
   if (TokenCode != tcBraceL)
   { // '{' must follow 'Script' statement
     LogBuf  = "Osi - Parser::Parse - '{' must follow 'Script' statement -";
-    LogBuf += ScriptFileName.c_str();
+    LogBuf += ScriptFileName;
     Log::LogIt(LogBuf);
     _endthread();
   }
@@ -103,7 +103,7 @@ void Parser::Parse()
   if (TokenCode != tcEndOfFile)
   { // Unexpected statements after last '}'
     LogBuf  = "Osi - Parser::Parse - '{' expected but not found - ";
-    LogBuf += ScriptFileName.c_str();
+    LogBuf += ScriptFileName;
     Log::LogIt(LogBuf);
     _endthread();
   }
@@ -119,7 +119,7 @@ void Parser::ParseScriptStatement()
   if (TokenCode != tcScript)
   { // 'Script' must be first
     LogBuf  = "Osi - Parser::ParseScriptStatement - 'Script' must be first - ";
-    LogBuf += ScriptFileName.c_str();
+    LogBuf += ScriptFileName;
     Log::LogIt(LogBuf);
     _endthread();
   }
@@ -127,7 +127,7 @@ void Parser::ParseScriptStatement()
   if (TokenCode != tcIdentifier)
   { // Script name must follow 'Script'
     LogBuf  = "Osi - Parser::ParseScriptStatement - Script name must follow 'Script' - ";
-    LogBuf += ScriptFileName.c_str();
+    LogBuf += ScriptFileName;
     Log::LogIt(LogBuf);
     _endthread();
   }
@@ -151,7 +151,7 @@ void Parser::ParseStatementList()
   if (TokenCode == tcEndOfFile)
   {
     LogBuf  = "Osi - Parser::ParseStatementList - Unexpected end of file - ";
-    LogBuf += ScriptFileName.c_str();
+    LogBuf += ScriptFileName;
     Log::LogIt(LogBuf);
     _endthread();
   }
@@ -161,7 +161,7 @@ void Parser::ParseStatementList()
     if (TokenCode == tcEndOfFile)
     {
       LogBuf  = "Osi - Parser::ParseStatementList - Unexpected end of file - ";
-      LogBuf += ScriptFileName.c_str();
+      LogBuf += ScriptFileName;
       Log::LogIt(LogBuf);
       _endthread();
     }
@@ -322,7 +322,7 @@ void Parser::ParseAssignment()
   if (!pSymbolCursor)
   { // Symbol not found, Variables must declared before being used
     LogBuf  = "Osi - Parser::ParseAssignment - Variables must declared before being used - ";
-    LogBuf += ScriptFileName.c_str();
+    LogBuf += ScriptFileName;
     Log::LogIt(LogBuf);
     _endthread();
   }
@@ -331,7 +331,7 @@ void Parser::ParseAssignment()
   if (TokenCode != tcEqual)
   { // Equal sign must be next token
     LogBuf  = "Osi - Parser::ParseAssignment - Expecting equal sign - ";
-    LogBuf += ScriptFileName.c_str();
+    LogBuf += ScriptFileName;
     Log::LogIt(LogBuf);
     _endthread();
   }
@@ -406,7 +406,7 @@ void Parser::ParseFactor()
       else
       { // Symbol not found, must be declared before it is used
         LogBuf  = "Osi - Parser::ParseFactor - Identifier is undefined - ";
-        LogBuf += ScriptFileName.c_str();
+        LogBuf += ScriptFileName;
         Log::LogIt(LogBuf);
         _endthread();
       }
@@ -461,7 +461,7 @@ void Parser::ParseFactor()
       else
       { // No close paren found
         LogBuf  = "Osi - Parser::ParseFactor - Missing right paren - ";
-        LogBuf += ScriptFileName.c_str();
+        LogBuf += ScriptFileName;
         Log::LogIt(LogBuf);
         _endthread();
       }
@@ -470,7 +470,7 @@ void Parser::ParseFactor()
     default :
     { // Can't figure this one out, giving up
       LogBuf  = "Osi - Parser::ParseFactor - Invalid expression - ";
-      LogBuf += ScriptFileName.c_str();
+      LogBuf += ScriptFileName;
       Log::LogIt(LogBuf);
       _endthread();
     }

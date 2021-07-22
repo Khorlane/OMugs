@@ -199,7 +199,7 @@ void Token::GetSpecialToken(Buffer *pBuffer, Token *pToken)
       TokenCode = tcError;
       ch = pBuffer->GetNextChar();
       LogBuf  = "Osi - Token::GetSpecialToken - Unrecognized special character - ";
-      LogBuf += ScriptFileName.c_str();
+      LogBuf += ScriptFileName;
       Log::LogIt(LogBuf);
       _endthread();
   }
@@ -294,7 +294,7 @@ void Token::LoadResWordTable(string ResWord, EnumTokenCode TokenCode)
   if (ResWordCount >= MAX_RES_WORDS)
   {
     LogBuf  = "Osi - Token::LoadResWordTable - Reserved word table limit exceeded - ";
-    LogBuf += ScriptFileName.c_str();
+    LogBuf += ScriptFileName;
     Log::LogIt(LogBuf);
     _endthread();
   }

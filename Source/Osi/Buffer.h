@@ -45,8 +45,8 @@ class Buffer
     char            ch;
     int             InputPosition;
     string          LogBuf;
-    CStdioFile      ScriptFile;
-    CString         Stuff;
+    ifstream        ScriptFile;
+    string          Stuff;
     int             Success;
 };
 

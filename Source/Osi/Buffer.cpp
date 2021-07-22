@@ -48,7 +48,7 @@ Buffer::~Buffer()
 
 void Buffer::CloseScriptFile()
 {
-  ScriptFile.Close();
+  ScriptFile.close();
 }
 
 /***********************************************************
@@ -66,13 +66,13 @@ char Buffer::GetCurrentChar()
 
 char Buffer::GetNextChar()
 {
-  if (InputPosition >= Stuff.GetLength())
+  if (InputPosition >= (int) Stuff.length())
   { // End of line
     GetScriptLine();
   }
   if (Stuff != "EndScript")
   { // Get next character
-    ch = Stuff.GetAt(InputPosition);
+    ch = Stuff[InputPosition];
   }
   else
   { // End of script
@@ -88,17 +88,17 @@ char Buffer::GetNextChar()
 
 void Buffer::GetScriptLine()
 {
-  if (ScriptFile.GetPosition() == ScriptFile.GetLength())
+  if (ScriptFile.peek() == EOF)
   { // Unexpected end of file
     LogBuf  = "Osi - Buffer::GetScriptLine - Unexpected end of file ";
-    LogBuf += ScriptFile.GetFileName();
+    LogBuf += ScriptFileName;
     Log::LogIt(LogBuf);
   }
-  ScriptFile.ReadString(Stuff);
+  getline(ScriptFile, Stuff);
   CurrentLineNumber++;
-  while (Stuff == "")
+  while (ScriptFile.peek() != EOF)
   { // Skip blank lines
-    ScriptFile.ReadString(Stuff);
+    getline(ScriptFile, Stuff);
     CurrentLineNumber++;
   }
   InputPosition = 0;
@@ -110,13 +110,11 @@ void Buffer::GetScriptLine()
 
 void Buffer::OpenScriptFile()
 {
-  Success = ScriptFile.Open(ScriptFileName.c_str(),
-                 CFile::modeRead |
-                 CFile::typeText);
-  if(!Success)
+  ScriptFile.open(ScriptFileName);
+  if(!ScriptFile.is_open())
   {
     LogBuf  = "Osi - Buffer::OpenScriptFile - Failed to open ";
-    LogBuf += ScriptFileName.c_str();
+    LogBuf += ScriptFileName;
     Log::LogIt(LogBuf);
   }
 }
