@@ -29,21 +29,24 @@ LineCount::LineCount()
 {
   LineCountTotal3 = 0;
   OpenLineCount();
-  GetSourceCodeFiles(SOURCE_DIR,  "Server", "*.cpp");
-  GetSourceCodeFiles(SOURCE_DIR,  "Server", "*.h");
-  GetSourceCodeFiles(SOURCE_DIR,  "Osi",    "*.cpp");
-  GetSourceCodeFiles(SOURCE_DIR,  "Osi",    "*.h");
-  GetSourceCodeFiles(SOURCE_DIR,  "Tools",  "*.cpp");
-  GetSourceCodeFiles(SOURCE_DIR,  "Tools",  "*.h");
-  GetSourceCodeFiles(SOURCE_DIR,  "WinApp", "*.cpp");
-  GetSourceCodeFiles(SOURCE_DIR,  "WinApp", "*.h");
+  GetSourceCodeFiles(SOURCE_DIR,  "Server", ".cpp");
+  GetSourceCodeFiles(SOURCE_DIR,  "Server", ".h");
+  GetSourceCodeFiles(SOURCE_DIR,  "Osi",    ".cpp");
+  GetSourceCodeFiles(SOURCE_DIR,  "Osi",    ".h");
+  GetSourceCodeFiles(SOURCE_DIR,  "Tools",  ".cpp");
+  GetSourceCodeFiles(SOURCE_DIR,  "Tools",  ".h");
+  GetSourceCodeFiles(SOURCE_DIR,  "WinApp", ".cpp");
+  GetSourceCodeFiles(SOURCE_DIR,  "WinApp", ".h");
   // Write grand total
-  Stuff.Format("%5d", LineCountTotal3);
+  sprintf(Buffer, "%5d", LineCountTotal3);
+  Stuff = Buffer;
   Stuff += " ";
   Stuff += "Grand Total";
   Stuff += "\n";
-  LineCountFile.WriteString(Stuff);
-  CloseLineCount();
+  copy(Stuff.begin(), Stuff.end(), Buffer);
+  Buffer[Stuff.size()] = '\0';
+  LineCountFile.write(Buffer, strlen(Buffer));
+  LineCountFile.close();
 }
 
 /***********************************************************
@@ -60,101 +63,81 @@ LineCount::~LineCount()
 
 void LineCount::CloseLineCount()
 {
-  LineCountFile.Close();
+  LineCountFile.close();
 }
 
 /***********************************************************
  * Count source code lines                                 *
  ***********************************************************/
 
-void LineCount::CountLines(CString SourceCodeDir, CString SourceCodeFileName)
+void LineCount::CountLines(string SourceCodeDir, string SourceCodeFileName)
 {
   LineCountTotal1 = 0;
   SourceCodeFileNameSave = SourceCodeFileName;
   // Open source code file
   SourceCodeFileName = SourceCodeDir + SourceCodeFileName;
-  Success = SourceCodeFile.Open(SourceCodeFileName,
-                     CFile::modeRead |
-                     CFile::typeText);
-  if(!Success)
+  SourceCodeFile.open(SourceCodeFileName);
+  if(!SourceCodeFile.is_open())
   { // We don't care, just return
     return;
   }
-  SourceCodeFile.ReadString(Stuff);
+  getline(SourceCodeFile, Stuff);
   while (Stuff != "End of Source")
   {
     LineCountTotal1++;
-    SourceCodeFile.ReadString(Stuff);
-    if (SourceCodeFile.GetPosition() == SourceCodeFile.GetLength())
+    getline(SourceCodeFile, Stuff);
+    if (SourceCodeFile.peek() == EOF)
     { // End of file reached
       LineCountTotal1++;
       Stuff = "End of Source";
     }
   }
-  SourceCodeFile.Close();
+  SourceCodeFile.close();
   // Write results
-  TmpStr.Format("%5d", LineCountTotal1);
+  sprintf(Buffer, "%5d", LineCountTotal1);
+  TmpStr = Buffer;
   Stuff  = TmpStr + " " + SourceCodeFileNameSave;
   Stuff += "\n";
-  LineCountFile.WriteString(Stuff);
+  copy(Stuff.begin(), Stuff.end(), Buffer);
+  Buffer[Stuff.size()] = '\0';
+  LineCountFile.write(Buffer, strlen(Buffer));
 }
 
 /***********************************************************
  * Get source code files                                   *
  ***********************************************************/
 
-void LineCount::GetSourceCodeFiles(CString ParentDir, CString SourceCodeDir, CString WildCard)
+void LineCount::GetSourceCodeFiles(string ParentDir, string SourceCodeDir, string FileExtension)
 {
   LineCountTotal2 = 0;
   // Write directory name
   Stuff  = SourceCodeDir;
   Stuff += " Directory";
   Stuff += "\n";
-  LineCountFile.WriteString(Stuff);
-  // Change to home directory so that following change to source directory will work
-  if (ChgDir(HomeDir))
-  { // Change directory failed
-    AfxMessageBox("LineCount::GetSourceCodeFiles - Change to home directory failed");
-    _endthread();;
-  }
-  // Change to source code directory to get file list
+  copy(Stuff.begin(), Stuff.end(), Buffer);
+  Buffer[Stuff.size()] = '\0';
+  LineCountFile.write(Buffer, strlen(Buffer));
   SourceCodeDir  = ParentDir + SourceCodeDir + "\\";
-  if (ChgDir((LPCTSTR)SourceCodeDir))
-  { // Change directory failed
-    AfxMessageBox("LineCount::GetSourceCodeFiles - Change to source directory failed");
-    _endthread();
-  }
-  MoreFiles = FileList.FindFile(WildCard);
-  // Change back to home directory
-  if (ChgDir(HomeDir))
-  { // Change directory failed
-    AfxMessageBox("LineCount::GetSourceCodeFiles - Change to home directory failed (1)");
-    _endthread();
-  }
-  // FileList now contains a list of source code files
-  while (MoreFiles)
+  for (const auto &entry : filesystem::directory_iterator(SourceCodeDir))
   { // For each source code file
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
-    { // Skip directories
+    SourceCodeFileExtension = entry.path().extension().string();
+    if (SourceCodeFileExtension != FileExtension)
+    {
       continue;
     }
-    SourceCodeFileName = FileList.GetFileName();
+    SourceCodeFileName = entry.path().filename().string();
     CountLines(SourceCodeDir, SourceCodeFileName);
     LineCountTotal2 += LineCountTotal1;
   }
   // Write results
-  Stuff.Format("%5d", LineCountTotal2);
+  sprintf(Buffer, "%5d", LineCountTotal2);
+  Stuff = Buffer;
   Stuff += " Total";
   Stuff += "\n\n";
-  LineCountFile.WriteString(Stuff);
+  copy(Stuff.begin(), Stuff.end(), Buffer);
+  Buffer[Stuff.size()] = '\0';
+  LineCountFile.write(Buffer, strlen(Buffer));
   LineCountTotal3 += LineCountTotal2;
-  // Change to home directory
-  if (ChgDir(HomeDir))
-  { // Change directory failed
-    AfxMessageBox("LineCount::GetSourceCodeFiles - Change to home directory failed (2)");
-    _endthread();;
-  }
 }
 
 /***********************************************************
@@ -165,11 +148,8 @@ void LineCount::OpenLineCount()
 {
   LineCountFileName  = DOC_DIR;
   LineCountFileName += "LineCount.txt";
-  Success = LineCountFile.Open(LineCountFileName,
-                           CFile::modeCreate    |
-                           CFile::modeWrite     |
-                           CFile::typeText);
-  if(!Success)
+  LineCountFile.open(LineCountFileName);
+  if(!LineCountFile.is_open())
   { // Create file failed
     AfxMessageBox("LineCount::OpenLineCount - OpenLineCount - Create LineCount file failed");
     _endthread();;
@@ -178,5 +158,7 @@ void LineCount::OpenLineCount()
   Stuff += "\n";
   Stuff += "-----------------------------------";
   Stuff += "\n\n";
-  LineCountFile.WriteString(Stuff);
+  copy(Stuff.begin(), Stuff.end(), Buffer);
+  Buffer[Stuff.size()] = '\0';
+  LineCountFile.write(Buffer, strlen(Buffer));
 }

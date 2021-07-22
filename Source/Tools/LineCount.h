@@ -34,25 +34,24 @@ class LineCount
 // Private functions
   private:
     void            CloseLineCount();
-    void            CountLines(CString SourceCodeDir, CString SourceCodeFileName);
+    void            CountLines(string SourceCodeDir, string SourceCodeFileName);
     void            OpenLineCount();
-    void            GetSourceCodeFiles(CString ParentDir, CString SourceCodeDir, CString WildCard);
+    void            GetSourceCodeFiles(string ParentDir, string SourceCodeDir, string WildCard);
 
 // Private variables
   private:
-    CFileFind       FileList;
-    CStdioFile      LineCountFile;
-    CString         LineCountFileName;
+    char            Buffer[100];
+    ofstream        LineCountFile;
+    string          LineCountFileName;
     int             LineCountTotal1;
     int             LineCountTotal2;
     int             LineCountTotal3;
-    BOOL            MoreFiles;
-    CStdioFile      SourceCodeFile;
-    CString         SourceCodeFileName;
-    CString         SourceCodeFileNameSave;
-    CString         Stuff;
-    int             Success;
-    CString         TmpStr;
+    ifstream        SourceCodeFile;
+    string          SourceCodeFileExtension;
+    string          SourceCodeFileName;
+    string          SourceCodeFileNameSave;
+    string          Stuff;
+    string          TmpStr;
 };
 
 #endif

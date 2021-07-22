@@ -37,6 +37,7 @@ WhoIsOnline::~WhoIsOnline()
 /***********************************************************
  * Close StatsWho file                                     *
  ***********************************************************/
+
 void WhoIsOnline::CloseStatsWho()
 {
   // Write last line of xml
@@ -51,6 +52,7 @@ void WhoIsOnline::CloseStatsWho()
 /***********************************************************
  * Open StatsWho file                                      *
  ***********************************************************/
+
 void WhoIsOnline::OpenStatsWho()
 {
   StatsWhoFileName  = WEB_SITE_DIR;
@@ -92,7 +94,7 @@ void WhoIsOnline::ParsePlayer()
 { 
   PlayerFileName = PLAYER_DIR + PlayerFileName;
   PlayerFile.open(PlayerFileName);
-  if(!PlayerFile.is_open())
+  if (!PlayerFile.is_open())
   { // We don't care, just return
     return;
   }
