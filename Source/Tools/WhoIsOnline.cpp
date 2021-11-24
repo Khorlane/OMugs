@@ -21,8 +21,9 @@
 * WhoIsOnline constructor                                  *
 ************************************************************/
 
-WhoIsOnline::WhoIsOnline(string HomeDir)
+WhoIsOnline::WhoIsOnline(string HomeDir1)
 {
+  HomeDir = HomeDir1;
   GetPlayers(HomeDir);
 }
 
@@ -75,8 +76,9 @@ void WhoIsOnline::OpenStatsWho()
  * Get players                                             *
  ***********************************************************/
 
-void WhoIsOnline::GetPlayers(string HomeDir)
+void WhoIsOnline::GetPlayers(string HomeDir1)
 {
+  HomeDir = HomeDir1;
   OpenStatsWho();
   for (const auto &entry : filesystem::directory_iterator(PLAYER_DIR))
   {

@@ -31,19 +31,19 @@ class Room
     Room();
     ~Room();
     int     static  FetchRows(void *NotUsed, int ColCount, char **ColValue, char **ColName);
-    CString static  GetRoomId(CString RoomId);
-    CString static  GetRoomName(CString RoomId);
-    CString static  GetValidMobRoomExits(CString RoomId);
-    bool    static  IsExit(CString MudCmdIsExit);
-    bool    static  IsRoom(CString RoomId);
-    bool    static  IsRoomType(CString RoomId, CString RoomType);
+    string  static  GetRoomId(string RoomId);
+    string  static  GetRoomName(string RoomId);
+    string  static  GetValidMobRoomExits(string RoomId);
+    bool    static  IsExit(string MudCmdIsExit);
+    bool    static  IsRoom(string RoomId);
+    bool    static  IsRoomType(string RoomId, string RoomType);
     void    static  ShowRoom(Dnode *pDnode);
 
 // Private functions static
   private:
     void    static  CloseFile();
-    void    static  MoveFollowers(Dnode *pDnode, CString ExitToRoomId);
-    void    static  MovePlayer(Dnode *pDnode, CString ExitToRoomId);
+    void    static  MoveFollowers(Dnode *pDnode, string ExitToRoomId);
+    void    static  MovePlayer(Dnode *pDnode, string ExitToRoomId);
     bool    static  OpenFile(Dnode *pDnode);
     void    static  ShowRoomDesc(Dnode *pDnode);
     void    static  ShowRoomExitDesc();

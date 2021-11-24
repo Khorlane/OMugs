@@ -89,7 +89,7 @@ void Log::OpenLogFile()
   CString     LogTime;
   int         Success;
  
-  LogFileName = LOG_DIR;
+  LogFileName  = LOG_DIR;
   LogFileName += "SrvrLog.txt";
   if (CFile::GetStatus(LogFileName, FileStatus))
   {

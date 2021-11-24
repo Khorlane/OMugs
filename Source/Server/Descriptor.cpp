@@ -47,10 +47,10 @@ Descriptor::~Descriptor()
 
 void Descriptor::AppendIt()
 {
-  pDnodeActor->pDnodePrev                 = pDnodeHead->pDnodePrev;
+  pDnodeActor->pDnodePrev             = pDnodeHead->pDnodePrev;
   pDnodeHead->pDnodePrev->pDnodeNext  = pDnodeActor;
   pDnodeHead->pDnodePrev              = pDnodeActor;
-  pDnodeActor->pDnodeNext                 = pDnodeHead;
+  pDnodeActor->pDnodeNext             = pDnodeHead;
 }
 
 /***********************************************************

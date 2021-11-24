@@ -28,6 +28,7 @@ void BigDog()
   string       GoGoGoFileName;
   string       LogBuf;
   int          MobHealTick;
+  int          ReturnCode;
   string       StopItFileName;
   int          WhoIsOnlineTick;
 
@@ -36,24 +37,30 @@ void BigDog()
     AfxMessageBox("BigDog - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
   }
-  // Set Go Stop, force go status
+  // Set Go Stop, force Go status
   StopItFileName  = CONTROL_DIR;
   StopItFileName += "StopIt";
   GoGoGoFileName  = CONTROL_DIR;
   GoGoGoFileName += "GoGoGo";
   if (FileExist(StopItFileName))
   { // If StopIt file exists, Rename it to GoGoGo
-    Rename(StopItFileName, GoGoGoFileName);
+    ReturnCode = Rename(StopItFileName, GoGoGoFileName);
+    if (ReturnCode != 0)
+    {
+      printf("Rename of 'StopIt' to 'GoGoGo' failed!");
+      printf("Hard Exit!");
+      exit(1);
+    }
   }
   // Log game startup
-  Log::OpenLogFile();
+  OpenLogFile();
   LogBuf  = "OMugs version ";
   LogBuf += VERSION ;
   LogBuf += " has started";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
   LogBuf  = "Home directory is ";
   LogBuf += HomeDir;
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
   // Initialize
   EventTick        = EVENT_TICK;    // Force first tick at startup
   MobHealTick      = 0;
@@ -64,17 +71,17 @@ void BigDog()
   srand((unsigned)time(NULL)); // Seed random number generator
   PACMN = 1.0f / MAC * MDRP / 100.0f;
   // Validate library files
-  ValErr = Validate::ValidateIt("All");
+  ValErr = ValidateIt("All");
   if (ValErr)
   { // Validation failed
     LogBuf = "OMugs has stopped";
-    Log::LogIt(LogBuf);
-    Log::CloseLogFile();
+    LogIt(LogBuf);
+    CloseLogFile();
     return;
   }
   // Validation was ok, so open port, init, play on
-  Communication::SockOpenPort(PORT_NBR);
-  Descriptor::InitDescriptor();
+  SockOpenPort(PORT_NBR);
+  InitDescriptor();
   pCalendar = new Calendar;
   while (StateRunning)
   { // Game runs until it is stopped
@@ -86,33 +93,33 @@ void BigDog()
       { // StopIt file was found, Stop the game
         StateStopping = true;
         LogBuf = "Game is stopping";
-        Log::LogIt(LogBuf);
+        LogIt(LogBuf);
       }
     }
     if (!StateStopping)
     { // No new connections after stop command
-      Communication::SockCheckForNewConnections();
+      SockCheckForNewConnections();
       if (StateConnections && Dnode::GetCount() == 1)
       { // No players connected
         LogBuf = "No Connections - going to sleep";
-        Log::LogIt(LogBuf);
+        LogIt(LogBuf);
         StateConnections = false;
       }
     }
     if (StateConnections)
     { // One or more players are connected
-      Communication::SockRecv();
+      SockRecv();
       EventTick++;
       if (EventTick >= EVENT_TICK)
       { // Time to process events
         EventTick = 0;
-        World::Events();
+        Events();
       }
       MobHealTick++;
       if (MobHealTick >= MOB_HEAL_TICK)
       { // Time to process events
         MobHealTick = 0;
-        World::HealMobiles();
+        HealMobiles();
       }
     }
     else
@@ -132,12 +139,221 @@ void BigDog()
     }
   }
   // Game has stopped so clean up
-  Descriptor::ClearDescriptor();
-  Communication::SockClosePort(PORT_NBR);
+  ClearDescriptor();
+  SockClosePort(PORT_NBR);
   pWhoIsOnline = new WhoIsOnline(HomeDir);
   delete pWhoIsOnline;
   delete pCalendar;
   LogBuf = "OMugs has stopped";
+  LogIt(LogBuf);
+  CloseLogFile();
+}
+
+/***********************************************************
+* Globals                                                  *
+************************************************************/
+bool ValidateIt(CString ValidationType)
+{
+  return Validate::ValidateIt(ValidationType);
+}
+
+void SockOpenPort(int PortNbr)
+{
+  Communication::SockOpenPort(PortNbr);
+}
+
+void SockCheckForNewConnections()
+{
+  Communication::SockCheckForNewConnections();
+}
+
+void SockRecv()
+{
+  Communication::SockRecv();
+}
+
+void SockClosePort(int PortNbr)
+{
+  Communication::SockClosePort(PortNbr);
+}
+
+void InitDescriptor()
+{
+  Descriptor::InitDescriptor();
+}
+
+void ClearDescriptor()
+{
+  Descriptor::ClearDescriptor();
+}
+
+void SetpDnodeCursorFirst()
+{
+  Descriptor::SetpDnodeCursorFirst();
+}
+
+bool EndOfDnodeList()
+{
+  return Descriptor::EndOfDnodeList();
+}
+
+void SetpDnodeCursorNext()
+{
+  Descriptor::SetpDnodeCursorNext();
+}
+
+void OpenLogFile()
+{
+  Log::OpenLogFile();
+}
+
+void LogIt(string LogBuf)
+{
   Log::LogIt(LogBuf);
+}
+
+void CloseLogFile()
+{
   Log::CloseLogFile();
+}
+
+void Events()
+{
+  World::Events();
+}
+
+void HealMobiles()
+{
+  World::HealMobiles();
+}
+
+//
+// File Functions
+//
+
+bool FileExist(string Name)
+{
+  bool Exist;
+
+  ifstream f(Name.c_str());
+  if (f.is_open())
+  {
+    Exist = true;
+    f.close();
+  }
+  else
+  {
+    Exist = false;
+  }
+  return Exist;
+}
+
+bool ChgDir(string Dir)
+{
+  return _chdir(Dir.c_str());
+}
+
+int Rename(string File1, string File2)
+{
+  return rename(File1.c_str(), File2.c_str());
+}
+
+//
+// String Coversions - temporary until CString is removed from codebase
+//
+
+string ConvertCStringToString(CString Str1)
+{
+  return (LPCTSTR)Str1;
+}
+
+CString ConvertStringToCString(string Str1)
+{
+  return Str1.c_str();
+}
+
+//
+// String Functions
+//
+
+string StrGetWord(string Str1, int WordNbr)
+{
+  int    i;
+  string Word;
+  stringstream iss(Str1);
+  i = 0;
+  while (iss >> Word)
+  {
+    i++;
+    if (i == WordNbr)
+      return Word;
+  }
+  return "";
+}
+
+string StrGetWords(string Str1, int WordNbr)
+{
+  int    i;
+  string Word;
+  string Words;
+  stringstream iss(Str1);
+  i = 0;
+  while (iss >> Word)
+  {
+    i++;
+    if (i == WordNbr)
+    {
+      getline(iss, Words);
+      return Words;
+    }
+  }
+  return "";
+}
+
+string StrLeft(string Str1, int Len)
+{
+  return Str1.substr(0, Len);
+}
+
+string StrMakeLower(string Str1)
+{
+  transform(Str1.begin(), Str1.end(), Str1.begin(),
+    [](unsigned char c) { return tolower(c); });
+  return Str1;
+}
+
+void StrReplace(string& str, const string& from, const string& to)
+{
+  if (from.empty())
+    return;
+  size_t start_pos = 0;
+  while ((start_pos = str.find(from, start_pos)) != std::string::npos) {
+    str.replace(start_pos, from.length(), to);
+    start_pos += to.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
+  }
+}
+
+string StrRight(string Str1, int Len)
+{
+  if (Str1 == "")
+  {
+    return "";
+  }
+  return Str1.substr(Str1.length() - Len, Len);
+}
+
+string StrTrimLeft(string Str1)
+{
+  if (Str1 == "")
+  {
+    return "";
+  }
+  const auto First = Str1.find_first_not_of(' ');
+  return Str1.substr(First, Str1.length());
+}
+
+string StrTrimRight(string Str1)
+{
+  const auto Last = Str1.find_last_not_of(' ');
+  return Str1.substr(0, Last + 1);
 }

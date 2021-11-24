@@ -113,7 +113,6 @@ CString Utility::FormatCommas(CString String)
 
 string Utility::GetHomeDir()
 {
-  string     HomeDir;
   ifstream   HomeDirFile;
   string     HomeDirFileName;
   string     Buffer;
@@ -166,6 +165,7 @@ CString Utility::GetSqlStmt(CString SqlStmtId)
   CString    Stuff;
   int        Success;
 
+  RipOutMoreSpaces = 0;
   // Read mobile stats Desc1 file
   SqlStmtFileName = SQL_DIR;
   SqlStmtFileName += SqlStmtId;
@@ -208,6 +208,11 @@ CString Utility::GetWord(CString String, int WordNbr)
   int     y;      // Position of the blank after the word
   int     z;      // Length of String
 
+  i = 0;
+  j = 0;
+  x = 0;
+  y = 0;
+  z = 0;
   if (Utility::WordCount(String) < WordNbr)
   { // WordNbr is greater than the number of words in String
     Word = "";
@@ -262,6 +267,11 @@ CString Utility::GetWordPosLen(CString String, int WordNbr)
   int     y;      // Position of the blank after the word
   int     z;      // Length of String
 
+  i = 0;
+  j = 0;
+  x = 0;
+  y = 0;
+  z = 0;
   if (Utility::WordCount(String) < WordNbr)
   { // WordNbr is greater than the number of words in String
     Word = "0 0";
@@ -316,6 +326,11 @@ CString Utility::GetWords(CString String, int StartWordNbr)
   int     y;      // Position of the blank after the word
   int     z;      // Length of String
 
+  i = 0;
+  j = 0;
+  x = 0;
+  y = 0;
+  z = 0;
   Found = true;
   String.TrimLeft();
   String.TrimRight();

@@ -39,7 +39,7 @@ using namespace std;
 * Macros                                                   *
 ************************************************************/
 
-#define VERSION           "2021.05.21"
+#define VERSION           "2021.11.23"
 
 #define MAC                    300.0f  // Maximum Armor Class
 #define MDRP                    60.0f  // Maximum Damage Reduction Percent
@@ -84,7 +84,7 @@ using namespace std;
 #define MAX_INPUT_LENGTH        1024   // Maximun string length received from player
 #define MAX_ROOMS               8192   // Must be a multiple of 8
 #define MAX_ROOMS_CHAR          MAX_ROOMS/8 // 8 rooms represented by each byte
-#define PORT_NBR                7777   // Listening on this port for connections - might need to kill Windows Service 'iphlpsvc' as it uses port 7777
+#define PORT_NBR                7373   // Listening on this port for connections - might need to kill Windows Service 'iphlpsvc' if you use port 7777
 
 #define SAFE_ROOM               "JesseSquare8"
 #define START_ROOM              "Welcome226"
@@ -244,16 +244,33 @@ struct ResWordStruct
 
 // Functions
 bool    ChgDir(string Dir);
+void    ClearDescriptor();
+void    CloseLogFile();
+void    SockClosePort(int PortNbr);
 string  ConvertCStringToString(CString Str1);
 CString ConvertStringToCString(string  Str1);
-void    Rename(string File1, string File2);
+bool    EndOfDnodeList();
+void    Events();
+bool    FileExist(string Name);
+void    HealMobiles();
+void    InitDescriptor();
+void    LogIt(string LogBuf);
+void    OpenLogFile();
+int     Rename(string File1, string File2);
+void    SetpDnodeCursorFirst();
+void    SetpDnodeCursorNext();
+void    SockCheckForNewConnections();
+void    SockOpenPort(int PortNbr);
+void    SockRecv();
 string  StrGetWord(string Str1, int WordNbr);
+string  StrGetWords(string Str1, int WordNbr);
 string  StrLeft(string Str1, int Len);
 string  StrMakeLower(string Str1);
 void    StrReplace(string &str, const string &from, const string &to);
 string  StrRight(string Str1, int Len);
 string  StrTrimLeft(string Str1);
 string  StrTrimRight(string Str1);
+bool    ValidateIt(CString ValidationType);
 
 // Variables
 inline EnumCharCode   CharCodeMap[128];

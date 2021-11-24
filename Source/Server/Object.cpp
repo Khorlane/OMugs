@@ -183,7 +183,7 @@ bool Object::AddObjToPlayerEqu(CString WearPosition, CString ObjectId)
 * Add an object to player's inventory                      *
 ************************************************************/
 
-void Object::AddObjToPlayerInv(Dnode *pDnodeTgt, CString ObjectId)
+void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, CString ObjectId)
 {
   int        BytesInFile;
   bool       NewPlayerObjFile;
@@ -198,6 +198,7 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt, CString ObjectId)
   int        Success;
   CString    TmpStr;
 
+  pDnodeTgt = pDnodeTgt1;
   ObjectId.MakeLower();
   // Open PlayerObj file
   PlayerObjFileName =  PLAYER_OBJ_DIR;
@@ -1049,7 +1050,7 @@ void Object::RemoveObjFromRoom(CString ObjectId)
 * Show player equipment                                    *
 ************************************************************/
 
-void Object::ShowPlayerEqu(Dnode *pDnodeTgt)
+void Object::ShowPlayerEqu(Dnode *pDnodeTgt1)
 {
   Object     *pObject;
   CString     ObjectId;
@@ -1059,6 +1060,7 @@ void Object::ShowPlayerEqu(Dnode *pDnodeTgt)
   int         Success;
   CString     WearPosition;
 
+  pDnodeTgt = pDnodeTgt1;
   // Open PlayerEqu file
   PlayerEquFileName =  PLAYER_EQU_DIR;
   PlayerEquFileName += pDnodeTgt->PlayerName;

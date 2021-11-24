@@ -156,37 +156,37 @@ void Calendar::GetStartTime()
   { // Invalid year
     Year = 1;
     LogBuf = "Calendar::GetStartTime - Year forced to 1";
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
   }
   if (Month <= 0)
   { // Invalid month
     Month = 1;
     LogBuf = "Calendar::GetStartTime - Month forced to 1";
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
   }
   if (Day <= 0)
   { // Invalid day
     Day = 1;
     LogBuf = "Calendar::GetStartTime - Day forced to 1";
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
   }
   if (Hour <= 0)
   { // Invalid hour
     Hour = 1;
     LogBuf = "Calendar::GetStartTime - Hour forced to 1";
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
   }
   if (DayOfWeek <= 0)
   { // Invalid day of week
     Hour = 1;
     LogBuf = "Calendar::GetStartTime - Day of Week forced to 1";
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
   }
   LogBuf = "Start date and time is: ";
   sprintf(Buffer, "Year: %d Month: %d Day: %d Hour: %d Day of Week: %d", Year, Month, Day, Hour, DayOfWeek);
   Stuff = Buffer;
   LogBuf += Stuff;
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
 }
 
 /***********************************************************
@@ -202,9 +202,9 @@ void Calendar::OpenCalendarFile()
   if (!CalendarFileInp.is_open())
   { // Calendar file does not exist
     LogBuf = "Calendar file not found.";
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
     LogBuf = "Forcing start date to Year: 1 Month: 1 Day: 1 Hour: 1 Day of Week: 1";
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
     return;
   }
   // Open was successful
@@ -234,7 +234,7 @@ void Calendar::LoadDayNamesArray()
   }
   DayNamesFile.close();
   LogBuf = "DayNames array loaded";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
 }
 
 /***********************************************************
@@ -260,7 +260,7 @@ void Calendar::LoadDayOfMonthArray()
   }
   DayOfMonthFile.close();
   LogBuf = "DayOfMonth array loaded";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
 }
 
 /***********************************************************
@@ -286,7 +286,7 @@ void Calendar::LoadHourNamesArray()
   }
   HourNamesFile.close();
   LogBuf = "HourNames array loaded";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
 }
 
 /***********************************************************
@@ -312,7 +312,7 @@ void Calendar::LoadMonthNamesArray()
   }
   MonthNamesFile.close();
   LogBuf = "MonthNames array loaded";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
 }
 
 /***********************************************************
@@ -327,7 +327,7 @@ void Calendar::SaveTime()
   if (!CalendarFileOut.is_open())
   { // Open failed
     LogBuf = "Calendar::SaveTime - Open calendar file - Failed";
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
     _endthread();
   }
   sprintf(Buffer, "%d %d %d %d %d", Year, Month, Day, Hour, DayOfWeek);

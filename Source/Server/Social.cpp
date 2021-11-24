@@ -204,8 +204,9 @@ void Social::SendToPlayer(CString MsgText)
 * Send substituted message to target                       *
 ************************************************************/
 
-void Social::SendToTarget(Dnode *pDnodeTgt, CString MsgText)
+void Social::SendToTarget(Dnode *pDnodeTgt1, CString MsgText)
 {
+  pDnodeTgt = pDnodeTgt1;
   pDnodeTgt->PlayerOut += "\r\n";
   pDnodeTgt->PlayerOut += MsgText;
   pDnodeTgt->PlayerOut += "\r\n";

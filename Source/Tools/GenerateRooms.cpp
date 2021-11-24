@@ -177,7 +177,7 @@ void GenerateRooms::OpenRecordsets()
 {
   // Office 2000 uses DAO 3.6. MFC by default uses DAO 3.5.
   // To use DAO 3.6 from MFC you have to do the following
-  AfxGetModuleState()->m_dwVersion = 0x0601;
+  // AfxGetModuleState()->m_dwVersion = 0x0601;
   //*********************
   //* Open map database *
   //*********************

@@ -659,6 +659,7 @@ void World::MakeMobilesMove2()
   int        PositionOfDot;
   int        RandomPct;
   CString    RoomId;
+  string     sRoomId;
   CStdioFile RoomMobFile;
   CString    RoomMobFileName;
   CStdioFile RoomMobListFile;
@@ -673,6 +674,7 @@ void World::MakeMobilesMove2()
   clock_t    TimerStop;
   CString    TmpStr;
   CString    ValidMobRoomExits;
+  string     sValidMobRoomExits;
 
   // Open MakeMobList file
   RoomMobListFileName  = CONTROL_DIR;
@@ -772,7 +774,9 @@ void World::MakeMobilesMove2()
           }
           if (RandomPct <= MOB_MOVE_PCT)
           { // Mobile is to be moved
-            ValidMobRoomExits = Room::GetValidMobRoomExits(RoomId);
+            sRoomId = ConvertCStringToString(RoomId);
+            sValidMobRoomExits = Room::GetValidMobRoomExits(sRoomId);;
+            ValidMobRoomExits = ConvertStringToCString(sValidMobRoomExits);
             ExitCount         = Utility::WordCount(ValidMobRoomExits);
             if (ExitCount > 0)
             { // Mob has at least one exit available

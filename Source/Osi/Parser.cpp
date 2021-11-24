@@ -422,7 +422,7 @@ void Parser::ParseFactor()
         pSymbolCursor = pSymbolInsert->EnterSymbol(pToken->TokenString);
       }
       pSymbolCursor->SymbolDataType = pToken->GetTokenDataType();
-      if (pToken->TokenDataType = tyInteger)
+      if (pToken->TokenDataType == tyInteger)
       { // It's an integer, assign to symbol's integer value
         pSymbolCursor->SymbolDataValue.Integer = pToken->GetTokenDataValue().Integer;
         pSymbolCursor->SymbolType = syLitInteger;

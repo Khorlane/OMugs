@@ -44,7 +44,7 @@ END_MESSAGE_MAP()
 
 COMugsApp::COMugsApp()
 {
-	// TODO: add construction code here,
+	// Add construction code here,
 	// Place all significant initialization in InitInstance
 }
 
@@ -74,13 +74,13 @@ BOOL COMugsApp::InitInstance()
 	//  the specific initialization routines you do not need.
 
 #ifdef _AFXDLL
-	// Enable3dControls();			// Call this when using MFC in a shared DLL
+	// Enable3dControls();			  // Call this when using MFC in a shared DLL
 #else
-	Enable3dControlsStatic();	// Call this when linking to MFC statically
+	// Enable3dControlsStatic();	// Call this when linking to MFC statically
 #endif
 
 	// Change the registry key under which our settings are stored.
-	// TODO: You should modify this string to be something appropriate
+	// You should modify this string to be something appropriate
 	// such as the name of your company or organization.
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
 

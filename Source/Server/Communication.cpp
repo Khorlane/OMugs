@@ -61,9 +61,11 @@ Dnode *Communication::GetTargetDnode(CString TargetName)
   TargetFound = false;
   TargetName.MakeLower();
   // Get Dnode pointer for target player
-  Descriptor::SetpDnodeCursorFirst();
-  while (!Descriptor::EndOfDnodeList())
+  SetpDnodeCursorFirst();
+  while (!EndOfDnodeList())
   { // Loop thru all connections
+    pDnodeLookup = pDnodeCursor;
+// TODO Can the line above replace the line below ???    
     pDnodeLookup = Descriptor::GetDnode();
     LookupName = pDnodeLookup->PlayerName;
     LookupName.MakeLower();
@@ -75,7 +77,7 @@ Dnode *Communication::GetTargetDnode(CString TargetName)
         break;
       }
     }
-    Descriptor::SetpDnodeCursorNext();
+    SetpDnodeCursorNext();
   }
   // Re-position pDnodeCursor
   RepositionDnodeCursor();
@@ -326,10 +328,9 @@ void Communication::ShowPlayersInRoom(Dnode *pDnode)
 
 void Communication::SockCheckForNewConnections()
 {
-  Dnode                *pDnodeActor;
   CString               LogBuf;
   int                   SocketCount;
-  static struct timeval TimeOut;
+  static struct timeval TimeOut{};
 
   TimeOut.tv_sec = 0;
   TimeOut.tv_usec = 1;
@@ -359,7 +360,7 @@ void Communication::SockCheckForNewConnections()
   }
   if (FD_ISSET(ListenSocket, &InpSet))
   { // Process new connection
-    SockNewConnection(ListenSocket);
+    SockNewConnection();
   }
 }
 
@@ -391,11 +392,11 @@ void Communication::SockClosePort(int Port)
 void Communication::SockOpenPort(int Port)
 {
   unsigned long FionbioParm;
-  struct        linger      ld;
+  struct        linger      ld{};
   CString       LogBuf;
   int           OptionValue;
   int           Result;
-  struct        sockaddr_in sa;
+  struct        sockaddr_in sa{};
   WORD          VersionRequested;
   WSADATA       WsaData;
 
@@ -2297,6 +2298,7 @@ void Communication::DoDrink()
   CString  DrinkMsg;
   CString  ObjectName;
   CString  RoomId;
+  string   sRoomId;
   CString  RoomName;
   CString  RoomType;
   CString  TmpStr;
@@ -2324,9 +2326,11 @@ void Communication::DoDrink()
   //* Is this a drink room? *
   //*************************
   RoomId   = pDnodeActor->pPlayer->RoomId;
-  if (Room::IsRoomType(RoomId, "Drink"))
+  sRoomId = ConvertCStringToString(RoomId);
+  if (Room::IsRoomType(sRoomId, "Drink"))
   { // Room contains something to drink
-    RoomName = Room::GetRoomName(RoomId);
+    string sRoomName;
+    sRoomName = Room::GetRoomName(sRoomId);
     TmpStr = Utility::GetWord(CmdStr, 2);
     TmpStr.MakeLower();
     RoomName.MakeLower();
@@ -2752,7 +2756,9 @@ void Communication::DoFlee()
   }
   RoomIdBeforeFleeing = pDnodeActor->pPlayer->RoomId;
   MudCmdIsExit = "go";
-  if (!Room::IsExit(MudCmdIsExit))
+  string sMudCmdIsExit;
+  sMudCmdIsExit = ConvertCStringToString(MudCmdIsExit);
+  if (!Room::IsExit(sMudCmdIsExit))
   { // Direction given is not valid
     pDnodeActor->PlayerOut += "Flee where?\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -2845,7 +2851,7 @@ void Communication::DoFlee()
  * Follow command                                          *
  ***********************************************************/
 
-void Communication::DoFollow(Dnode *pDnode, CString CmdStr)
+void Communication::DoFollow(Dnode *pDnode, CString CmdStr1)
 {
   Dnode   *pDnodeGrpLdr; // Group leader
   Dnode   *pDnodeGrpMem; // Group member
@@ -2855,6 +2861,9 @@ void Communication::DoFollow(Dnode *pDnode, CString CmdStr)
   bool     TargetInGroup;
   CString  TmpStr;
 
+  CmdStr = CmdStr1;
+  i      = 0;
+  j      = 0;
   //********************
   //* Validate command *
   //********************
@@ -3302,7 +3311,9 @@ void Communication::DoGo()
   //* Try to move *
   //***************
   MudCmdIsExit = "go";
-  if (Room::IsExit(MudCmdIsExit))
+  string sMudCmdIsExit;
+  sMudCmdIsExit = ConvertCStringToString(MudCmdIsExit);
+  if (Room::IsExit(sMudCmdIsExit))
   { // Player has been moved
     return;
   }
@@ -3322,6 +3333,8 @@ void Communication::DoGoTo()
 {
   CString GoToMsg;
   CString RoomId;
+  string  sRoomId;
+  CString csRoomId;
 
   //********************
   //* Validate command *
@@ -3334,7 +3347,8 @@ void Communication::DoGoTo()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  if (!Room::IsRoom(RoomId))
+  sRoomId = ConvertCStringToString(RoomId);
+  if (!Room::IsRoom(sRoomId))
   {
     pDnodeActor->PlayerOut += "Go to where?\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -3350,7 +3364,11 @@ void Communication::DoGoTo()
   pDnodeTgt = pDnodeActor;
   SendToRoom(pDnodeActor->pPlayer->RoomId, GoToMsg);
   // GoTo room
-  pDnodeActor->pPlayer->RoomId = Room::GetRoomId(RoomId);
+  // TODO This seems like double talk with the RoomId, even after CString is completely removed
+  sRoomId = ConvertCStringToString(RoomId);
+  sRoomId = Room::GetRoomId(sRoomId);
+  csRoomId = ConvertStringToCString(sRoomId);
+  pDnodeActor->pPlayer->RoomId = csRoomId;
   DoLook("");
   // Send GoTo arrival message
   GoToMsg = pDnodeActor->pPlayer->GoToArrive;
@@ -3997,6 +4015,7 @@ void Communication::DoKill()
   CString  PlayerName;
   CString  PlayerNameCheck;
   CString  RoomId;
+  string   sRoomId;
   CString  RoomType;
   CString  Target;
 
@@ -4016,7 +4035,8 @@ void Communication::DoKill()
     return;
   }
   RoomId = pDnodeActor->pPlayer->RoomId;
-  if (Room::IsRoomType(RoomId, "NoFight"))
+  sRoomId = ConvertCStringToString(RoomId);
+  if (Room::IsRoomType(sRoomId, "NoFight"))
   { // No fighting is allowed in this room
     pDnodeActor->PlayerOut += "You are not allowed to fight here.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4319,16 +4339,18 @@ void Communication::DoLogon()
  * Look command                                            *
  ***********************************************************/
 
-void Communication::DoLook(CString CmdStr)
+void Communication::DoLook(CString CmdStr1)
 {
   Mobile  *pMobile;
   CString  Desc1FirstLetter;
   CString  Desc1TheRest;
   bool     IsPlayer;
   CString  MudCmdIsExit;
+  string   sMudCmdIsExit;
   CString  TargetName;
   CString  TmpStr;
 
+  CmdStr = CmdStr1;
   if (IsSleeping())
   { // Player is sleeping, send msg, command is not done
     return;
@@ -4346,7 +4368,8 @@ void Communication::DoLook(CString CmdStr)
   //* Is it a room exit? *
   //**********************
   MudCmdIsExit = "look";
-  if (Room::IsExit(MudCmdIsExit))
+  sMudCmdIsExit = ConvertCStringToString(MudCmdIsExit);
+  if (Room::IsExit(sMudCmdIsExit))
   { // Look room exit
     return;
   }
@@ -4770,7 +4793,7 @@ void Communication::DoRemove()
  * Restore command                                         *
  ***********************************************************/
 
-void Communication::DoRestore(CString CmdStr)
+void Communication::DoRestore(CString CmdStr1)
 {
   CString  LookupName;
   CString  PlayerName;
@@ -6097,7 +6120,7 @@ void Communication::DoWho()
         Descriptor::SetpDnodeCursorNext();
         continue;
       }
-      DisplayName.Format("%-15s", pDnodeOthers->PlayerName);
+      DisplayName.Format("%-15s", (LPCSTR) pDnodeOthers->PlayerName);
       DisplayLevel.Format("%3d", pDnodeOthers->pPlayer->Level);
       pDnodeActor->PlayerOut += DisplayName;
       pDnodeActor->PlayerOut += " ";
@@ -6864,12 +6887,12 @@ void Communication::RepositionDnodeCursor()
  * New connection                                          *
  ***********************************************************/
 
-void Communication::SockNewConnection(int ListenSocket)
+void Communication::SockNewConnection()
 {
   unsigned long       FionbioParm;
   CString             LogBuf;
   int                 Result;
-  struct sockaddr_in  Sock;
+  struct sockaddr_in  Sock{};
   int                 SocketHandle;
   int                 SocketSize;
   CString             IpAddress;
@@ -6949,6 +6972,7 @@ void Communication::UpdatePlayerStats()
   CString Position;
   int     ThirstPct;
 
+  HitPointsGain = 0;
   HitPoints     = pDnodeActor->pPlayer->HitPoints;
   Level         = pDnodeActor->pPlayer->Level;
   Position      = pDnodeActor->pPlayer->Position;

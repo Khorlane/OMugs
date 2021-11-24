@@ -135,7 +135,7 @@ class Communication
     void    static  LogonWaitNewCharacter();
     void    static  LogonWaitPassword();
     void    static  RepositionDnodeCursor();
-    void    static  SockNewConnection(int ListenSocket);
+    void    static  SockNewConnection();
     void    static  SockSend(const char *arg);
     void    static  UpdatePlayerStats();
     void    static  Violence();

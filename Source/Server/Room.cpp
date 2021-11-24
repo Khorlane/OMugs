@@ -21,7 +21,7 @@
 * Globals                                                  *
 ************************************************************/
 
-CStdioFile    RoomFile;
+ifstream      RoomFile;
 
 /***********************************************************
 * Room constructor                                         *
@@ -47,33 +47,29 @@ Room::~Room()
 * Get RoomId                                               *
 ************************************************************/
 
-CString Room::GetRoomId(CString RoomId)
+string Room::GetRoomId(string RoomId)
 {
-  CStdioFile RoomFile;
-  CString    RoomFileName;
-  CString    Stuff;
-  int        Success;
+  string    RoomFileName;
+  string    Stuff;
 
   RoomFileName =  ROOMS_DIR;
   RoomFileName += RoomId;
   RoomFileName += ".txt";
-  Success = RoomFile.Open(RoomFileName,
-               CFile::modeRead |
-               CFile::typeText);
-  if(!Success)
+  RoomFile.open(RoomFileName);
+  if(!RoomFile.is_open())
   { // No such file???, But there should be, This is bad!
     AfxMessageBox("Room::GetRoomId - Room does not exist", MB_ICONSTOP);
     _endthread();
   }
   // RoomId
-  RoomFile.ReadString(Stuff);
-  if (Stuff.Left(7) != "RoomId:")
+  getline(RoomFile, Stuff);
+  if (StrLeft(Stuff, 7) != "RoomId:")
   { // Very bad, where did the RoomId go anyway?
     AfxMessageBox("Room::GetRoomId - RoomId: not found", MB_ICONSTOP);
     _endthread();
   }
-  RoomId = Utility::GetWord(Stuff, 2);
-  RoomFile.Close();
+  RoomId = StrGetWord(Stuff, 2);
+  RoomFile.close();
   return RoomId;
 }
 
@@ -81,40 +77,36 @@ CString Room::GetRoomId(CString RoomId)
 * Get RoomName                                             *
 ************************************************************/
 
-CString Room::GetRoomName(CString RoomId)
+string Room::GetRoomName(string RoomId)
 {
-  CStdioFile RoomFile;
-  CString    RoomFileName;
-  CString    RoomName;
-  CString    Stuff;
-  int        Success;
+  string     RoomFileName;
+  string     RoomName;
+  string     Stuff;
 
   RoomFileName =  ROOMS_DIR;
   RoomFileName += RoomId;
   RoomFileName += ".txt";
-  Success = RoomFile.Open(RoomFileName,
-               CFile::modeRead |
-               CFile::typeText);
-  if(!Success)
+  RoomFile.open(RoomFileName);
+  if (!RoomFile.is_open())
   { // No such file???, But there should be, This is bad!
     AfxMessageBox("Room::GetRoomName - Room does not exist", MB_ICONSTOP);
     _endthread();
   }
 
   // RoomName
-  RoomFile.ReadString(Stuff);
-  RoomFile.ReadString(Stuff);
-  RoomFile.ReadString(Stuff);
-  RoomFile.ReadString(Stuff);
-  if (Stuff.Left(9) != "RoomName:")
+  getline(RoomFile, Stuff);
+  getline(RoomFile, Stuff);
+  getline(RoomFile, Stuff);
+  getline(RoomFile, Stuff);
+  if (StrLeft(Stuff, 9) != "RoomName:")
   { // Very bad, where did the RoomName go anyway?
     AfxMessageBox("Room::GetRoomName - RoomName: not found", MB_ICONSTOP);
     _endthread();
   }
-  RoomName = Utility::GetWords(Stuff, 2);
-  RoomName.TrimLeft();
-  RoomName.TrimRight();
-  RoomFile.Close();
+  RoomName = StrGetWords(Stuff, 2);
+  StrTrimLeft(RoomName);
+  StrTrimRight(RoomName);
+  RoomFile.close();
   return RoomName;
 }
 
@@ -122,22 +114,18 @@ CString Room::GetRoomName(CString RoomId)
 * Get the list of exits that mobiles are allowed to use    *
 ************************************************************/
 
-CString Room::GetValidMobRoomExits(CString RoomId)
+string Room::GetValidMobRoomExits(string RoomId)
 {
-  CString    ExitToRoomId;
-  CStdioFile RoomFile;
-  CString    RoomFileName;
-  CString    Stuff;
-  int        Success;
-  CString    ValidMobExits;
+  string    ExitToRoomId;
+  string    RoomFileName;
+  string    Stuff;
+  string    ValidMobExits;
 
   RoomFileName = ROOMS_DIR;
   RoomFileName += RoomId;
   RoomFileName += ".txt";
-  Success = RoomFile.Open(RoomFileName,
-    CFile::modeRead |
-    CFile::typeText);
-  if (!Success)
+  RoomFile.open(RoomFileName);
+  if (!RoomFile.is_open())
   { // No such file???, But there should be, This is bad!
     AfxMessageBox("Room::GetValidMobRoomExits - Room does not exist", MB_ICONSTOP);
     _endthread();
@@ -146,12 +134,13 @@ CString Room::GetValidMobRoomExits(CString RoomId)
   Stuff = "Not Done";
   while (Stuff != "End of Exits")
   { // Loop - process all exits
-    RoomFile.ReadString(Stuff);
-    if (Stuff.Left(13) == "ExitToRoomId:")
+    getline(RoomFile, Stuff);
+    if (StrLeft(Stuff, 13) == "ExitToRoomId:")
     { // An Exit has been found
-      ExitToRoomId = Utility::GetWord(Stuff, 2);
+      ExitToRoomId = StrGetWord(Stuff, 2);
       if (ExitToRoomId == "VineyardPath382")
-        Success = 100;
+        //Success = 100;
+        int x = 0;
       if (!Room::IsRoomType(ExitToRoomId, "NoNPC"))
       { // And it's a valid Mob Exit
         ValidMobExits += ExitToRoomId;
@@ -159,8 +148,8 @@ CString Room::GetValidMobRoomExits(CString RoomId)
       }
     }
   }
-  ValidMobExits.TrimRight();
-  RoomFile.Close();
+  StrTrimRight(ValidMobExits);
+  RoomFile.close();
   return ValidMobExits;
 }
 
@@ -168,14 +157,17 @@ CString Room::GetValidMobRoomExits(CString RoomId)
 * If valid room exit, then deal with it                    *
 ************************************************************/
 
-bool Room::IsExit(CString MudCmdIsExit)
+bool Room::IsExit(string MudCmdIsExit)
 {
   bool     Found;
-  CString  ExitLookup;
-  CString  ExitName;
-  CString  ExitToRoomId;
-  CString  Stuff;
-  CString  TmpStr;
+  string   ExitLookup;
+  string   ExitName;
+  string   ExitToRoomId;
+  string   Stuff;
+  string   TmpStr;
+
+  string  sCmdStr;
+  sCmdStr = ConvertCStringToString(CmdStr);
 
   Found = false;
   if (!OpenFile(pDnodeActor))
@@ -183,18 +175,22 @@ bool Room::IsExit(CString MudCmdIsExit)
     AfxMessageBox("Room::IsExit - Room does not exist", MB_ICONSTOP);
     _endthread();
   }
-  ExitLookup = Utility::GetWord(CmdStr, 2);
-  ExitLookup.MakeLower();
-  ExitLookup = Utility::TranslateWord(ExitLookup);
+  ExitLookup = StrGetWord(sCmdStr, 2);
+  StrMakeLower(ExitLookup);
+  CString csExitLookup;
+  csExitLookup = ConvertStringToCString(ExitLookup);
+  ExitLookup = Utility::TranslateWord(csExitLookup);
   Stuff = "Not Done";
   while (Stuff != "End of Exits")
   { // Loop until Exit is found or end of file
-    RoomFile.ReadString(Stuff);
-    if (Stuff.Left(9) == "ExitName:")
+    getline(RoomFile, Stuff);
+    if (StrLeft(Stuff, 9) == "ExitName:")
     { // Ok, an Exit has been found
-      ExitName = Utility::GetWord(Stuff, 2);
-      ExitName.MakeLower();
-      ExitName = Utility::TranslateWord(ExitName);
+      ExitName = StrGetWord(Stuff, 2);
+      StrMakeLower(ExitName);
+      CString csExitName;
+      csExitName = ConvertStringToCString(ExitName);
+      ExitName = Utility::TranslateWord(csExitName);
       if (ExitName == ExitLookup)
       { // THE Exit has been found
         Found = true;
@@ -233,11 +229,11 @@ bool Room::IsExit(CString MudCmdIsExit)
           return true;
         }
       }
-      while (Stuff.Left(13) != "ExitToRoomId:")
+      while (StrLeft(Stuff, 13) != "ExitToRoomId:")
       { // Position to ExitToRoomId line
-        RoomFile.ReadString(Stuff);
+        getline(RoomFile, Stuff);
       }
-      ExitToRoomId = Utility::GetWord(Stuff, 2);
+      ExitToRoomId = StrGetWord(Stuff, 2);
       MovePlayer(pDnodeActor, ExitToRoomId);
       CloseFile();
       ShowRoom(pDnodeActor);
@@ -276,21 +272,17 @@ bool Room::IsExit(CString MudCmdIsExit)
 * Is this a valid room?                                    *
 ************************************************************/
 
-bool Room::IsRoom(CString RoomId)
+bool Room::IsRoom(string RoomId)
 {
-  CStdioFile RoomFile;
-  CString    RoomFileName;
-  int        Success;
+  string     RoomFileName;
 
   RoomFileName =  ROOMS_DIR;
   RoomFileName += RoomId;
   RoomFileName += ".txt";
-  Success = RoomFile.Open(RoomFileName,
-               CFile::modeRead |
-               CFile::typeText);
-  if(Success)
+  RoomFile.open(RoomFileName);
+  if (RoomFile.is_open())
   {
-    RoomFile.Close();
+    RoomFile.close();
     return true;
   }
   else
@@ -299,37 +291,33 @@ bool Room::IsRoom(CString RoomId)
   }
 }
 
-bool Room::IsRoomType(CString RoomId, CString RoomType)
+bool Room::IsRoomType(string RoomId, string RoomType)
 {
-  CStdioFile RoomFile;
-  CString    RoomFileName;
-  CString    Stuff;
-  int        Success;
+  ifstream   RoomFile;
+  string     RoomFileName;
+  string     Stuff;
 
   RoomFileName = ROOMS_DIR;
   RoomFileName += RoomId;
   RoomFileName += ".txt";
-  Success = RoomFile.Open(RoomFileName,
-    CFile::modeRead |
-    CFile::typeText);
-  if (!Success)
+  RoomFile.open(RoomFileName);
+  if (!RoomFile.is_open())
   { // No such file???, But there should be, This is bad!
     AfxMessageBox("Room::IsRoomType - Room does not exist", MB_ICONSTOP);
     _endthread();
   }
-
   // RoomType
-  RoomFile.ReadString(Stuff);
-  RoomFile.ReadString(Stuff);
-  if (Stuff.Left(9) != "RoomType:")
+  getline(RoomFile, Stuff);
+  getline(RoomFile, Stuff);
+  if (StrLeft(Stuff, 9) != "RoomType:")
   { // Very bad, where did the RoomType go anyway?
     AfxMessageBox("Room::IsRoomType - RoomType: not found", MB_ICONSTOP);
     _endthread();
   }
-  Stuff = Utility::GetWords(Stuff, 2);
-  Stuff.TrimLeft();
-  Stuff.TrimRight();
-  RoomFile.Close();
+  Stuff = StrGetWords(Stuff, 2);
+  StrTrimLeft(Stuff);
+  StrTrimRight(Stuff);
+  RoomFile.close();
   if (Stuff != RoomType)
   { // No matching RoomType found
     return false;
@@ -373,14 +361,14 @@ void Room::ShowRoom(Dnode *pDnode)
 
 void Room::CloseFile()
 {
-  RoomFile.Close();
+  RoomFile.close();
 }
 
 /***********************************************************
 * Move followers                                           *
 ************************************************************/
 
-void Room::MoveFollowers(Dnode *pDnode, CString ExitToRoomId)
+void Room::MoveFollowers(Dnode *pDnode, string ExitToRoomId)
 { // Recursive
   Dnode *pDnodeGrpMem;
   int    i;
@@ -410,10 +398,12 @@ void Room::MoveFollowers(Dnode *pDnode, CString ExitToRoomId)
 * Go command - move the player                             *
 ************************************************************/
 
-void Room::MovePlayer(Dnode *pDnode, CString ExitToRoomId)
+void Room::MovePlayer(Dnode *pDnode, string ExitToRoomId)
 {
-  CString TmpStr;
-  CString MoveMsg;
+  CString csExitToRoomId;
+  string  TmpStr;
+  string  MoveMsg;
+  CString csMoveMsg;
 
   pDnodeSrc = pDnode;
   pDnodeTgt = pDnode;
@@ -421,16 +411,18 @@ void Room::MovePlayer(Dnode *pDnode, CString ExitToRoomId)
   if (MudCmd != "flee")
   { // If player is not fleeing
     MoveMsg = pDnode->PlayerName + " leaves.";
-    Communication::SendToRoom(pDnode->pPlayer->RoomId, MoveMsg);
+    csMoveMsg = ConvertStringToCString(MoveMsg);
+    Communication::SendToRoom(pDnode->pPlayer->RoomId, csMoveMsg);
   }
   // Switch rooms
   pDnode->pPlayer->RoomIdBeforeMove = pDnode->pPlayer->RoomId;
-  pDnode->pPlayer->RoomId = ExitToRoomId;
-  World::Osi("Rooms", ExitToRoomId);
+  csExitToRoomId = ConvertStringToCString(ExitToRoomId);
+  pDnode->pPlayer->RoomId = csExitToRoomId;
+  World::Osi("Rooms", csExitToRoomId);
   pDnode->pPlayer->Save();
   // Arrives message
   MoveMsg = pDnode->PlayerName + " arrives.";
-  Communication::SendToRoom(pDnode->pPlayer->RoomId, MoveMsg);
+  Communication::SendToRoom(pDnode->pPlayer->RoomId, csMoveMsg);
 }
 
 /***********************************************************
@@ -439,16 +431,13 @@ void Room::MovePlayer(Dnode *pDnode, CString ExitToRoomId)
 
 bool Room::OpenFile(Dnode *pDnode)
 {
-  CString RoomFileName;
-  int     Success;
+  string  RoomFileName;
 
   RoomFileName =  ROOMS_DIR;
   RoomFileName += pDnode->pPlayer->RoomId;
   RoomFileName += ".txt";
-  Success = RoomFile.Open(RoomFileName,
-               CFile::modeRead |
-               CFile::typeText);
-  if(Success)
+  RoomFile.open(RoomFileName);
+  if(RoomFile.is_open())
   {
     return true;
   }
@@ -464,22 +453,24 @@ bool Room::OpenFile(Dnode *pDnode)
 
 void Room::ShowRoomDesc(Dnode *pDnode)
 {
-  CString Stuff;
+  string Stuff;
+  CString csStuff;
 
   // RoomDesc
-  RoomFile.ReadString(Stuff);
-  if (Stuff.Left(9) != "RoomDesc:")
+  getline(RoomFile, Stuff);
+  if (StrLeft(Stuff, 9) != "RoomDesc:")
   {
     AfxMessageBox("Room::ShowRoomDesc - RoomDesc: not found", MB_ICONSTOP);
     _endthread();
   }
   // Room Description
-  RoomFile.ReadString(Stuff);
+  getline(RoomFile, Stuff);
   while (Stuff != "End of RoomDesc")
   {
-    pDnode->PlayerOut += Stuff;
+    csStuff = ConvertStringToCString(Stuff);
+    pDnode->PlayerOut += csStuff;
     pDnode->PlayerOut += "\r\n";
-    RoomFile.ReadString(Stuff);
+    getline(RoomFile, Stuff);
   }
 }
 
@@ -489,22 +480,24 @@ void Room::ShowRoomDesc(Dnode *pDnode)
 
 void Room::ShowRoomExitDesc()
 {
-  CString Stuff;
+  string  Stuff;
+  CString csStuff;
 
   // ExitDesc
-  RoomFile.ReadString(Stuff);
-  if (Stuff.Left(9) != "ExitDesc:")
+  getline(RoomFile, Stuff);
+  if (StrLeft(Stuff, 9) != "ExitDesc:")
   {
     AfxMessageBox("Room::ShowRoomExitDesc - ExitDesc: not found", MB_ICONSTOP);
     _endthread();
   }
   // Exit Description
-  RoomFile.ReadString(Stuff);
-  while (Stuff.Left(13) != "ExitToRoomId:")
+  getline(RoomFile, Stuff);
+  while (StrLeft(Stuff, 13) != "ExitToRoomId:")
   {
-    pDnodeActor->PlayerOut += Stuff;
+    csStuff = ConvertStringToCString(Stuff);
+    pDnodeActor->PlayerOut += csStuff;
     pDnodeActor->PlayerOut += "\r\n";
-    RoomFile.ReadString(Stuff);
+    getline(RoomFile, Stuff);
   }
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -517,20 +510,22 @@ void Room::ShowRoomExitDesc()
 void Room::ShowRoomExits(Dnode *pDnode)
 {
   bool    NoExits;
-  CString Stuff;
+  string  Stuff;
+  CString csStuff;
 
   NoExits = true;
   pDnode->PlayerOut += "&C";
   pDnode->PlayerOut += "Exits:";
   while (Stuff != "End of Exits")
   {
-    RoomFile.ReadString(Stuff);
-    if (Stuff.Left(9) == "ExitName:")
+    getline(RoomFile, Stuff);
+    if (StrLeft(Stuff, 9) == "ExitName:")
     {
       NoExits = false;
-      Stuff = Utility::GetWord(Stuff, 2);
+      Stuff = StrGetWord(Stuff, 2);
       pDnode->PlayerOut += " ";
-      pDnode->PlayerOut += Stuff;
+      csStuff = ConvertStringToCString(Stuff);
+      pDnode->PlayerOut += csStuff;
     }
   }
   if (NoExits)
@@ -546,63 +541,73 @@ void Room::ShowRoomExits(Dnode *pDnode)
 
 void Room::ShowRoomName(Dnode *pDnode)
 {
-  CString RoomId;
-  CString RoomType;
-  CString Stuff;
-  CString Terrain;
+  string  RoomId;
+  CString csRoomId;
+  string  RoomType;
+  CString csRoomType;
+  string  Stuff;
+  CString csStuff;
+  string  Terrain;
+  CString csTerrain;
+  string  RoomName;
+  CString csRoomName;
 
   // RoomId
-  RoomFile.ReadString(Stuff);
-  if (Stuff.Left(7) != "RoomId:")
+  getline(RoomFile, Stuff);
+  if (StrLeft(Stuff, 7) != "RoomId:")
   {
     AfxMessageBox("Room::ShowRoomName - RoomId: not found", MB_ICONSTOP);
     _endthread();
   }
-  RoomId = Utility::GetWord(Stuff, 2);
-  if (RoomId != pDnode->pPlayer->RoomId)
+  RoomId = StrGetWord(Stuff, 2);
+  csRoomId = ConvertStringToCString(RoomId);
+  if (csRoomId != pDnode->pPlayer->RoomId)
   {
     AfxMessageBox("Room::ShowRoomName - RoomId mis-match", MB_ICONSTOP);
     _endthread();
   }
   // RoomType
-  RoomFile.ReadString(Stuff);
-  if (Stuff.Left(9) != "RoomType:")
+  getline(RoomFile, Stuff);
+  if (StrLeft(Stuff, 9) != "RoomType:")
   {
     AfxMessageBox("Room::ShowRoomName - RoomType: not found", MB_ICONSTOP);
     _endthread();
   }
-  RoomType = Utility::GetWords(Stuff, 2);
+  RoomType = StrGetWords(Stuff, 2);
   // Terrain
-  RoomFile.ReadString(Stuff);
-  if (Stuff.Left(8) != "Terrain:")
+  getline(RoomFile, Stuff);
+  if (StrLeft(Stuff, 8) != "Terrain:")
   {
     AfxMessageBox("Room::ShowRoomName - Terrain: not found", MB_ICONSTOP);
     _endthread();
   }
-  Terrain = Utility::GetWord(Stuff, 2);
+  Terrain = StrGetWord(Stuff, 2);
+  csTerrain = ConvertStringToCString(Terrain);
   // RoomName
-  RoomFile.ReadString(Stuff);
-  if (Stuff.Left(9) != "RoomName:")
+  getline(RoomFile, Stuff);
+  if (StrLeft(Stuff, 9) != "RoomName:")
   {
     AfxMessageBox("Room::ShowRoomName - RoomName: not found", MB_ICONSTOP);
     _endthread();
   }
-  Stuff = Utility::GetWords(Stuff, 2);
-  Stuff.TrimLeft();
+  RoomName = StrGetWords(Stuff, 2);
+  StrTrimLeft(RoomName);
+  csRoomName = ConvertStringToCString(RoomName);
+  // Build player output
   pDnode->PlayerOut += "\r\n";
   pDnode->PlayerOut += "&C";
-  pDnode->PlayerOut += Stuff;
+  pDnode->PlayerOut += csRoomName;
   pDnode->PlayerOut += "&N";
   if (pDnode->pPlayer->RoomInfo)
   { // Show hidden room info
     pDnode->PlayerOut += "&M";
     pDnode->PlayerOut += " [";
     pDnode->PlayerOut += "&N";
-    pDnode->PlayerOut += RoomId;
+    pDnode->PlayerOut += csRoomId;
     pDnode->PlayerOut += " ";
-    pDnode->PlayerOut += Terrain;
+    pDnode->PlayerOut += csTerrain;
     pDnode->PlayerOut += " ";
-    pDnode->PlayerOut += RoomType;
+    pDnode->PlayerOut += csRoomType;
     pDnode->PlayerOut += "&M";
     pDnode->PlayerOut += "]";
     pDnode->PlayerOut += "&N";
