@@ -585,7 +585,8 @@ void World::MakeMobilesMove1()
     RoomMobFileName = FileList.GetFileName();
     if (RoomMobFileName.Find("Spawn") == -1)
     { // Not a spawn room, Random position in list
-      TmpStr.Format("%05d",rand());
+      sprintf(Buf, "%05d",rand());
+      TmpStr = ConvertStringToCString(Buf);
     }
     else
     { // Force 'spawn' rooms to be first in list

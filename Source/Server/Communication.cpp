@@ -352,8 +352,8 @@ void Communication::SockCheckForNewConnections()
   SocketCount = select(-1, &InpSet, &OutSet, &ExcSet, &TimeOut);
   if (SocketCount == -1)
   { // Something is wrong
-    LogBuf.Format("%s", strerror(errno));
-    LogBuf = "Communication::SockCheckForNewConnections: select: " + LogBuf;
+    sprintf(Buf,"%s", strerror(errno));
+    LogBuf = "Communication::SockCheckForNewConnections: select: " + ConvertStringToCString(Buf);
     Log::LogIt(LogBuf);
     AfxMessageBox("Communication::SockCheckForNewConnections - Error: select", MB_ICONSTOP);
     _endthread();
@@ -380,8 +380,8 @@ void Communication::SockClosePort(int Port)
     AfxMessageBox("Communication::~Communication - Error: closesocket", MB_ICONSTOP);
     _endthread();
   }
-  LogBuf.Format("%d", Port);
-  LogBuf = "Closed port " + LogBuf;
+  sprintf(Buf, "%d", Port);
+  LogBuf = "Closed port " + ConvertStringToCString(Buf);;
   Log::LogIt(LogBuf);
 }
 
@@ -409,8 +409,8 @@ void Communication::SockOpenPort(int Port)
   Result = WSAStartup(VersionRequested, &WsaData);
   if (Result != 0)
   {
-    LogBuf.Format("%s", strerror(errno));
-    LogBuf = "WinSock not available!: " + LogBuf;
+    sprintf(Buf, "%s", strerror(errno));
+    LogBuf = "WinSock not available!: " + ConvertStringToCString(Buf);
     Log::LogIt(LogBuf);
     AfxMessageBox("Communication::SockOpenPort - WinSock not available", MB_ICONSTOP);
     _endthread();
@@ -419,8 +419,8 @@ void Communication::SockOpenPort(int Port)
   ListenSocket = socket(AF_INET, SOCK_STREAM, 0);
   if (ListenSocket == SOCKET_ERROR)
   {
-    LogBuf.Format("%s", strerror(errno));
-    LogBuf = "Communication:SockOpenPort - Error: initializing socket: " + LogBuf;
+    sprintf(Buf, "%s", strerror(errno));
+    LogBuf = "Communication:SockOpenPort - Error: initializing socket: " + ConvertStringToCString(Buf);
     Log::LogIt(LogBuf);
     AfxMessageBox("Communication::SockOpenPort - Error: initializing socket", MB_ICONSTOP);
     _endthread();
@@ -429,8 +429,8 @@ void Communication::SockOpenPort(int Port)
   Result = setsockopt(ListenSocket, SOL_SOCKET, SO_REUSEADDR, (char *)&OptionValue, sizeof(OptionValue));
   if (Result != 0)
   {
-    LogBuf.Format("%s", strerror(errno));
-    LogBuf = "Communication:SockOpenPort - Error: setsockopt: SOL_SOCKET SO_REUSEADDR" + LogBuf;
+    sprintf(Buf, "%s", strerror(errno));
+    LogBuf = "Communication:SockOpenPort - Error: setsockopt: SOL_SOCKET SO_REUSEADDR" + ConvertStringToCString(Buf);
     Log::LogIt(LogBuf);
     AfxMessageBox("Communication::SockOpenPort - Error: setsockopt", MB_ICONSTOP);
     _endthread();
@@ -439,8 +439,8 @@ void Communication::SockOpenPort(int Port)
   Result = setsockopt(ListenSocket, SOL_SOCKET, SO_SNDBUF, (char *) &OptionValue, sizeof(OptionValue));
   if (Result != 0)
   {
-    LogBuf.Format("%s", strerror(errno));
-    LogBuf = "Communication:SockOpenPort - Error: setsockopt SNDBUF: " + LogBuf;
+    sprintf(Buf, "%s", strerror(errno));
+    LogBuf = "Communication:SockOpenPort - Error: setsockopt SNDBUF: " + ConvertStringToCString(Buf);
     Log::LogIt(LogBuf);
     AfxMessageBox("Communication::SockOpenPort - Error: setsockopt SNDBUF", MB_ICONSTOP);
     _endthread();
@@ -449,8 +449,8 @@ void Communication::SockOpenPort(int Port)
   Result = setsockopt(ListenSocket, SOL_SOCKET, SO_LINGER, (char *) &ld, sizeof(ld));
   if (Result != 0)
   {
-    LogBuf.Format("%s", strerror(errno));
-    LogBuf = "Communication:SockOpenPort - Error: setsockopt SO_LINGER: " + LogBuf;
+    sprintf(Buf, "%s", strerror(errno));
+    LogBuf = "Communication:SockOpenPort - Error: setsockopt SO_LINGER: " + ConvertStringToCString(Buf);
     Log::LogIt(LogBuf);
     AfxMessageBox("Communication::SockOpenPort - Error: setsockopt SO_LINGER", MB_ICONSTOP);
     _endthread();
@@ -464,8 +464,8 @@ void Communication::SockOpenPort(int Port)
   Result = bind(ListenSocket, (struct sockaddr *)&sa, sizeof(sa));
   if (Result != 0)
   {
-    LogBuf.Format("%s", strerror(errno));
-    LogBuf = "Communication:SockOpenPort - Error: bind " + LogBuf;
+    sprintf(Buf, "%s", strerror(errno));
+    LogBuf = "Communication:SockOpenPort - Error: bind " + ConvertStringToCString(Buf);
     Log::LogIt(LogBuf);
     AfxMessageBox("Communication::SockOpenPort - Error: bind", MB_ICONSTOP);
     _endthread();
@@ -474,8 +474,8 @@ void Communication::SockOpenPort(int Port)
   Result = ioctlsocket(ListenSocket, FIONBIO, &FionbioParm);
   if (Result != 0)
   {
-    LogBuf.Format("%s", strerror(errno));
-    LogBuf = "Communication:SockOpenPort ioctlsocket: " + LogBuf;
+    sprintf(Buf, "%s", strerror(errno));
+    LogBuf = "Communication:SockOpenPort ioctlsocket: " + ConvertStringToCString(Buf);
     Log::LogIt(LogBuf);
     AfxMessageBox("Communication::SockOpenPort - Error: ioctlsocket", MB_ICONSTOP);
     _endthread();
@@ -484,15 +484,15 @@ void Communication::SockOpenPort(int Port)
   Result = listen(ListenSocket, 20);
   if (Result != 0)
   {
-    LogBuf.Format("%s", strerror(errno));
-    LogBuf = "Communication:SockOpenPort - Error: listen " + LogBuf;
+    sprintf(Buf, "%s", strerror(errno));
+    LogBuf = "Communication:SockOpenPort - Error: listen " + ConvertStringToCString(Buf);
     Log::LogIt(LogBuf);
     ::closesocket(ListenSocket);
     AfxMessageBox("Communication::SockOpenPort - Error: listen", MB_ICONSTOP);
     _endthread();
   }
-  LogBuf.Format("%d", Port);
-  LogBuf = "Listening on port " + LogBuf;
+  sprintf(Buf, "%d", Port);
+  LogBuf = "Listening on port " + ConvertStringToCString(Buf);
   Log::LogIt(LogBuf);
   // Load command array
   CommandArrayLoad();
@@ -527,8 +527,8 @@ void Communication::SockRecv()
       if (pDnodeActor->InputTick >= INPUT_TICK)
       { // No input, kick 'em out
         pDnodeActor->PlayerStateBye = true;
-        LogBuf.Format("%d", pDnodeActor->DnodeFd);
-        LogBuf = "Time out during logon on descriptor " + LogBuf;
+        sprintf(Buf, "%d", pDnodeActor->DnodeFd);
+        LogBuf = "Time out during logon on descriptor " + ConvertStringToCString(Buf);;
         Log::LogIt(LogBuf);
         pDnodeActor->PlayerOut += "\r\n";
         pDnodeActor->PlayerOut += "No input ... closing connection";
@@ -697,8 +697,8 @@ void Communication::SockRecv()
       DnodeFdSave = pDnodeActor->DnodeFd;
       if (Descriptor::DeleteNode())
       { // When connection is deleted from list, log it
-        LogBuf.Format("%d", DnodeFdSave);
-        LogBuf = "Closed connection on descriptor " + LogBuf;
+        sprintf(Buf, "%d", DnodeFdSave);
+        LogBuf = "Closed connection on descriptor " + ConvertStringToCString(Buf);;
         Log::LogIt(LogBuf);
         ConnectionCount = Dnode::GetCount();
         if (ConnectionCount == 1)
@@ -946,7 +946,7 @@ void Communication::CommandParse()
   { // 'go' command is ok
     pDnodeActor->CmdName3 = pDnodeActor->CmdName2;
     pDnodeActor->CmdName2 = pDnodeActor->CmdName1;
-    pDnodeActor->CmdName1 = MudCmd;
+    pDnodeActor->CmdName1 = ConvertCStringToString(MudCmd);
     pDnodeActor->CmdTime3 = pDnodeActor->CmdTime2;
     pDnodeActor->CmdTime2 = pDnodeActor->CmdTime1;
     pDnodeActor->CmdTime1 = clock();
@@ -1497,7 +1497,8 @@ void Communication::DoAdvance()
   PlayerName.MakeLower();
   TargetName.MakeLower();
   Level = atoi(Utility::GetWord(CmdStr, 3));
-  LevelString.Format("%d", Level);
+  sprintf(Buf, "%d", Level);
+  LevelString = ConvertStringToCString(Buf);
   if (TargetName == "")
   { // No name given
     pDnodeActor->PlayerOut += "Advance who?";
@@ -1833,7 +1834,8 @@ void Communication::DoBuy()
   // Player receives some money
   pDnodeActor->pPlayer->SetMoney('-', Cost, "Silver");
   // Send messages
-  TmpStr.Format("%d", Cost);
+  sprintf(Buf, "%d", Cost);
+  TmpStr = ConvertStringToCString(Buf);
   pDnodeActor->PlayerOut += "You buy ";
   pDnodeActor->PlayerOut += Desc1;
   pDnodeActor->PlayerOut += " for ";
@@ -2117,7 +2119,7 @@ void Communication::DoDelete()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  if (Password != pDnodeActor->pPlayer->Password)
+  if (Password != ConvertStringToCString(pDnodeActor->pPlayer->Password))
   {
     pDnodeActor->PlayerOut += "Your password was not entered correctly.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -3712,7 +3714,8 @@ void Communication::DoGroup()
   if (GrpFull)
   { // Group is full
     pDnodeActor->PlayerOut += "Your group is full, maximum of ";
-    TmpStr.Format("%d", GRP_LIMIT);
+    sprintf(Buf, "%d", GRP_LIMIT);
+    TmpStr = ConvertStringToCString(Buf);
     TmpStr.TrimLeft();
     TmpStr.TrimRight();
     pDnodeActor->PlayerOut+= TmpStr;
@@ -4545,7 +4548,7 @@ void Communication::DoPassword()
   Password     = Utility::GetWord(CmdStr, 2);
   NewPassword1 = Utility::GetWord(CmdStr, 3);
   NewPassword2 = Utility::GetWord(CmdStr, 4);
-  if (Password != pDnodeActor->pPlayer->Password)
+  if (Password != ConvertStringToCString(pDnodeActor->pPlayer->Password))
   {
     pDnodeActor->PlayerOut += "Password does not match current password.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -5080,13 +5083,15 @@ void Communication::DoSell()
   Cost = Cost * SellCountInt;
   pDnodeActor->pPlayer->SetMoney('+', Cost, "Silver");
   // Send messages
-  TmpStr.Format("%d", SellCountInt);
+  sprintf(Buf, "%d", SellCountInt);
+  TmpStr = ConvertStringToCString(Buf);
   TmpStr = "(" + TmpStr + ") ";
   pDnodeActor->PlayerOut += TmpStr;
   pDnodeActor->PlayerOut += "You sell ";
   pDnodeActor->PlayerOut += Desc1;
   pDnodeActor->PlayerOut += " for ";
-  TmpStr.Format("%d", Cost);
+  sprintf(Buf, "%d", Cost);
+  TmpStr = ConvertStringToCString(Buf);
   pDnodeActor->PlayerOut += TmpStr;
   pDnodeActor->PlayerOut += " piece(s) of silver.";
   pDnodeActor->PlayerOut += "\r\n";
@@ -5495,12 +5500,13 @@ void Communication::DoTell()
 
 void Communication::DoTime()
 {
-  CTime   CurrentTime;
   CString DisplayCurrentTime;
 
   // Server time
-  CurrentTime = CTime::GetCurrentTime();
-  DisplayCurrentTime = CurrentTime.Format("%A, %B %d, %Y, %I:%M:%S %p");
+  time_t now = chrono::system_clock::to_time_t(chrono::system_clock::now());
+  string s(30, '\0');
+  strftime(&s[0], s.size(), "%Y-%m-%d %H:%M:%S", localtime(&now));
+  DisplayCurrentTime = ConvertStringToCString(s);
   pDnodeActor->PlayerOut += "Current server time is: ";
   pDnodeActor->PlayerOut += DisplayCurrentTime;
   pDnodeActor->PlayerOut += "\r\n";
@@ -5789,47 +5795,56 @@ void Communication::DoTrain()
     pDnodeActor->PlayerOut += "\r\n";
     // Axe
     pDnodeActor->PlayerOut += "Axe:    ";
-    TmpStr.Format("%3d", pDnodeActor->pPlayer->SkillAxe);
+    sprintf(Buf, "%3d", pDnodeActor->pPlayer->SkillAxe);
+    TmpStr = ConvertStringToCString(Buf);
     pDnodeActor->PlayerOut += TmpStr;
     pDnodeActor->PlayerOut += "\r\n";
     // Club
     pDnodeActor->PlayerOut += "Club:   ";
-    TmpStr.Format("%3d", pDnodeActor->pPlayer->SkillClub);
+    sprintf(Buf, "%3d", pDnodeActor->pPlayer->SkillClub);
+    TmpStr = ConvertStringToCString(Buf);
     pDnodeActor->PlayerOut += TmpStr;
     pDnodeActor->PlayerOut += "\r\n";
     // Dagger
     pDnodeActor->PlayerOut += "Dagger: ";
-    TmpStr.Format("%3d", pDnodeActor->pPlayer->SkillDagger);
+    sprintf(Buf, "%3d", pDnodeActor->pPlayer->SkillDagger);
+    TmpStr = ConvertStringToCString(Buf);
     pDnodeActor->PlayerOut += TmpStr;
     pDnodeActor->PlayerOut += "\r\n";
     // Hammer
     pDnodeActor->PlayerOut += "Hammer: ";
-    TmpStr.Format("%3d", pDnodeActor->pPlayer->SkillHammer);
+    sprintf(Buf, "%3d", pDnodeActor->pPlayer->SkillHammer);
+    TmpStr = ConvertStringToCString(Buf);
     pDnodeActor->PlayerOut += TmpStr;
     pDnodeActor->PlayerOut += "\r\n";
     // Spear
     pDnodeActor->PlayerOut += "Spear:  ";
-    TmpStr.Format("%3d", pDnodeActor->pPlayer->SkillSpear);
+    sprintf(Buf, "%3d", pDnodeActor->pPlayer->SkillSpear);
+    TmpStr = ConvertStringToCString(Buf);
     pDnodeActor->PlayerOut += TmpStr;
     pDnodeActor->PlayerOut += "\r\n";
     // Staff
     pDnodeActor->PlayerOut += "Staff:  ";
-    TmpStr.Format("%3d", pDnodeActor->pPlayer->SkillStaff);
+    sprintf(Buf, "%3d", pDnodeActor->pPlayer->SkillStaff);
+    TmpStr = ConvertStringToCString(Buf);
     pDnodeActor->PlayerOut += TmpStr;
     pDnodeActor->PlayerOut += "\r\n";
     // Sword
     pDnodeActor->PlayerOut += "Sword:  ";
-    TmpStr.Format("%3d", pDnodeActor->pPlayer->SkillSword);
+    sprintf(Buf, "%3d", pDnodeActor->pPlayer->SkillSword);
+    TmpStr = ConvertStringToCString(Buf);
     pDnodeActor->PlayerOut += TmpStr;
     pDnodeActor->PlayerOut += "\r\n";
     // Skill points used
     pDnodeActor->PlayerOut += "Skill points used:      ";
-    TmpStr.Format("%4d", SkillPointsUsed);
+    sprintf(Buf, "%4d", SkillPointsUsed);
+    TmpStr = ConvertStringToCString(Buf);
     pDnodeActor->PlayerOut += TmpStr;
     pDnodeActor->PlayerOut += "\r\n";
     // Skill points remaining
     pDnodeActor->PlayerOut += "Skill points remaining: ";
-    TmpStr.Format("%4d", SkillPointsRemaining);
+    sprintf(Buf, "%4d", SkillPointsRemaining);
+    TmpStr = ConvertStringToCString(Buf);
     pDnodeActor->PlayerOut += TmpStr;
     pDnodeActor->PlayerOut += "\r\n";
     // Prompt
@@ -6120,8 +6135,10 @@ void Communication::DoWho()
         Descriptor::SetpDnodeCursorNext();
         continue;
       }
-      DisplayName.Format("%-15s", (LPCSTR) pDnodeOthers->PlayerName);
-      DisplayLevel.Format("%3d", pDnodeOthers->pPlayer->Level);
+      sprintf(Buf, "%-15s", (LPCSTR) pDnodeOthers->PlayerName);
+      DisplayName = ConvertStringToCString(Buf);
+      sprintf(Buf, "%3d", pDnodeOthers->pPlayer->Level);
+      DisplayLevel = ConvertStringToCString(Buf);
       pDnodeActor->PlayerOut += DisplayName;
       pDnodeActor->PlayerOut += " ";
       pDnodeActor->PlayerOut += DisplayLevel;
@@ -6311,11 +6328,13 @@ void Communication::GrpExperience(int MobileExpPoints, int MobileLevel)
     // Send experience message 
     if (ExpPoints >= 0)
     { // Player gains xp
-      TmpStr.Format("%d",ExpPoints);
+      sprintf(Buf, "%d",ExpPoints);
+      TmpStr = ConvertStringToCString(Buf);
     }
     else
     { // Player looses xp
-      TmpStr.Format("%d",ExpPoints * -1);
+      sprintf(Buf, "%d",ExpPoints * -1);
+      TmpStr = ConvertStringToCString(Buf);
     }
     pDnodeGrpMem->PlayerOut += "\r\n";
     pDnodeGrpMem->PlayerOut += "&Y";
@@ -6716,7 +6735,7 @@ void Communication::LogonWaitPassword()
   CString  LogBuf;
   CString  PlayerMsg;
 
-  if (pDnodeActor->PlayerPassword == CmdStr)
+  if (pDnodeActor->PlayerPassword == ConvertCStringToString(CmdStr))
   { // Password matches
     if (pDnodeActor->PlayerNewCharacter == "Y")
     { // Password matches and a new player, get sex
@@ -6804,7 +6823,7 @@ void Communication::LogonWaitPassword()
       pDnodeActor->PlayerStateWaitPassword = true;
       if (pDnodeActor->PlayerWrongPasswordCount == 1)
       { // First password entered
-        pDnodeActor->PlayerPassword = CmdStr;
+        pDnodeActor->PlayerPassword = ConvertCStringToString(CmdStr);
         pDnodeActor->PlayerOut += "\r\n";
         pDnodeActor->PlayerOut += "Retype Password:";
         pDnodeActor->PlayerOut += "\r\n";
@@ -6904,8 +6923,8 @@ void Communication::SockNewConnection()
   SocketHandle = accept(ListenSocket, (struct sockaddr *)&Sock, &SocketSize);
   if (!SocketHandle)
   {
-    LogBuf.Format("%s", strerror(errno));
-    LogBuf = "Communication::SockNewConnection - Error: accept: " + LogBuf;
+    sprintf(Buf, "%s", strerror(errno));
+    LogBuf = "Communication::SockNewConnection - Error: accept: " + ConvertStringToCString(Buf);
     Log::LogIt(LogBuf);
     AfxMessageBox("Communication::SockNewConnection - Error: accept", MB_ICONSTOP);
     _endthread();
@@ -6915,13 +6934,14 @@ void Communication::SockNewConnection()
   Result = ioctlsocket(ListenSocket, FIONBIO, &FionbioParm);
   if (Result != 0)
   {
-    LogBuf.Format("%s", strerror(errno));
-    LogBuf = "Communication::SockNewConnection - Error: ioctlsocket " + LogBuf;
+    sprintf(Buf, "%s", strerror(errno));
+    LogBuf = "Communication::SockNewConnection - Error: ioctlsocket " + ConvertStringToCString(Buf);
     Log::LogIt(LogBuf);
     AfxMessageBox("Communication::NewConection - Error: ioctlsocket", MB_ICONSTOP);
     _endthread();
   }
-  TmpStr.Format("%d", SocketHandle);
+  sprintf(Buf, "%d", SocketHandle);
+  TmpStr = ConvertStringToCString(Buf);
   LogBuf  = "New connection with socket handle ";
   LogBuf += TmpStr;
   LogBuf += " and address ";
@@ -7128,11 +7148,13 @@ void Communication::ViolenceMobileDied(CString MobileBeenWhacked,
     // Send experience message to player 
     if (ExpPoints >= 0)
     { // Player gains xp
-      TmpStr.Format("%d",ExpPoints);
+      sprintf(Buf, "%d",ExpPoints);
+      TmpStr = ConvertStringToCString(Buf);
     }
     else
     { // Player looses xp
-      TmpStr.Format("%d",ExpPoints * -1);
+      sprintf(Buf, "%d",ExpPoints * -1);
+      TmpStr = ConvertStringToCString(Buf);
     }
     pDnodeActor->PlayerOut += "\r\n";
     pDnodeActor->PlayerOut += "&Y";
@@ -7433,7 +7455,8 @@ void Communication::ViolencePlayerDied(CString MobileDesc1)
   }
   else
   { // No experience was lost
-    TmpStr.Format("%d", PLAYER_LOOSES_EXP_LEVEL);
+    sprintf(Buf, "%d", PLAYER_LOOSES_EXP_LEVEL);
+    TmpStr = ConvertStringToCString(Buf);
     pDnodeActor->PlayerOut += "&Y";
     pDnodeActor->PlayerOut += "After level ";
     pDnodeActor->PlayerOut += TmpStr;

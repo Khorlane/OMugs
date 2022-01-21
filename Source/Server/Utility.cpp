@@ -303,7 +303,8 @@ CString Utility::GetWordPosLen(CString String, int WordNbr)
   }
   if (Found)
   {
-    Word.Format("%d %d", x+1, y-x-1);
+    sprintf(Buf, "%d %d", x+1, y-x-1);
+    Word = ConvertStringToCString(Buf);
   }
   else
   {

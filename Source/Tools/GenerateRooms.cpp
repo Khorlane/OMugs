@@ -106,17 +106,20 @@ void GenerateRooms::Final()
   CString Message;
 
   // Room rows read
-  TmpStr.Format("%d", RowCount1);
+  sprintf(Buf, "%d", RowCount1);
+  TmpStr = ConvertStringToCString(Buf);
   Message  = "Room rows read from Rooms recordset = ";
   Message += TmpStr;
   Message += "\n";
   // Exit rows read
-  TmpStr.Format("%d", RowCount2);
+  sprintf(Buf, "%d", RowCount2);
+  TmpStr = ConvertStringToCString(Buf);
   Message += "Exit rows read from Exits recordset = ";
   Message += TmpStr;
   Message += "\n";
   // Rooms created
-  TmpStr.Format("%d", RoomCount);
+  sprintf(Buf, "%d", RoomCount);
+  TmpStr = ConvertStringToCString(Buf);
   Message += "Rooms created = ";
   Message += TmpStr;
   AfxMessageBox(Message, MB_ICONINFORMATION);
@@ -268,7 +271,8 @@ void GenerateRooms::Parse1()
   //**********
   //* RoomId *
   //**********
-  TmpStr.Format("%d",CurrentRoomNbr);
+  sprintf(Buf, "%d", CurrentRoomNbr);
+  TmpStr = ConvertStringToCString(Buf);
   oRoomId = oRoomName + TmpStr;
   oRoomId.Remove(' ');
   //************
@@ -457,7 +461,8 @@ void GenerateRooms::Parse2()
   //****************
   //* ExitToRoomId *
   //****************
-  ToRoomNbr.Format("%d", iToRoomNbr);
+  sprintf(Buf, "%d", iToRoomNbr);
+  ToRoomNbr = ConvertStringToCString(Buf);
   ToRoomName = iToRoomName;
   oExitToRoomId = ToRoomName + ToRoomNbr;
   oExitToRoomId.Remove(' ');

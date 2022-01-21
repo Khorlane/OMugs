@@ -241,9 +241,11 @@ void Player::CreatePrompt()
   CString TmpStr;
 
   Output  = "\r\n";
-  TmpStr.Format("%d", HitPoints);
+  sprintf(Buf, "%d", HitPoints);
+  TmpStr = ConvertStringToCString(Buf);
   Output += TmpStr + "H ";
-  TmpStr.Format("%d", MovePoints);
+  sprintf(Buf, "%d", MovePoints);
+  TmpStr = ConvertStringToCString(Buf);
   Output += TmpStr + "M ";
   Output += "> ";
 }
@@ -371,7 +373,8 @@ void Player::GainExperience(Dnode *pDnode, int ExperienceToBeGained)
     Level++;
     LogBuf  = pDnode->PlayerName;
     LogBuf += " has gained level ";
-    TmpStr.Format("%d",Level);
+    sprintf(Buf, "%d",Level);
+    TmpStr = ConvertStringToCString(Buf);
     LogBuf += TmpStr;
     LogBuf += "!";
     Log::LogIt(LogBuf);
@@ -792,7 +795,7 @@ void Player::Save()
   Stuff = "Name:" + Name;
   WriteLine(Stuff);
   // Password
-  Stuff = "Password:" + Password;
+  Stuff = "Password:" + ConvertStringToCString(Password);
   WriteLine(Stuff);
   // Admin
   if (Admin)
@@ -839,7 +842,8 @@ void Player::Save()
     WriteLine(Stuff);
   }
   // ArmorClass - save only, ParsePlayerStuff calls CalcPlayerArmorClass
-  TmpStr.Format("%d", ArmorClass);
+  sprintf(Buf, "%d", ArmorClass);
+  TmpStr = ConvertStringToCString(Buf);
   Stuff = "ArmorClass:" + TmpStr;
   WriteLine(Stuff);
   // Born
@@ -858,7 +862,8 @@ void Player::Save()
     WriteLine(Stuff);
   }
   // Experience
-  TmpStr.Format("%f15.0",Experience);
+  sprintf(Buf, "%f15.0", Experience);
+  TmpStr = ConvertStringToCString(Buf);
   Stuff = "Experience:" + TmpStr;
   WriteLine(Stuff);
   // GoToArrive
@@ -868,11 +873,13 @@ void Player::Save()
   Stuff = "GoToDepart:" + GoToDepart;
   WriteLine(Stuff);
   // HitPoints
-  TmpStr.Format("%d", HitPoints);
+  sprintf(Buf, "%d", HitPoints);
+  TmpStr = ConvertStringToCString(Buf);
   Stuff = "HitPoints:" + TmpStr;
   WriteLine(Stuff);
   // Hunger
-  TmpStr.Format("%d", Hunger);
+  sprintf(Buf, "%d", Hunger);
+  TmpStr = ConvertStringToCString(Buf);
   Stuff = "Hunger:" + TmpStr;
   WriteLine(Stuff);
   // Invisible
@@ -887,11 +894,13 @@ void Player::Save()
     WriteLine(Stuff);
   }
   // Level
-  TmpStr.Format("%d", Level);
+  sprintf(Buf, "%d", Level);
+  TmpStr = ConvertStringToCString(Buf);
   Stuff = "Level:" + TmpStr;
   WriteLine(Stuff);
   // MovePoints
-  TmpStr.Format("%d", MovePoints);
+  sprintf(Buf, "%d", MovePoints);
+  TmpStr = ConvertStringToCString(Buf);
   Stuff = "MovePoints:" + TmpStr;
   WriteLine(Stuff);
   // OneWhack
@@ -937,39 +946,48 @@ void Player::Save()
   Stuff = "Sex:" + Sex;
   WriteLine(Stuff);
   // Silver
-  TmpStr.Format("%d", Silver);
+  sprintf(Buf, "%d", Silver);
+  TmpStr = ConvertStringToCString(Buf);
   Stuff = "Silver:" + TmpStr;
   WriteLine(Stuff);
   // SkillAxe
-  TmpStr.Format("%d", SkillAxe);
+  sprintf(Buf, "%d", SkillAxe);
+  TmpStr = ConvertStringToCString(Buf);
   Stuff = "SkillAxe:" + TmpStr;
   WriteLine(Stuff);
   // SkillClub
-  TmpStr.Format("%d", SkillClub);
+  sprintf(Buf, "%d", SkillClub);
+  TmpStr = ConvertStringToCString(Buf);
   Stuff = "SkillClub:" + TmpStr;
   WriteLine(Stuff);
   // SkillDagger
-  TmpStr.Format("%d", SkillDagger);
+  sprintf(Buf, "%d", SkillDagger);
+  TmpStr = ConvertStringToCString(Buf);
   Stuff = "SkillDagger:" + TmpStr;
   WriteLine(Stuff);
   // SkillHammer
-  TmpStr.Format("%d", SkillHammer);
+  sprintf(Buf, "%d", SkillHammer);
+  TmpStr = ConvertStringToCString(Buf);
   Stuff = "SkillHammer:" + TmpStr;
   WriteLine(Stuff);
   // SkillSpear
-  TmpStr.Format("%d", SkillSpear);
+  sprintf(Buf, "%d", SkillSpear);
+  TmpStr = ConvertStringToCString(Buf);
   Stuff = "SkillSpear:" + TmpStr;
   WriteLine(Stuff);
   // SkillStaff
-  TmpStr.Format("%d", SkillStaff);
+  sprintf(Buf, "%d", SkillStaff);
+  TmpStr = ConvertStringToCString(Buf);
   Stuff = "SkillStaff:" + TmpStr;
   WriteLine(Stuff);
   // SkillSword
-  TmpStr.Format("%d", SkillSword);
+  sprintf(Buf, "%d", SkillSword);
+  TmpStr = ConvertStringToCString(Buf);
   Stuff = "SkillSword:" + TmpStr;
   WriteLine(Stuff);
   // Thirst
-  TmpStr.Format("%d", Thirst);
+  sprintf(Buf, "%d", Thirst);
+  TmpStr = ConvertStringToCString(Buf);
   Stuff = "Thirst:" + TmpStr;
   WriteLine(Stuff);
   // TimePlayed
@@ -985,7 +1003,8 @@ void Player::Save()
   Stuff = "Title:" + Title;
   WriteLine(Stuff);
   // WeaponDamage
-  TmpStr.Format("%d", WeaponDamage);
+  sprintf(Buf, "%d", WeaponDamage);
+  TmpStr = ConvertStringToCString(Buf);
   Stuff = "WeaponDamage:" + TmpStr;
   WriteLine(Stuff);
   // WeaponDesc1
@@ -1021,7 +1040,8 @@ void Player::ShowMoney()
 {
   CString TmpStr;
 
-  TmpStr.Format("%d", Silver);
+  sprintf(Buf, "%d", Silver);
+  TmpStr = ConvertStringToCString(Buf);
   Output = "Silver: " + TmpStr + "\r\n";
 }
 
@@ -1045,24 +1065,29 @@ void Player::ShowStatus()
   Output += Sex;
   Output += "\r\n";
   // Level
-  TmpStr.Format("%d", Level);
+  sprintf(Buf, "%d", Level);
+  TmpStr = ConvertStringToCString(Buf);
   Output += "Level:        ";
   Output += TmpStr;
   Output += "\r\n";
   // Hit Points
   Output += "Hit Points:   ";
-  TmpStr.Format("%d", HitPoints);
+  sprintf(Buf, "%d", HitPoints);
+  TmpStr = ConvertStringToCString(Buf);
   Output += TmpStr;
   Output += "/";
-  TmpStr.Format("%d", Level * PLAYER_HPT_PER_LEVEL);
+  sprintf(Buf, "%d", Level * PLAYER_HPT_PER_LEVEL);
+  TmpStr = ConvertStringToCString(Buf);
   Output += TmpStr;
   Output += "\r\n";
   // Current Experience and Experience needed for next level
-  TmpStr.Format("%f15.0", Experience);
+  sprintf(Buf, "%f15.0", Experience);
+  TmpStr = ConvertStringToCString(Buf);
   TmpStr = TmpStr.Left(TmpStr.Find('.'));
   Exp1   = Utility::FormatCommas(TmpStr);
 
-  TmpStr.Format("%f15.0", CalcLevelExperience(Level + 1));
+  sprintf(Buf, "%f15.0", CalcLevelExperience(Level + 1));
+  TmpStr = ConvertStringToCString(Buf);
   TmpStr = TmpStr.Left(TmpStr.Find('.'));
   Exp2   = Utility::FormatCommas(TmpStr);
   while (Exp1.GetLength() < Exp2.GetLength())
@@ -1076,7 +1101,8 @@ void Player::ShowStatus()
   Output += Exp2;
   Output += "\r\n";
   // Armor Class
-  TmpStr.Format("%d", ArmorClass);
+  sprintf(Buf, "%d", ArmorClass);
+  TmpStr = ConvertStringToCString(Buf);
   Output += "Armor Class:  ";
   Output += TmpStr;
   Output += "\r\n";
@@ -1128,17 +1154,20 @@ void Player::ShowStatus()
   Output += TmpStr;
   Output += "\r\n";
   // Silver
-  TmpStr.Format("%d", Silver);
+  sprintf(Buf, "%d", Silver);
+  TmpStr = ConvertStringToCString(Buf);
   Output += "Silver:       ";
   Output += TmpStr;
   Output += "\r\n";
   // Hunger
-  TmpStr.Format("%d", Hunger);
+  sprintf(Buf, "%d", Hunger);
+  TmpStr = ConvertStringToCString(Buf);
   Output += "Hunger:       ";
   Output += TmpStr;
   Output += "\r\n";
   // Thirst
-  TmpStr.Format("%d", Thirst);
+  sprintf(Buf, "%d", Thirst);
+  TmpStr = ConvertStringToCString(Buf);
   Output += "Thirst:       ";
   Output += TmpStr;
   Output += "\r\n";

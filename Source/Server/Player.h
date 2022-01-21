@@ -96,7 +96,7 @@ class Player
 // Player file variables
   public:
     CString         Name;
-    CString         Password;
+    string          Password;
     bool            Admin;
     CString         Afk;
     bool            AllowAssist;

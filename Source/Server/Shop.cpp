@@ -195,18 +195,22 @@ void Shop::ListObjects()
   // Headings
   pDnodeActor->PlayerOut += "\r\n";
   // Line one
-  ShopText.Format("%-45s", "Items you may buy and sell");
+  sprintf(Buf, "%-45s", "Items you may buy and sell");
+  ShopText = ConvertStringToCString(Buf);
   pDnodeActor->PlayerOut += ShopText;
   pDnodeActor->PlayerOut += " ";
-  ShopText.Format("%-6s", "Amount");
+  sprintf(Buf, "%-6s", "Amount");
+  ShopText = ConvertStringToCString(Buf);
   pDnodeActor->PlayerOut += ShopText;
   pDnodeActor->PlayerOut += "\r\n";
   // Line two
-  ShopText.Format("%-45s", " ");
+  sprintf(Buf, "%-45s", " ");
+  ShopText = ConvertStringToCString(Buf);
   ShopText.Replace(" ", "-");
   pDnodeActor->PlayerOut += ShopText;
   pDnodeActor->PlayerOut += " ";
-  ShopText.Format("%-6s", " ");
+  sprintf(Buf, "%-6s", " ");
+  ShopText = ConvertStringToCString(Buf);
   ShopText.Replace(" ", "-");
   pDnodeActor->PlayerOut += ShopText;
   pDnodeActor->PlayerOut += "\r\n";
@@ -223,7 +227,8 @@ void Shop::ListObjects()
       pObject = Object::IsObject(ObjectId);
       if (pObject)
       { // Format shop item text
-        ShopText.Format("%-45s", pObject->Desc1);
+        sprintf(Buf, "%-45s", (LPCSTR) pObject->Desc1);
+        ShopText = ConvertStringToCString(Buf);
         TmpStr = ShopText;
         i = TmpStr.Remove('&');
         i = i * 2;
@@ -233,7 +238,8 @@ void Shop::ListObjects()
         }
         pDnodeActor->PlayerOut += ShopText;
         pDnodeActor->PlayerOut += " ";
-        ShopText.Format("%6d", pObject->Cost);
+        sprintf(Buf, "%6d", pObject->Cost);
+        ShopText = ConvertStringToCString(Buf);
         pDnodeActor->PlayerOut += ShopText;
         pDnodeActor->PlayerOut += "\r\n";
         // Done with object

@@ -97,7 +97,8 @@ CString Violence::CalcHealthPct(int HitPoints, int HitPointsMax)
   {
     HealthPct = "&R";
   }
-  TmpStr.Format("%3d", int(Percent));
+  sprintf(Buf, "%3d", int(Percent));
+  TmpStr = ConvertStringToCString(Buf);
   HealthPct += TmpStr;
   HealthPct += "&N";
   return HealthPct;
@@ -476,10 +477,12 @@ CString Violence::WhackMobile(CString MobileId,
     AfxMessageBox("Violence::WhackMobile - Open MobStatsHitPointsFile file failed (write)", MB_ICONSTOP);
     _endthread();
   }
-  TmpStr.Format("%d", MobHitPointsTotal);
+  sprintf(Buf, "%d", MobHitPointsTotal);
+  TmpStr = ConvertStringToCString(Buf);
   Stuff  = TmpStr;
   Stuff += " ";
-  TmpStr.Format("%d", MobHitPointsLeft);
+  sprintf(Buf, "%d", MobHitPointsLeft);
+  TmpStr = ConvertStringToCString(Buf);
   Stuff += TmpStr;
   MobStatsHitPointsFile.WriteString(Stuff);
   MobStatsHitPointsFile.SetLength(Stuff.GetLength());
@@ -488,7 +491,8 @@ CString Violence::WhackMobile(CString MobileId,
   MobHealthPct = CalcHealthPct(MobHitPointsLeft, MobHitPointsTotal);
   WeaponType.MakeLower();
   WeaponAction = Utility::TranslateWord(WeaponType);
-  DamageAmount.Format("%d", DamageToMobile);
+  sprintf(Buf, "%d", DamageToMobile);
+  DamageAmount = ConvertStringToCString(Buf);
   MobHealthPctNew = Utility::CalcPct(MobHitPointsLeft, MobHitPointsTotal);
   DamageMagnitude = MobHealthPctOld - MobHealthPctNew;
   if (DamageMagnitude > 70)
@@ -607,7 +611,8 @@ CString Violence::WhackPlayer(CString MobileDesc1,
   // Capitalize first leter of first word of MobileDesc1
   MobileDesc1 = Utility::MakeFirstUpper(MobileDesc1);
   // Format damage message
-  TmpStr.Format("%d", DamageToPlayer);
+  sprintf(Buf, "%d", DamageToPlayer);
+  TmpStr = ConvertStringToCString(Buf);
   PlayerBeenWhacked =  MobileDesc1;
   PlayerBeenWhacked += " ";
   PlayerBeenWhacked += MobileAttack;

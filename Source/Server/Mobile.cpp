@@ -136,7 +136,8 @@ void Mobile::AddMobToRoom(CString RoomId, CString MobileId)
     { // Existing mobile same as new mobile, add 1 to count
       MobCount = atoi(Utility::GetWord(Stuff, 1));
       MobCount++;
-      TmpStr.Format("%d", MobCount);
+      sprintf(Buf, "%d", MobCount);
+      TmpStr = ConvertStringToCString(Buf);
       TmpStr += " ";
       TmpStr += MobileId;
       TmpStr += "\n";
@@ -901,7 +902,8 @@ void Mobile::RemoveMobFromRoom(CString RoomId, CString MobileId)
       MobileIdRemoved = true;
       if (MobCount > 0)
       {
-        TmpStr.Format("%d", MobCount);
+        sprintf(Buf, "%d", MobCount);
+        TmpStr = ConvertStringToCString(Buf);
         MobileId = TmpStr + " " + MobileId;
         MobileId += "\n";
         RoomMobTmpFile.WriteString(MobileId);
@@ -1242,7 +1244,8 @@ void Mobile::UpdateMobInWorld(CString MobileId, CString AddRemove)
   { // Mobile is being removed from the world
     MobInWorldCount--;
   }
-  TmpStr.Format("%d", MobInWorldCount);
+  sprintf(Buf, "%d", MobInWorldCount);
+  TmpStr = ConvertStringToCString(Buf);
   MobInWorldFile.WriteString(TmpStr);
   MobInWorldFile.Close();
 }
@@ -1263,26 +1266,31 @@ void Mobile::CreateMobStatsFile(CString RoomId)
 
   MobileIdForFight = MobileId + "." + MobNbr;
   // HitPoints
-  TmpStr.Format("%d", HitPoints);
+  sprintf(Buf, "%d", HitPoints);
+  TmpStr = ConvertStringToCString(Buf);
   Stuff = TmpStr;
   Stuff += " ";
   Stuff += TmpStr;
   CreateMobStatsFileWrite(MOB_STATS_HPT_DIR, MobileIdForFight, Stuff);
   // Armor
-  Stuff.Format("%d", Armor);
+  sprintf(Buf, "%d", Armor);
+  Stuff = ConvertStringToCString(Buf);
   CreateMobStatsFileWrite(MOB_STATS_ARM_DIR, MobileIdForFight, Stuff);
   // Attack
   Stuff= Attack;
   CreateMobStatsFileWrite(MOB_STATS_ATK_DIR, MobileIdForFight, Stuff);
   // Damage
-  Stuff.Format("%d", Damage);
+  sprintf(Buf, "%d", Damage);
+  Stuff = ConvertStringToCString(Buf);
   CreateMobStatsFileWrite(MOB_STATS_DMG_DIR, MobileIdForFight, Stuff);
   // Desc1
   Stuff = Desc1;
   CreateMobStatsFileWrite(MOB_STATS_DSC_DIR, MobileIdForFight, Stuff);
   // ExpPoints
-  Stuff.Format("%d", ExpPoints);
-  TmpStr.Format("%d", Level);
+  sprintf(Buf, "%d", ExpPoints);
+  Stuff = ConvertStringToCString(Buf);
+  sprintf(Buf, "%d", Level);
+  TmpStr = ConvertStringToCString(Buf);
   Stuff += " ";
   Stuff += TmpStr;
   CreateMobStatsFileWrite(MOB_STATS_EXP_DIR, MobileIdForFight, Stuff);
@@ -1350,7 +1358,8 @@ void Mobile::GetNextMobNbr()
   NextMobNbr        = Stuff;
   NextMobNbrInteger = atoi(Stuff);
   NextMobNbrInteger++;
-  NextMobNbrString.Format("%d", NextMobNbrInteger);
+  sprintf(Buf, "%d", NextMobNbrInteger);
+  NextMobNbrString = ConvertStringToCString(Buf);
   // Write next mobile number file
   Success = NextMobNbrFile.Open(NextMobNbrFileName,
                      CFile::modeWrite |
@@ -1418,7 +1427,8 @@ CString Mobile::MobTalk()
   { // Find the selected message
     if (MobTalkFile.GetPosition() == MobTalkFile.GetLength())
     { // End of file and message was not found
-      TmpStr.Format("%d", RndMsgNbr);
+      sprintf(Buf, "%d", RndMsgNbr);
+      TmpStr = ConvertStringToCString(Buf);
       LogBuf  = "Mobile::MobTalk - Failed to find message ";
       LogBuf += TmpStr;
       LogBuf += " ";
@@ -1436,7 +1446,8 @@ CString Mobile::MobTalk()
   { // Read the message
     if (MobTalkFile.GetPosition() == MobTalkFile.GetLength())
     { // End of file and normal end of message not found
-      TmpStr.Format("%d", RndMsgNbr);
+      sprintf(Buf, "%d", RndMsgNbr);
+      TmpStr = ConvertStringToCString(Buf);
       LogBuf  = "Mobile::MobTalk - Unexpect end of file reading message ";
       LogBuf += TmpStr;
       LogBuf += " ";

@@ -273,6 +273,7 @@ string  StrTrimRight(string Str1);
 bool    ValidateIt(CString ValidationType);
 
 // Variables
+inline char           Buf[256];
 inline EnumCharCode   CharCodeMap[128];
 inline CString        CmdStr;
 inline unsigned char  CurrentLineNumber;

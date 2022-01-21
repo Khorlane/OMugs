@@ -56,9 +56,9 @@ class Dnode
     Dnode          *pDnodeNext;
     Dnode          *pDnodePrev;
     Player         *pPlayer;
-    CString         CmdName1;
-    CString         CmdName2;
-    CString         CmdName3;
+    string          CmdName1;
+    string          CmdName2;
+    string          CmdName3;
     clock_t         CmdTime1;
     clock_t         CmdTime2;
     clock_t         CmdTime3;
@@ -71,7 +71,7 @@ class Dnode
     CString         PlayerName;
     CString         PlayerNewCharacter;
     CString         PlayerOut;
-    CString         PlayerPassword;
+    string          PlayerPassword;
     bool            PlayerStateAfk;
     bool            PlayerStateBye;
     bool            PlayerStateFighting;

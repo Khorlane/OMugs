@@ -58,11 +58,12 @@ void Log::CloseLogFile()
 
 void Log::LogIt(CString LogBuf)
 {
-  CTime   CurrentTime;
   CString DisplayCurrentTime;
 
-  CurrentTime = CTime::GetCurrentTime();
-  DisplayCurrentTime = CurrentTime.Format("%Y/%m/%d %H:%M:%S ");
+  time_t now = chrono::system_clock::to_time_t(chrono::system_clock::now());
+  string s(30, '\0');
+  strftime(&s[0], s.size(), "%Y-%m-%d %H:%M:%S ", localtime(&now));
+  DisplayCurrentTime = ConvertStringToCString(s);
   LogBuf  = DisplayCurrentTime + LogBuf;
   LogBuf += "\n";
   LogFile.WriteString(LogBuf);
@@ -93,8 +94,11 @@ void Log::OpenLogFile()
   LogFileName += "SrvrLog.txt";
   if (CFile::GetStatus(LogFileName, FileStatus))
   {
-    CurrentTime = CTime::GetCurrentTime();
-    LogTime.Format("%d", CurrentTime);
+    const auto now = std::chrono::system_clock::now();                            // Get the current time
+    const auto epoch = now.time_since_epoch();                                    // Transform the time into a duration since the epoch
+    const auto seconds = std::chrono::duration_cast<std::chrono::seconds>(epoch); // Cast the duration into seconds
+    sprintf(Buf, "%d", (int) seconds.count());                                    // Get the number of seconds
+    LogTime = ConvertStringToCString(Buf);
     LogSaveFileName  = LogFileName.Left(LogFileName.GetLength()-4);
     LogSaveFileName += ".";
     LogSaveFileName += LogTime;

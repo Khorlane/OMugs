@@ -262,7 +262,8 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, CString ObjectId)
     { // Existing object same as new object, add 1 to count
       ObjCount = atoi(Utility::GetWord(Stuff, 1));
       ObjCount++;
-      TmpStr.Format("%d", ObjCount);
+      sprintf(Buf, "%d", ObjCount);
+      TmpStr = ConvertStringToCString(Buf);
       ObjectId = TmpStr + " " + ObjectId;
       ObjectId += "\n";
       PlayerObjFileTmp.WriteString(ObjectId);
@@ -378,7 +379,8 @@ void Object::AddObjToRoom(CString RoomId, CString ObjectId)
     { // Existing object same as new object, add 1 to count
       ObjCount = atoi(Utility::GetWord(Stuff, 1));
       ObjCount++;
-      TmpStr.Format("%d", ObjCount);
+      sprintf(Buf, "%d", ObjCount);
+      TmpStr = ConvertStringToCString(Buf);
       ObjectId = TmpStr + " " + ObjectId;
       ObjectId += "\n";
       RoomObjFileTmp.WriteString(ObjectId);
@@ -918,7 +920,8 @@ void Object::RemoveObjFromPlayerInv(CString ObjectId, int     Count)
       ObjectIdRemoved = true;
       if (ObjCount > 0)
       {
-        TmpStr.Format("%d", ObjCount);
+        sprintf(Buf, "%d", ObjCount);
+        TmpStr = ConvertStringToCString(Buf);
         ObjectId = TmpStr + " " + ObjectId;
         ObjectId += "\n";
         PlayerObjFileTmp.WriteString(ObjectId);
@@ -1014,7 +1017,8 @@ void Object::RemoveObjFromRoom(CString ObjectId)
       ObjectIdRemoved = true;
       if (ObjCount > 0)
       {
-        TmpStr.Format("%d", ObjCount);
+        sprintf(Buf, "%d", ObjCount);
+        TmpStr = ConvertStringToCString(Buf);
         ObjectId = TmpStr + " " + ObjectId;
         ObjectId += "\n";
         RoomObjFileTmp.WriteString(ObjectId);
