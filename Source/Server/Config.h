@@ -252,6 +252,7 @@ CString ConvertStringToCString(string  Str1);
 bool    EndOfDnodeList();
 void    Events();
 bool    FileExist(string Name);
+int     GetTimeSeconds();
 void    HealMobiles();
 void    InitDescriptor();
 void    LogIt(string LogBuf);

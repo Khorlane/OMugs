@@ -273,6 +273,19 @@ CString ConvertStringToCString(string Str1)
 }
 
 //
+// Misc Functions
+//
+
+int GetTimeSeconds()
+{
+  const auto now     = std::chrono::system_clock::now();                        // Get the current time
+  const auto epoch   = now.time_since_epoch();                                  // Transform the time into a duration since the epoch
+  const auto seconds = std::chrono::duration_cast<std::chrono::seconds>(epoch); // Cast the duration into seconds
+  int Seconds = (int)seconds.count();                                           // Get the number of seconds
+  return Seconds;
+}
+
+//
 // String Functions
 //
 

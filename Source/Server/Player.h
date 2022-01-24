@@ -72,7 +72,7 @@ class Player
   public:
     Player         *pPlayerGrpMember[GRP_LIMIT];
     Player         *pPlayerFollowers[GRP_LIMIT];
-    CTime           SessionTime;
+    int             SessionTime;
     CString         RoomIdBeforeMove;
 
 // Private variables static
@@ -102,7 +102,7 @@ class Player
     bool            AllowAssist;
     bool            AllowGroup;
     int             ArmorClass;
-    CTime           Born;
+    int             Born;
     bool            Color;
     float           Experience;
     CString         GoToArrive;
@@ -127,7 +127,7 @@ class Player
     int             SkillStaff;
     int             SkillSword;
     int             Thirst;
-    CTimeSpan       TimePlayed;
+    int             TimePlayed;
     CString         Title;
     int             WeaponDamage;
     CString         WeaponDesc1;

@@ -4597,9 +4597,9 @@ void Communication::DoPlayed()
 
   pDnodeActor->pPlayer->Save(); // Save() updates TimePlayed
   NowSec        = time(0);
-  BornSec       = pDnodeActor->pPlayer->Born.GetTime();
+  BornSec       = pDnodeActor->pPlayer->Born;
   PlayerAgeSec  = NowSec - BornSec;
-  TimePlayedSec = pDnodeActor->pPlayer->TimePlayed.GetTimeSpan();
+  TimePlayedSec = pDnodeActor->pPlayer->TimePlayed;
   // Birthday
   BirthDay = ctime(&BornSec);
   // Age
@@ -6562,9 +6562,9 @@ void Communication::LogonWaitMaleFemale()
     pDnodeActor->pPlayer->Name = pDnodeActor->PlayerName;
     pDnodeActor->pPlayer->Password = pDnodeActor->PlayerPassword;
     pDnodeActor->pPlayer->Sex = CmdStr;
-    pDnodeActor->pPlayer->Born = CTime::GetCurrentTime();
+    pDnodeActor->pPlayer->Born = GetTimeSeconds();
     pDnodeActor->pPlayer->Save();
-    pDnodeActor->pPlayer->SessionTime = CTime::GetCurrentTime();
+    pDnodeActor->pPlayer->SessionTime = GetTimeSeconds();
     pDnodeActor->PlayerStateLoggingOn = false;
     pDnodeActor->PlayerStatePlaying = true;
     pDnodeActor->pPlayer->Save();
@@ -6764,7 +6764,7 @@ void Communication::LogonWaitPassword()
             pDnodeActor->PlayerStateLoggingOn = false;
             pDnodeActor->PlayerStatePlaying = true;
             pDnodeActor->pPlayer = pDnodeOthers->pPlayer;
-            pDnodeActor->pPlayer->SessionTime = CTime::GetCurrentTime();
+            pDnodeActor->pPlayer->SessionTime = GetTimeSeconds();
             pDnodeActor->PlayerOut += "\r\n";
             pDnodeActor->PlayerOut += "You take control of ";
             pDnodeActor->PlayerOut += pDnodeOthers->PlayerName;
@@ -6797,7 +6797,7 @@ void Communication::LogonWaitPassword()
         DoMotd();
         pDnodeActor->PlayerStateLoggingOn = false;
         pDnodeActor->PlayerStatePlaying = true;
-        pDnodeActor->pPlayer->SessionTime = CTime::GetCurrentTime();
+        pDnodeActor->pPlayer->SessionTime = GetTimeSeconds();
         PlayerMsg  = "\r\n";
         PlayerMsg += "May your travels be safe.";
         PlayerMsg += "\r\n";

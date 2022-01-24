@@ -847,7 +847,8 @@ void Player::Save()
   Stuff = "ArmorClass:" + TmpStr;
   WriteLine(Stuff);
   // Born
-  TmpStr.Format("%d", Born);
+  sprintf(Buf, "%d", Born);
+  TmpStr = ConvertStringToCString(Buf);
   Stuff = "Born:" + TmpStr;
   WriteLine(Stuff);
   // Color
@@ -993,10 +994,11 @@ void Player::Save()
   // TimePlayed
   if (pDnode->PlayerStatePlaying)
   { // Don't update TimePlayed if player is not 'playing'
-    TimePlayed += CTime::GetCurrentTime() - SessionTime;
-    SessionTime = CTime::GetCurrentTime();
+    TimePlayed += GetTimeSeconds() - SessionTime;
+    SessionTime = GetTimeSeconds();
   }
-  TmpStr.Format("%d", TimePlayed);
+  sprintf(Buf, "%d", TimePlayed);
+  TmpStr = ConvertStringToCString(Buf);
   Stuff = "TimePlayed:" + TmpStr;
   WriteLine(Stuff);
   // Title

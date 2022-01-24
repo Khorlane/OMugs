@@ -34,7 +34,7 @@ void World::CreateSpawnMobileEvents()
   CStdioFile ControlMobSpawnFile;
   CString    ControlMobSpawnFileName;
   int        Count;
-  CTime      CurrentTime;
+  int        CurrentTime;
   int        Days;
   CStdioFile EventFile;
   CString    EventFileName;
@@ -137,7 +137,7 @@ void World::CreateSpawnMobileEvents()
     Weeks   = atoi(Utility::GetWord(Stuff, 6)) * 604800;
     Months  = atoi(Utility::GetWord(Stuff, 7)) * 2592000;
     Years   = atoi(Utility::GetWord(Stuff, 8)) * 31104000;
-    CurrentTime = CTime::GetCurrentTime();
+    CurrentTime = GetTimeSeconds();
     CurrentTime += Seconds;
     CurrentTime += Minutes;
     CurrentTime += Hours;
@@ -145,7 +145,8 @@ void World::CreateSpawnMobileEvents()
     CurrentTime += Weeks;
     CurrentTime += Months;
     CurrentTime += Years;
-    EventTime.Format("%d", CurrentTime);
+    sprintf(Buf, "%d", CurrentTime);
+    EventTime = ConvertStringToCString(Buf);
     EventFileName =  CONTROL_EVENTS_DIR;
     EventFileName += "M";
     EventFileName += EventTime;
@@ -215,7 +216,6 @@ void World::CheckSpawnMobileEvents()
 {
   CString    CheckTime;
   CString    ControlMobSpawnFileName;
-  CTime      CurrentTime;
   CStdioFile EventFile;
   CString    EventFileName;
   CString    EventTime;
@@ -226,8 +226,8 @@ void World::CheckSpawnMobileEvents()
   CString    Stuff;
   int        Success;
 
-  CurrentTime = CTime::GetCurrentTime();
-  CheckTime.Format("%d", CurrentTime);
+  sprintf(Buf, "%d", GetTimeSeconds());
+  CheckTime = ConvertStringToCString(Buf);
   if (ChgDir(CONTROL_EVENTS_DIR))
   { // Change directory failed
     AfxMessageBox("World::CheckSpawnMobileEvents - Change directory to CONTROL_EVENTS_DIR failed", MB_ICONSTOP);

@@ -83,7 +83,6 @@ void Log::LogIt(string LogBuf)
 
 void Log::OpenLogFile()
 {
-  CTime       CurrentTime;
   CFileStatus FileStatus;
   CString     LogFileName;
   CString     LogSaveFileName;
@@ -94,11 +93,9 @@ void Log::OpenLogFile()
   LogFileName += "SrvrLog.txt";
   if (CFile::GetStatus(LogFileName, FileStatus))
   {
-    const auto now = std::chrono::system_clock::now();                            // Get the current time
-    const auto epoch = now.time_since_epoch();                                    // Transform the time into a duration since the epoch
-    const auto seconds = std::chrono::duration_cast<std::chrono::seconds>(epoch); // Cast the duration into seconds
-    sprintf(Buf, "%d", (int) seconds.count());                                    // Get the number of seconds
+    sprintf(Buf, "%d", GetTimeSeconds());
     LogTime = ConvertStringToCString(Buf);
+
     LogSaveFileName  = LogFileName.Left(LogFileName.GetLength()-4);
     LogSaveFileName += ".";
     LogSaveFileName += LogTime;
