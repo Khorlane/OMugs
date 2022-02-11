@@ -152,6 +152,12 @@ void BigDog()
 /***********************************************************
 * Globals                                                  *
 ************************************************************/
+
+void AppTestCode()
+{
+  // Put test code here. It will be executed before dialogs are presented.
+}
+
 bool ValidateIt(CString ValidationType)
 {
   return Validate::ValidateIt(ValidationType);

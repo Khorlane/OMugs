@@ -243,6 +243,7 @@ struct ResWordStruct
 ************************************************************/
 
 // Functions
+void    AppTestCode();
 bool    ChgDir(string Dir);
 void    ClearDescriptor();
 void    CloseLogFile();

@@ -46,6 +46,7 @@ COMugsApp::COMugsApp()
 {
 	// Add construction code here,
 	// Place all significant initialization in InitInstance
+	AppTestCode();
 }
 
 /***********************************************************

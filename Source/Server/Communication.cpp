@@ -26,7 +26,7 @@ fd_set           ExcSet;
 fd_set           InpSet;
 int              ListenSocket;
 fd_set           OutSet;
-CStringArray     ValidCmds;
+vector<string>   ValidCmds;
 
 /***********************************************************
  * Communication class constructor                         *
@@ -794,33 +794,28 @@ void Communication::Color()
 void Communication::CommandArrayLoad()
 {
   CString    LogBuf;
-  CString    Stuff;
-  int        Success;
-  CStdioFile ValidCmdsFile;
-  CString    ValidCmdsFileName;
+  string     Stuff;
+  ifstream   ValidCmdsFile;
+  string     ValidCmdsFileName;
 
-  ValidCmdsFileName =  VALID_CMDS_DIR;
+  ValidCmdsFileName  = VALID_CMDS_DIR;
   ValidCmdsFileName += "ValidCommands.txt";
-  Success = ValidCmdsFile.Open(ValidCmdsFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-  if(!Success)
+  ValidCmdsFile.open(ValidCmdsFileName);
+  if(!ValidCmdsFile.is_open())
   { // Open failed
     AfxMessageBox("Communication::CommandArrayLoad - Open Valid Commands file failed (read)", MB_ICONSTOP);
     _endthread();
   }
-  ValidCmds.RemoveAll();
-  ValidCmdsFile.ReadString(Stuff);
-  while (Stuff != "")
-  { // Read all commands
-    ValidCmds.Add(Stuff);
-    ValidCmdsFile.ReadString(Stuff);
+  ValidCmds.clear();
+  while (ValidCmdsFile.peek() != EOF)
+  {
+    getline(ValidCmdsFile, Stuff);
+    ValidCmds.push_back(Stuff);
   }
-  ValidCmdsFile.Close();
+  ValidCmdsFile.close();
   LogBuf = "Command array loaded";
   Log::LogIt(LogBuf);
 }
-
 
 /***********************************************************
  * Check command authorization, level, and validity        *
@@ -832,17 +827,14 @@ CString Communication::CommandCheck(CString MudCmdChk)
   CString ValCmd;
   CString ValCmdInfo;
   CString WhoCanDo;
-  int     x;
-  int     y;
 
   CommandCheckResult = "Not Found";
-  y = ValidCmds.GetUpperBound();
-  for (x = 0; x <= y ; x++)
-  { // For each string in the ValidCmds CStringArray
-    ValCmdInfo = ValidCmds.GetAt(x);
+  for (auto ValidCmd : ValidCmds)
+  { // For each string in the ValidCmds vector
+    ValCmdInfo = ConvertStringToCString(ValidCmd);
     ValCmd     = Utility::GetWord(ValCmdInfo, 1);
     WhoCanDo   = Utility::GetWord(ValCmdInfo, 2);
-    if (MudCmd == ValCmd)
+    if (MudCmdChk == ValCmd)
     { // Found the command
       if (WhoCanDo == "all")
       { // Anyone can do this command
@@ -5116,8 +5108,6 @@ void Communication::DoShow()
   CString    TmpStr;
   CString    MudCmdChk;
   CString    ValCmdInfo;
-  int        x;
-  int        y;
 
   //********************
   //* Validate command *
@@ -5157,10 +5147,9 @@ void Communication::DoShow()
     pDnodeActor->PlayerOut += "\r\n";
     pDnodeActor->PlayerOut += "--------";
     pDnodeActor->PlayerOut += "\r\n";
-    y = ValidCmds.GetUpperBound();
-    for (x = 0; x <= y ; x++)
-    { // For each string in the ValidCmds CStringArray
-      ValCmdInfo = ValidCmds.GetAt(x);
+    for (auto ValidCmd : ValidCmds)
+    { // For each string in the ValidCmds vector
+      ValCmdInfo = ConvertStringToCString(ValidCmd);
       MudCmdChk  = Utility::GetWord(ValCmdInfo, 1);
       CommandCheckResult = CommandCheck(MudCmdChk);
       if (CommandCheckResult == "Ok")
