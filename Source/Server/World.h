@@ -19,7 +19,7 @@
 
 #include "Config.h"
 #include "Mobile.h"
-#include "Room.h"
+//#include "Room.h"
 // Osi
 #include "Executor.h"
 #include "Parser.h"

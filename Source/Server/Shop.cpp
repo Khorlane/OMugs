@@ -1,6 +1,6 @@
 /***********************************************************
 * OMugs - Online Multi-User Game Server                    *
-* File:   Utility.cpp                                      *
+* File:   Shop.cpp                                         *
 * Usage:  Handles all shop related activity                *
 * Author: Stephen L Bryant                                 *
 *                                                          *
@@ -84,9 +84,9 @@ Object *Shop::IsShopObj(CString RoomId, CString ObjectName)
     Stuff.TrimLeft();
     Stuff.TrimRight();
     Stuff.MakeLower();
-    if (Utility::GetWord(Stuff, 1) == "item:")
+    if (GetWord(Stuff, 1) == "item:")
     { // Found an item
-      ObjectId = Utility::GetWord(Stuff, 2);
+      ObjectId = GetWord(Stuff, 2);
       ObjectName.MakeLower();
       if (ObjectName == ObjectId)
       { // Found a match
@@ -126,9 +126,9 @@ Object *Shop::IsShopObj(CString RoomId, CString ObjectName)
     Stuff.TrimLeft();
     Stuff.TrimRight();
     Stuff.MakeLower();
-    if (Utility::GetWord(Stuff, 1) == "item:")
+    if (GetWord(Stuff, 1) == "item:")
     { // Found an item
-      ObjectId = Utility::GetWord(Stuff, 2);
+      ObjectId = GetWord(Stuff, 2);
       pObject = new Object(ObjectId);
       if (pObject)
       { // Check for a match
@@ -221,9 +221,9 @@ void Shop::ListObjects()
     Stuff.TrimLeft();
     Stuff.TrimRight();
     Stuff.MakeLower();
-    if (Utility::GetWord(Stuff, 1) == "item:")
+    if (GetWord(Stuff, 1) == "item:")
     { // Found an item
-      ObjectId = Utility::GetWord(Stuff, 2);
+      ObjectId = GetWord(Stuff, 2);
       pObject = Object::IsObject(ObjectId);
       if (pObject)
       { // Format shop item text

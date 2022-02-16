@@ -179,7 +179,7 @@ bool Room::IsExit(string MudCmdIsExit)
   StrMakeLower(ExitLookup);
   CString csExitLookup;
   csExitLookup = ConvertStringToCString(ExitLookup);
-  ExitLookup = Utility::TranslateWord(csExitLookup);
+  ExitLookup = TranslateWord(csExitLookup);
   Stuff = "Not Done";
   while (Stuff != "End of Exits")
   { // Loop until Exit is found or end of file
@@ -190,7 +190,7 @@ bool Room::IsExit(string MudCmdIsExit)
       StrMakeLower(ExitName);
       CString csExitName;
       csExitName = ConvertStringToCString(ExitName);
-      ExitName = Utility::TranslateWord(csExitName);
+      ExitName = TranslateWord(csExitName);
       if (ExitName == ExitLookup)
       { // THE Exit has been found
         Found = true;

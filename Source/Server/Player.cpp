@@ -1086,12 +1086,12 @@ void Player::ShowStatus()
   sprintf(Buf, "%f15.0", Experience);
   TmpStr = ConvertStringToCString(Buf);
   TmpStr = TmpStr.Left(TmpStr.Find('.'));
-  Exp1   = Utility::FormatCommas(TmpStr);
+  Exp1   = FormatCommas(TmpStr);
 
   sprintf(Buf, "%f15.0", CalcLevelExperience(Level + 1));
   TmpStr = ConvertStringToCString(Buf);
   TmpStr = TmpStr.Left(TmpStr.Find('.'));
-  Exp2   = Utility::FormatCommas(TmpStr);
+  Exp2   = FormatCommas(TmpStr);
   while (Exp1.GetLength() < Exp2.GetLength())
   {
     Exp1.Insert(0,' ');

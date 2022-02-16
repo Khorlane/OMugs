@@ -213,7 +213,7 @@ CString Utility::GetWord(CString String, int WordNbr)
   x = 0;
   y = 0;
   z = 0;
-  if (Utility::WordCount(String) < WordNbr)
+  if (WordCount(String) < WordNbr)
   { // WordNbr is greater than the number of words in String
     Word = "";
     return Word;
@@ -272,7 +272,7 @@ CString Utility::GetWordPosLen(CString String, int WordNbr)
   x = 0;
   y = 0;
   z = 0;
-  if (Utility::WordCount(String) < WordNbr)
+  if (WordCount(String) < WordNbr)
   { // WordNbr is greater than the number of words in String
     Word = "0 0";
     return Word;

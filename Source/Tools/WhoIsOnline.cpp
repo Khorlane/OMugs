@@ -28,7 +28,7 @@ WhoIsOnline::WhoIsOnline(string HomeDir1)
 }
 
 /***********************************************************
-* Log destructor                                           *
+* WhoIsOnline destructor                                   *
 ************************************************************/
 
 WhoIsOnline::~WhoIsOnline()

@@ -102,13 +102,13 @@ void World::CreateSpawnMobileEvents()
       _endthread();
     }
     WorldMobileFile.ReadString(Stuff);
-    if (Utility::GetWord(Stuff, 1) != "MaxInWorld:")
+    if (GetWord(Stuff, 1) != "MaxInWorld:")
     { // World mobile file format error MaxInWorld
       AfxMessageBox("World::CreateSpawnMobileEvents - World mobile file format error MaxInWorld", MB_ICONSTOP);
       _endthread();
     }
-    Count    = Mobile::CountMob(MobileId);
-    Limit    = atoi(Utility::GetWord(Stuff,2));
+    Count    = CountMob(MobileId);
+    Limit    = atoi(GetWord(Stuff,2));
     if (Count >= Limit)
     { // No spawn event needed
       WorldMobileFile.Close();
@@ -118,25 +118,25 @@ void World::CreateSpawnMobileEvents()
     //* Create 'spawn mobile' event *
     //*******************************
     WorldMobileFile.ReadString(Stuff);
-    if (Utility::GetWord(Stuff, 1) != "RoomId:")
+    if (GetWord(Stuff, 1) != "RoomId:")
     { // World mobile file format error RoomId
       AfxMessageBox("World::CreateSpawnMobileEvents - World mobile file format error RoomId", MB_ICONSTOP);
       _endthread();
     }
-    RoomId = Utility::GetWord(Stuff, 2);
+    RoomId = GetWord(Stuff, 2);
     WorldMobileFile.ReadString(Stuff);
-    if (Utility::GetWord(Stuff, 1) != "Interval:")
+    if (GetWord(Stuff, 1) != "Interval:")
     { // World mobile file format error Interval
       AfxMessageBox("World::CreateSpawnMobileEvents - World mobile file format error Interval", MB_ICONSTOP);
       _endthread();
     }
-    Seconds = atoi(Utility::GetWord(Stuff, 2)) * 1;
-    Minutes = atoi(Utility::GetWord(Stuff, 3)) * 60;
-    Hours   = atoi(Utility::GetWord(Stuff, 4)) * 3600;
-    Days    = atoi(Utility::GetWord(Stuff, 5)) * 86400;
-    Weeks   = atoi(Utility::GetWord(Stuff, 6)) * 604800;
-    Months  = atoi(Utility::GetWord(Stuff, 7)) * 2592000;
-    Years   = atoi(Utility::GetWord(Stuff, 8)) * 31104000;
+    Seconds = atoi(GetWord(Stuff, 2)) * 1;
+    Minutes = atoi(GetWord(Stuff, 3)) * 60;
+    Hours   = atoi(GetWord(Stuff, 4)) * 3600;
+    Days    = atoi(GetWord(Stuff, 5)) * 86400;
+    Weeks   = atoi(GetWord(Stuff, 6)) * 604800;
+    Months  = atoi(GetWord(Stuff, 7)) * 2592000;
+    Years   = atoi(GetWord(Stuff, 8)) * 31104000;
     CurrentTime = GetTimeSeconds();
     CurrentTime += Seconds;
     CurrentTime += Minutes;
@@ -268,8 +268,8 @@ void World::CheckSpawnMobileEvents()
     EventFile.ReadString(Stuff);
     while (Stuff != "")
     { // Get RoomId, MobileId, then spawn the mob
-      MobileId = Utility::GetWord(Stuff, 1);
-      RoomId   = Utility::GetWord(Stuff, 2);
+      MobileId = GetWord(Stuff, 1);
+      RoomId   = GetWord(Stuff, 2);
       SpawnMobile(MobileId, RoomId);
       // Remove the NoMoreSpawnEventsFlag for this mobile
       // This is overkill, attempts to remove same flag over and over
@@ -356,12 +356,12 @@ void World::HealMobiles()
     //*******************
     //* Heal the mobile *
     //*******************
-    RoomId = Violence::GetMobileRoom(MobileId);
-    Mobile::RemoveMobFromRoom(RoomId, MobileId);
-    Mobile::DeleteMobStats(MobileId);
+    RoomId = GetMobileRoom(MobileId);
+    RemoveMobFromRoom(RoomId, MobileId);
+    DeleteMobStats(MobileId);
     PositionOfDot = MobileId.Find('.');
     MobileId = MobileId.Left(PositionOfDot);
-    Mobile::AddMobToRoom(RoomId, MobileId);
+    AddMobToRoom(RoomId, MobileId);
   }
 }
 
@@ -619,7 +619,7 @@ void World::MakeMobilesMove1()
   for (x = 0; x <= y ; x++)
   { // For each string in the ValidCmds CStringArray
     TmpStr = RoomMobList.GetAt(x);
-    TmpStr = Utility::GetWord(TmpStr, 2);
+    TmpStr = GetWord(TmpStr, 2);
     TmpStr += "\n";
     RoomMobListFile.WriteString(TmpStr);
   }
@@ -743,8 +743,8 @@ void World::MakeMobilesMove2()
     RoomMobFile.ReadString(Stuff);
     while (Stuff != "")
     { // For each mobile in room
-      MobCount = atoi(Utility::GetWord(Stuff, 1));
-      MobileId = Utility::GetWord(Stuff, 2);
+      MobCount = atoi(GetWord(Stuff, 1));
+      MobileId = GetWord(Stuff, 2);
       MobileIdCheck = MobileId;
       PositionOfDot = MobileIdCheck.Find('.');
       if (PositionOfDot > 1)
@@ -767,7 +767,7 @@ void World::MakeMobilesMove2()
         { // For each mobile occurrence
           if (RoomId.Find("Spawn") == -1)
           { // Not a spawn room, Get random chance of mob moving
-            RandomPct = Utility::GetRandomNumber(100);
+            RandomPct = GetRandomNumber(100);
           }
           else
           { // Force mobs in 'spawn' rooms to move
@@ -776,13 +776,13 @@ void World::MakeMobilesMove2()
           if (RandomPct <= MOB_MOVE_PCT)
           { // Mobile is to be moved
             sRoomId = ConvertCStringToString(RoomId);
-            sValidMobRoomExits = Room::GetValidMobRoomExits(sRoomId);;
+            sValidMobRoomExits = GetValidMobRoomExits(sRoomId);;
             ValidMobRoomExits = ConvertStringToCString(sValidMobRoomExits);
-            ExitCount         = Utility::WordCount(ValidMobRoomExits);
+            ExitCount         = WordCount(ValidMobRoomExits);
             if (ExitCount > 0)
             { // Mob has at least one exit available
-              ExitNumber        = Utility::GetRandomNumber(ExitCount);
-              ExitToRoomId      = Utility::GetWord(ValidMobRoomExits, ExitNumber);
+              ExitNumber        = GetRandomNumber(ExitCount);
+              ExitToRoomId      = GetWord(ValidMobRoomExits, ExitNumber);
               if (ExitToRoomId == "")
               { //  Blow up for now, but we should LogThis, not blow up??
                 AfxMessageBox("ExitToRoomId is blank zz", MB_ICONSTOP);
@@ -911,25 +911,25 @@ void World::MakeMobilesMove3()
       RoomMobMoveFile.ReadString(Stuff);
       continue;
     }
-    MobileId     = Utility::GetWord(Stuff, 1);
-    RoomId       = Utility::GetWord(Stuff, 2);
-    ExitToRoomId = Utility::GetWord(Stuff, 3);
-    if (!Mobile::IsMobileIdInRoom(RoomId, MobileId))
+    MobileId     = GetWord(Stuff, 1);
+    RoomId       = GetWord(Stuff, 2);
+    ExitToRoomId = GetWord(Stuff, 3);
+    if (!IsMobileIdInRoom(RoomId, MobileId))
     { // Mob not in room anymore, prolly get itself killed, so can't be moved
       RoomMobMoveFile.ReadString(Stuff);
       continue;
     }
-    MobileDesc1  = Mobile::GetMobDesc1(MobileId);
+    MobileDesc1  = GetMobDesc1(MobileId);
     LeaveMsg     = MobileDesc1;
     LeaveMsg    += " leaves.";
     ArriveMsg    = MobileDesc1;
     ArriveMsg   += " arrives.";
-    Mobile::RemoveMobFromRoom(RoomId, MobileId);
-    Mobile::AddMobToRoom(ExitToRoomId, MobileId);
+    RemoveMobFromRoom(RoomId, MobileId);
+    AddMobToRoom(ExitToRoomId, MobileId);
     pDnodeSrc = NULL;
     pDnodeTgt = NULL;
-    Communication::SendToRoom(RoomId,       LeaveMsg);
-    Communication::SendToRoom(ExitToRoomId, ArriveMsg);
+    SendToRoom(RoomId,       LeaveMsg);
+    SendToRoom(ExitToRoomId, ArriveMsg);
     PositionOfDot = MobileId.Find('.');
     if (PositionOfDot > 1)
     { // Delete 'MobStats' Room file
@@ -1070,15 +1070,15 @@ void World::SpawnMobile(CString MobileId, CString RoomId)
     AfxMessageBox(AfxMessage, MB_ICONSTOP);
     _endthread();
   }
-  Mobile::AddMobToRoom(RoomId, MobileId);
+  AddMobToRoom(RoomId, MobileId);
   SpawnMsg = pMobile->Desc1;
   SpawnMsg += " suddenly appears!";
   pDnodeSrc = NULL;
   pDnodeTgt = NULL;
-  Communication::SendToRoom(RoomId, SpawnMsg);
+  SendToRoom(RoomId, SpawnMsg);
   MobileAction = pMobile->Action;
   delete pMobile;
-  if (Utility::IsWord("NoMove", MobileAction))
+  if (IsWord("NoMove", MobileAction))
   {
     SpawnMobileNoMove(MobileId);
   }

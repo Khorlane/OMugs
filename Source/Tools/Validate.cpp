@@ -63,7 +63,7 @@ void Validate::LogValErr(CString Message, CString FileName)
   LogBuf  = "ValErr";
   LogBuf += Message;
   LogBuf += FileName;
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
   ValErr = true;
 }
 
@@ -104,12 +104,12 @@ bool Validate::ValidateIt(CString ValidationType)
   if (ValErr)
   {
     LogBuf  = "ValErr - Validation failed!!";
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
   }
   else
   {
     LogBuf  = "Validation successful!!";
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
   }
   return ValErr;
 }
@@ -192,7 +192,7 @@ void Validate::ValidateLibraryLoot()
     while (Stuff != "")
     { // For all lines
       LineCount++;
-      ObjectId = Utility::GetWord(Stuff, 3);
+      ObjectId = GetWord(Stuff, 3);
       //************
       //* ObjectId *
       //************
@@ -247,7 +247,7 @@ void Validate::ValidateLibraryMobiles()
   int        Success;
 
   LogBuf = "Begin validation LibraryMobiles";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
   if (ChgDir(MOBILES_DIR))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateLibraryMobiles - Change directory to MOBILES_DIR failed", MB_ICONSTOP);
@@ -284,8 +284,8 @@ void Validate::ValidateLibraryMobiles()
     while (Stuff != "")
     { // For all lines
       LineCount++;
-      FieldName  = Utility::GetWord(Stuff, 1);
-      FieldValue = Utility::GetWord(Stuff, 2);
+      FieldName  = GetWord(Stuff, 1);
+      FieldValue = GetWord(Stuff, 2);
       //********************************
       //* MobileId field must be first *
       //********************************
@@ -315,7 +315,7 @@ void Validate::ValidateLibraryMobiles()
       //********
       if (FieldName == "Sex:")
       { // Sex field validation
-        if (Utility::IsNotWord(FieldValue, "F M N"))
+        if (IsNotWord(FieldValue, "F M N"))
         { // Invalid mobile sex
           Message = "Mobile sex is invalid";
           FileName = MobileFileName;
@@ -327,7 +327,7 @@ void Validate::ValidateLibraryMobiles()
       //***********
       if (FieldName == "Action:")
       { // Sex field validation
-        if (Utility::IsNotWord(FieldValue, "None Aggro Faction Destroy Help NoMove Wimpy"))
+        if (IsNotWord(FieldValue, "None Aggro Faction Destroy Help NoMove Wimpy"))
         { // Invalid mobile action
           Message = "Mobile action is invalid";
           FileName = MobileFileName;
@@ -339,7 +339,7 @@ void Validate::ValidateLibraryMobiles()
       //************
       if (FieldName == "Faction:")
       { // Faction field validation
-        if (Utility::IsNotWord(FieldValue, "Evil Lawless Neutral Lawful Good"))
+        if (IsNotWord(FieldValue, "Evil Lawless Neutral Lawful Good"))
         { // Invalid mobile faction
           Message = "Mobile faction is invalid";
           FileName = MobileFileName;
@@ -352,7 +352,7 @@ void Validate::ValidateLibraryMobiles()
       if (FieldName == "Attack:")
       { // Faction field validation
         FieldValue.MakeLower();
-        if (Utility::IsNotWord(FieldValue, "bites claws crushes hits mauls pierces punches slashes stabs stings thrashes"))
+        if (IsNotWord(FieldValue, "bites claws crushes hits mauls pierces punches slashes stabs stings thrashes"))
         { // Invalid mobile attack
           Message = "Mobile attack is invalid";
           FileName = MobileFileName;
@@ -450,8 +450,8 @@ void Validate::ValidateLibraryObjects()
     while (Stuff != "")
     { // For all lines
       LineCount++;
-      FieldName  = Utility::GetWord(Stuff, 1);
-      FieldValue = Utility::GetWord(Stuff, 2);
+      FieldName  = GetWord(Stuff, 1);
+      FieldValue = GetWord(Stuff, 2);
       //********************************
       //* ObjectId field must be first *
       //********************************
@@ -481,7 +481,7 @@ void Validate::ValidateLibraryObjects()
       //*********
       if (FieldName == "Type:")
       { // Type field validation
-        if (Utility::IsNotWord(FieldValue, "Armor Container Drink Food Junk Key Light NoTake Treasure Weapon"))
+        if (IsNotWord(FieldValue, "Armor Container Drink Food Junk Key Light NoTake Treasure Weapon"))
         { // Invalid object type
           Message = "Object type is invalid";
           FileName = ObjectFileName;
@@ -496,8 +496,8 @@ void Validate::ValidateLibraryObjects()
           //***************
           ObjectFile.ReadString(Stuff);
           LineCount++;
-          FieldName  = Utility::GetWord(Stuff, 1);
-          FieldValue = Utility::GetWord(Stuff, 2);
+          FieldName  = GetWord(Stuff, 1);
+          FieldValue = GetWord(Stuff, 2);
           if (FieldName != "ArmorValue:")
           { // ArmorValue must follow 'Type: Armor' specification
             Message = "ArmorValue must follow 'Type: Armor' specification";
@@ -509,8 +509,8 @@ void Validate::ValidateLibraryObjects()
           //**************
           ObjectFile.ReadString(Stuff);
           LineCount++;
-          FieldName  = Utility::GetWord(Stuff, 1);
-          FieldValue = Utility::GetWord(Stuff, 2);
+          FieldName  = GetWord(Stuff, 1);
+          FieldValue = GetWord(Stuff, 2);
           if (FieldName != "ArmorWear:")
           { // ArmorWear must follow 'ArmorValue' specification
             Message = "ArmorWear must follow 'ArmorValue' specification";
@@ -519,7 +519,7 @@ void Validate::ValidateLibraryObjects()
           }
           else
           { // Validate 'wear' positions
-            if (Utility::IsNotWord(FieldValue, "Head Ear Neck Shoulders Chest Back Arms Wrist Hands Finger Shield Waist Legs Ankle Feet"))
+            if (IsNotWord(FieldValue, "Head Ear Neck Shoulders Chest Back Arms Wrist Hands Finger Shield Waist Legs Ankle Feet"))
             { // Invalid wear position
               Message = "Wear position is invalid";
               FileName = ObjectFileName;
@@ -536,8 +536,8 @@ void Validate::ValidateLibraryObjects()
           //***************
           ObjectFile.ReadString(Stuff);
           LineCount++;
-          FieldName  = Utility::GetWord(Stuff, 1);
-          FieldValue = Utility::GetWord(Stuff, 2);
+          FieldName  = GetWord(Stuff, 1);
+          FieldValue = GetWord(Stuff, 2);
           if (FieldName != "WeaponType:")
           { // WeaponType must follow 'Type: Weapon' specification
             Message = "WeaponType must follow 'Type: Weapon' specification";
@@ -546,7 +546,7 @@ void Validate::ValidateLibraryObjects()
           }
           else
           { // Validate WeaponType
-            if (Utility::IsNotWord(FieldValue, "Axe Club Dagger Hammer Spear Staff Sword"))
+            if (IsNotWord(FieldValue, "Axe Club Dagger Hammer Spear Staff Sword"))
             { // Invalid weapon type
               Message = "Weapon type is invalid";
               FileName = ObjectFileName;
@@ -558,8 +558,8 @@ void Validate::ValidateLibraryObjects()
           //*****************
           ObjectFile.ReadString(Stuff);
           LineCount++;
-          FieldName  = Utility::GetWord(Stuff, 1);
-          FieldValue = Utility::GetWord(Stuff, 2);
+          FieldName  = GetWord(Stuff, 1);
+          FieldValue = GetWord(Stuff, 2);
           if (FieldName != "WeaponDamage:")
           { // WeaponDamage must follow WeaponType specification
             Message = "WeaponDamage must follow WeaponType specification";
@@ -640,8 +640,8 @@ void Validate::ValidateLibraryRooms()
     while (Stuff != "End of Room")
     { // For all lines
       LineCount++;
-      FieldName  = Utility::GetWord(Stuff, 1);
-      FieldValue = Utility::GetWords(Stuff, 2);
+      FieldName  = GetWord(Stuff, 1);
+      FieldValue = GetWords(Stuff, 2);
       //********************************
       //* RoomId field must be first *
       //********************************
@@ -672,11 +672,11 @@ void Validate::ValidateLibraryRooms()
       RoomTypeError = false;
       if (FieldName == "RoomType:")
       { // RoomType validation
-        j = Utility::WordCount(FieldValue);
+        j = WordCount(FieldValue);
         for (i = 1; i <= j; i++)
         { // Check each word in FieldValue
-          TmpStr = Utility::GetWord(FieldValue, i);
-          if (Utility::IsWord(TmpStr, "None Dark Drink NoFight NoNPC"))
+          TmpStr = GetWord(FieldValue, i);
+          if (IsWord(TmpStr, "None Dark Drink NoFight NoNPC"))
           { // Valid RoomType
             if (TmpStr != "None")
             { // Exclude RoomType of 'None'
@@ -697,7 +697,7 @@ void Validate::ValidateLibraryRooms()
       //************
       if (FieldName == "Terrain:")
       { // Terrain validation
-        if (Utility::IsWord(FieldValue, "Inside Street Road Field Forest Swamp Desert Hill Mountain"))
+        if (IsWord(FieldValue, "Inside Street Road Field Forest Swamp Desert Hill Mountain"))
         { // Valid Terrain
         }
         else
@@ -806,8 +806,8 @@ void Validate::ValidateLibraryShops()
     while (Stuff != "End of Shop")
     { // For all lines
       LineCount++;
-      FieldName  = Utility::GetWord(Stuff, 1);
-      FieldValue = Utility::GetWord(Stuff, 2);
+      FieldName  = GetWord(Stuff, 1);
+      FieldValue = GetWord(Stuff, 2);
       if (FieldName != "Item:")
       { // Not an item line
         ShopFile.ReadString(Stuff);
@@ -949,8 +949,8 @@ void Validate::ValidateLibraryWorldMobiles()
     while (Stuff != "")
     { // For all lines
       LineCount++;
-      FieldName  = Utility::GetWord(Stuff, 1);
-      FieldValue = Utility::GetWord(Stuff, 2);
+      FieldName  = GetWord(Stuff, 1);
+      FieldValue = GetWord(Stuff, 2);
       //**********
       //* RoomId *
       //**********
@@ -1046,8 +1046,8 @@ void Validate::ValidateRunningPlayers()
     { // For all lines
       LineCount++;
       Stuff.Replace(':',' ');
-      FieldName  = Utility::GetWord(Stuff, 1);
-      FieldValue = Utility::GetWord(Stuff, 2);
+      FieldName  = GetWord(Stuff, 1);
+      FieldValue = GetWord(Stuff, 2);
       //****************************
       //* Name field must be first *
       //****************************
@@ -1166,8 +1166,8 @@ void Validate::ValidateRunningPlayersPlayerEqu()
     while (Stuff != "")
     { // For all lines
       LineCount++;
-      WearPosition = Utility::GetWord(Stuff, 1);
-      ObjectId     = Utility::GetWord(Stuff, 2);
+      WearPosition = GetWord(Stuff, 1);
+      ObjectId     = GetWord(Stuff, 2);
       //*****************
       //* Wear position *
       //*****************
@@ -1273,7 +1273,7 @@ void Validate::ValidateRunningPlayersPlayerObj()
     while (Stuff != "")
     { // For all lines
       LineCount++;
-      ObjectId = Utility::GetWord(Stuff, 2);
+      ObjectId = GetWord(Stuff, 2);
       //************
       //* ObjectId *
       //************
@@ -1397,7 +1397,7 @@ void Validate::ValidateRunningRoomMob()
     while (Stuff != "")
     { // For all lines
       LineCount++;
-      MobileId = Utility::GetWord(Stuff, 2);
+      MobileId = GetWord(Stuff, 2);
       PositionOfDot = MobileId.Find('.');
       if (PositionOfDot > 1)
       { // Mobile is hurt
@@ -1526,7 +1526,7 @@ void Validate::ValidateRunningRoomObj()
     while (Stuff != "")
     { // For all lines
       LineCount++;
-      ObjectId = Utility::GetWord(Stuff, 2);
+      ObjectId = GetWord(Stuff, 2);
       //************
       //* ObjectId *
       //************

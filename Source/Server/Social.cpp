@@ -234,7 +234,7 @@ void Social::Socialize(CString MinPos, CString MsgText)
   LineCount = atoi(MsgText.Right(MsgText.GetLength() - 9));
   PlayerName = pDnodeActor->PlayerName;
   PlayerName.MakeLower();
-  TargetName = Utility::GetWord(CmdStr, 2);
+  TargetName = GetWord(CmdStr, 2);
   TargetNameSave = TargetName;
   TargetName.MakeLower();
   if (LineCount == 2)
@@ -252,10 +252,10 @@ void Social::Socialize(CString MinPos, CString MsgText)
   if (TargetName == "")
   { // Social without target
     MsgText = ReadLine();
-    MsgText = Utility::PronounSubstitute(MsgText);
+    MsgText = PronounSubstitute(MsgText);
     SendToPlayer(MsgText);
     MsgText = ReadLine();
-    MsgText = Utility::PronounSubstitute(MsgText);
+    MsgText = PronounSubstitute(MsgText);
     Communication::SendToRoom(pDnodeActor->pPlayer->RoomId, MsgText);
     return;
   }
@@ -265,7 +265,7 @@ void Social::Socialize(CString MinPos, CString MsgText)
     {
       MsgText = ReadLine();
     }
-    MsgText = Utility::PronounSubstitute(MsgText);
+    MsgText = PronounSubstitute(MsgText);
     SendToPlayer(MsgText);
     return;
   }
@@ -288,7 +288,7 @@ void Social::Socialize(CString MinPos, CString MsgText)
     {
       MsgText = ReadLine();
     }
-    MsgText = Utility::PronounSubstitute(MsgText);
+    MsgText = PronounSubstitute(MsgText);
     SendToPlayer(MsgText);
     return;
   }
@@ -313,15 +313,15 @@ void Social::Socialize(CString MinPos, CString MsgText)
       MsgText = ReadLine();
     }
     // Message to player
-    MsgText = Utility::PronounSubstitute(MsgText);
+    MsgText = PronounSubstitute(MsgText);
     SendToPlayer(MsgText);
     MsgText = ReadLine();
     // Message to target
-    MsgText = Utility::PronounSubstitute(MsgText);
+    MsgText = PronounSubstitute(MsgText);
     SendToTarget(pDnodeTgt, MsgText);
     MsgText = ReadLine();
     // Message to the others
-    MsgText = Utility::PronounSubstitute(MsgText);
+    MsgText = PronounSubstitute(MsgText);
     Communication::SendToRoom(pDnodeActor->pPlayer->RoomId, MsgText);
   }
 }

@@ -37,7 +37,7 @@ int Violence::CalcDamageToMobile(int Damage, int WeaponSkill)
   int SkillFactor;
 
   SkillFactor  = int(WeaponSkill/1.66);
-  Percent      = Utility::GetRandomNumber(PLAYER_DMG_PCT-SkillFactor);
+  Percent      = GetRandomNumber(PLAYER_DMG_PCT-SkillFactor);
   Deduction    = int(ceil(Damage*(Percent/100.0)));
   CalcDamage   = Damage - Deduction;
   
@@ -54,7 +54,7 @@ int Violence::CalcDamageToPlayer(int Damage, int PAC)
   int Deduction;
   int Percent;
 
-  Percent    = Utility::GetRandomNumber(PLAYER_DMG_PCT);
+  Percent    = GetRandomNumber(PLAYER_DMG_PCT);
   Deduction  = int(ceil(Damage*(Percent/100.0)));
   CalcDamage = Damage - Deduction;
   CalcDamage = int(floor(CalcDamage-(PAC*PACMN*CalcDamage)));
@@ -77,7 +77,7 @@ CString Violence::CalcHealthPct(int HitPoints, int HitPointsMax)
   }
   else
   { // Calculate percent
-    Percent = Utility::CalcPct(HitPoints, HitPointsMax);
+    Percent = CalcPct(HitPoints, HitPointsMax);
   }
   if (Percent > 75)
   {
@@ -457,9 +457,9 @@ CString Violence::WhackMobile(CString MobileId,
 
   // Get mobile's total hit points and hit points left
   MobHitPointsInfo  = GetMobileHitPoints(MobileId);
-  MobHitPointsTotal = atoi(Utility::GetWord(MobHitPointsInfo, 1));
-  MobHitPointsLeft  = atoi(Utility::GetWord(MobHitPointsInfo, 2));
-  MobHealthPctOld = Utility::CalcPct(MobHitPointsLeft, MobHitPointsTotal);
+  MobHitPointsTotal = atoi(GetWord(MobHitPointsInfo, 1));
+  MobHitPointsLeft  = atoi(GetWord(MobHitPointsInfo, 2));
+  MobHealthPctOld = CalcPct(MobHitPointsLeft, MobHitPointsTotal);
   // Reduce mobile's hit points by damage done and write to file
   MobHitPointsLeft = MobHitPointsLeft - DamageToMobile;
   if (MobHitPointsLeft < 0)
@@ -490,10 +490,10 @@ CString Violence::WhackMobile(CString MobileId,
   // Format whack message
   MobHealthPct = CalcHealthPct(MobHitPointsLeft, MobHitPointsTotal);
   WeaponType.MakeLower();
-  WeaponAction = Utility::TranslateWord(WeaponType);
+  WeaponAction = TranslateWord(WeaponType);
   sprintf(Buf, "%d", DamageToMobile);
   DamageAmount = ConvertStringToCString(Buf);
-  MobHealthPctNew = Utility::CalcPct(MobHitPointsLeft, MobHitPointsTotal);
+  MobHealthPctNew = CalcPct(MobHitPointsLeft, MobHitPointsTotal);
   DamageMagnitude = MobHealthPctOld - MobHealthPctNew;
   if (DamageMagnitude > 70)
   {
@@ -609,7 +609,7 @@ CString Violence::WhackPlayer(CString MobileDesc1,
   CString TmpStr;
 
   // Capitalize first leter of first word of MobileDesc1
-  MobileDesc1 = Utility::MakeFirstUpper(MobileDesc1);
+  MobileDesc1 = MakeFirstUpper(MobileDesc1);
   // Format damage message
   sprintf(Buf, "%d", DamageToPlayer);
   TmpStr = ConvertStringToCString(Buf);

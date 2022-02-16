@@ -243,36 +243,61 @@ struct ResWordStruct
 ************************************************************/
 
 // Functions
+void    AddMobToRoom(CString RoomId, CString MobileId);
+void    AdvanceTime();
 void    AppTestCode();
+int     CalcPct(int Dividend, int Divisor);
 bool    ChgDir(string Dir);
 void    ClearDescriptor();
 void    CloseLogFile();
-void    SockClosePort(int PortNbr);
 string  ConvertCStringToString(CString Str1);
 CString ConvertStringToCString(string  Str1);
+int     CountMob(CString MobileId);
+void    DeleteMobStats(CString MobileId);
 bool    EndOfDnodeList();
 void    Events();
 bool    FileExist(string Name);
+CString FormatCommas(CString String);
+int     GetCount();
+CString GetMobDesc1(CString MobileId);
+CString GetMobileRoom(CString MobileId);
+int     GetRandomNumber(int Limit);
+CString GetSqlStmt(CString SqlStmtId);
 int     GetTimeSeconds();
+string  GetValidMobRoomExits(string RoomId);
+CString GetWord(CString String, int WordNbr);
+CString GetWords(CString String, int StartWordNbr);
 void    HealMobiles();
 void    InitDescriptor();
+bool    IsMobileIdInRoom(CString RoomId, CString MobileId);
+bool    IsNotWord(CString Word, CString WordList);
+bool    IsWord(CString Word, CString WordList);
 void    LogIt(string LogBuf);
+void    LogIt(CString LogBuf);
+CString MakeFirstUpper(CString String);
 void    OpenLogFile();
+CString PronounSubstitute(CString MsgText);
+void    RemoveMobFromRoom(CString RoomId, CString MobileId);
 int     Rename(string File1, string File2);
+void    SendToRoom(CString TargetRoomId, CString MsgText);
 void    SetpDnodeCursorFirst();
 void    SetpDnodeCursorNext();
 void    SockCheckForNewConnections();
+void    SockClosePort(int PortNbr);
 void    SockOpenPort(int PortNbr);
 void    SockRecv();
 string  StrGetWord(string Str1, int WordNbr);
 string  StrGetWords(string Str1, int WordNbr);
 string  StrLeft(string Str1, int Len);
 string  StrMakeLower(string Str1);
-void    StrReplace(string &str, const string &from, const string &to);
+void    StrReplace(string& str, const string& from, const string& to);
 string  StrRight(string Str1, int Len);
 string  StrTrimLeft(string Str1);
 string  StrTrimRight(string Str1);
+CString TranslateWord(CString Word);
+void    UpdateMobInWorld(CString MobileId, CString AddRemove);
 bool    ValidateIt(CString ValidationType);
+int     WordCount(CString String);
 
 // Variables
 inline char           Buf[256];
