@@ -21,7 +21,6 @@
 #include "Dnode.h"
 #include "Log.h"
 #include "Object.h"
-#include "Player.h"
 
 /***********************************************************
 * Define Shop class                                        *

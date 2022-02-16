@@ -17,7 +17,14 @@
 * Includes                                                 *
 ************************************************************/
 
+#include "Config.h"
 #include "Communication.h"
+#include "Dnode.h"
+#include "Mobile.h"
+#include "Object.h"
+#include "Player.h"
+#include "Utility.h"
+#include "World.h"
 
 /***********************************************************
 * Define Room class                                        *

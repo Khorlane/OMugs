@@ -17,9 +17,7 @@
 * Includes                                                 *
 ************************************************************/
 
-#include "Communication.h"
 #include "Config.h"
-#include "Mobile.h"
 #include "Utility.h"
 
 /***********************************************************

@@ -17,11 +17,11 @@
 * Includes                                                 *
 ************************************************************/
 
-#include "Communication.h"
 #include "Config.h"
 #include "Dnode.h"
 #include "Log.h"
 #include "Object.h"
+#include "Utility.h"
 
 /***********************************************************
 * Define Player class                                      *

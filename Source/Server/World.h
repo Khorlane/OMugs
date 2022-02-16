@@ -17,11 +17,9 @@
 * Includes                                                 *
 ************************************************************/
 
-#include "Communication.h"
 #include "Config.h"
 #include "Mobile.h"
 #include "Room.h"
-#include "Utility.h"
 // Osi
 #include "Executor.h"
 #include "Parser.h"

@@ -17,9 +17,9 @@
 * Includes                                                 *
 ************************************************************/
 
-#include "Calendar.h"
-#include "Color.h"
 #include "Config.h"
+#include "Color.h"
+#include "Calendar.h"
 #include "Descriptor.h"
 #include "Dnode.h"
 #include "Help.h"

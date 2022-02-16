@@ -17,15 +17,14 @@
 * Includes                                                 *
 ************************************************************/
 
+#include "Config.h"
 #include "Calendar.h"
 #include "Communication.h"
-#include "Config.h"
 #include "Descriptor.h"
 #include "Dnode.h"
 #include "Log.h"
-#include "Social.h"
-#include "World.h"
 #include "Validate.h"
+#include "World.h"
 #include "WhoIsOnline.h"
 
 #endif

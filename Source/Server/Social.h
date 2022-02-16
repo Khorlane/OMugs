@@ -17,10 +17,10 @@
 * Includes                                                 *
 ************************************************************/
 
-#include "Communication.h"
 #include "Config.h"
+#include "Communication.h"
 #include "Dnode.h"
-#include "Player.h"
+#include "Utility.h"
 
 /***********************************************************
 * Define Social class                                      *
