@@ -117,7 +117,7 @@ void BigDog()
       }
       MobHealTick++;
       if (MobHealTick >= MOB_HEAL_TICK)
-      { // Time to process events
+      { // Time to heal mobs
         MobHealTick = 0;
         HealMobiles();
       }
@@ -158,208 +158,14 @@ void AppTestCode()
   // Put test code here. It will be executed before dialogs are presented.
 }
 
-bool ValidateIt(CString ValidationType)
-{
-  return Validate::ValidateIt(ValidationType);
-}
-
-void SockOpenPort(int PortNbr)
-{
-  Communication::SockOpenPort(PortNbr);
-}
-
-void SockCheckForNewConnections()
-{
-  Communication::SockCheckForNewConnections();
-}
-
-void SockRecv()
-{
-  Communication::SockRecv();
-}
-
-void SockClosePort(int PortNbr)
-{
-  Communication::SockClosePort(PortNbr);
-}
-
-void InitDescriptor()
-{
-  Descriptor::InitDescriptor();
-}
-
-void ClearDescriptor()
-{
-  Descriptor::ClearDescriptor();
-}
-
-void SetpDnodeCursorFirst()
-{
-  Descriptor::SetpDnodeCursorFirst();
-}
-
-bool EndOfDnodeList()
-{
-  return Descriptor::EndOfDnodeList();
-}
-
-void SetpDnodeCursorNext()
-{
-  Descriptor::SetpDnodeCursorNext();
-}
-
-void OpenLogFile()
-{
-  Log::OpenLogFile();
-}
-
-void LogIt(string LogBuf)
-{
-  Log::LogIt(LogBuf);
-}
-
-void LogIt(CString LogBuf)
-{
-  Log::LogIt(ConvertCStringToString(LogBuf));
-}
-
-void CloseLogFile()
-{
-  Log::CloseLogFile();
-}
-
-void Events()
-{
-  World::Events();
-}
-
-void HealMobiles()
-{
-  World::HealMobiles();
-}
-
-int GetRandomNumber(int Limit)
-{
-  return Utility::GetRandomNumber(Limit);
-}
-
-CString GetWord(CString String, int WordNbr)
-{
-  return Utility::GetWord(String, WordNbr);
-}
-
-int WordCount(CString String)
-{
-  return Utility::WordCount(String);
-}
-
-bool IsWord(CString Word, CString WordList)
-{
-  return Utility::IsWord(Word, WordList);
-};
-
-int CountMob(CString MobileId)
-{
-  return Mobile::CountMob(MobileId);
-}
-
-CString GetMobileRoom(CString MobileId)
-{
-  return Violence::GetMobileRoom(MobileId);
-}
-
-void RemoveMobFromRoom(CString RoomId, CString MobileId)
-{
-  return Mobile::RemoveMobFromRoom(RoomId, MobileId);
-}
-
-void DeleteMobStats(CString MobileId)
-{
-  return Mobile::DeleteMobStats(MobileId);
-}
-
-void AddMobToRoom(CString RoomId, CString MobileId)
-{
-  return Mobile::AddMobToRoom(RoomId, MobileId);
-}
-
-string GetValidMobRoomExits(string RoomId)
-{
-  return Room::GetValidMobRoomExits(RoomId);
-}
-
-bool IsMobileIdInRoom(CString RoomId, CString MobileId)
-{
-  return Mobile::IsMobileIdInRoom(RoomId, MobileId);
-}
-
-CString GetMobDesc1(CString MobileId)
-{
-  return Mobile::GetMobDesc1(MobileId);
-}
-
-void SendToRoom(CString TargetRoomId, CString MsgText)
-{
-  return Communication::SendToRoom(TargetRoomId, MsgText);
-}
-
-int GetCount()
-{
-  return Dnode::GetCount();
-}
-
-void AdvanceTime()
-{
-  pCalendar->AdvanceTime();
-}
-
-void UpdateMobInWorld(CString MobileId, CString AddRemove)
-{
-  Mobile::UpdateMobInWorld(MobileId, AddRemove);
-}
-
-CString MakeFirstUpper(CString String)
-{
-  return Utility::MakeFirstUpper(String);
-}
-
-CString TranslateWord(CString Word)
-{
-  return Utility::TranslateWord(Word);
-}
-
-CString FormatCommas(CString String)
-{
-  return Utility::FormatCommas(String);
-}
-
-CString PronounSubstitute(CString MsgText)
-{
-  return Utility::PronounSubstitute(MsgText);
-}
-
-int CalcPct(int Dividend, int Divisor)
-{
-  return Utility::CalcPct(Dividend, Divisor);
-}
-CString GetSqlStmt(CString SqlStmtId)
-{
-  return Utility::GetSqlStmt(SqlStmtId);
-}
-
-bool IsNotWord(CString Word, CString WordList)
-{
-  return Utility::IsNotWord(Word, WordList);
-}
-
-CString GetWords(CString String, int StartWordNbr)
-{
-  return Utility::GetWords(String, StartWordNbr);
-}
-
 //
 // File Functions
 //
+
+bool ChgDir(string Dir)
+{
+  return _chdir(Dir.c_str());
+}
 
 bool FileExist(string Name)
 {
@@ -376,11 +182,6 @@ bool FileExist(string Name)
     Exist = false;
   }
   return Exist;
-}
-
-bool ChgDir(string Dir)
-{
-  return _chdir(Dir.c_str());
 }
 
 int Rename(string File1, string File2)
@@ -499,4 +300,208 @@ string StrTrimRight(string Str1)
 {
   const auto Last = Str1.find_last_not_of(' ');
   return Str1.substr(0, Last + 1);
+}
+
+//
+// Simplify calls to these functions in the rest of the codebase. e.g. SockRecv() vs Communication::SockRecv()
+//
+
+void AddMobToRoom(CString RoomId, CString MobileId)
+{
+  return Mobile::AddMobToRoom(RoomId, MobileId);
+}
+
+void AdvanceTime()
+{
+  pCalendar->AdvanceTime();
+}
+
+int CalcPct(int Dividend, int Divisor)
+{
+  return Utility::CalcPct(Dividend, Divisor);
+}
+
+void ClearDescriptor()
+{
+  Descriptor::ClearDescriptor();
+}
+
+void CloseLogFile()
+{
+  Log::CloseLogFile();
+}
+
+int CountMob(CString MobileId)
+{
+  return Mobile::CountMob(MobileId);
+}
+
+void DeleteMobStats(CString MobileId)
+{
+  return Mobile::DeleteMobStats(MobileId);
+}
+
+bool EndOfDnodeList()
+{
+  return Descriptor::EndOfDnodeList();
+}
+
+void Events()
+{
+  World::Events();
+}
+
+CString FormatCommas(CString String)
+{
+  return Utility::FormatCommas(String);
+}
+
+int GetCount()
+{
+  return Dnode::GetCount();
+}
+
+CString GetMobDesc1(CString MobileId)
+{
+  return Mobile::GetMobDesc1(MobileId);
+}
+
+CString GetMobileRoom(CString MobileId)
+{
+  return Violence::GetMobileRoom(MobileId);
+}
+
+int GetRandomNumber(int Limit)
+{
+  return Utility::GetRandomNumber(Limit);
+}
+
+CString GetSqlStmt(CString SqlStmtId)
+{
+  return Utility::GetSqlStmt(SqlStmtId);
+}
+
+string GetValidMobRoomExits(string RoomId)
+{
+  return Room::GetValidMobRoomExits(RoomId);
+}
+
+CString GetWord(CString String, int WordNbr)
+{
+  return Utility::GetWord(String, WordNbr);
+}
+
+CString GetWords(CString String, int StartWordNbr)
+{
+  return Utility::GetWords(String, StartWordNbr);
+}
+
+void HealMobiles()
+{
+  World::HealMobiles();
+}
+
+void InitDescriptor()
+{
+  Descriptor::InitDescriptor();
+}
+
+bool IsMobileIdInRoom(CString RoomId, CString MobileId)
+{
+  return Mobile::IsMobileIdInRoom(RoomId, MobileId);
+}
+
+bool IsNotWord(CString Word, CString WordList)
+{
+  return Utility::IsNotWord(Word, WordList);
+}
+
+bool IsWord(CString Word, CString WordList)
+{
+  return Utility::IsWord(Word, WordList);
+}
+
+void LogIt(string LogBuf)
+{
+  Log::LogIt(LogBuf);
+}
+
+void LogIt(CString LogBuf)
+{
+  Log::LogIt(ConvertCStringToString(LogBuf));
+}
+
+CString MakeFirstUpper(CString String)
+{
+  return Utility::MakeFirstUpper(String);
+}
+
+void OpenLogFile()
+{
+  Log::OpenLogFile();
+}
+
+CString PronounSubstitute(CString MsgText)
+{
+  return Utility::PronounSubstitute(MsgText);
+}
+
+void RemoveMobFromRoom(CString RoomId, CString MobileId)
+{
+  return Mobile::RemoveMobFromRoom(RoomId, MobileId);
+}
+
+void SendToRoom(CString TargetRoomId, CString MsgText)
+{
+  return Communication::SendToRoom(TargetRoomId, MsgText);
+}
+
+void SetpDnodeCursorFirst()
+{
+  Descriptor::SetpDnodeCursorFirst();
+}
+
+void SetpDnodeCursorNext()
+{
+  Descriptor::SetpDnodeCursorNext();
+}
+
+void SockCheckForNewConnections()
+{
+  Communication::SockCheckForNewConnections();
+}
+
+void SockClosePort(int PortNbr)
+{
+  Communication::SockClosePort(PortNbr);
+}
+
+void SockOpenPort(int PortNbr)
+{
+  Communication::SockOpenPort(PortNbr);
+}
+
+void SockRecv()
+{
+  Communication::SockRecv();
+}
+
+CString TranslateWord(CString Word)
+{
+  return Utility::TranslateWord(Word);
+}
+
+void UpdateMobInWorld(CString MobileId, CString AddRemove)
+{
+  Mobile::UpdateMobInWorld(MobileId, AddRemove);
+}
+
+bool ValidateIt(CString ValidationType)
+{
+  return Validate::ValidateIt(ValidationType);
+}
+
+int WordCount(CString String)
+{
+  return Utility::WordCount(String);
 }
