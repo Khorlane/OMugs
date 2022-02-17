@@ -27,7 +27,7 @@ int Dnode::Count = 0;
  * Dnode constructor                                       *
  ***********************************************************/
 
-Dnode::Dnode(int SocketHandle, CString IpAddress)
+Dnode::Dnode(int SocketHandle, string IpAddress)
 {
   Count++;
   DnodeFd                             = SocketHandle;

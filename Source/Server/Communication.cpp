@@ -65,7 +65,7 @@ Dnode *Communication::GetTargetDnode(CString TargetName)
   while (!EndOfDnodeList())
   { // Loop thru all connections
     pDnodeLookup = pDnodeCursor;
-// TODO Can the line above replace the line below ???    
+// TODO - Can the line above replace the line below ???    
     pDnodeLookup = Descriptor::GetDnode();
     LookupName = pDnodeLookup->PlayerName;
     LookupName.MakeLower();
@@ -718,19 +718,19 @@ void Communication::SockRecv()
     //************************
     if (!StateStopping)
     { // Game is not shutting down
-      LineFeedPosition = pDnodeActor->PlayerInp.FindOneOf("\r\n");
+      LineFeedPosition = StrFindOneOf(pDnodeActor->PlayerInp, "\r\n");
       if (LineFeedPosition > -1)
       { // Found a newline, parse the command
         if (pDnodeActor->PlayerName != "Ixaka" && pDnodeActor->PlayerName != "Kwam")
-        { // Log what player input
-          LogBuf  = pDnodeActor->PlayerIpAddress;
+        { // Log the player's input
+          LogBuf  = ConvertStringToCString(pDnodeActor->PlayerIpAddress);
           LogBuf += " ";
           if (pDnodeActor->pPlayer)
           {
             LogBuf += pDnodeActor->pPlayer->RoomId;
             LogBuf += " ";
           }
-          LogBuf += pDnodeActor->PlayerInp;
+          LogBuf += ConvertStringToCString(pDnodeActor->PlayerInp);
           LogBuf.Replace("\r", " ");
           LogBuf.Replace("\n", " ");
           Log::LogIt(LogBuf);
@@ -893,16 +893,16 @@ void Communication::CommandParse()
   //**************************
   // Get next command string *
   //**************************
-  CmdStr = pDnodeActor->PlayerInp;
+  CmdStr = ConvertStringToCString(pDnodeActor->PlayerInp);
   CmdStrLength = CmdStr.GetLength();
-  PositionOfNewline = CmdStr.FindOneOf("\r\n");
+  PositionOfNewline = StrFindOneOf(CmdStr, "\r\n");
   if (PositionOfNewline < 0)
   { // No newline found, skip out
     return;
   }
   CmdStr = CmdStr.Left(PositionOfNewline);
-  pDnodeActor->PlayerInp = pDnodeActor->PlayerInp.Right(CmdStrLength - PositionOfNewline);
-  pDnodeActor->PlayerInp.TrimLeft();
+  pDnodeActor->PlayerInp = StrRight(pDnodeActor->PlayerInp, CmdStrLength - PositionOfNewline);
+  pDnodeActor->PlayerInp = StrTrimLeft(pDnodeActor->PlayerInp);
   if (CmdStr == "")
   { // Player hit enter without typing anything
     if (!pDnodeActor->PlayerStateLoggingOn)
@@ -3358,7 +3358,7 @@ void Communication::DoGoTo()
   pDnodeTgt = pDnodeActor;
   SendToRoom(pDnodeActor->pPlayer->RoomId, GoToMsg);
   // GoTo room
-  // TODO This seems like double talk with the RoomId, even after CString is completely removed
+  // TODO - This seems like double talk with the RoomId, even after CString is completely removed
   sRoomId = ConvertCStringToString(RoomId);
   sRoomId = Room::GetRoomId(sRoomId);
   csRoomId = ConvertStringToCString(sRoomId);
@@ -6535,7 +6535,7 @@ void Communication::LogonWaitMaleFemale()
   CString  PlayerMsg;
 
   CmdStr.MakeUpper();
-  if (!(CmdStr.FindOneOf("MF") == 0 && CmdStr.GetLength() == 1))
+  if (!(StrFindOneOf(CmdStr, "MF") == 0 && CmdStr.GetLength() == 1))
   { // Not M or F
     pDnodeActor->PlayerStateWaitMaleFemale = true;
     pDnodeActor->PlayerOut += "You must enter a M or F.";
@@ -6628,7 +6628,7 @@ void Communication::LogonWaitName()
 void Communication::LogonWaitNameConfirmation()
 {
   CmdStr.MakeUpper();
-  if (!(CmdStr.FindOneOf("YN") == 0 && CmdStr.GetLength() == 1))
+  if (!(StrFindOneOf(CmdStr, "YN") == 0 && CmdStr.GetLength() == 1))
   { // Not Y or N ... try again
     pDnodeActor->PlayerStateWaitNameConfirmation = true;
     pDnodeActor->PlayerOut += "\r\n";
@@ -6695,7 +6695,7 @@ void Communication::LogonWaitNameConfirmation()
 void Communication::LogonWaitNewCharacter()
 {
   CmdStr.MakeUpper();
-  if (!(CmdStr.FindOneOf("YN") == 0 && CmdStr.GetLength() == 1))
+  if (!(StrFindOneOf(CmdStr, "YN") == 0 && CmdStr.GetLength() == 1))
   { // Not Y or N ... try again
     pDnodeActor->PlayerStateWaitNewCharacter = true;
     pDnodeActor->PlayerOut += "\r\n";
@@ -6707,7 +6707,7 @@ void Communication::LogonWaitNewCharacter()
   else
   { // Y or N entered ... store response for use later
     pDnodeActor->PlayerStateWaitName = true;
-    pDnodeActor->PlayerNewCharacter = CmdStr;
+    pDnodeActor->PlayerNewCharacter = ConvertCStringToString(CmdStr);
     pDnodeActor->PlayerOut += "\r\n";
     pDnodeActor->PlayerOut += "Name?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -6903,7 +6903,7 @@ void Communication::SockNewConnection()
   struct sockaddr_in  Sock{};
   int                 SocketHandle;
   int                 SocketSize;
-  CString             IpAddress;
+  string              IpAddress;
   CString             TmpStr;
     
   FionbioParm = 1;
@@ -6934,7 +6934,7 @@ void Communication::SockNewConnection()
   LogBuf  = "New connection with socket handle ";
   LogBuf += TmpStr;
   LogBuf += " and address ";
-  LogBuf += IpAddress;
+  LogBuf += ConvertStringToCString(IpAddress);
   Log::LogIt(LogBuf);
   pDnodeActor = new Dnode(SocketHandle, IpAddress);
   Descriptor::AppendIt();

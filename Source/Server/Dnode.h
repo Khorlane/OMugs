@@ -44,7 +44,7 @@ class Dnode
 
 // Protected functions
   protected:
-    Dnode(int SocketHandle, CString IpAddress);
+    Dnode(int SocketHandle, string IpAddress);
     ~Dnode();
 
 // Protected variables static
@@ -66,10 +66,10 @@ class Dnode
     int             FightTick;
     int             HungerThirstTick;
     int             InputTick;
-    CString         PlayerInp;
-    CString         PlayerIpAddress;
+    string          PlayerInp;
+    string          PlayerIpAddress;
     CString         PlayerName;
-    CString         PlayerNewCharacter;
+    string          PlayerNewCharacter;
     CString         PlayerOut;
     string          PlayerPassword;
     bool            PlayerStateAfk;

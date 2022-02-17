@@ -220,6 +220,17 @@ int GetTimeSeconds()
 // String Functions
 //
 
+int StrFindOneOf(CString HayStack, string Needle)
+{
+  string HayStack1 = ConvertCStringToString(HayStack);
+  return HayStack1.find_first_of(Needle);
+}
+
+int StrFindOneOf(string HayStack, string Needle)
+{
+  return HayStack.find_first_of(Needle);
+}
+
 string StrGetWord(string Str1, int WordNbr)
 {
   int    i;
@@ -292,13 +303,15 @@ string StrTrimLeft(string Str1)
   {
     return "";
   }
-  const auto First = Str1.find_first_not_of(' ');
+  const auto First = Str1.find_first_not_of(" \r\n");
+  if (First == string::npos) return "";
   return Str1.substr(First, Str1.length());
 }
 
 string StrTrimRight(string Str1)
 {
-  const auto Last = Str1.find_last_not_of(' ');
+  const auto Last = Str1.find_last_not_of(" \r\n");
+  if (Last == string::npos) return "";
   return Str1.substr(0, Last + 1);
 }
 
