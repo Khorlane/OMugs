@@ -231,6 +231,11 @@ int StrFindOneOf(string HayStack, string Needle)
   return HayStack.find_first_of(Needle);
 }
 
+string StrGetWord(CString Str1, int WordNbr)
+{
+  return StrGetWord(ConvertCStringToString(Str1), WordNbr);
+}
+
 string StrGetWord(string Str1, int WordNbr)
 {
   int    i;

@@ -289,6 +289,7 @@ void    SockRecv();
 int     StrFindOneOf(string HayStack, string Needle);
 int     StrFindOneOf(CString HayStack, string Needle);
 string  StrGetWord(string Str1, int WordNbr);
+string  StrGetWord(CString Str1, int WordNbr);
 string  StrGetWords(string Str1, int WordNbr);
 string  StrLeft(string Str1, int Len);
 string  StrMakeLower(string Str1);

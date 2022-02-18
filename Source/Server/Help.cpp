@@ -54,15 +54,12 @@ bool Help::IsHelp()
   string  TmpStr;
   string  HelpLookup;
 
-  string  sCmdStr;
-  sCmdStr = ConvertCStringToString(CmdStr);
-  
   Found = false;
   if (!OpenFile())
   { // If the file isn't there, then all Helps are not found, doh!
     return false;
   }
-  HelpLookup = StrGetWord(sCmdStr, 2);
+  HelpLookup = StrGetWord(CmdStr, 2);
   HelpLookup = StrMakeLower(HelpLookup);
   HelpText = "Not Done";
   while (HelpText != "End of Help")

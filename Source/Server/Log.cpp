@@ -21,7 +21,7 @@
 * Globals                                                  *
 ************************************************************/
 
-CStdioFile      LogFile;
+ofstream LogFile;
 
 /***********************************************************
 * Log constructor                                          *
@@ -49,32 +49,30 @@ Log::~Log()
 
 void Log::CloseLogFile()
 {
-  LogFile.Close();
+  LogFile.close();
 }
 
 /***********************************************************
 * Write log file                                           *
 ************************************************************/
 
-void Log::LogIt(CString LogBuf)
+void Log::LogIt(string LogBuf)
 {
-  CString DisplayCurrentTime;
+  string DisplayCurrentTime;
 
   time_t now = chrono::system_clock::to_time_t(chrono::system_clock::now());
   string s(30, '\0');
   strftime(&s[0], s.size(), "%Y-%m-%d %H:%M:%S ", localtime(&now));
-  DisplayCurrentTime = ConvertStringToCString(s);
+  DisplayCurrentTime = s;
   LogBuf  = DisplayCurrentTime + LogBuf;
   LogBuf += "\n";
-  LogFile.WriteString(LogBuf);
-  LogFile.Flush();
+  LogFile << LogBuf;
+  LogFile.flush();
 }
 
-void Log::LogIt(string LogBuf)
+void Log::LogIt(CString LogBuf)
 {
-  CString csLogBuf;
-  csLogBuf = ConvertStringToCString(LogBuf);
-  LogIt(csLogBuf);
+  LogIt(ConvertCStringToString(LogBuf));
 }
 
 /***********************************************************
@@ -83,31 +81,25 @@ void Log::LogIt(string LogBuf)
 
 void Log::OpenLogFile()
 {
-  CFileStatus FileStatus;
-  CString     LogFileName;
-  CString     LogSaveFileName;
-  CString     LogTime;
-  int         Success;
+  string     LogFileName;
+  string     LogSaveFileName;
+  string     LogTime;
  
   LogFileName  = LOG_DIR;
   LogFileName += "SrvrLog.txt";
-  if (CFile::GetStatus(LogFileName, FileStatus))
+  if (FileExist(LogFileName))
   {
     sprintf(Buf, "%d", GetTimeSeconds());
-    LogTime = ConvertStringToCString(Buf);
+    LogTime = Buf;
 
-    LogSaveFileName  = LogFileName.Left(LogFileName.GetLength()-4);
+    LogSaveFileName  = StrLeft(LogFileName, LogFileName.length()-4);
     LogSaveFileName += ".";
     LogSaveFileName += LogTime;
     LogSaveFileName += ".txt.";
-    CFile::Rename(LogFileName, LogSaveFileName);
+    Rename(LogFileName, LogSaveFileName);
   }
-  Success = LogFile.Open(LogFileName,
-              CFile::modeCreate     |   
-              CFile::modeWrite      |
-              CFile::shareDenyWrite |
-              CFile::typeText);
-  if(!Success)
+  LogFile.open(LogFileName);
+  if(!LogFile.is_open())
   {
     AfxMessageBox("Log::OpenLogFile - Failed", MB_ICONSTOP);
     _endthread();
