@@ -166,8 +166,8 @@ bool Room::IsExit(string MudCmdIsExit)
   string   Stuff;
   string   TmpStr;
 
-  string  sCmdStr;
-  sCmdStr = ConvertCStringToString(CmdStr);
+  //string  sCmdStr;
+  //sCmdStr = ConvertCStringToString(CmdStr);
 
   Found = false;
   if (!OpenFile(pDnodeActor))
@@ -175,11 +175,9 @@ bool Room::IsExit(string MudCmdIsExit)
     AfxMessageBox("Room::IsExit - Room does not exist", MB_ICONSTOP);
     _endthread();
   }
-  ExitLookup = StrGetWord(sCmdStr, 2);
+  ExitLookup = StrGetWord(CmdStr, 2);
   StrMakeLower(ExitLookup);
-  CString csExitLookup;
-  csExitLookup = ConvertStringToCString(ExitLookup);
-  ExitLookup = TranslateWord(csExitLookup);
+  ExitLookup = TranslateWord(ConvertStringToCString(ExitLookup));
   Stuff = "Not Done";
   while (Stuff != "End of Exits")
   { // Loop until Exit is found or end of file
@@ -188,9 +186,7 @@ bool Room::IsExit(string MudCmdIsExit)
     { // Ok, an Exit has been found
       ExitName = StrGetWord(Stuff, 2);
       StrMakeLower(ExitName);
-      CString csExitName;
-      csExitName = ConvertStringToCString(ExitName);
-      ExitName = TranslateWord(csExitName);
+      ExitName = TranslateWord(ConvertStringToCString(ExitName));
       if (ExitName == ExitLookup)
       { // THE Exit has been found
         Found = true;

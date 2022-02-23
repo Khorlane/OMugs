@@ -377,7 +377,7 @@ void Player::GainExperience(Dnode *pDnode, int ExperienceToBeGained)
     TmpStr = ConvertStringToCString(Buf);
     LogBuf += TmpStr;
     LogBuf += "!";
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
   }
 }
 
@@ -764,9 +764,9 @@ void Player::ParsePlayerStuff()
     {
       LogBuf  = Name;
       LogBuf += " has an unidentified player file field";
-      Log::LogIt(LogBuf);
+      LogIt(LogBuf);
       LogBuf  = Stuff;
-      Log::LogIt(LogBuf);
+      LogIt(LogBuf);
     }
     if (WeaponType == "hand")
     {

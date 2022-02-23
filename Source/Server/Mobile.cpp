@@ -1406,7 +1406,7 @@ CString Mobile::MobTalk()
     { // Talk is not 'None', so file should exist
       LogBuf  = "Mobile::MobTalk - Failed to open ";
       LogBuf += MobTalkFileName;
-      Log::LogIt(LogBuf);
+      LogIt(LogBuf);
     }
     MobileMsg = "You are ignored.\r\n";
     return MobileMsg;
@@ -1433,7 +1433,7 @@ CString Mobile::MobTalk()
       LogBuf += TmpStr;
       LogBuf += " ";
       LogBuf += MobTalkFileName;
-      Log::LogIt(LogBuf);
+      LogIt(LogBuf);
       MobTalkFile.Close();
       MobileMsg = "You are ignored.\r\n";
       return MobileMsg;
@@ -1452,7 +1452,7 @@ CString Mobile::MobTalk()
       LogBuf += TmpStr;
       LogBuf += " ";
       LogBuf += MobTalkFileName;
-      Log::LogIt(LogBuf);
+      LogIt(LogBuf);
       MobTalkFile.Close();
       MobileMsg = "You are ignored.\r\n";
       return MobileMsg;

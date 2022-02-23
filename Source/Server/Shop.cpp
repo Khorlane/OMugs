@@ -15,7 +15,6 @@
 ************************************************************/
 
 #include "stdafx.h" // This is only here to speed up compiles
-#include "Config.h"
 #include "Shop.h"
 
 /***********************************************************
@@ -100,7 +99,7 @@ Object *Shop::IsShopObj(CString RoomId, CString ObjectName)
           LogBuf =  ObjectId;
           LogBuf += " is an invalid shop item - ";
           LogBuf += "Shop::IsShopObj";
-          Log::LogIt(LogBuf);
+          LogIt(LogBuf);
           return NULL;
         }
       }
@@ -147,7 +146,7 @@ Object *Shop::IsShopObj(CString RoomId, CString ObjectName)
         LogBuf =  ObjectId;
         LogBuf += " is an invalid shop item - ";
         LogBuf += "Shop::IsShopObj";
-        Log::LogIt(LogBuf);
+        LogIt(LogBuf);
       }
     }
     ShopFile.ReadString(Stuff);
@@ -250,7 +249,7 @@ void Shop::ListObjects()
         LogBuf =  ObjectId;
         LogBuf += " is an invalid shop item - ";
         LogBuf += "Shop::ListObjects";
-        Log::LogIt(LogBuf);
+        LogIt(LogBuf);
       }
     }
     ShopFile.ReadString(Stuff);

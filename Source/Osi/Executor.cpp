@@ -445,7 +445,7 @@ void Executor::ExecuteTerm()
         else
         {
           LogBuf  = "Osi - Executor::ExecuteTerm - Divide by zero runtime error ";
-          Log::LogIt(LogBuf);
+          LogIt(LogBuf);
         }
       }
     }

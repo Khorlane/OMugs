@@ -92,7 +92,7 @@ void Buffer::GetScriptLine()
   { // Unexpected end of file
     LogBuf  = "Osi - Buffer::GetScriptLine - Unexpected end of file ";
     LogBuf += ScriptFileName;
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
   }
   getline(ScriptFile, Stuff);
   CurrentLineNumber++;
@@ -115,6 +115,6 @@ void Buffer::OpenScriptFile()
   {
     LogBuf  = "Osi - Buffer::OpenScriptFile - Failed to open ";
     LogBuf += ScriptFileName;
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
   }
 }

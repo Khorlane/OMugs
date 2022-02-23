@@ -354,7 +354,7 @@ void Communication::SockCheckForNewConnections()
   { // Something is wrong
     sprintf(Buf,"%s", strerror(errno));
     LogBuf = "Communication::SockCheckForNewConnections: select: " + ConvertStringToCString(Buf);
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
     AfxMessageBox("Communication::SockCheckForNewConnections - Error: select", MB_ICONSTOP);
     _endthread();
   }
@@ -382,7 +382,7 @@ void Communication::SockClosePort(int Port)
   }
   sprintf(Buf, "%d", Port);
   LogBuf = "Closed port " + ConvertStringToCString(Buf);;
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
 }
 
 /***********************************************************
@@ -411,7 +411,7 @@ void Communication::SockOpenPort(int Port)
   {
     sprintf(Buf, "%s", strerror(errno));
     LogBuf = "WinSock not available!: " + ConvertStringToCString(Buf);
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
     AfxMessageBox("Communication::SockOpenPort - WinSock not available", MB_ICONSTOP);
     _endthread();
   }
@@ -421,7 +421,7 @@ void Communication::SockOpenPort(int Port)
   {
     sprintf(Buf, "%s", strerror(errno));
     LogBuf = "Communication:SockOpenPort - Error: initializing socket: " + ConvertStringToCString(Buf);
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
     AfxMessageBox("Communication::SockOpenPort - Error: initializing socket", MB_ICONSTOP);
     _endthread();
   }
@@ -431,7 +431,7 @@ void Communication::SockOpenPort(int Port)
   {
     sprintf(Buf, "%s", strerror(errno));
     LogBuf = "Communication:SockOpenPort - Error: setsockopt: SOL_SOCKET SO_REUSEADDR" + ConvertStringToCString(Buf);
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
     AfxMessageBox("Communication::SockOpenPort - Error: setsockopt", MB_ICONSTOP);
     _endthread();
   }
@@ -441,7 +441,7 @@ void Communication::SockOpenPort(int Port)
   {
     sprintf(Buf, "%s", strerror(errno));
     LogBuf = "Communication:SockOpenPort - Error: setsockopt SNDBUF: " + ConvertStringToCString(Buf);
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
     AfxMessageBox("Communication::SockOpenPort - Error: setsockopt SNDBUF", MB_ICONSTOP);
     _endthread();
   }
@@ -451,7 +451,7 @@ void Communication::SockOpenPort(int Port)
   {
     sprintf(Buf, "%s", strerror(errno));
     LogBuf = "Communication:SockOpenPort - Error: setsockopt SO_LINGER: " + ConvertStringToCString(Buf);
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
     AfxMessageBox("Communication::SockOpenPort - Error: setsockopt SO_LINGER", MB_ICONSTOP);
     _endthread();
   }
@@ -466,7 +466,7 @@ void Communication::SockOpenPort(int Port)
   {
     sprintf(Buf, "%s", strerror(errno));
     LogBuf = "Communication:SockOpenPort - Error: bind " + ConvertStringToCString(Buf);
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
     AfxMessageBox("Communication::SockOpenPort - Error: bind", MB_ICONSTOP);
     _endthread();
   }
@@ -476,7 +476,7 @@ void Communication::SockOpenPort(int Port)
   {
     sprintf(Buf, "%s", strerror(errno));
     LogBuf = "Communication:SockOpenPort ioctlsocket: " + ConvertStringToCString(Buf);
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
     AfxMessageBox("Communication::SockOpenPort - Error: ioctlsocket", MB_ICONSTOP);
     _endthread();
   }
@@ -486,14 +486,14 @@ void Communication::SockOpenPort(int Port)
   {
     sprintf(Buf, "%s", strerror(errno));
     LogBuf = "Communication:SockOpenPort - Error: listen " + ConvertStringToCString(Buf);
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
     ::closesocket(ListenSocket);
     AfxMessageBox("Communication::SockOpenPort - Error: listen", MB_ICONSTOP);
     _endthread();
   }
   sprintf(Buf, "%d", Port);
   LogBuf = "Listening on port " + ConvertStringToCString(Buf);
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
   // Load command array
   CommandArrayLoad();
 }
@@ -529,7 +529,7 @@ void Communication::SockRecv()
         pDnodeActor->PlayerStateBye = true;
         sprintf(Buf, "%d", pDnodeActor->DnodeFd);
         LogBuf = "Time out during logon on descriptor " + ConvertStringToCString(Buf);;
-        Log::LogIt(LogBuf);
+        LogIt(LogBuf);
         pDnodeActor->PlayerOut += "\r\n";
         pDnodeActor->PlayerOut += "No input ... closing connection";
       }
@@ -669,7 +669,7 @@ void Communication::SockRecv()
           pDnodeOthers->PlayerOut += "\r\n";
           LogBuf  = pDnodeOthers->PlayerName;
           LogBuf += " will be force disconnected";
-          Log::LogIt(LogBuf);
+          LogIt(LogBuf);
         }
         Descriptor::SetpDnodeCursorNext();
       }
@@ -699,7 +699,7 @@ void Communication::SockRecv()
       { // When connection is deleted from list, log it
         sprintf(Buf, "%d", DnodeFdSave);
         LogBuf = "Closed connection on descriptor " + ConvertStringToCString(Buf);;
-        Log::LogIt(LogBuf);
+        LogIt(LogBuf);
         ConnectionCount = Dnode::GetCount();
         if (ConnectionCount == 1)
         { // Connection count is one means no players are connected
@@ -733,7 +733,7 @@ void Communication::SockRecv()
           LogBuf += ConvertStringToCString(pDnodeActor->PlayerInp);
           LogBuf.Replace("\r", " ");
           LogBuf.Replace("\n", " ");
-          Log::LogIt(LogBuf);
+          LogIt(LogBuf);
         }
         CommandParse();
       }
@@ -814,7 +814,7 @@ void Communication::CommandArrayLoad()
   }
   ValidCmdsFile.close();
   LogBuf = "Command array loaded";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
 }
 
 /***********************************************************
@@ -1464,7 +1464,7 @@ void Communication::CommandParse()
   LogBuf += " is in command array, but Do";
   LogBuf += MudCmd;
   LogBuf += " is not coded.";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
 }
 
 /***********************************************************
@@ -1545,7 +1545,7 @@ void Communication::DoAdvance()
   LogBuf += LevelString;
   LogBuf += " by ";
   LogBuf += pDnodeActor->PlayerName;
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
   // Send message to player
   pDnodeActor->PlayerOut += TargetNameSave;
   pDnodeActor->PlayerOut += " is now level ";
@@ -2157,7 +2157,7 @@ void Communication::DoDelete()
   GrpLeave();
   LogBuf  = pDnodeActor->PlayerName;
   LogBuf += " issued the DELETE command";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
   // Delete Player file
   PlayerFileName =  PLAYER_DIR;
   PlayerFileName += pDnodeActor->PlayerName;
@@ -4652,7 +4652,7 @@ void Communication::DoQuit()
   GrpLeave();
   LogBuf  = pDnodeActor->PlayerName;
   LogBuf += " issued the QUIT command";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
   PlayerMsg  = "\r\n";
   PlayerMsg += "Bye Bye!";
   PlayerMsg += "\r\n";
@@ -5393,7 +5393,7 @@ void Communication::DoStop()
   StateStopping = true;
   LogBuf  = pDnodeActor->PlayerName;
   LogBuf += " issued the STOP command";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
   pDnodeActor->PlayerOut += "Stop command issued!\r\n";
   GoGoGoFileName  = CONTROL_DIR;
   GoGoGoFileName += "GoGoGo";
@@ -6570,7 +6570,7 @@ void Communication::LogonWaitMaleFemale()
     Room::ShowRoom(pDnodeActor);
     LogBuf  = "New player ";
     LogBuf += pDnodeActor->PlayerName;
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
     pDnodeActor->pPlayer->Save();
   }
 }
@@ -6765,7 +6765,7 @@ void Communication::LogonWaitPassword()
             pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
             LogBuf  = "Reconnecting player ";
             LogBuf += pDnodeActor->PlayerName;
-            Log::LogIt(LogBuf);
+            LogIt(LogBuf);
             pDnodeActor->pPlayer->Save();
             // Clean up old connection
             pDnodeOthers->PlayerStateBye = true;
@@ -6799,7 +6799,7 @@ void Communication::LogonWaitPassword()
         Room::ShowRoom(pDnodeActor);
         LogBuf  = "Returning player ";
         LogBuf += pDnodeActor->PlayerName;
-        Log::LogIt(LogBuf);
+        LogIt(LogBuf);
         pDnodeActor->pPlayer->Save();
       }
     }
@@ -6866,7 +6866,7 @@ void Communication::LogonWaitPassword()
         pDnodeActor->PlayerOut += "\r\n";
         LogBuf = "Password failure for ";
         LogBuf += pDnodeActor->PlayerName;
-        Log::LogIt(LogBuf);
+        LogIt(LogBuf);
       }
     }
   }
@@ -6914,7 +6914,7 @@ void Communication::SockNewConnection()
   {
     sprintf(Buf, "%s", strerror(errno));
     LogBuf = "Communication::SockNewConnection - Error: accept: " + ConvertStringToCString(Buf);
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
     AfxMessageBox("Communication::SockNewConnection - Error: accept", MB_ICONSTOP);
     _endthread();
   }
@@ -6925,7 +6925,7 @@ void Communication::SockNewConnection()
   {
     sprintf(Buf, "%s", strerror(errno));
     LogBuf = "Communication::SockNewConnection - Error: ioctlsocket " + ConvertStringToCString(Buf);
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
     AfxMessageBox("Communication::NewConection - Error: ioctlsocket", MB_ICONSTOP);
     _endthread();
   }
@@ -6935,7 +6935,7 @@ void Communication::SockNewConnection()
   LogBuf += TmpStr;
   LogBuf += " and address ";
   LogBuf += ConvertStringToCString(IpAddress);
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
   pDnodeActor = new Dnode(SocketHandle, IpAddress);
   Descriptor::AppendIt();
   StateConnections = true;
@@ -7051,20 +7051,20 @@ void Communication::ViolenceMobile()
 
   i = 0;
   i++;
-  MobileId = Violence::GetMobPlayerMobileId(pDnodeActor->PlayerName, i);
+  MobileId = GetMobPlayerMobileId(pDnodeActor->PlayerName, i);
   while (MobileId != "No more mobiles")
   { // For each mob whacking the player
     PAC               = pDnodeActor->pPlayer->ArmorClass;
-    MobileAttack      = Violence::GetMobileAttack(MobileId);
-    MobileDamage      = Violence::GetMobileDamage(MobileId);
-    MobileDesc1       = Violence::GetMobileDesc1(MobileId);
-    DamageToPlayer    = Violence::CalcDamageToPlayer(MobileDamage, PAC);
-    PlayerBeenWhacked = Violence::WhackPlayer(MobileDesc1, MobileAttack, DamageToPlayer);
+    MobileAttack      = GetMobileAttack(MobileId);
+    MobileDamage      = GetMobileDamage(MobileId);
+    MobileDesc1       = GetMobileDesc1(MobileId);
+    DamageToPlayer    = CalcDamageToPlayer(MobileDamage, PAC);
+    PlayerBeenWhacked = WhackPlayer(MobileDesc1, MobileAttack, DamageToPlayer);
     pDnodeActor->pPlayer->HitPoints -= DamageToPlayer;
     HitPoints = pDnodeActor->pPlayer->HitPoints;
     // Calculate health percentage
     HitPointsMax = pDnodeActor->pPlayer->Level * PLAYER_HPT_PER_LEVEL;
-    HealthPct = Violence::CalcHealthPct(HitPoints, HitPointsMax);
+    HealthPct = CalcHealthPct(HitPoints, HitPointsMax);
     // Add heath pct to PlayerBeenWhacked
     PlayerBeenWhacked.Insert(0, " ");
     PlayerBeenWhacked.Insert(0, HealthPct);
@@ -7101,10 +7101,10 @@ void Communication::ViolenceMobileDied(CString MobileBeenWhacked,
   CString  MobileLoot;
   CString  TmpStr;
 
-  MobileExpPointsLevel = Violence::GetMobileExpPointsLevel(MobileId);
-  MobileExpPoints      = atoi(Utility::GetWord(MobileExpPointsLevel, 1));
-  MobileLevel          = atoi(Utility::GetWord(MobileExpPointsLevel, 2));
-  MobileLoot           = Violence::GetMobileLoot(MobileId);
+  MobileExpPointsLevel = GetMobileExpPointsLevel(MobileId);
+  MobileExpPoints      = atoi(GetWord(MobileExpPointsLevel, 1));
+  MobileLevel          = atoi(GetWord(MobileExpPointsLevel, 2));
+  MobileLoot           = GetMobileLoot(MobileId);
   // Send dead mob message to player
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += MobileBeenWhacked;
@@ -7126,7 +7126,7 @@ void Communication::ViolenceMobileDied(CString MobileBeenWhacked,
   { // Calculate adjusted experience
     if (MobileExpPoints >= 0)
     { // Player gains xp
-      ExpPoints = Player::CalcAdjustedExpPoints(pDnodeActor->pPlayer->Level, MobileLevel, MobileExpPoints);
+      ExpPoints = CalcAdjustedExpPoints(pDnodeActor->pPlayer->Level, MobileLevel, MobileExpPoints);
       GainLoose = "Gain";
     }
     else
@@ -7308,7 +7308,7 @@ bool Communication::ViolenceMobileLootHandOut(CString Loot)
         LogBuf += "Loot object not found";
         LogBuf += " ";
         LogBuf += ObjectId;
-        Log::LogIt(LogBuf);
+        LogIt(LogBuf);
       }
       // Tell player what they got
       pDnodeActor->PlayerOut += "\r\n";

@@ -334,6 +334,21 @@ void AdvanceTime()
   pCalendar->AdvanceTime();
 }
 
+int CalcAdjustedExpPoints(int PlayerLevel, int MobileLevel, int ExpPoints)
+{
+  return Player::CalcAdjustedExpPoints(PlayerLevel, MobileLevel, ExpPoints);
+}
+
+int CalcDamageToPlayer(int Damage, int PAC)
+{
+  return Violence::CalcDamageToPlayer(Damage, PAC);
+}
+
+CString CalcHealthPct(int HitPoints, int HitPointsMax)
+{
+  return Violence::CalcHealthPct(HitPoints, HitPointsMax);
+}
+
 int CalcPct(int Dividend, int Divisor)
 {
   return Utility::CalcPct(Dividend, Divisor);
@@ -384,9 +399,39 @@ CString GetMobDesc1(CString MobileId)
   return Mobile::GetMobDesc1(MobileId);
 }
 
+CString GetMobileAttack(CString MobileId)
+{
+  return Violence::GetMobileAttack(MobileId);
+}
+
+int GetMobileDamage(CString MobileId)
+{
+  return Violence::GetMobileDamage(MobileId);
+}
+
+CString GetMobileDesc1(CString MobileId)
+{
+  return Violence::GetMobileDesc1(MobileId);
+}
+
+CString GetMobileExpPointsLevel(CString MobileId)
+{
+  return Violence::GetMobileExpPointsLevel(MobileId);
+}
+
+CString GetMobileLoot(CString MobileId)
+{
+  return Violence::GetMobileLoot(MobileId);
+}
+
 CString GetMobileRoom(CString MobileId)
 {
   return Violence::GetMobileRoom(MobileId);
+}
+
+CString GetMobPlayerMobileId(CString PlayerName, int i)
+{
+  return Violence::GetMobPlayerMobileId(PlayerName, i);
 }
 
 int GetRandomNumber(int Limit)
@@ -517,6 +562,11 @@ void UpdateMobInWorld(CString MobileId, CString AddRemove)
 bool ValidateIt(CString ValidationType)
 {
   return Validate::ValidateIt(ValidationType);
+}
+
+CString WhackPlayer(CString MobileDesc1, CString MobileAttack, int DamageToPlayer)
+{
+  return Violence::WhackPlayer(MobileDesc1, MobileAttack, DamageToPlayer);
 }
 
 int WordCount(CString String)

@@ -95,7 +95,7 @@ void Parser::Parse()
   { // '{' must follow 'Script' statement
     LogBuf  = "Osi - Parser::Parse - '{' must follow 'Script' statement -";
     LogBuf += ScriptFileName;
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
     _endthread();
   }
  // ParseStatementList();
@@ -104,7 +104,7 @@ void Parser::Parse()
   { // Unexpected statements after last '}'
     LogBuf  = "Osi - Parser::Parse - '{' expected but not found - ";
     LogBuf += ScriptFileName;
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
     _endthread();
   }
   pIcode->InsertLineMarker(0);
@@ -120,7 +120,7 @@ void Parser::ParseScriptStatement()
   { // 'Script' must be first
     LogBuf  = "Osi - Parser::ParseScriptStatement - 'Script' must be first - ";
     LogBuf += ScriptFileName;
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
     _endthread();
   }
   GetTokenAppend();
@@ -128,7 +128,7 @@ void Parser::ParseScriptStatement()
   { // Script name must follow 'Script'
     LogBuf  = "Osi - Parser::ParseScriptStatement - Script name must follow 'Script' - ";
     LogBuf += ScriptFileName;
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
     _endthread();
   }
   // Put script name in symbol table
@@ -152,7 +152,7 @@ void Parser::ParseStatementList()
   {
     LogBuf  = "Osi - Parser::ParseStatementList - Unexpected end of file - ";
     LogBuf += ScriptFileName;
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
     _endthread();
   }
   while (TokenCode != tcBraceR)
@@ -162,7 +162,7 @@ void Parser::ParseStatementList()
     {
       LogBuf  = "Osi - Parser::ParseStatementList - Unexpected end of file - ";
       LogBuf += ScriptFileName;
-      Log::LogIt(LogBuf);
+      LogIt(LogBuf);
       _endthread();
     }
   }
@@ -323,7 +323,7 @@ void Parser::ParseAssignment()
   { // Symbol not found, Variables must declared before being used
     LogBuf  = "Osi - Parser::ParseAssignment - Variables must declared before being used - ";
     LogBuf += ScriptFileName;
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
     _endthread();
   }
   pIcode->PutSymbolIndex(pSymbolCursor);
@@ -332,7 +332,7 @@ void Parser::ParseAssignment()
   { // Equal sign must be next token
     LogBuf  = "Osi - Parser::ParseAssignment - Expecting equal sign - ";
     LogBuf += ScriptFileName;
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
     _endthread();
   }
   GetTokenAppend();
@@ -407,7 +407,7 @@ void Parser::ParseFactor()
       { // Symbol not found, must be declared before it is used
         LogBuf  = "Osi - Parser::ParseFactor - Identifier is undefined - ";
         LogBuf += ScriptFileName;
-        Log::LogIt(LogBuf);
+        LogIt(LogBuf);
         _endthread();
       }
       GetTokenAppend();
@@ -462,7 +462,7 @@ void Parser::ParseFactor()
       { // No close paren found
         LogBuf  = "Osi - Parser::ParseFactor - Missing right paren - ";
         LogBuf += ScriptFileName;
-        Log::LogIt(LogBuf);
+        LogIt(LogBuf);
         _endthread();
       }
       break;
@@ -471,7 +471,7 @@ void Parser::ParseFactor()
     { // Can't figure this one out, giving up
       LogBuf  = "Osi - Parser::ParseFactor - Invalid expression - ";
       LogBuf += ScriptFileName;
-      Log::LogIt(LogBuf);
+      LogIt(LogBuf);
       _endthread();
     }
   } // End switch

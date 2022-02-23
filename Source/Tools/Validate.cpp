@@ -155,7 +155,7 @@ void Validate::ValidateLibraryLoot()
   int        Success;
 
   LogBuf = "Begin validation LibraryLoot";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
   if (ChgDir(LOOT_DIR))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateLibraryLoot - Change directory to LOOT_DIR failed", MB_ICONSTOP);
@@ -221,7 +221,7 @@ void Validate::ValidateLibraryLoot()
     LootFile.Close();
   }
   LogBuf = "Done  validating LibraryLoot";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
 }
 
 /***********************************************************
@@ -386,7 +386,7 @@ void Validate::ValidateLibraryMobiles()
     MobileFile.Close();
   }
   LogBuf = "Done  validating LibraryMobiles";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
 }
 
 /***********************************************************
@@ -413,7 +413,7 @@ void Validate::ValidateLibraryObjects()
   int        Success;
 
   LogBuf = "Begin validation LibraryObjects";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
   if (ChgDir(OBJECTS_DIR))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateLibraryObjects - Change directory to OBJECTS_DIR failed", MB_ICONSTOP);
@@ -573,7 +573,7 @@ void Validate::ValidateLibraryObjects()
     ObjectFile.Close();
   }
   LogBuf = "Done  validating LibraryObjects";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
 }
 
 /***********************************************************
@@ -603,7 +603,7 @@ void Validate::ValidateLibraryRooms()
   CString    TmpStr;
 
   LogBuf = "Begin validation LibraryRooms";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
   if (ChgDir(ROOMS_DIR))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateLibraryRooms - Change directory to ROOMS_DIR failed", MB_ICONSTOP);
@@ -742,7 +742,7 @@ void Validate::ValidateLibraryRooms()
     RoomFile.Close();
   }
   LogBuf = "Done  validating LibraryRooms";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
 }
 
 /***********************************************************
@@ -769,7 +769,7 @@ void Validate::ValidateLibraryShops()
   int        Success;
 
   LogBuf = "Begin validation LibraryShops";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
   if (ChgDir(SHOPS_DIR))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateLibraryShops - Change directory to SHOPS_DIR failed", MB_ICONSTOP);
@@ -852,7 +852,7 @@ void Validate::ValidateLibraryShops()
     ShopFile.Close();
   }
   LogBuf = "Done  validating LibraryShops";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
 }
 
 /***********************************************************
@@ -881,7 +881,7 @@ void Validate::ValidateLibraryWorldMobiles()
   CString    WorldMobileName;
 
   LogBuf = "Begin validation LibraryWorldMobiles";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
   if (ChgDir(WORLD_MOBILES_DIR))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateLibraryWorldMobiles - Change directory to WORLD_MOBILES_DIR failed", MB_ICONSTOP);
@@ -982,7 +982,7 @@ void Validate::ValidateLibraryWorldMobiles()
     WorldMobileFile.Close();
   }
   LogBuf = "Done  validating LibraryWorldMobiles";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
 }
 
 /***********************************************************
@@ -1008,7 +1008,7 @@ void Validate::ValidateRunningPlayers()
   int        Success;
 
   LogBuf = "Begin validation RunningPlayers";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
   if (ChgDir(PLAYER_DIR))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateRunningPlayers - Change directory to PLAYER_DIR failed", MB_ICONSTOP);
@@ -1103,7 +1103,7 @@ void Validate::ValidateRunningPlayers()
     PlayerFile.Close();
   }
   LogBuf = "Done  validating RunningPlayers";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
 }
 
 /***********************************************************
@@ -1129,7 +1129,7 @@ void Validate::ValidateRunningPlayersPlayerEqu()
   CString    WearPosition;
 
   LogBuf = "Begin validation RunningPlayersPlayerEqu";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
   if (ChgDir(PLAYER_EQU_DIR))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateRunningPlayersPlayerEqu - Change directory to PLAYER_EQU_DIR failed", MB_ICONSTOP);
@@ -1211,7 +1211,7 @@ void Validate::ValidateRunningPlayersPlayerEqu()
     PlayerEquFile.Close();
   }
   LogBuf = "Done  validating RunningPlayersPlayerEqu";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
 }
 
 /***********************************************************
@@ -1236,7 +1236,7 @@ void Validate::ValidateRunningPlayersPlayerObj()
   int        Success;
 
   LogBuf = "Begin validation RunningPlayersPlayerObj";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
   if (ChgDir(PLAYER_OBJ_DIR))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateRunningPlayersPlayerObj - Change directory to PLAYER_OBJ_DIR failed", MB_ICONSTOP);
@@ -1302,7 +1302,7 @@ void Validate::ValidateRunningPlayersPlayerObj()
     PlayerObjFile.Close();
   }
   LogBuf = "Done  validating RunningPlayersPlayerObj";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
 }
 
 /***********************************************************
@@ -1330,7 +1330,7 @@ void Validate::ValidateRunningRoomMob()
   CString    RoomMobFileName;
 
   LogBuf = "Begin validation RunningRoomMob";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
   if (ChgDir(ROOM_MOB_DIR))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateRunningRoomMob - Change directory to ROOM_MOB_DIR failed", MB_ICONSTOP);
@@ -1432,7 +1432,7 @@ void Validate::ValidateRunningRoomMob()
     RoomMobFile.Close();
   }
   LogBuf = "Done  validating RunningRoomMob";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
 }
 
 /***********************************************************
@@ -1459,7 +1459,7 @@ void Validate::ValidateRunningRoomObj()
   CString    RoomObjFileName;
 
   LogBuf = "Begin validation RunningRoomObj";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
   if (ChgDir(ROOM_OBJ_DIR))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateRunningRoomObj - Change directory to ROOM_OBJ_DIR failed", MB_ICONSTOP);
@@ -1555,5 +1555,5 @@ void Validate::ValidateRunningRoomObj()
     RoomObjFile.Close();
   }
   LogBuf = "Done  validating RunningRoomObj";
-  Log::LogIt(LogBuf);
+  LogIt(LogBuf);
 }

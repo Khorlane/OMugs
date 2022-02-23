@@ -502,7 +502,7 @@ Object *Object::IsObjInPlayerEqu(CString ObjectName)
         LogBuf  = ObjectId;
         LogBuf += " is an invalid item found in player equipment - ";
         LogBuf += "Object::IsObjInPlayerEqu";
-        Log::LogIt(LogBuf);
+        LogIt(LogBuf);
         return NULL;
       }
     }
@@ -529,7 +529,7 @@ Object *Object::IsObjInPlayerEqu(CString ObjectName)
       LogBuf  = ObjectId;
       LogBuf += " is an invalid item found in player equipment - ";
       LogBuf += "Object::IsObjInPlayerEqu";
-      Log::LogIt(LogBuf);
+      LogIt(LogBuf);
       return NULL;
     }
     NamesCheck = pObject->Names;
@@ -598,7 +598,7 @@ Object *Object::IsObjInPlayerInv(CString ObjectName)
         LogBuf  = ObjectId;
         LogBuf += " is an invalid item found in player inventory - ";
         LogBuf += "Object::IsObjInPlayerInv";
-        Log::LogIt(LogBuf);
+        LogIt(LogBuf);
         return NULL;
       }
     }
@@ -625,7 +625,7 @@ Object *Object::IsObjInPlayerInv(CString ObjectName)
       LogBuf  = ObjectId;
       LogBuf += " is an invalid item found in player inventory - ";
       LogBuf += "Object::IsObjInPlayerInv";
-      Log::LogIt(LogBuf);
+      LogIt(LogBuf);
       return NULL;
     }
     pObject->Count = GetWord(Stuff, 1);
@@ -694,7 +694,7 @@ Object *Object::IsObjInRoom(CString ObjectName)
         LogBuf  = ObjectId;
         LogBuf += " is an invalid item found in room - ";
         LogBuf += "Object::IsObjInRoom";
-        Log::LogIt(LogBuf);
+        LogIt(LogBuf);
         return NULL;
       }
     }
@@ -721,7 +721,7 @@ Object *Object::IsObjInRoom(CString ObjectName)
       LogBuf  = ObjectId;
       LogBuf += " is an invalid item found in room - ";
       LogBuf += "Object::IsObjInRoom";
-      Log::LogIt(LogBuf);
+      LogIt(LogBuf);
       return NULL;
     }
     NamesCheck = pObject->Names;

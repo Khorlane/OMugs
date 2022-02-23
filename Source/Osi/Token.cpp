@@ -200,7 +200,7 @@ void Token::GetSpecialToken(Buffer *pBuffer, Token *pToken)
       ch = pBuffer->GetNextChar();
       LogBuf  = "Osi - Token::GetSpecialToken - Unrecognized special character - ";
       LogBuf += ScriptFileName;
-      Log::LogIt(LogBuf);
+      LogIt(LogBuf);
       _endthread();
   }
 }
@@ -295,7 +295,7 @@ void Token::LoadResWordTable(string ResWord, EnumTokenCode TokenCode)
   {
     LogBuf  = "Osi - Token::LoadResWordTable - Reserved word table limit exceeded - ";
     LogBuf += ScriptFileName;
-    Log::LogIt(LogBuf);
+    LogIt(LogBuf);
     _endthread();
   }
   ResWordTable[ResWordCount].ResWord   = ResWord;
