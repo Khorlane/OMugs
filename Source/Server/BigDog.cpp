@@ -328,7 +328,17 @@ string StrTrimRight(string Str1)
 
 void AddMobToRoom(CString RoomId, CString MobileId)
 {
-  return Mobile::AddMobToRoom(RoomId, MobileId);
+  Mobile::AddMobToRoom(RoomId, MobileId);
+}
+
+bool AddObjToPlayerEqu(CString WearPosition, CString ObjectId)
+{
+  return Object::AddObjToPlayerEqu(WearPosition, ObjectId);
+}
+
+void AddObjToRoom(CString RoomId, CString ObjectId)
+{
+  Object::AddObjToRoom(RoomId, ObjectId);
 }
 
 void AdvanceTime()
@@ -336,9 +346,19 @@ void AdvanceTime()
   pCalendar->AdvanceTime();
 }
 
+void AppendIt()
+{
+  Descriptor::AppendIt();
+}
+
 int CalcAdjustedExpPoints(int PlayerLevel, int MobileLevel, int ExpPoints)
 {
   return Player::CalcAdjustedExpPoints(PlayerLevel, MobileLevel, ExpPoints);
+}
+
+int CalcDamageToMobile(int Damage, int WeaponSkill)
+{
+  return Violence::CalcDamageToMobile(Damage, WeaponSkill);
 }
 
 int CalcDamageToPlayer(int Damage, int PAC)
@@ -351,9 +371,18 @@ CString CalcHealthPct(int HitPoints, int HitPointsMax)
   return Violence::CalcHealthPct(HitPoints, HitPointsMax);
 }
 
+float CalcLevelExperience(int Level)
+{
+  return Player::CalcLevelExperience(Level);
+}
 int CalcPct(int Dividend, int Divisor)
 {
   return Utility::CalcPct(Dividend, Divisor);
+}
+
+int CalcPlayerArmorClass()
+{
+  return Object::CalcPlayerArmorClass();
 }
 
 void ClearDescriptor()
@@ -371,9 +400,44 @@ int CountMob(CString MobileId)
   return Mobile::CountMob(MobileId);
 }
 
+void CreateMobPlayer(CString PlayerName, CString MobileId)
+{
+  Mobile::CreateMobPlayer(PlayerName, MobileId);
+}
+
+void CreateMobStatsFileWrite(CString Directory, CString MobileIdForFight, CString Stuff)
+{
+  Mobile::CreateMobStatsFileWrite(Directory, MobileIdForFight, Stuff);
+}
+
+void CreatePlayerMob(CString PlayerName, CString MobileId)
+{
+  Mobile::CreatePlayerMob(PlayerName, MobileId);
+}
+
+void DeleteMobPlayer(CString PlayerName, CString MobileId)
+{
+  Mobile::DeleteMobPlayer(PlayerName, MobileId);
+}
+
 void DeleteMobStats(CString MobileId)
 {
-  return Mobile::DeleteMobStats(MobileId);
+  Mobile::DeleteMobStats(MobileId);
+}
+
+bool DeleteNode()
+{
+  return Descriptor::DeleteNode();
+}
+
+void DeletePlayerMob(CString PlayerName)
+{
+  Mobile::DeletePlayerMob(PlayerName);
+}
+
+CString DeleteWord(CString String, int WordNbr)
+{
+  return Utility::DeleteWord(String, WordNbr);
 }
 
 bool EndOfDnodeList()
@@ -396,9 +460,19 @@ int GetCount()
   return Dnode::GetCount();
 }
 
+string GetHomeDir()
+{
+  return Utility::GetHomeDir();
+}
+
 CString GetMobDesc1(CString MobileId)
 {
   return Mobile::GetMobDesc1(MobileId);
+}
+
+int GetMobileArmor(CString MobileId)
+{
+  return Violence::GetMobileArmor(MobileId);
 }
 
 CString GetMobileAttack(CString MobileId)
@@ -436,9 +510,24 @@ CString GetMobPlayerMobileId(CString PlayerName, int i)
   return Violence::GetMobPlayerMobileId(PlayerName, i);
 }
 
+CString GetPlayerMobMobileId(CString PlayerName)
+{
+  return Violence::GetPlayerMobMobileId(PlayerName);
+}
+
 int GetRandomNumber(int Limit)
 {
   return Utility::GetRandomNumber(Limit);
+}
+
+string GetRoomId(string RoomId)
+{
+  return Room::GetRoomId(RoomId);
+}
+
+string GetRoomName(string RoomId)
+{
+  return Room::GetRoomName(RoomId);
 }
 
 CString GetSqlStmt(CString SqlStmtId)
@@ -471,9 +560,23 @@ void InitDescriptor()
   Descriptor::InitDescriptor();
 }
 
+bool IsExit(string MudCmdIsExit)
+{
+  return Room::IsExit(MudCmdIsExit);
+}
+bool IsHelp()
+{
+  return Help::IsHelp();
+}
+
 bool IsMobileIdInRoom(CString RoomId, CString MobileId)
 {
   return Mobile::IsMobileIdInRoom(RoomId, MobileId);
+}
+
+bool IsNameValid(CString Name)
+{
+  return Player::IsNameValid(Name);
 }
 
 bool IsNotWord(CString Word, CString WordList)
@@ -481,9 +584,69 @@ bool IsNotWord(CString Word, CString WordList)
   return Utility::IsNotWord(Word, WordList);
 }
 
+void IsObjInPlayerEqu(CString ObjectName)
+{
+  Object::IsObjInPlayerEqu(ObjectName);
+}
+
+void IsObjInPlayerInv(CString ObjectName)
+{
+  Object::IsObjInPlayerInv(ObjectName);
+}
+
+void IsObjInRoom(CString ObjectName)
+{
+  Object::IsObjInRoom(ObjectName);
+}
+
+void IsObject(CString ObjectId)
+{
+  Object::IsObject(ObjectId);
+}
+
+bool IsPlayer(CString PlayerName)
+{
+  return Player::IsPlayer(PlayerName);
+}
+
+bool IsRoom(string RoomId)
+{
+  return Room::IsRoom(RoomId);
+}
+
+bool IsRoomType(string RoomId, string RoomType)
+{
+  return Room::IsRoomType(RoomId, RoomType);
+}
+
+bool IsShop(CString RoomId)
+{
+  return Shop::IsShop(RoomId);
+}
+
+void IsShopObj(CString RoomId, CString ObjectName)
+{
+  Shop::IsShopObj(RoomId, ObjectName);
+}
+
+bool IsSleeping()
+{
+  return Communication::IsSleeping();
+}
+
+bool IsSocial()
+{
+  return Social::IsSocial();
+}
+
 bool IsWord(CString Word, CString WordList)
 {
   return Utility::IsWord(Word, WordList);
+}
+
+void ListObjects()
+{
+  Shop::ListObjects();
 }
 
 void LogIt(string LogBuf)
@@ -494,6 +657,10 @@ void LogIt(string LogBuf)
 void LogIt(CString LogBuf)
 {
   Log::LogIt(ConvertCStringToString(LogBuf));
+}
+CString MakeFirstLower(CString String)
+{
+  return Utility::MakeFirstLower(String);
 }
 
 CString MakeFirstUpper(CString String)
@@ -506,19 +673,44 @@ void OpenLogFile()
   Log::OpenLogFile();
 }
 
+void Osi(CString ScriptType, CString ScriptId)
+{
+  World::Osi(ScriptType, ScriptId);
+}
+
 CString PronounSubstitute(CString MsgText)
 {
   return Utility::PronounSubstitute(MsgText);
 }
 
+void PutMobBackInRoom(CString PlayerName, CString RoomId)
+{
+  Mobile::PutMobBackInRoom(PlayerName, RoomId);
+}
+
 void RemoveMobFromRoom(CString RoomId, CString MobileId)
 {
-  return Mobile::RemoveMobFromRoom(RoomId, MobileId);
+  Mobile::RemoveMobFromRoom(RoomId, MobileId);
+}
+
+void RemoveObjFromPlayerEqu(CString ObjectId)
+{
+  Object::RemoveObjFromPlayerEqu(ObjectId);
+}
+
+void RemoveObjFromPlayerInv(CString ObjectId, int Count)
+{
+  Object::RemoveObjFromPlayerInv(ObjectId, Count);
+}
+
+void RemoveObjFromRoom(CString ObjectId)
+{
+  Object::RemoveObjFromRoom(ObjectId);
 }
 
 void SendToRoom(CString TargetRoomId, CString MsgText)
 {
-  return Communication::SendToRoom(TargetRoomId, MsgText);
+  Communication::SendToRoom(TargetRoomId, MsgText);
 }
 
 void SetpDnodeCursorFirst()
@@ -529,6 +721,11 @@ void SetpDnodeCursorFirst()
 void SetpDnodeCursorNext()
 {
   Descriptor::SetpDnodeCursorNext();
+}
+
+void ShowPlayerInv()
+{
+  Object::ShowPlayerInv();
 }
 
 void SockCheckForNewConnections()
@@ -551,6 +748,11 @@ void SockRecv()
   Communication::SockRecv();
 }
 
+void SpawnMobileNoMove(CString MobileId)
+{
+  World::SpawnMobileNoMove(MobileId);
+}
+
 CString TranslateWord(CString Word)
 {
   return Utility::TranslateWord(Word);
@@ -566,9 +768,24 @@ bool ValidateIt(CString ValidationType)
   return Validate::ValidateIt(ValidationType);
 }
 
+CString WhackMobile(CString PlayerName, int DamageToMobile, CString MobileDesc1, CString WeaponType)
+{
+  return Violence::WhackMobile(PlayerName, DamageToMobile, MobileDesc1, WeaponType);
+}
+
 CString WhackPlayer(CString MobileDesc1, CString MobileAttack, int DamageToPlayer)
 {
   return Violence::WhackPlayer(MobileDesc1, MobileAttack, DamageToPlayer);
+}
+
+void WhereMob(CString MobileIdSearch)
+{
+  Mobile::WhereMob(MobileIdSearch);
+}
+
+void WhereObj(CString ObjectIdSearch)
+{
+  Object::WhereObj(ObjectIdSearch);
 }
 
 int WordCount(CString String)

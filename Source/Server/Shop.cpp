@@ -230,7 +230,7 @@ void Shop::ListObjects()
     { // Found an item
       ObjectId = GetWord(Stuff, 2);
       pObject = NULL;
-      Object::IsObject(ObjectId); // Sets pObject
+      IsObject(ObjectId); // Sets pObject
       if (pObject)
       { // Format shop item text
         sprintf(Buf, "%-45s", (LPCSTR) pObject->Desc1);

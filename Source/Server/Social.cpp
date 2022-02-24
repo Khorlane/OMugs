@@ -256,7 +256,7 @@ void Social::Socialize(CString MinPos, CString MsgText)
     SendToPlayer(MsgText);
     MsgText = ReadLine();
     MsgText = PronounSubstitute(MsgText);
-    Communication::SendToRoom(pDnodeActor->pPlayer->RoomId, MsgText);
+    SendToRoom(pDnodeActor->pPlayer->RoomId, MsgText);
     return;
   }
   if (PlayerName == TargetName)
@@ -322,6 +322,6 @@ void Social::Socialize(CString MinPos, CString MsgText)
     MsgText = ReadLine();
     // Message to the others
     MsgText = PronounSubstitute(MsgText);
-    Communication::SendToRoom(pDnodeActor->pPlayer->RoomId, MsgText);
+    SendToRoom(pDnodeActor->pPlayer->RoomId, MsgText);
   }
 }

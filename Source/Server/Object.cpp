@@ -879,7 +879,7 @@ void Object::RemoveObjFromPlayerEqu(CString ObjectId)
 * Remove an object from player's inventory                 *
 ************************************************************/
 
-void Object::RemoveObjFromPlayerInv(CString ObjectId, int     Count)
+void Object::RemoveObjFromPlayerInv(CString ObjectId, int Count)
 {
   int        BytesInFile;
   bool       ObjectIdRemoved;

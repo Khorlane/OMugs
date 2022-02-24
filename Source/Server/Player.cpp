@@ -522,7 +522,7 @@ void Player::ParsePlayerStuff()
     // ArmorClass
     if (Stuff.Left(11) == "ArmorClass:")
     {
-      ArmorClass = Object::CalcPlayerArmorClass();
+      ArmorClass = CalcPlayerArmorClass();
     }
     else
     // Born

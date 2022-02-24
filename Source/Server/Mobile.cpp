@@ -1081,7 +1081,7 @@ CString Mobile::MobAttacks(Mobile *pMobile)
   KillMsg += "&N";
   pDnodeSrc = pDnodeActor;
   pDnodeTgt = pDnodeActor;
-  Communication::SendToRoom(RoomId, KillMsg);
+  SendToRoom(RoomId, KillMsg);
   //*****************
   //* Start a fight *
   //*****************

@@ -105,7 +105,7 @@ bool Communication::IsFighting()
     return false;
   }
   // Player is fighting, generate random message
-  RandomNumber = Utility::GetRandomNumber(5);
+  RandomNumber = GetRandomNumber(5);
   switch(RandomNumber) 
   {
     case 1:
@@ -147,7 +147,7 @@ bool Communication::IsSleeping()
     return false;
   }
   // Player is sleeping, generate random message
-  RandomNumber = Utility::GetRandomNumber(5);
+  RandomNumber = GetRandomNumber(5);
   switch(RandomNumber) 
   {
     case 1:
@@ -181,8 +181,8 @@ bool Communication::IsSleeping()
 
 void Communication::SendToAll(CString PlayerMsg, CString AllMsg)
 {
-  Descriptor::SetpDnodeCursorFirst();
-  while (!Descriptor::EndOfDnodeList())
+  SetpDnodeCursorFirst();
+  while (!EndOfDnodeList())
   { // Loop thru all connections
     pDnodeOthers = Descriptor::GetDnode();
     if (pDnodeActor == pDnodeOthers)
@@ -195,7 +195,7 @@ void Communication::SendToAll(CString PlayerMsg, CString AllMsg)
       { // Target player is in playing state
         if (pDnodeActor->PlayerStateInvisible)
         { // Sending player is invisible, no message is sent
-          Descriptor::SetpDnodeCursorNext();
+          SetpDnodeCursorNext();
           continue;
         }
         pDnodeOthers->PlayerOut += AllMsg;
@@ -203,7 +203,7 @@ void Communication::SendToAll(CString PlayerMsg, CString AllMsg)
         pDnodeOthers->PlayerOut += pDnodeOthers->pPlayer->GetOutput();
       }
     }
-    Descriptor::SetpDnodeCursorNext();
+    SetpDnodeCursorNext();
   }
   // Re-position pDnodeCursor
   RepositionDnodeCursor();
@@ -218,8 +218,8 @@ void Communication::SendToRoom(CString TargetRoomId, CString MsgText)
   CString  LookupRoomId;
 
   // Send output to all players in the room
-  Descriptor::SetpDnodeCursorFirst();
-  while (!Descriptor::EndOfDnodeList())
+  SetpDnodeCursorFirst();
+  while (!EndOfDnodeList())
   { // Loop thru all connections
     pDnodeOthers = Descriptor::GetDnode();
     if (pDnodeOthers->PlayerStatePlaying)
@@ -237,13 +237,13 @@ void Communication::SendToRoom(CString TargetRoomId, CString MsgText)
               { // Player sending a message, not an NPC
                 if (pDnodeSrc->PlayerStateInvisible)
                 { // Player is invisible, no message is sent
-                  Descriptor::SetpDnodeCursorNext();
+                  SetpDnodeCursorNext();
                   continue;
                 }
               }
               if (pDnodeOthers->PlayerStateInvisible)
               { // Player is invisible, no message is sent
-                Descriptor::SetpDnodeCursorNext();
+                SetpDnodeCursorNext();
                 continue;
               }
               pDnodeOthers->PlayerOut += "\r\n";
@@ -257,7 +257,7 @@ void Communication::SendToRoom(CString TargetRoomId, CString MsgText)
         }
       }
     }
-    Descriptor::SetpDnodeCursorNext();
+    SetpDnodeCursorNext();
   }
   // Re-position pDnodeCursor
   RepositionDnodeCursor();
@@ -274,8 +274,8 @@ void Communication::ShowPlayersInRoom(Dnode *pDnode)
 
   TargetRoomId = pDnode->pPlayer->RoomId;
   // Show players in same room as player
-  Descriptor::SetpDnodeCursorFirst();
-  while (!Descriptor::EndOfDnodeList())
+  SetpDnodeCursorFirst();
+  while (!EndOfDnodeList())
   { // Loop thru all connections
     pDnodeOthers = Descriptor::GetDnode();
     if (pDnode != pDnodeOthers)
@@ -287,7 +287,7 @@ void Communication::ShowPlayersInRoom(Dnode *pDnode)
         { // and is in the same room
           if (pDnodeOthers->PlayerStateInvisible)
           { // Player is invisible, no show
-            Descriptor::SetpDnodeCursorNext();
+            SetpDnodeCursorNext();
             continue;
           }
           pDnode->PlayerOut += "\r\n";
@@ -316,7 +316,7 @@ void Communication::ShowPlayersInRoom(Dnode *pDnode)
         }
       }
     }
-    Descriptor::SetpDnodeCursorNext();
+    SetpDnodeCursorNext();
   }
   // Re-position pDnodeCursor
   RepositionDnodeCursor();
@@ -339,14 +339,14 @@ void Communication::SockCheckForNewConnections()
   FD_ZERO(&ExcSet);
   FD_SET(ListenSocket, &InpSet);
   // Check status of connections
-  Descriptor::SetpDnodeCursorFirst();
-  while (!Descriptor::EndOfDnodeList())
+  SetpDnodeCursorFirst();
+  while (!EndOfDnodeList())
   { // Loop thru all connections
     pDnodeActor = Descriptor::GetDnode();
     FD_SET(pDnodeActor->DnodeFd, &InpSet);
     FD_SET(pDnodeActor->DnodeFd, &OutSet);
     FD_SET(pDnodeActor->DnodeFd, &ExcSet);
-    Descriptor::SetpDnodeCursorNext();
+    SetpDnodeCursorNext();
   }
   // Detect socket state (pg 159)
   SocketCount = select(-1, &InpSet, &OutSet, &ExcSet, &TimeOut);
@@ -514,8 +514,8 @@ void Communication::SockRecv()
   //***********************
   //* Service connections *
   //***********************
-  Descriptor::SetpDnodeCursorFirst();
-  while (!Descriptor::EndOfDnodeList())
+  SetpDnodeCursorFirst();
+  while (!EndOfDnodeList())
   { // Loop thru all connections
     pDnodeActor = Descriptor::GetDnode();
     //***************************
@@ -652,8 +652,8 @@ void Communication::SockRecv()
     //*********************
     if (StateStopping)
     { // Game is stopping
-      Descriptor::SetpDnodeCursorFirst();
-      while (!Descriptor::EndOfDnodeList())
+      SetpDnodeCursorFirst();
+      while (!EndOfDnodeList())
       { // Loop thru all connections
         pDnodeOthers = Descriptor::GetDnode();
         if (!pDnodeOthers->PlayerStateBye)
@@ -671,7 +671,7 @@ void Communication::SockRecv()
           LogBuf += " will be force disconnected";
           LogIt(LogBuf);
         }
-        Descriptor::SetpDnodeCursorNext();
+        SetpDnodeCursorNext();
       }
       // Re-position pDnodeCursor
       RepositionDnodeCursor();
@@ -695,12 +695,12 @@ void Communication::SockRecv()
         delete pDnodeActor->pPlayer;
       }
       DnodeFdSave = pDnodeActor->DnodeFd;
-      if (Descriptor::DeleteNode())
+      if (DeleteNode())
       { // When connection is deleted from list, log it
         sprintf(Buf, "%d", DnodeFdSave);
         LogBuf = "Closed connection on descriptor " + ConvertStringToCString(Buf);;
         LogIt(LogBuf);
-        ConnectionCount = Dnode::GetCount();
+        ConnectionCount = GetCount();
         if (ConnectionCount == 1)
         { // Connection count is one means no players are connected
           if (StateStopping)
@@ -710,7 +710,7 @@ void Communication::SockRecv()
         }
       }
       // Skip to next dnode, this player's dnode has been deleted
-      Descriptor::SetpDnodeCursorNext();
+      SetpDnodeCursorNext();
       continue;
     }
     //************************
@@ -739,7 +739,7 @@ void Communication::SockRecv()
       }
     }
     // Get the next Dnode to process
-    Descriptor::SetpDnodeCursorNext();
+    SetpDnodeCursorNext();
   }
 }
 
@@ -832,8 +832,8 @@ CString Communication::CommandCheck(CString MudCmdChk)
   for (auto ValidCmd : ValidCmds)
   { // For each string in the ValidCmds vector
     ValCmdInfo = ConvertStringToCString(ValidCmd);
-    ValCmd     = Utility::GetWord(ValCmdInfo, 1);
-    WhoCanDo   = Utility::GetWord(ValCmdInfo, 2);
+    ValCmd     = GetWord(ValCmdInfo, 1);
+    WhoCanDo   = GetWord(ValCmdInfo, 2);
     if (MudCmdChk == ValCmd)
     { // Found the command
       if (WhoCanDo == "all")
@@ -923,14 +923,14 @@ void Communication::CommandParse()
   //*************
   // Get MudCmd *
   //*************
-  MudCmd = Utility::GetWord(CmdStr, 1);
+  MudCmd = GetWord(CmdStr, 1);
   MudCmd.MakeLower();
   // Translate 'n' into 'go north'
-  MudCmd = Utility::TranslateWord(MudCmd);
-  if (Utility::WordCount(MudCmd) == 2)
+  MudCmd = TranslateWord(MudCmd);
+  if (WordCount(MudCmd) == 2)
   { // Re-get MudCmd. In the case of 'go north', MudCmd is 'go'
     CmdStr = MudCmd;
-    MudCmd = Utility::GetWord(CmdStr, 1);
+    MudCmd = GetWord(CmdStr, 1);
     MudCmd.MakeLower();
   }
   // Check for spamming
@@ -971,10 +971,10 @@ void Communication::CommandParse()
     MudCmdOk = true;
   }
   else
-  if (Utility::GetWord(CommandCheckResult, 1) == "Level")
+  if (GetWord(CommandCheckResult, 1) == "Level")
   { // Level restriction on command
     pDnodeActor->PlayerOut += "You must attain level ";
-    pDnodeActor->PlayerOut += Utility::GetWord(CommandCheckResult, 2);
+    pDnodeActor->PlayerOut += GetWord(CommandCheckResult, 2);
     pDnodeActor->PlayerOut += " before you can use that command.";
     pDnodeActor->PlayerOut += "\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -986,7 +986,7 @@ void Communication::CommandParse()
   //******************
   if (!MudCmdOk)
   { // Not validated yet, maybe cmd is a social
-    if (Social::IsSocial())
+    if (IsSocial())
     { // Yep, it was a social
       return;
     }
@@ -996,7 +996,7 @@ void Communication::CommandParse()
   //**************
   if (!MudCmdOk)
   { // Not a valid cmd and it is not a social
-    RandomNumber = Utility::GetRandomNumber(5);
+    RandomNumber = GetRandomNumber(5);
     switch(RandomNumber) 
     {
       case 1:
@@ -1459,7 +1459,7 @@ void Communication::CommandParse()
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
   // Log it
-  MudCmd  = Utility::MakeFirstUpper(MudCmd);
+  MudCmd  = MakeFirstUpper(MudCmd);
   LogBuf  = MudCmd;
   LogBuf += " is in command array, but Do";
   LogBuf += MudCmd;
@@ -1483,12 +1483,12 @@ void Communication::DoAdvance()
   CString  TmpStr;
 
   PlayerName      = pDnodeActor->PlayerName;
-  TargetName      = Utility::GetWord(CmdStr, 2);
+  TargetName      = GetWord(CmdStr, 2);
   PlayerNameSave  = PlayerName;
   TargetNameSave  = TargetName;
   PlayerName.MakeLower();
   TargetName.MakeLower();
-  Level = atoi(Utility::GetWord(CmdStr, 3));
+  Level = atoi(GetWord(CmdStr, 3));
   sprintf(Buf, "%d", Level);
   LevelString = ConvertStringToCString(Buf);
   if (TargetName == "")
@@ -1572,7 +1572,7 @@ void Communication::DoAdvance()
   pDnodeTgt->PlayerOut += "\r\n";
   // Make it so
   pDnodeTgt->pPlayer->Level      = Level;
-  pDnodeTgt->pPlayer->Experience = Player::CalcLevelExperience(Level);
+  pDnodeTgt->pPlayer->Experience = CalcLevelExperience(Level);
   pDnodeTgt->pPlayer->Save();
   // Prompt
   pDnodeTgt->pPlayer->CreatePrompt();
@@ -1629,7 +1629,7 @@ void Communication::DoAssist()
   { // Player is fighting, send msg, command is not done
     return;
   }
-  if (Utility::WordCount(CmdStr) < 2)
+  if (WordCount(CmdStr) < 2)
   { // No object or target
     pDnodeActor->PlayerOut += "Assist whom?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -1638,7 +1638,7 @@ void Communication::DoAssist()
     return;
   }
   PlayerNameCheck = pDnodeActor->PlayerName;
-  TargetNameCheck = Utility::GetWord(CmdStr, 2);
+  TargetNameCheck = GetWord(CmdStr, 2);
   TargetNameSave  = TargetNameCheck;
   PlayerNameCheck.MakeLower();
   TargetNameCheck.MakeLower();
@@ -1741,8 +1741,8 @@ void Communication::DoAssist()
   //**************************
   //* Make the assist happen *
   //**************************
-  MobileId = Violence::GetPlayerMobMobileId(pDnodeTgt->PlayerName);
-  Mobile::CreatePlayerMob(pDnodeActor->PlayerName, MobileId);
+  MobileId = GetPlayerMobMobileId(pDnodeTgt->PlayerName);
+  CreatePlayerMob(pDnodeActor->PlayerName, MobileId);
   pDnodeActor->PlayerStateFighting = true;
 }
 
@@ -1771,7 +1771,7 @@ void Communication::DoBuy()
     return;
   }
   RoomId = pDnodeActor->pPlayer->RoomId;
-  if (!Shop::IsShop(RoomId))
+  if (!IsShop(RoomId))
   { // Room is not a shop
     pDnodeActor->PlayerOut += "Find a shop.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -1788,7 +1788,7 @@ void Communication::DoBuy()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  if (Utility::WordCount(CmdStr) > 2)
+  if (WordCount(CmdStr) > 2)
   { // Buy command not only takes 1 object
     pDnodeActor->PlayerOut += "The buy command must be followed by only one word.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -1797,7 +1797,7 @@ void Communication::DoBuy()
     return;
   }
   pObject = NULL;
-  Shop::IsShopObj(RoomId, ObjectName); // Sets pObject
+  IsShopObj(RoomId, ObjectName); // Sets pObject
   if (!pObject)
   { // Object not in shop for player to buy
     pDnodeActor->PlayerOut += "That item cannot be bought here.";
@@ -1852,7 +1852,7 @@ void Communication::DoChat()
   //********************
   //* Validate command *
   //********************
-  ChatMsg = Utility::GetWords(CmdStr, 2);
+  ChatMsg = GetWords(CmdStr, 2);
   if (ChatMsg.GetLength() < 1)
   { // Player did not enter any chat
     pDnodeActor->PlayerOut += "You start to chat, but, about what?";
@@ -1889,7 +1889,7 @@ void Communication::DoColor()
 {
   CString TmpStr;
 
-  TmpStr = Utility::GetWord(CmdStr, 2);
+  TmpStr = GetWord(CmdStr, 2);
   TmpStr.MakeLower();
   if (TmpStr == "on")
   { // Turn color on
@@ -1945,7 +1945,7 @@ void Communication::DoConsider()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  if (Utility::WordCount(CmdStr) < 2)
+  if (WordCount(CmdStr) < 2)
   { // No target
     pDnodeActor->PlayerOut += "Consider whom or what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -1953,7 +1953,7 @@ void Communication::DoConsider()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  if (Utility::WordCount(CmdStr) > 2)
+  if (WordCount(CmdStr) > 2)
   { // Two many targets
     pDnodeActor->PlayerOut += "Hmm, you are confused. Try 'help consider'.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -1965,7 +1965,7 @@ void Communication::DoConsider()
   RoomId          = pDnodeActor->pPlayer->RoomId;
   PlayerNameCheck = PlayerName;
   PlayerNameCheck.MakeLower();
-  Target = Utility::GetWord(CmdStr, 2);
+  Target = GetWord(CmdStr, 2);
   MobileName = Target;
   Target.MakeLower();
   if (Target == PlayerNameCheck)
@@ -1976,7 +1976,7 @@ void Communication::DoConsider()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  if (Player::IsPlayer(Target))
+  if (IsPlayer(Target))
   { // Trying to kill another player
     pDnodeActor->PlayerOut += "Why consider another player? Player killing is not allowed.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -2091,7 +2091,7 @@ void Communication::DoDelete()
   { // Player is fighting, send msg, command is not done
     return;
   }
-  if (Utility::WordCount(CmdStr) < 3)
+  if (WordCount(CmdStr) < 3)
   {
     pDnodeActor->PlayerOut += "You must provide your name and password.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -2099,9 +2099,9 @@ void Communication::DoDelete()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  Name     = Utility::GetWord(CmdStr, 2);
-  Password = Utility::GetWord(CmdStr, 3);
-  Phrase   = Utility::GetWords(CmdStr, 4);
+  Name     = GetWord(CmdStr, 2);
+  Password = GetWord(CmdStr, 3);
+  Phrase   = GetWords(CmdStr, 4);
   if (Name != pDnodeActor->PlayerName)
   {
     pDnodeActor->PlayerOut += "Your name was not entered correctly.";
@@ -2220,7 +2220,7 @@ void Communication::DoDelete()
   AllMsg += "\r\n";
   pDnodeSrc = pDnodeActor;
   pDnodeTgt = NULL;
-  AllMsg  = Utility::PronounSubstitute(AllMsg);
+  AllMsg  = PronounSubstitute(AllMsg);
   pDnodeSrc = NULL;
   pDnodeTgt = NULL;
   SendToAll(PlayerMsg, AllMsg);
@@ -2244,7 +2244,7 @@ void Communication::DoDestroy()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  if (Utility::WordCount(CmdStr) == 1)
+  if (WordCount(CmdStr) == 1)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Destroy what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -2255,11 +2255,11 @@ void Communication::DoDestroy()
   //****************************
   //* Does player have object? *
   //****************************
-  TmpStr = Utility::GetWord(CmdStr, 2);
+  TmpStr = GetWord(CmdStr, 2);
   ObjectName = TmpStr;
   TmpStr.MakeLower();
   pObject = NULL;
-  Object::IsObjInPlayerInv(TmpStr); // Sets pObject
+  IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
   {
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -2273,7 +2273,7 @@ void Communication::DoDestroy()
   //* Destroy object *
   //******************
   // Remove object from player's inventory
-  Object::RemoveObjFromPlayerInv(pObject->ObjectId, 1);
+  RemoveObjFromPlayerInv(pObject->ObjectId, 1);
   // Send messages
   pDnodeActor->PlayerOut += "You help make the world cleaner by destroying ";
   pDnodeActor->PlayerOut += pObject->Desc1;
@@ -2305,11 +2305,11 @@ void Communication::DoDrink()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  if (Utility::GetWord(CmdStr, 2) == "from")
+  if (GetWord(CmdStr, 2) == "from")
   { // Toss out 'from', just extra verbage for player's benefit
     CmdStr.Delete(5,5);
   }
-  if (Utility::WordCount(CmdStr) == 1)
+  if (WordCount(CmdStr) == 1)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Drink from what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -2322,14 +2322,15 @@ void Communication::DoDrink()
   //*************************
   RoomId   = pDnodeActor->pPlayer->RoomId;
   sRoomId = ConvertCStringToString(RoomId);
-  if (Room::IsRoomType(sRoomId, "Drink"))
+  if (IsRoomType(sRoomId, "Drink"))
   { // Room contains something to drink
+// TODO - Is sRoomName used? Maybe it should be in the 'if' below
     string sRoomName;
-    sRoomName = Room::GetRoomName(sRoomId);
-    TmpStr = Utility::GetWord(CmdStr, 2);
+    sRoomName = GetRoomName(sRoomId);
+    TmpStr = GetWord(CmdStr, 2);
     TmpStr.MakeLower();
     RoomName.MakeLower();
-    if (Utility::IsWord(TmpStr, RoomName))
+    if (IsWord(TmpStr, RoomName))
     { //*****************
       //* Player drinks *
       //*****************
@@ -2354,11 +2355,11 @@ void Communication::DoDrink()
   //****************************
   //* Does player have object? *
   //****************************
-  TmpStr = Utility::GetWord(CmdStr, 2);
+  TmpStr = GetWord(CmdStr, 2);
   ObjectName = TmpStr;
   TmpStr.MakeLower();
   pObject = NULL;
-  Object::IsObjInPlayerInv(TmpStr); // Sets pObject
+  IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
   { // Object not found in player's inventory
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -2401,7 +2402,7 @@ void Communication::DoDrink()
   pDnodeActor->pPlayer->Drink(pObject->DrinkPct);
   pDnodeActor->pPlayer->Save();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
-  Object::RemoveObjFromPlayerInv(pObject->ObjectId, 1);
+  RemoveObjFromPlayerInv(pObject->ObjectId, 1);
   // Clean up and give prompt
   delete pObject;
   pObject = NULL;
@@ -2426,7 +2427,7 @@ void Communication::DoDrop()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  if (Utility::WordCount(CmdStr) == 1)
+  if (WordCount(CmdStr) == 1)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Drop what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -2437,11 +2438,11 @@ void Communication::DoDrop()
   //****************************
   //* Does player have object? *
   //****************************
-  TmpStr = Utility::GetWord(CmdStr, 2);
+  TmpStr = GetWord(CmdStr, 2);
   ObjectName = TmpStr;
   TmpStr.MakeLower();
   pObject = NULL;
-  Object::IsObjInPlayerInv(TmpStr); // Sets pObject
+  IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
   {
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -2455,7 +2456,7 @@ void Communication::DoDrop()
   //* Drop object *
   //***************
   // Remove object from player's inventory
-  Object::RemoveObjFromPlayerInv(pObject->ObjectId, 1);
+  RemoveObjFromPlayerInv(pObject->ObjectId, 1);
   // Send messages
   pDnodeActor->PlayerOut += "You drop ";
   pDnodeActor->PlayerOut += pObject->Desc1;
@@ -2471,7 +2472,7 @@ void Communication::DoDrop()
   pDnodeTgt = pDnodeActor;
   SendToRoom(pDnodeActor->pPlayer->RoomId, DropMsg);
   // Add object to room
-  Object::AddObjToRoom(pDnodeActor->pPlayer->RoomId, pObject->ObjectId);
+  AddObjToRoom(pDnodeActor->pPlayer->RoomId, pObject->ObjectId);
   delete pObject;
   pObject = NULL;
 }
@@ -2493,7 +2494,7 @@ void Communication::DoEat()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  if (Utility::WordCount(CmdStr) == 1)
+  if (WordCount(CmdStr) == 1)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Eat what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -2504,11 +2505,11 @@ void Communication::DoEat()
   //****************************
   //* Does player have object? *
   //****************************
-  TmpStr = Utility::GetWord(CmdStr, 2);
+  TmpStr = GetWord(CmdStr, 2);
   ObjectName = TmpStr;
   TmpStr.MakeLower();
   pObject = NULL;
-  Object::IsObjInPlayerInv(TmpStr); // Sets pObject
+  IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
   {
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -2551,7 +2552,7 @@ void Communication::DoEat()
   pDnodeActor->pPlayer->Eat(pObject->FoodPct);
   pDnodeActor->pPlayer->Save();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
-  Object::RemoveObjFromPlayerInv(pObject->ObjectId, 1);
+  RemoveObjFromPlayerInv(pObject->ObjectId, 1);
   // Clean up and give prompt
   delete pObject;
   pObject = NULL;
@@ -2575,7 +2576,7 @@ void Communication::DoEmote()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  EmoteMsg = Utility::GetWords(CmdStr, 2);
+  EmoteMsg = GetWords(CmdStr, 2);
   if (EmoteMsg.GetLength() < 1)
   { // Player did not enter anything to say
     pDnodeActor->PlayerOut += "You try to show emotion, but fail.";
@@ -2641,7 +2642,7 @@ void Communication::DoExamine()
   { // Player is fighting, send msg, command is not done
     return;
   }
-  if (Utility::WordCount(CmdStr) == 1)
+  if (WordCount(CmdStr) == 1)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Examine what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -2653,12 +2654,12 @@ void Communication::DoExamine()
   //* Ok, object, object ... where is the object? *
   //***********************************************
   ObjectFound = false;
-  TmpStr = Utility::GetWord(CmdStr, 2);
+  TmpStr = GetWord(CmdStr, 2);
   ObjectName = TmpStr;
   TmpStr.MakeLower();
   // Check room
   pObject = NULL;
-  Object::IsObjInRoom(TmpStr); // Sets pObject
+  IsObjInRoom(TmpStr); // Sets pObject
   if (pObject)
   { // Object is in the room
     ObjectFound = true;
@@ -2666,7 +2667,7 @@ void Communication::DoExamine()
   else
   { // Check player inventory
     pObject = NULL;
-    Object::IsObjInPlayerInv(TmpStr); // Sets pObject
+    IsObjInPlayerInv(TmpStr); // Sets pObject
     if (pObject)
     { // Object is in player's inventory
       ObjectFound = true;
@@ -2674,7 +2675,7 @@ void Communication::DoExamine()
     else
     { // Check player equipment
       pObject = NULL;
-      Object::IsObjInPlayerEqu(TmpStr); // Sets pObject
+      IsObjInPlayerEqu(TmpStr); // Sets pObject
       if (pObject)
       { // Object is in player's equipment
         ObjectFound = true;
@@ -2748,7 +2749,7 @@ void Communication::DoFlee()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  TmpStr = Utility::GetWord(CmdStr, 2);
+  TmpStr = GetWord(CmdStr, 2);
   if (TmpStr == "")
   { // No direction given
     pDnodeActor->PlayerOut += "Aimless fleeing is not allowed.\r\n";
@@ -2760,7 +2761,7 @@ void Communication::DoFlee()
   MudCmdIsExit = "go";
   string sMudCmdIsExit;
   sMudCmdIsExit = ConvertCStringToString(MudCmdIsExit);
-  if (!Room::IsExit(sMudCmdIsExit))
+  if (!IsExit(sMudCmdIsExit))
   { // Direction given is not valid
     pDnodeActor->PlayerOut += "Flee where?\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -2775,7 +2776,7 @@ void Communication::DoFlee()
   FleeMsg += pDnodeActor->PlayerName;
   FleeMsg += " has fled for $pHisHers life!!";
   FleeMsg += "&N";
-  FleeMsg = Utility::PronounSubstitute(FleeMsg);
+  FleeMsg = PronounSubstitute(FleeMsg);
   pDnodeSrc = pDnodeActor;
   pDnodeTgt = pDnodeActor;
   SendToRoom(RoomIdBeforeFleeing, FleeMsg);
@@ -2797,9 +2798,9 @@ void Communication::DoFlee()
   }
   PlayerName1 = pDnodeActor->PlayerName;
   // Get mobile id for mob that fleeing player was fighting
-  MobileIdSave = Violence::GetPlayerMobMobileId(PlayerName1);
+  MobileIdSave = GetPlayerMobMobileId(PlayerName1);
   // Delete PlayerMob file -- player is no longer attacking mob
-  Mobile::DeletePlayerMob(PlayerName1);
+  DeletePlayerMob(PlayerName1);
   // See if a mob is whacking player
   MobPlayerFileName =  MOB_PLAYER_DIR;
   MobPlayerFileName += PlayerName1;
@@ -2812,8 +2813,8 @@ void Communication::DoFlee()
   //* Make mob switch targets *
   //***************************
   // Delete fighting mobiles from MobPlayer file
-  Descriptor::SetpDnodeCursorFirst();
-  while (!Descriptor::EndOfDnodeList())
+  SetpDnodeCursorFirst();
+  while (!EndOfDnodeList())
   { // Loop thru all connections
     pDnodeOthers = Descriptor::GetDnode();
     if (pDnodeOthers->PlayerStateFighting)
@@ -2821,8 +2822,8 @@ void Communication::DoFlee()
       if (RoomIdBeforeFleeing == pDnodeOthers->pPlayer->RoomId)
       { // In the same room
         PlayerName2 = pDnodeOthers->PlayerName;
-        MobileId = Violence::GetPlayerMobMobileId(PlayerName2);
-        Mobile::DeleteMobPlayer(PlayerName1, MobileId);
+        MobileId = GetPlayerMobMobileId(PlayerName2);
+        DeleteMobPlayer(PlayerName1, MobileId);
         if (MobileId == MobileIdSave)
         { // Add player to candidate list for MobileIdSave
           CandidateList += PlayerName2;
@@ -2830,23 +2831,23 @@ void Communication::DoFlee()
         }
       }
     }
-    Descriptor::SetpDnodeCursorNext();
+    SetpDnodeCursorNext();
   }
   // Re-position pDnodeCursor
   RepositionDnodeCursor();
   // Put mobiles that are not fighting back in room
-  Mobile::PutMobBackInRoom(PlayerName1, RoomIdBeforeFleeing);
+  PutMobBackInRoom(PlayerName1, RoomIdBeforeFleeing);
   // Player is gone, so delete MobPlayer completely
-  Mobile::DeleteMobPlayer(PlayerName1, "file");
+  DeleteMobPlayer(PlayerName1, "file");
   // Select a new target for MobileIdSave
   if (CandidateList.GetLength() == 0)
   { // No available target for MobileIdSave
     return;
   }
-  CandidateCount  = Utility::WordCount(CandidateList);
-  CandidateTarget = Utility::GetRandomNumber(CandidateCount);
-  Target          = Utility::GetWord(CandidateList, CandidateTarget);
-  Mobile::CreateMobPlayer(Target, MobileIdSave);
+  CandidateCount  = WordCount(CandidateList);
+  CandidateTarget = GetRandomNumber(CandidateCount);
+  Target          = GetWord(CandidateList, CandidateTarget);
+  CreateMobPlayer(Target, MobileIdSave);
 }
 
 /***********************************************************
@@ -2873,7 +2874,7 @@ void Communication::DoFollow(Dnode *pDnode, CString CmdStr1)
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  Target = Utility::GetWord(CmdStr, 2);
+  Target = GetWord(CmdStr, 2);
   TmpStr = Target;
   TmpStr.MakeLower();
   if (Target == "")
@@ -3079,7 +3080,7 @@ void Communication::DoGet()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  if (Utility::WordCount(CmdStr) == 1)
+  if (WordCount(CmdStr) == 1)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Get what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -3090,11 +3091,11 @@ void Communication::DoGet()
   //**********************************************
   //* See if object is in room and can be gotten *
   //**********************************************
-  TmpStr = Utility::GetWord(CmdStr, 2);
+  TmpStr = GetWord(CmdStr, 2);
   ObjectName = TmpStr;
   TmpStr.MakeLower();
   pObject = NULL;
-  Object::IsObjInRoom(TmpStr); // Sets pObject
+  IsObjInRoom(TmpStr); // Sets pObject
   if (!pObject)
   {
     pDnodeActor->PlayerOut += "There doesn't seem to be a(n) ";
@@ -3118,7 +3119,7 @@ void Communication::DoGet()
   //* So take the object *
   //**********************
   // Remove object from room
-  Object::RemoveObjFromRoom(pObject->ObjectId);
+  RemoveObjFromRoom(pObject->ObjectId);
   // Send messages
   pDnodeActor->PlayerOut += "You get ";
   pDnodeActor->PlayerOut += pObject->Desc1;
@@ -3158,7 +3159,7 @@ void Communication::DoGive()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  if (Utility::WordCount(CmdStr) < 2)
+  if (WordCount(CmdStr) < 2)
   { // No object or target
     pDnodeActor->PlayerOut += "Give what and to whom?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -3166,7 +3167,7 @@ void Communication::DoGive()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  if (Utility::WordCount(CmdStr) < 3)
+  if (WordCount(CmdStr) < 3)
   { // No target
     pDnodeActor->PlayerOut += "Give it to whom?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -3177,11 +3178,11 @@ void Communication::DoGive()
   //****************************
   //* Does player have object? *
   //****************************
-  TmpStr = Utility::GetWord(CmdStr, 2);
+  TmpStr = GetWord(CmdStr, 2);
   ObjectName = TmpStr;
   TmpStr.MakeLower();
   pObject = NULL;
-  Object::IsObjInPlayerInv(TmpStr); // Sets pObject
+  IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
   { // Player does not have object
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -3195,7 +3196,7 @@ void Communication::DoGive()
   //* Is target Ok *
   //****************
   TargetNotHere = false;
-  TmpStr = Utility::GetWord(CmdStr, 3);
+  TmpStr = GetWord(CmdStr, 3);
   TargetName = TmpStr;
   TmpStr.MakeLower();
   PlayerName = pDnodeActor->PlayerName;
@@ -3270,7 +3271,7 @@ void Communication::DoGive()
   //*****************************
   //* Transfer object ownership *
   //*****************************
-  Object::RemoveObjFromPlayerInv(pObject->ObjectId, 1);
+  RemoveObjFromPlayerInv(pObject->ObjectId, 1);
   Object::AddObjToPlayerInv(pDnodeTgt, pObject->ObjectId);
   delete pObject;
   pObject = NULL;
@@ -3304,7 +3305,7 @@ void Communication::DoGo()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  TmpStr = Utility::GetWord(CmdStr, 2);
+  TmpStr = GetWord(CmdStr, 2);
   if (TmpStr == "")
   { // No direction given
     pDnodeActor->PlayerOut += "Aimless wandering is not allowed.\r\n";
@@ -3318,7 +3319,7 @@ void Communication::DoGo()
   MudCmdIsExit = "go";
   string sMudCmdIsExit;
   sMudCmdIsExit = ConvertCStringToString(MudCmdIsExit);
-  if (Room::IsExit(sMudCmdIsExit))
+  if (IsExit(sMudCmdIsExit))
   { // Player has been moved
     return;
   }
@@ -3344,7 +3345,7 @@ void Communication::DoGoTo()
   //********************
   //* Validate command *
   //********************
-  RoomId = Utility::GetWord(CmdStr, 2);
+  RoomId = GetWord(CmdStr, 2);
   if (RoomId == "")
   {
     pDnodeActor->PlayerOut += "A destination is needed.\r\n";
@@ -3353,7 +3354,7 @@ void Communication::DoGoTo()
     return;
   }
   sRoomId = ConvertCStringToString(RoomId);
-  if (!Room::IsRoom(sRoomId))
+  if (!IsRoom(sRoomId))
   {
     pDnodeActor->PlayerOut += "Go to where?\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -3371,7 +3372,7 @@ void Communication::DoGoTo()
   // GoTo room
   // TODO - This seems like double talk with the RoomId, even after CString is completely removed
   sRoomId = ConvertCStringToString(RoomId);
-  sRoomId = Room::GetRoomId(sRoomId);
+  sRoomId = GetRoomId(sRoomId);
   csRoomId = ConvertStringToCString(sRoomId);
   pDnodeActor->pPlayer->RoomId = csRoomId;
   DoLook("");
@@ -3391,7 +3392,7 @@ void Communication::DoGoToArrive()
   CString GoToArrive;
   CString TmpStr;
 
-  TmpStr = Utility::GetWord(CmdStr, 2);
+  TmpStr = GetWord(CmdStr, 2);
   TmpStr.MakeLower();
   if (TmpStr == "")
   { // Player entered 'gotoarrive' by itself
@@ -3433,7 +3434,7 @@ void Communication::DoGoToArrive()
       return;
     }
   }
-  TmpStr = Utility::GetWords(CmdStr, 2);
+  TmpStr = GetWords(CmdStr, 2);
   GoToArrive = TmpStr;
   // Strip out color codes so arrival message length can be checked
   TmpStr.Replace("&N", "");
@@ -3467,7 +3468,7 @@ void Communication::DoGoToDepart()
   CString GoToDepart;
   CString TmpStr;
 
-  TmpStr = Utility::GetWord(CmdStr, 2);
+  TmpStr = GetWord(CmdStr, 2);
   TmpStr.MakeLower();
   if (TmpStr == "")
   { // Player entered 'gotodepart' by itself
@@ -3509,7 +3510,7 @@ void Communication::DoGoToDepart()
       return;
     }
   }
-  TmpStr = Utility::GetWords(CmdStr, 2);
+  TmpStr = GetWords(CmdStr, 2);
   GoToDepart = TmpStr;
   // Strip out color codes so arrival message length can be checked
   TmpStr.Replace("&N", "");
@@ -3554,7 +3555,7 @@ void Communication::DoGroup()
     return;
   }
   PlayerNameCheck = pDnodeActor->PlayerName;
-  TargetNameCheck = Utility::GetWord(CmdStr, 2);
+  TargetNameCheck = GetWord(CmdStr, 2);
   TargetNameSave  = TargetNameCheck;
   PlayerNameCheck.MakeLower();
   TargetNameCheck.MakeLower();
@@ -3787,7 +3788,7 @@ void Communication::DoGsay()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  GsayMsg = Utility::GetWords(CmdStr, 2);
+  GsayMsg = GetWords(CmdStr, 2);
   if (GsayMsg.GetLength() < 1)
   { // Player typed gsay but did not type a message
     pDnodeActor->PlayerOut += "Are you trying to say something to the group?\r\n";
@@ -3858,7 +3859,7 @@ void Communication::DoHail()
   { // Player is fighting, send msg, command is not done
     return;
   }
-  if (Utility::WordCount(CmdStr) < 2)
+  if (WordCount(CmdStr) < 2)
   { // No target
     pDnodeActor->PlayerOut += "You need a target.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -3866,7 +3867,7 @@ void Communication::DoHail()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  if (Utility::WordCount(CmdStr) > 2)
+  if (WordCount(CmdStr) > 2)
   { // Two many targets
     pDnodeActor->PlayerOut += "Only one target at a time.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -3878,7 +3879,7 @@ void Communication::DoHail()
   RoomId          = pDnodeActor->pPlayer->RoomId;
   PlayerNameCheck = PlayerName;
   PlayerNameCheck.MakeLower();
-  Target = Utility::GetWord(CmdStr, 2);
+  Target = GetWord(CmdStr, 2);
   MobileName = Target;
   Target.MakeLower();
   if (Target == PlayerNameCheck)
@@ -3935,13 +3936,13 @@ void Communication::DoHail()
 
 void Communication::DoHelp()
 {
-  if (Help::IsHelp())
+  if (IsHelp())
   { // Help was found and sent to player
     return;
   }
   // No help entry found
   CmdStr = "help notfound";
-  if (Help::IsHelp())
+  if (IsHelp())
   { // Help notfound entry was found and sent to player
     return;
   }
@@ -3961,7 +3962,7 @@ void Communication::DoInventory()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  Object::ShowPlayerInv();
+  ShowPlayerInv();
 }
 
 /***********************************************************
@@ -3972,7 +3973,7 @@ void Communication::DoInvisible()
 {
   CString TmpStr;
 
-  TmpStr = Utility::GetWord(CmdStr, 2);
+  TmpStr = GetWord(CmdStr, 2);
   TmpStr.MakeLower();
   if (TmpStr == "on")
   { // Turn Invisible on
@@ -4042,7 +4043,7 @@ void Communication::DoKill()
   }
   RoomId = pDnodeActor->pPlayer->RoomId;
   sRoomId = ConvertCStringToString(RoomId);
-  if (Room::IsRoomType(sRoomId, "NoFight"))
+  if (IsRoomType(sRoomId, "NoFight"))
   { // No fighting is allowed in this room
     pDnodeActor->PlayerOut += "You are not allowed to fight here.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4058,7 +4059,7 @@ void Communication::DoKill()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  if (Utility::WordCount(CmdStr) < 2)
+  if (WordCount(CmdStr) < 2)
   { // No target
     pDnodeActor->PlayerOut += "You need a target.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4066,7 +4067,7 @@ void Communication::DoKill()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  if (Utility::WordCount(CmdStr) > 2)
+  if (WordCount(CmdStr) > 2)
   { // Two many targets
     pDnodeActor->PlayerOut += "Only one target at a time.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4077,7 +4078,7 @@ void Communication::DoKill()
   PlayerName      = pDnodeActor->PlayerName;
   PlayerNameCheck = PlayerName;
   PlayerNameCheck.MakeLower();
-  Target = Utility::GetWord(CmdStr, 2);
+  Target = GetWord(CmdStr, 2);
   MobileName = Target;
   Target.MakeLower();
   if (Target == PlayerNameCheck)
@@ -4088,7 +4089,7 @@ void Communication::DoKill()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  if (Player::IsPlayer(Target))
+  if (IsPlayer(Target))
   { // Trying to kill another player
     pDnodeActor->PlayerOut += "Don't even think about it, player killing is not allowed.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4130,7 +4131,7 @@ void Communication::DoKill()
     pDnodeTgt = pDnodeActor;
     SendToRoom(RoomId, KillMsg);
     // Remove mobile from room
-    Mobile::RemoveMobFromRoom(RoomId, pMobile->MobileId);
+    RemoveMobFromRoom(RoomId, pMobile->MobileId);
     delete pMobile;
     return;
   }
@@ -4164,18 +4165,18 @@ void Communication::DoKill()
     pMobile->GetNextMobNbr();
     pMobile->CreateMobStatsFile(RoomId);
     MobileId = pMobile->MobileId;
-    Mobile::RemoveMobFromRoom(RoomId, MobileId);
+    RemoveMobFromRoom(RoomId, MobileId);
     MobileId = pMobile->MobileId + "." + pMobile->MobNbr;
   }
   else
   { // Mobile is hurt
     MobileId = pMobile->MobileId + "." + pMobile->MobNbr;
-    Mobile::RemoveMobFromRoom(RoomId, MobileId);
+    RemoveMobFromRoom(RoomId, MobileId);
   }
-  Mobile::UpdateMobInWorld(MobileId, "add"); // Keep Mob InWorld count correct
+  UpdateMobInWorld(MobileId, "add"); // Keep Mob InWorld count correct
   // Set player and mobile to fight
-  Mobile::CreatePlayerMob(PlayerName, MobileId);
-  Mobile::CreateMobPlayer(PlayerName, MobileId);
+  CreatePlayerMob(PlayerName, MobileId);
+  CreateMobPlayer(PlayerName, MobileId);
   delete pMobile;
   pDnodeActor->PlayerStateFighting = true;
 }
@@ -4197,7 +4198,7 @@ void Communication::DoList()
   { // Player is fighting, send msg, command is not done
     return;
   }
-  if (!Shop::IsShop(pDnodeActor->pPlayer->RoomId))
+  if (!IsShop(pDnodeActor->pPlayer->RoomId))
   { // Room is not a shop
     pDnodeActor->PlayerOut += "Find a shop.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4205,7 +4206,7 @@ void Communication::DoList()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  Shop::ListObjects();
+  ListObjects();
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
 }
@@ -4225,7 +4226,7 @@ void Communication::DoLoad()
   //********************
   //* Validate command *
   //********************
-  if (Utility::WordCount(CmdStr) == 1)
+  if (WordCount(CmdStr) == 1)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Load what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4233,7 +4234,7 @@ void Communication::DoLoad()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }  
-  if (Utility::WordCount(CmdStr) != 3)
+  if (WordCount(CmdStr) != 3)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Usage: load obj{ect}|mob{ile} <target>";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4241,10 +4242,10 @@ void Communication::DoLoad()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  TmpStr = Utility::GetWord(CmdStr, 2);
+  TmpStr = GetWord(CmdStr, 2);
   TmpStr.MakeLower();
-  TmpStr = Utility::TranslateWord(TmpStr);
-  if (Utility::IsNotWord(TmpStr,"object mobile"))
+  TmpStr = TranslateWord(TmpStr);
+  if (IsNotWord(TmpStr,"object mobile"))
   { // obj or mob must be specified
     pDnodeActor->PlayerOut += "2nd parm must be obj{ect}|mob{ile}\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -4258,7 +4259,7 @@ void Communication::DoLoad()
   { // Loading an object
     ObjectId = GetWord(CmdStr, 3);
     pObject = NULL;
-    Object::IsObject(ObjectId); // Sets pObject
+    IsObject(ObjectId); // Sets pObject
     if (!pObject)
     { // Object does not exist
       pDnodeActor->PlayerOut += "Object not found.\r\n";
@@ -4279,7 +4280,7 @@ void Communication::DoLoad()
   //*****************
   if (TmpStr == "mobile")
   { // Loading an mobile
-    MobileId = Utility::GetWord(CmdStr, 3);
+    MobileId = GetWord(CmdStr, 3);
     MobileId.MakeLower();
     pMobile = Mobile::IsMobValid(MobileId);
     if (!pMobile)
@@ -4289,8 +4290,8 @@ void Communication::DoLoad()
       pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
       return;
     }
-    Mobile::AddMobToRoom(pDnodeActor->pPlayer->RoomId, MobileId);
-    World::SpawnMobileNoMove(MobileId);
+    AddMobToRoom(pDnodeActor->pPlayer->RoomId, MobileId);
+    SpawnMobileNoMove(MobileId);
     pDnodeActor->PlayerOut += "Load successful\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -4362,7 +4363,7 @@ void Communication::DoLook(CString CmdStr1)
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  TmpStr = Utility::GetWord(CmdStr, 2);
+  TmpStr = GetWord(CmdStr, 2);
   //*****************
   //* Just looking? *
   //*****************
@@ -4376,7 +4377,7 @@ void Communication::DoLook(CString CmdStr1)
   //**********************
   MudCmdIsExit = "look";
   sMudCmdIsExit = ConvertCStringToString(MudCmdIsExit);
-  if (Room::IsExit(sMudCmdIsExit))
+  if (IsExit(sMudCmdIsExit))
   { // Look room exit
     return;
   }
@@ -4409,7 +4410,7 @@ void Communication::DoLook(CString CmdStr1)
   pMobile = Mobile::IsMobInRoom(TargetName);
   if (pMobile)
   { // Player is looking at a mob
-    TmpStr = Utility::MakeFirstLower(pMobile->Desc1);
+    TmpStr = MakeFirstLower(pMobile->Desc1);
     pDnodeActor->PlayerOut += "You look at ";
     pDnodeActor->PlayerOut += TmpStr;
     pDnodeActor->PlayerOut += ".";
@@ -4489,7 +4490,7 @@ void Communication::DoOneWhack()
 {
   CString TmpStr;
 
-  TmpStr = Utility::GetWord(CmdStr, 2);
+  TmpStr = GetWord(CmdStr, 2);
   TmpStr.MakeLower();
   if (TmpStr == "on")
   { // Turn OneWhack on
@@ -4540,7 +4541,7 @@ void Communication::DoPassword()
   { // Player is fighting, send msg, command is not done
     return;
   }
-  if (Utility::WordCount(CmdStr) != 4)
+  if (WordCount(CmdStr) != 4)
   {
     pDnodeActor->PlayerOut += "Password command requires: ";
     pDnodeActor->PlayerOut += "Password NewPassword NewPassword";
@@ -4549,9 +4550,9 @@ void Communication::DoPassword()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  Password     = Utility::GetWord(CmdStr, 2);
-  NewPassword1 = Utility::GetWord(CmdStr, 3);
-  NewPassword2 = Utility::GetWord(CmdStr, 4);
+  Password     = GetWord(CmdStr, 2);
+  NewPassword1 = GetWord(CmdStr, 3);
+  NewPassword2 = GetWord(CmdStr, 4);
   if (Password != ConvertStringToCString(pDnodeActor->pPlayer->Password))
   {
     pDnodeActor->PlayerOut += "Password does not match current password.";
@@ -4683,7 +4684,7 @@ void Communication::DoRefresh()
 {
   CString TmpStr;
 
-  if (Utility::WordCount(CmdStr) > 2)
+  if (WordCount(CmdStr) > 2)
   { // Invalid command format
     pDnodeActor->PlayerOut += "You may refresh only one thing at time.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4691,7 +4692,7 @@ void Communication::DoRefresh()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  TmpStr = Utility::GetWord(CmdStr, 2);
+  TmpStr = GetWord(CmdStr, 2);
   if (TmpStr.GetLength() == 0)
   { // Player did not provide an target to be refreshed
     pDnodeActor->PlayerOut += "Refresh what?";
@@ -4734,7 +4735,7 @@ void Communication::DoRemove()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  if (Utility::WordCount(CmdStr) > 2)
+  if (WordCount(CmdStr) > 2)
   { // Invalid command format, like 'remove shirt pants'
     pDnodeActor->PlayerOut += "You may remove only one item at time.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4742,7 +4743,7 @@ void Communication::DoRemove()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  TmpStr = Utility::GetWord(CmdStr, 2);
+  TmpStr = GetWord(CmdStr, 2);
   if (TmpStr.GetLength() == 0)
   { // Player did not provide an object to be removed
     pDnodeActor->PlayerOut += "Remove what?";
@@ -4755,7 +4756,7 @@ void Communication::DoRemove()
   ObjectName = TmpStr;
   TmpStr.MakeLower();
   pObject = NULL;
-  Object::IsObjInPlayerEqu(TmpStr); // Sets pObject
+  IsObjInPlayerEqu(TmpStr); // Sets pObject
   if (!pObject)
   { // Object not in equipment
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -4768,7 +4769,7 @@ void Communication::DoRemove()
   // Decrease player's ArmorClass
   pDnodeActor->pPlayer->ArmorClass -= pObject->ArmorValue;
   // Remove object from player's equipment
-  Object::RemoveObjFromPlayerEqu(pObject->ObjectId);
+  RemoveObjFromPlayerEqu(pObject->ObjectId);
   // Send remove message to player
   pDnodeActor->PlayerOut += "You remove ";
   pDnodeActor->PlayerOut += pObject->Desc1;
@@ -4814,7 +4815,7 @@ void Communication::DoRestore(CString CmdStr1)
   //********************
   TargetFound     = false;
   PlayerName      = pDnodeActor->PlayerName;
-  TargetName      = Utility::GetWord(CmdStr, 2);
+  TargetName      = GetWord(CmdStr, 2);
   TargetNameSave  = TargetName;
   PlayerName.MakeLower();
   TargetName.MakeLower();
@@ -4878,7 +4879,7 @@ void Communication::DoRoomInfo()
 {
   CString TmpStr;
 
-  TmpStr = Utility::GetWord(CmdStr, 2);
+  TmpStr = GetWord(CmdStr, 2);
   TmpStr.MakeLower();
   if (TmpStr == "on")
   {
@@ -4930,7 +4931,7 @@ void Communication::DoSay()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  SayMsg = Utility::GetWords(CmdStr, 2);
+  SayMsg = GetWords(CmdStr, 2);
   if (SayMsg.GetLength() < 1)
   { // Player did not enter anything to say
     pDnodeActor->PlayerOut += "You try to speak, but no words come out of your mouth.";
@@ -4996,7 +4997,7 @@ void Communication::DoSell()
     return;
   }
   RoomId = pDnodeActor->pPlayer->RoomId;
-  if (!Shop::IsShop(RoomId))
+  if (!IsShop(RoomId))
   { // Room is not a shop
     pDnodeActor->PlayerOut += "Find a shop.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -5004,7 +5005,7 @@ void Communication::DoSell()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  ObjectName = Utility::GetWord(CmdStr, 2);
+  ObjectName = GetWord(CmdStr, 2);
   if (ObjectName == "")
   { // No object given
     pDnodeActor->PlayerOut += "Sell what?";
@@ -5014,7 +5015,7 @@ void Communication::DoSell()
     return;
   }
   pObject = NULL;
-  Object::IsObjInPlayerInv(ObjectName); // Sets pObject
+  IsObjInPlayerInv(ObjectName); // Sets pObject
   if (!pObject)
   { // Player doesn't have object
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -5030,7 +5031,7 @@ void Communication::DoSell()
   Cost        = pObject->Cost;
   InvCountStr = pObject->Count;
   pObject     = NULL;
-  Shop::IsShopObj(RoomId, ObjectName); // Sets pObject
+  IsShopObj(RoomId, ObjectName); // Sets pObject
   if (!pObject)
   { // Player cannot sell object to this shop
     pDnodeActor->PlayerOut += "That item cannot be sold here.";
@@ -5045,7 +5046,7 @@ void Communication::DoSell()
   //* Check sell count *
   //********************
   InvCountInt = atoi(InvCountStr);
-  SellCountStr = Utility::GetWord(CmdStr, 3);
+  SellCountStr = GetWord(CmdStr, 3);
   SellCountStr.MakeLower(); // In case player typed 'all'
   if (SellCountStr == "")
   { // Player did not specify a sell count
@@ -5085,7 +5086,7 @@ void Communication::DoSell()
   //* Sell the object *
   //*******************
   // Remove object from player's inventory
-  Object::RemoveObjFromPlayerInv(ObjectId, SellCountInt);
+  RemoveObjFromPlayerInv(ObjectId, SellCountInt);
   // Player receives some money
   Cost = Cost * SellCountInt;
   pDnodeActor->pPlayer->SetMoney('+', Cost, "Silver");
@@ -5127,7 +5128,7 @@ void Communication::DoShow()
   //********************
   //* Validate command *
   //********************
-  if (Utility::WordCount(CmdStr) > 2)
+  if (WordCount(CmdStr) > 2)
   { // Invalid command format
     pDnodeActor->PlayerOut += "You may show only one thing at time.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -5135,7 +5136,7 @@ void Communication::DoShow()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  TmpStr = Utility::GetWord(CmdStr, 2);
+  TmpStr = GetWord(CmdStr, 2);
   if (TmpStr.GetLength() == 0)
   { // Player did not provide a target to be shown
     pDnodeActor->PlayerOut += "Show what?";
@@ -5145,7 +5146,7 @@ void Communication::DoShow()
     return;
   }
   TmpStr.MakeLower();
-  if (Utility::IsNotWord(TmpStr, "commands socials help"))
+  if (IsNotWord(TmpStr, "commands socials help"))
   { // Show target not valid
     pDnodeActor->PlayerOut += "Show what??";
     pDnodeActor->PlayerOut += "\r\n";
@@ -5165,7 +5166,7 @@ void Communication::DoShow()
     for (auto ValidCmd : ValidCmds)
     { // For each string in the ValidCmds vector
       ValCmdInfo = ConvertStringToCString(ValidCmd);
-      MudCmdChk  = Utility::GetWord(ValCmdInfo, 1);
+      MudCmdChk  = GetWord(ValCmdInfo, 1);
       CommandCheckResult = CommandCheck(MudCmdChk);
       if (CommandCheckResult == "Ok")
       { // Mud command is Ok for this player
@@ -5173,11 +5174,11 @@ void Communication::DoShow()
         pDnodeActor->PlayerOut += "\r\n";
       }
       else
-      if (Utility::GetWord(CommandCheckResult, 1) == "Level")
+      if (GetWord(CommandCheckResult, 1) == "Level")
       { // Mud command is Ok for this player, but level restricted
         pDnodeActor->PlayerOut += MudCmdChk;
         pDnodeActor->PlayerOut += " acquired at level(";
-        pDnodeActor->PlayerOut += Utility::GetWord(CommandCheckResult, 2);
+        pDnodeActor->PlayerOut += GetWord(CommandCheckResult, 2);
         pDnodeActor->PlayerOut += ")";
         pDnodeActor->PlayerOut += "\r\n";
       }
@@ -5434,7 +5435,7 @@ void Communication::DoTell()
   //********************
   TargetFound     = false;
   PlayerName      = pDnodeActor->PlayerName;
-  TargetName      = Utility::GetWord(CmdStr, 2);
+  TargetName      = GetWord(CmdStr, 2);
   TargetNameSave  = TargetName;
   PlayerName.MakeLower();
   TargetName.MakeLower();
@@ -5452,7 +5453,7 @@ void Communication::DoTell()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  TellMsg = Utility::GetWords(CmdStr, 3);
+  TellMsg = GetWords(CmdStr, 3);
   if (TellMsg.GetLength() < 1)
   {
     pDnodeActor->PlayerOut += "Um, tell ";
@@ -5532,7 +5533,7 @@ void Communication::DoTitle()
   CString Title;
   CString TmpStr;
 
-  TmpStr = Utility::GetWord(CmdStr, 2);
+  TmpStr = GetWord(CmdStr, 2);
   TmpStr.MakeLower();
   if (TmpStr == "")
   { // Player entered 'title' by itself
@@ -5574,7 +5575,7 @@ void Communication::DoTitle()
       return;
     }
   }
-  TmpStr = Utility::GetWords(CmdStr, 2);
+  TmpStr = GetWords(CmdStr, 2);
   Title = TmpStr;
   // Strip out color codes so Title length can be checked
   TmpStr.Replace("&N", "");
@@ -5626,9 +5627,9 @@ void Communication::DoTrain()
     return;
   }
   // Get command words
-  WeaponType  = Utility::GetWord(CmdStr, 2);
-  MinusSign   = Utility::GetWord(CmdStr, 3);
-  UnTrainCost = Utility::GetWord(CmdStr, 4);
+  WeaponType  = GetWord(CmdStr, 2);
+  MinusSign   = GetWord(CmdStr, 3);
+  UnTrainCost = GetWord(CmdStr, 4);
   WeaponType.MakeLower();
   // Calculate skill points used and remaining
   SkillPointsUsed  = 0;
@@ -5641,7 +5642,7 @@ void Communication::DoTrain()
   SkillPointsUsed += pDnodeActor->pPlayer->SkillSword;
   SkillPointsRemaining = PLAYER_SKILL_PER_LEVEL * pDnodeActor->pPlayer->Level - SkillPointsUsed;
   // Do some more checking
-  if (Utility::WordCount(CmdStr) > 4)
+  if (WordCount(CmdStr) > 4)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Train command syntax error, try'er again.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -5651,7 +5652,7 @@ void Communication::DoTrain()
   }
   if (WeaponType != "")
   { // WeaponType specified
-    if (Utility::IsNotWord(WeaponType, "axe club dagger hammer spear staff sword"))
+    if (IsNotWord(WeaponType, "axe club dagger hammer spear staff sword"))
     { // But it was the invalid
       pDnodeActor->PlayerOut += "Please specify a valid weapon type.";
       pDnodeActor->PlayerOut += "\r\n";
@@ -5976,7 +5977,7 @@ void Communication::DoWear()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  if (Utility::WordCount(CmdStr) == 1)
+  if (WordCount(CmdStr) == 1)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Wear what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -5985,11 +5986,11 @@ void Communication::DoWear()
     return;
   }
   // Get pointer to object
-  TmpStr = Utility::GetWord(CmdStr, 2);
+  TmpStr = GetWord(CmdStr, 2);
   ObjectName = TmpStr;
   TmpStr.MakeLower();
   pObject = NULL;
-  Object::IsObjInPlayerInv(TmpStr); // Sets pObject
+  IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
   { // Player does not have object in inventory
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -6012,11 +6013,11 @@ void Communication::DoWear()
     return;
   }
   // Handle wear positions that require left or right
-  if (Utility::IsWord(pObject->WearPosition,"ear wrist finger ankle"))
+  if (IsWord(pObject->WearPosition,"ear wrist finger ankle"))
   { // Object must be worn using left and right
-    TmpStr = Utility::GetWord(CmdStr, 3);
+    TmpStr = GetWord(CmdStr, 3);
     TmpStr.MakeLower();
-    if (Utility::IsNotWord(TmpStr,"left right"))
+    if (IsNotWord(TmpStr,"left right"))
     { // Player did not specify left or right
       pDnodeActor->PlayerOut += "You must specify left or right";
       pDnodeActor->PlayerOut += ".\r\n";
@@ -6032,7 +6033,7 @@ void Communication::DoWear()
   //* Wear object *
   //***************
   // Add object to player's equipment
-  WearFailed = Object::AddObjToPlayerEqu(pObject->WearPosition, pObject->ObjectId);
+  WearFailed = AddObjToPlayerEqu(pObject->WearPosition, pObject->ObjectId);
   if (WearFailed)
   { // Already wearing an object in that wear position
     pDnodeActor->PlayerOut += "You fail to wear ";
@@ -6048,7 +6049,7 @@ void Communication::DoWear()
   // Increase player's ArmorClass
   pDnodeActor->pPlayer->ArmorClass += pObject->ArmorValue;
   // Remove object from player's inventory
-  Object::RemoveObjFromPlayerInv(pObject->ObjectId, 1);
+  RemoveObjFromPlayerInv(pObject->ObjectId, 1);
   // Send messages
   pDnodeActor->PlayerOut += "You wear ";
   pDnodeActor->PlayerOut += pObject->Desc1;
@@ -6072,7 +6073,7 @@ void Communication::DoWhere()
 {
   CString  SearchId;
 
-  if (Utility::WordCount(CmdStr) != 2)
+  if (WordCount(CmdStr) != 2)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Nothing given to search for!";
     pDnodeActor->PlayerOut += "\r\n";
@@ -6095,15 +6096,15 @@ void Communication::DoWhere()
   else
   if (Mobile::IsMobValid(SearchId))
   { // Find Mobiles
-    Mobile::WhereMob(SearchId);
+    WhereMob(SearchId);
   }
   else
   {
     pObject = NULL;
-    Object::IsObject(SearchId);
+    IsObject(SearchId); // Sets pObject
     if (pObject)
     { // Find Objects
-      Object::WhereObj(SearchId);
+      WhereObj(SearchId);
     }
     else
     { // Could not find it
@@ -6136,15 +6137,15 @@ void Communication::DoWho()
   pDnodeActor->PlayerOut += "--------------";
   pDnodeActor->PlayerOut += "\r\n";
   // List all players
-  Descriptor::SetpDnodeCursorFirst();
-  while (!Descriptor::EndOfDnodeList())
+  SetpDnodeCursorFirst();
+  while (!EndOfDnodeList())
   { // Loop thru all connections
     pDnodeOthers = Descriptor::GetDnode();
     if (pDnodeOthers->PlayerStatePlaying)
     { // Who are 'playing'
       if (pDnodeOthers->PlayerStateInvisible)
       { // Player is invisible, no show
-        Descriptor::SetpDnodeCursorNext();
+        SetpDnodeCursorNext();
         continue;
       }
       sprintf(Buf, "%-15s", (LPCSTR) pDnodeOthers->PlayerName);
@@ -6169,7 +6170,7 @@ void Communication::DoWho()
       pDnodeActor->PlayerOut += "&N";
       pDnodeActor->PlayerOut += "\r\n";
     }
-    Descriptor::SetpDnodeCursorNext();
+    SetpDnodeCursorNext();
   }
   // Re-position pDnodeCursor
   RepositionDnodeCursor();
@@ -6197,7 +6198,7 @@ void Communication::DoWield()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  if (Utility::WordCount(CmdStr) == 1)
+  if (WordCount(CmdStr) == 1)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Wield what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -6208,11 +6209,11 @@ void Communication::DoWield()
   //************************* 
   //* Get pointer to object *
   //*************************
-  TmpStr = Utility::GetWord(CmdStr, 2);
+  TmpStr = GetWord(CmdStr, 2);
   ObjectName = TmpStr;
   TmpStr.MakeLower();
   pObject = NULL;
-  Object::IsObjInPlayerInv(TmpStr); // Sets pObject
+  IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
   { // Player does not have object in inventory
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -6239,7 +6240,7 @@ void Communication::DoWield()
   //* Wield the weapon *
   //********************
   // Add object to player's equipment
-  WieldFailed = Object::AddObjToPlayerEqu(pObject->WearPosition, pObject->ObjectId);
+  WieldFailed = AddObjToPlayerEqu(pObject->WearPosition, pObject->ObjectId);
   if (WieldFailed)
   { // Already wielding a weapon
     pDnodeActor->PlayerOut += "You are already wielding a weapon";
@@ -6251,7 +6252,7 @@ void Communication::DoWield()
     return;
   }
   // Remove object from player's inventory
-  Object::RemoveObjFromPlayerInv(pObject->ObjectId, 1);
+  RemoveObjFromPlayerInv(pObject->ObjectId, 1);
   // Send messages
   pDnodeActor->PlayerOut += "You wield ";
   pDnodeActor->PlayerOut += pObject->Desc1;
@@ -6331,7 +6332,7 @@ void Communication::GrpExperience(int MobileExpPoints, int MobileLevel)
     { // Player gains xp
       PlayerExpPct = int(pDnodeGrpMem->pPlayer->Level/LevelTotal*100.0);
       ExpPoints    = int(MobileExpPoints*(PlayerExpPct/100.0));
-      ExpPoints    = Player::CalcAdjustedExpPoints(pDnodeGrpMem->pPlayer->Level, MobileLevel, ExpPoints);
+      ExpPoints    = CalcAdjustedExpPoints(pDnodeGrpMem->pPlayer->Level, MobileLevel, ExpPoints);
       GainLoose    = "gain";
     }
     else
@@ -6607,7 +6608,7 @@ void Communication::LogonWaitMaleFemale()
 void Communication::LogonWaitName()
 {
   // Fix name so first letter is upper case, rest are lower case
-  pDnodeActor->PlayerName = Utility::MakeFirstUpper(CmdStr);
+  pDnodeActor->PlayerName = MakeFirstUpper(CmdStr);
   if (pDnodeActor->PlayerNewCharacter == "Y")
   { // New player
     pDnodeActor->PlayerStateWaitNameConfirmation = true;
@@ -6619,7 +6620,7 @@ void Communication::LogonWaitName()
   }
   else
   { // Returning player
-    if (!Player::IsPlayer(pDnodeActor->PlayerName))
+    if (!IsPlayer(pDnodeActor->PlayerName))
     { // Name not found on file
       pDnodeActor->PlayerStateWaitName = true;
       pDnodeActor->PlayerOut += pDnodeActor->PlayerName;
@@ -6679,7 +6680,7 @@ void Communication::LogonWaitNameConfirmation()
     }
     else
     { // Y entered ... they like the name
-      if (!Player::IsNameValid(pDnodeActor->PlayerName))      { // Name is invalid ... try again
+      if (!IsNameValid(pDnodeActor->PlayerName))      { // Name is invalid ... try again
         pDnodeActor->PlayerStateWaitName = true;
         pDnodeActor->PlayerOut += pDnodeActor->PlayerName;
         pDnodeActor->PlayerOut += " is not an acceptable name in this realm\r\n";
@@ -6689,7 +6690,7 @@ void Communication::LogonWaitNameConfirmation()
       }
       else
       { // Name is valid
-        if (Player::IsPlayer(pDnodeActor->PlayerName))
+        if (IsPlayer(pDnodeActor->PlayerName))
         { // Name aleady used ... try again
           pDnodeActor->PlayerStateWaitName = true;
           pDnodeActor->PlayerOut += pDnodeActor->PlayerName;
@@ -6767,8 +6768,8 @@ void Communication::LogonWaitPassword()
     else
     { // Password matches and returning player, let them play
       // Reconnecting?
-      Descriptor::SetpDnodeCursorFirst();
-      while (!Descriptor::EndOfDnodeList())
+      SetpDnodeCursorFirst();
+      while (!EndOfDnodeList())
       { // Loop thru all connections
         pDnodeOthers = Descriptor::GetDnode();
         if (pDnodeActor != pDnodeOthers)
@@ -6802,7 +6803,7 @@ void Communication::LogonWaitPassword()
             pDnodeOthers->PlayerOut += "\r\n ";
           }
         }
-        Descriptor::SetpDnodeCursorNext();
+        SetpDnodeCursorNext();
       }
       // Re-position pDnodeCursor
       RepositionDnodeCursor();
@@ -6904,15 +6905,15 @@ void Communication::LogonWaitPassword()
 void Communication::RepositionDnodeCursor()
 {
   // Dnode cursor must be repositioned after each 'looping thru all connections'
-  Descriptor::SetpDnodeCursorFirst();
-  while (!Descriptor::EndOfDnodeList())
+  SetpDnodeCursorFirst();
+  while (!EndOfDnodeList())
   { // Loop thru all connections
     pDnodeOthers = Descriptor::GetDnode();
     if (pDnodeActor == pDnodeOthers)
     { // pDnodeCursor is now correctly positioned
       break;
     }
-    Descriptor::SetpDnodeCursorNext();
+    SetpDnodeCursorNext();
   }
 }
 
@@ -6962,7 +6963,7 @@ void Communication::SockNewConnection()
   LogBuf += ConvertStringToCString(IpAddress);
   LogIt(LogBuf);
   pDnodeActor = new Dnode(SocketHandle, IpAddress);
-  Descriptor::AppendIt();
+  AppendIt();
   StateConnections = true;
 }
 
@@ -7101,7 +7102,7 @@ void Communication::ViolenceMobile()
       return;
     }
     i++;
-    MobileId = Violence::GetMobPlayerMobileId(pDnodeActor->PlayerName, i);
+    MobileId = GetMobPlayerMobileId(pDnodeActor->PlayerName, i);
   }
   // Player is still alive!
   pDnodeActor->pPlayer->CreatePrompt();
@@ -7188,29 +7189,29 @@ void Communication::ViolenceMobileDied(CString MobileBeenWhacked,
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
   }
   // Fight done, clean up
-  Mobile::DeletePlayerMob(pDnodeActor->PlayerName);
-  Mobile::DeleteMobPlayer(pDnodeActor->PlayerName, MobileId);
-  Mobile::DeleteMobStats(MobileId);
+  DeletePlayerMob(pDnodeActor->PlayerName);
+  DeleteMobPlayer(pDnodeActor->PlayerName, MobileId);
+  DeleteMobStats(MobileId);
   pDnodeActor->PlayerStateFighting = false;
-  Mobile::UpdateMobInWorld(MobileId, "remove");
+  UpdateMobInWorld(MobileId, "remove");
   //***************************************************
   //* Stop other players who are whacking this mobile *
   //***************************************************
-  Descriptor::SetpDnodeCursorFirst();
-  while (!Descriptor::EndOfDnodeList())
+  SetpDnodeCursorFirst();
+  while (!EndOfDnodeList())
   { // Loop thru all connections
     pDnodeOthers = Descriptor::GetDnode();
     if (pDnodeOthers->PlayerStateFighting)
     { // Players who are fighting
-      MobileIdCheck = Violence::GetPlayerMobMobileId(pDnodeOthers->PlayerName);
+      MobileIdCheck = GetPlayerMobMobileId(pDnodeOthers->PlayerName);
       if (MobileId == MobileIdCheck)
       { // The same mobile
-        Mobile::DeletePlayerMob(pDnodeOthers->PlayerName);
-        Mobile::DeleteMobPlayer(pDnodeOthers->PlayerName, MobileId);
+        DeletePlayerMob(pDnodeOthers->PlayerName);
+        DeleteMobPlayer(pDnodeOthers->PlayerName, MobileId);
         pDnodeOthers->PlayerStateFighting = false;
       }
     }
-    Descriptor::SetpDnodeCursorNext();
+    SetpDnodeCursorNext();
   }
   // Re-position pDnodeCursor
   RepositionDnodeCursor();
@@ -7318,16 +7319,16 @@ bool Communication::ViolenceMobileLootHandOut(CString Loot)
   int      Percent;
 
   GotLoot  = false;
-  Count    = atoi(Utility::GetWord(Loot, 1));
-  Percent  = atoi(Utility::GetWord(Loot, 2));
-  ObjectId = Utility::GetWord(Loot, 3);
+  Count    = atoi(GetWord(Loot, 1));
+  Percent  = atoi(GetWord(Loot, 2));
+  ObjectId = GetWord(Loot, 3);
   for (i = 1; i <= Count; i++)
   { // For each object, for example twice if '2 60 RatEar' is specified
-    Chance = Utility::GetRandomNumber(100);
+    Chance = GetRandomNumber(100);
     if (Chance < Percent)
     { // Random number came up less than 'percent chance of getting loot'
       pObject = NULL;
-      Object::IsObject(ObjectId); // Sets pObject
+      IsObject(ObjectId); // Sets pObject
       if (!pObject)
       { // Object does not exist, Log it
         LogBuf += "Loot object not found";
@@ -7381,12 +7382,12 @@ void Communication::ViolenceMobileMore()
 {
   CString MobileId;
 
-  MobileId = Violence::GetMobPlayerMobileId(pDnodeActor->PlayerName, 1);
+  MobileId = GetMobPlayerMobileId(pDnodeActor->PlayerName, 1);
   if (MobileId == "No more mobiles")
   {
     return;
   }
-  Mobile::CreatePlayerMob(pDnodeActor->pPlayer->Name, MobileId);
+  CreatePlayerMob(pDnodeActor->pPlayer->Name, MobileId);
   pDnodeActor->PlayerStateFighting = true;
 }
 
@@ -7399,7 +7400,7 @@ void Communication::ViolencePlayer()
   int     DamageToMobile;
   CString DeadOrAlive;
   int     MaxDamageToMobile;
-//int     MobileArmor; currently not being used
+  int     MobileArmor;
   CString MobileBeenWhacked;
   CString MobileDesc1;
   CString MobileId;
@@ -7409,14 +7410,14 @@ void Communication::ViolencePlayer()
   WeaponSkill       = pDnodeActor->pPlayer->GetWeaponSkill();
   WeaponType        = pDnodeActor->pPlayer->WeaponType;
   MaxDamageToMobile = pDnodeActor->pPlayer->WeaponDamage;
-  MobileId          = Violence::GetPlayerMobMobileId(pDnodeActor->PlayerName);
-//MobileArmor       = Violence::GetMobileArmor(MobileId);
-  MobileDesc1       = Violence::GetMobileDesc1(MobileId);
-  DamageToMobile    = Violence::CalcDamageToMobile(MaxDamageToMobile, WeaponSkill);
-  MobileBeenWhacked = Violence::WhackMobile(MobileId, DamageToMobile, MobileDesc1, WeaponType);
+  MobileId          = GetPlayerMobMobileId(pDnodeActor->PlayerName);
+  MobileArmor       = GetMobileArmor(MobileId);
+  MobileDesc1       = GetMobileDesc1(MobileId);
+  DamageToMobile    = CalcDamageToMobile(MaxDamageToMobile, WeaponSkill);
+  MobileBeenWhacked = WhackMobile(MobileId, DamageToMobile, MobileDesc1, WeaponType);
   // Player has whacked the mobile
-  DeadOrAlive = Utility::GetWord(MobileBeenWhacked, 1);
-  MobileBeenWhacked = Utility::DeleteWord(MobileBeenWhacked, 1);
+  DeadOrAlive = GetWord(MobileBeenWhacked, 1);
+  MobileBeenWhacked = DeleteWord(MobileBeenWhacked, 1);
   DeadOrAlive.MakeLower();
   if (DeadOrAlive == "alive")
   { // Mobile is not dead, Send fight messages to player
@@ -7457,7 +7458,7 @@ void Communication::ViolencePlayerDied(CString MobileDesc1)
   // Loose experience?
   if (pDnodeActor->pPlayer->Level > PLAYER_LOOSES_EXP_LEVEL)
   { // Player is loosing some experience
-    pDnodeActor->pPlayer->Experience -= Utility::GetRandomNumber(pDnodeActor->pPlayer->Level * 5 * MOB_EXP_PER_LEVEL);
+    pDnodeActor->pPlayer->Experience -= GetRandomNumber(pDnodeActor->pPlayer->Level * 5 * MOB_EXP_PER_LEVEL);
     if (pDnodeActor->pPlayer->Experience < 0)
     { // Stop experience from going negative
       pDnodeActor->pPlayer->Experience = 0;
@@ -7499,22 +7500,22 @@ void Communication::ViolencePlayerDied(CString MobileDesc1)
   Room::ShowRoom(pDnodeActor);  
   pDnodeActor->PlayerStateFighting = false;
   // Get mobile id for mob that dead player was fighting
-  MobileIdSave = Violence::GetPlayerMobMobileId(pDnodeActor->PlayerName);
+  MobileIdSave = GetPlayerMobMobileId(pDnodeActor->PlayerName);
   // Delete PlayerMob file
-  Mobile::DeletePlayerMob(pDnodeActor->PlayerName);
+  DeletePlayerMob(pDnodeActor->PlayerName);
   //********************************************************
   //* Delete fighting mobiles from MobPlayer file          *
   //********************************************************
-  Descriptor::SetpDnodeCursorFirst();
-  while (!Descriptor::EndOfDnodeList())
+  SetpDnodeCursorFirst();
+  while (!EndOfDnodeList())
   { // Loop thru all connections
     pDnodeOthers = Descriptor::GetDnode();
     if (pDnodeOthers->PlayerStateFighting)
     { // Players who are fighting
       if (RoomIdBeforeDying == pDnodeOthers->pPlayer->RoomId)
       { // In the same room
-        MobileId = Violence::GetPlayerMobMobileId(pDnodeOthers->PlayerName);
-        Mobile::DeleteMobPlayer(pDnodeActor->PlayerName, MobileId);
+        MobileId = GetPlayerMobMobileId(pDnodeOthers->PlayerName);
+        DeleteMobPlayer(pDnodeActor->PlayerName, MobileId);
         if (MobileId == MobileIdSave)
         { // Add player to candidate list for MobileIdSave
           CandidateList += pDnodeOthers->PlayerName;
@@ -7522,21 +7523,21 @@ void Communication::ViolencePlayerDied(CString MobileDesc1)
         }
       }
     }
-    Descriptor::SetpDnodeCursorNext();
+    SetpDnodeCursorNext();
   }
   // Re-position pDnodeCursor
   RepositionDnodeCursor();
   // Put mobiles that are not fighting back in room
-  Mobile::PutMobBackInRoom(pDnodeActor->PlayerName, RoomIdBeforeDying);
+  PutMobBackInRoom(pDnodeActor->PlayerName, RoomIdBeforeDying);
   // Player is gone, so delete MobPlayer completely
-  Mobile::DeleteMobPlayer(pDnodeActor->PlayerName, "file");
+  DeleteMobPlayer(pDnodeActor->PlayerName, "file");
   // Select a new target for MobileIdSave
   if (CandidateList.GetLength() == 0)
   { // MobileIdSave's target is still in room, nothing to do
     return;
   }
-  CandidateCount  = Utility::WordCount(CandidateList);
-  CandidateTarget = Utility::GetRandomNumber(CandidateCount);
-  Target          = Utility::GetWord(CandidateList, CandidateTarget);
-  Mobile::CreateMobPlayer(Target, MobileIdSave);
+  CandidateCount  = WordCount(CandidateList);
+  CandidateTarget = GetRandomNumber(CandidateCount);
+  Target          = GetWord(CandidateList, CandidateTarget);
+  CreateMobPlayer(Target, MobileIdSave);
 }

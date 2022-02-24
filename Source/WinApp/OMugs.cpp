@@ -120,7 +120,7 @@ BOOL COMugsApp::InitInstance()
 	pMainFrame->UpdateWindow();
   
   // Get home directory
-  HomeDir = Utility::GetHomeDir();
+  HomeDir = GetHomeDir();
 
 	return TRUE;
 }

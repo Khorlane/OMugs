@@ -125,6 +125,10 @@ int Violence::GetMobileArmor(CString MobileId)
                         CFile::typeText);
   if(!Success)
   {
+    // Mobile Armor is not implemented, so for now, we just return zero
+    MobileArmor = 0;
+    return MobileArmor;
+    // This code is currently unreachable, on purpose.
     AfxMessageBox("Violence::GetArmor - Open MobStatsArmorFile file failed (read)", MB_ICONSTOP);
     _endthread();
   }
