@@ -176,7 +176,7 @@ bool Room::IsExit(string MudCmdIsExit)
     _endthread();
   }
   ExitLookup = StrGetWord(CmdStr, 2);
-  StrMakeLower(ExitLookup);
+  ExitLookup = StrMakeLower(ExitLookup);
   ExitLookup = TranslateWord(ConvertStringToCString(ExitLookup));
   Stuff = "Not Done";
   while (Stuff != "End of Exits")
@@ -185,7 +185,7 @@ bool Room::IsExit(string MudCmdIsExit)
     if (StrLeft(Stuff, 9) == "ExitName:")
     { // Ok, an Exit has been found
       ExitName = StrGetWord(Stuff, 2);
-      StrMakeLower(ExitName);
+      ExitName = StrMakeLower(ExitName);
       ExitName = TranslateWord(ConvertStringToCString(ExitName));
       if (ExitName == ExitLookup)
       { // THE Exit has been found

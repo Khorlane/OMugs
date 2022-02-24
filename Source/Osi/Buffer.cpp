@@ -98,6 +98,10 @@ void Buffer::GetScriptLine()
   CurrentLineNumber++;
   while (ScriptFile.peek() != EOF)
   { // Skip blank lines
+    if (Stuff != "")
+    {
+      break;
+    }
     getline(ScriptFile, Stuff);
     CurrentLineNumber++;
   }

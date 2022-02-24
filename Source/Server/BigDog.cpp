@@ -257,13 +257,15 @@ string StrGetWords(string Str1, int WordNbr)
   string Word;
   string Words;
   stringstream iss(Str1);
-  i = 0;
+  Str1 += "\r\n";
+  i = 1;
   while (iss >> Word)
   {
     i++;
     if (i == WordNbr)
     {
       getline(iss, Words);
+      Words = StrTrimLeft(Words);
       return Words;
     }
   }

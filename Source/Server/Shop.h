@@ -32,7 +32,7 @@ class Shop
 // Public functions static
   public:
     static  bool    IsShop(CString RoomId);
-    static  Object *IsShopObj(CString RoomId, CString ObjectName);
+    static  void    IsShopObj(CString RoomId, CString ObjectName);
     static  void    ListObjects();
 };
 

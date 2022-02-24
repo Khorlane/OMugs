@@ -420,7 +420,6 @@ void Object::AddObjToRoom(CString RoomId, CString ObjectId)
 
 int Object::CalcPlayerArmorClass()
 {
-  Object     *pObject;
   int         ArmorClass;
   CString     ObjectId;
   CStdioFile  PlayerEquFile;
@@ -448,6 +447,7 @@ int Object::CalcPlayerArmorClass()
     pObject = new Object(ObjectId);
     ArmorClass += pObject->ArmorValue;
     delete pObject;
+    pObject = NULL;
     PlayerEquFile.ReadString(Stuff);
   }
   PlayerEquFile.Close();
@@ -458,9 +458,8 @@ int Object::CalcPlayerArmorClass()
 * Is object in player's equipment?                         *
 ************************************************************/
 
-Object *Object::IsObjInPlayerEqu(CString ObjectName)
+void Object::IsObjInPlayerEqu(CString ObjectName)
 {
-  Object     *pObject;
   CString     LogBuf;
   CString     NamesCheck;
   CString     ObjectId;
@@ -483,7 +482,8 @@ Object *Object::IsObjInPlayerEqu(CString ObjectName)
                     CFile::typeText);
   if(!Success)
   { // Player has no objects
-    return NULL;
+    pObject = NULL;
+    return;
   }
   PlayerEquFile.ReadString(Stuff);
   while (Stuff != "")
@@ -495,7 +495,7 @@ Object *Object::IsObjInPlayerEqu(CString ObjectName)
       pObject = new Object(ObjectId);
       if (pObject)
       { // Object exists
-        return pObject;
+        return;
       }
       else
       { // Object does not exist, Log it
@@ -503,7 +503,9 @@ Object *Object::IsObjInPlayerEqu(CString ObjectName)
         LogBuf += " is an invalid item found in player equipment - ";
         LogBuf += "Object::IsObjInPlayerEqu";
         LogIt(LogBuf);
-        return NULL;
+        delete pObject;
+        pObject = NULL;
+        return;
       }
     }
     PlayerEquFile.ReadString(Stuff);
@@ -517,7 +519,8 @@ Object *Object::IsObjInPlayerEqu(CString ObjectName)
                     CFile::typeText);
   if(!Success)
   { // Player has no objects
-    return NULL;
+    pObject = NULL;
+    return;
   }
   PlayerEquFile.ReadString(Stuff);
   while (Stuff != "")
@@ -530,32 +533,35 @@ Object *Object::IsObjInPlayerEqu(CString ObjectName)
       LogBuf += " is an invalid item found in player equipment - ";
       LogBuf += "Object::IsObjInPlayerEqu";
       LogIt(LogBuf);
-      return NULL;
+      delete pObject;
+      pObject = NULL;
+      return;
     }
     NamesCheck = pObject->Names;
     NamesCheck.MakeLower();
     if (IsWord(ObjectName, NamesCheck))
     { // Match
-      return pObject;
+      return;
     }
     else
     { // No match
       delete pObject;
+      pObject = NULL;
     }
     PlayerEquFile.ReadString(Stuff);
   }
   PlayerEquFile.Close();
   // Object not found in player's inventory
-  return NULL;
+  pObject = NULL;
+  return;
 }
 
 /***********************************************************
 * Is object in player's inventory?                         *
 ************************************************************/
 
-Object *Object::IsObjInPlayerInv(CString ObjectName)
+void Object::IsObjInPlayerInv(CString ObjectName)
 {
-  Object     *pObject;
   CString     LogBuf;
   CString     NamesCheck;
   CString     ObjectId;
@@ -578,7 +584,8 @@ Object *Object::IsObjInPlayerInv(CString ObjectName)
                     CFile::typeText);
   if(!Success)
   { // Player has no objects
-    return NULL;
+    pObject = NULL;
+    return;
   }
   PlayerObjFile.ReadString(Stuff);
   while (Stuff != "")
@@ -591,7 +598,7 @@ Object *Object::IsObjInPlayerInv(CString ObjectName)
       if (pObject)
       { // Object exists
         pObject->Count = GetWord(Stuff, 1);
-        return pObject;
+        return;
       }
       else
       { // Object does not exist, Log it
@@ -599,7 +606,9 @@ Object *Object::IsObjInPlayerInv(CString ObjectName)
         LogBuf += " is an invalid item found in player inventory - ";
         LogBuf += "Object::IsObjInPlayerInv";
         LogIt(LogBuf);
-        return NULL;
+        delete pObject;
+        pObject = NULL;
+        return;
       }
     }
     PlayerObjFile.ReadString(Stuff);
@@ -613,7 +622,8 @@ Object *Object::IsObjInPlayerInv(CString ObjectName)
                     CFile::typeText);
   if(!Success)
   { // Player has no objects
-    return NULL;
+    pObject = NULL;
+    return;
   }
   PlayerObjFile.ReadString(Stuff);
   while (Stuff != "")
@@ -626,33 +636,35 @@ Object *Object::IsObjInPlayerInv(CString ObjectName)
       LogBuf += " is an invalid item found in player inventory - ";
       LogBuf += "Object::IsObjInPlayerInv";
       LogIt(LogBuf);
-      return NULL;
+      delete pObject;
+      pObject = NULL;
+      return;
     }
     pObject->Count = GetWord(Stuff, 1);
     NamesCheck     = pObject->Names;
     NamesCheck.MakeLower();
     if (IsWord(ObjectName, NamesCheck))
     { // Match
-      return pObject;
+      return;
     }
     else
     { // No match
       delete pObject;
+      pObject = NULL;
     }
     PlayerObjFile.ReadString(Stuff);
   }
   PlayerObjFile.Close();
   // Object not found in player's inventory
-  return NULL;
+  return;
 }
 
 /***********************************************************
 * Is object in room                                        *
 ************************************************************/
 
-Object *Object::IsObjInRoom(CString ObjectName)
+void Object::IsObjInRoom(CString ObjectName)
 {
-  Object     *pObject;
   CString     LogBuf;
   CString     NamesCheck;
   CString     ObjectId;
@@ -675,7 +687,8 @@ Object *Object::IsObjInRoom(CString ObjectName)
                   CFile::typeText);
   if(!Success)
   { // Room has no objects
-    return NULL;
+    pObject = NULL;
+    return;
   }
   RoomObjFile.ReadString(Stuff);
   while (Stuff != "")
@@ -687,7 +700,7 @@ Object *Object::IsObjInRoom(CString ObjectName)
       pObject = new Object(ObjectId);
       if (pObject)
       { // Object exists
-        return pObject;
+        return;
       }
       else
       { // Object does not exist, Log it
@@ -695,7 +708,9 @@ Object *Object::IsObjInRoom(CString ObjectName)
         LogBuf += " is an invalid item found in room - ";
         LogBuf += "Object::IsObjInRoom";
         LogIt(LogBuf);
-        return NULL;
+        delete pObject;
+        pObject = NULL;
+        return;
       }
     }
     RoomObjFile.ReadString(Stuff);
@@ -709,7 +724,8 @@ Object *Object::IsObjInRoom(CString ObjectName)
                   CFile::typeText);
   if(!Success)
   { // Room has no objects
-    return NULL;
+    pObject = NULL;
+    return;
   }
   RoomObjFile.ReadString(Stuff);
   while (Stuff != "")
@@ -722,32 +738,34 @@ Object *Object::IsObjInRoom(CString ObjectName)
       LogBuf += " is an invalid item found in room - ";
       LogBuf += "Object::IsObjInRoom";
       LogIt(LogBuf);
-      return NULL;
+      delete pObject;
+      pObject = NULL;
+      return;
     }
     NamesCheck = pObject->Names;
     NamesCheck.MakeLower();
     if (IsWord(ObjectName, NamesCheck))
     { // Match
-      return pObject;
+      return;
     }
     else
     { // No match
       delete pObject;
+      pObject = NULL;
     }
     RoomObjFile.ReadString(Stuff);
   }
   RoomObjFile.Close();
   // Object not found in room
-  return NULL;
+  return;
 }
 
 /***********************************************************
 * Is this a valid object?                                  *
 ************************************************************/
 
-Object *Object::IsObject(CString ObjectId)
+void Object::IsObject(CString ObjectId)
 {
-  Object     *pObject;
   CString     ObjectFileName;
   CStdioFile  ObjectFile;
   int         Success;
@@ -762,11 +780,12 @@ Object *Object::IsObject(CString ObjectId)
   {
     ObjectFile.Close();
     pObject = new Object(ObjectId);
-    return pObject;
+    return;
   }
   else
   {
-    return NULL;
+    pObject = NULL;
+    return;
   }
 }
 
@@ -1056,7 +1075,6 @@ void Object::RemoveObjFromRoom(CString ObjectId)
 
 void Object::ShowPlayerEqu(Dnode *pDnodeTgt1)
 {
-  Object     *pObject;
   CString     ObjectId;
   CStdioFile  PlayerEquFile;
   CString     PlayerEquFileName;
@@ -1107,6 +1125,7 @@ void Object::ShowPlayerEqu(Dnode *pDnodeTgt1)
     pDnodeActor->PlayerOut += pObject->Desc1;
     pDnodeActor->PlayerOut += "\r\n";
     delete pObject;
+    pObject = NULL;
     PlayerEquFile.ReadString(Stuff);
   }
   pDnodeActor->PlayerOut += "\r\n";
@@ -1121,7 +1140,6 @@ void Object::ShowPlayerEqu(Dnode *pDnodeTgt1)
 
 void Object::ShowPlayerInv()
 {
-  Object     *pObject;
   CString     ObjectCount;
   CString     ObjectId;
   CStdioFile  PlayerObjFile;
@@ -1157,6 +1175,7 @@ void Object::ShowPlayerInv()
     pDnodeActor->PlayerOut += pObject->Desc1;
     pDnodeActor->PlayerOut += "\r\n";
     delete pObject;
+    pObject = NULL;
     PlayerObjFile.ReadString(Stuff);
   }
   pDnodeActor->PlayerOut += "\r\n";
@@ -1171,7 +1190,6 @@ void Object::ShowPlayerInv()
 
 void Object::ShowObjsInRoom(Dnode *pDnode)
 {
-  Object     *pObject;
   CString     ObjectCount;
   CString     ObjectId;
   CStdioFile  RoomObjFile;
@@ -1204,6 +1222,7 @@ void Object::ShowObjsInRoom(Dnode *pDnode)
     }
     pDnode->PlayerOut += pObject->Desc2;
     delete pObject;
+    pObject = NULL;
     RoomObjFile.ReadString(Stuff);
   }
   RoomObjFile.Close();

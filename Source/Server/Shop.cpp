@@ -55,9 +55,8 @@ bool Shop::IsShop(CString RoomId)
  * Is this shop buying and selling this object?            *
  ***********************************************************/
 
-Object *Shop::IsShopObj(CString RoomId, CString ObjectName)
+void Shop::IsShopObj(CString RoomId, CString ObjectName)
 {
-  Object     *pObject;
   CString     LogBuf;
   CString     NamesCheck;
   CString     ObjectId;
@@ -92,7 +91,7 @@ Object *Shop::IsShopObj(CString RoomId, CString ObjectName)
         pObject = new Object(ObjectId);
         if (pObject)
         { // Object exists
-          return pObject;
+          return;
         }
         else
         { // Object does not exist, Log it
@@ -100,7 +99,9 @@ Object *Shop::IsShopObj(CString RoomId, CString ObjectName)
           LogBuf += " is an invalid shop item - ";
           LogBuf += "Shop::IsShopObj";
           LogIt(LogBuf);
-          return NULL;
+          delete pObject;
+          pObject = NULL;
+          return;
         }
       }
     }
@@ -133,12 +134,16 @@ Object *Shop::IsShopObj(CString RoomId, CString ObjectName)
       { // Check for a match
         NamesCheck = pObject->Names;
         NamesCheck.MakeLower();
-
         Success = NamesCheck.Find(ObjectName);
         if (Success != -1)
         { // Match, Object found in this shop
           ShopFile.Close();
-          return pObject;
+          return;
+        }
+        else
+        {
+          delete pObject;
+          pObject = NULL;
         }
       }
       else
@@ -147,13 +152,15 @@ Object *Shop::IsShopObj(CString RoomId, CString ObjectName)
         LogBuf += " is an invalid shop item - ";
         LogBuf += "Shop::IsShopObj";
         LogIt(LogBuf);
+        delete pObject;
+        pObject = NULL;
       }
     }
     ShopFile.ReadString(Stuff);
   }
   ShopFile.Close();
   // No match found, Object is not buyable from this shop
-  return NULL;
+  return;
 }
 
 /***********************************************************
@@ -162,7 +169,6 @@ Object *Shop::IsShopObj(CString RoomId, CString ObjectName)
 
 void Shop::ListObjects()
 {
-  Object     *pObject;
   int         i;
   int         j;
   CString     LogBuf;
@@ -223,7 +229,8 @@ void Shop::ListObjects()
     if (GetWord(Stuff, 1) == "item:")
     { // Found an item
       ObjectId = GetWord(Stuff, 2);
-      pObject = Object::IsObject(ObjectId);
+      pObject = NULL;
+      Object::IsObject(ObjectId); // Sets pObject
       if (pObject)
       { // Format shop item text
         sprintf(Buf, "%-45s", (LPCSTR) pObject->Desc1);
@@ -243,6 +250,7 @@ void Shop::ListObjects()
         pDnodeActor->PlayerOut += "\r\n";
         // Done with object
         delete pObject;
+        pObject = NULL;
       }
       else
       { // Object does not exist, Log it

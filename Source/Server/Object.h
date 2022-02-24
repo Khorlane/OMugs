@@ -33,10 +33,10 @@ class Object
     static  void    AddObjToPlayerInv(Dnode *pDnodeTgt, CString ObjectId);
     static  void    AddObjToRoom(CString RoomId, CString ObjectId);
     static  int     CalcPlayerArmorClass();
-    static  Object *IsObjInPlayerEqu(CString ObjectName);
-    static  Object *IsObjInPlayerInv(CString ObjectName);
-    static  Object *IsObjInRoom(CString ObjectName);
-    static  Object *IsObject(CString ObjectId);
+    static  void    IsObjInPlayerEqu(CString ObjectName);
+    static  void    IsObjInPlayerInv(CString ObjectName);
+    static  void    IsObjInRoom(CString ObjectName);
+    static  void    IsObject(CString ObjectId);
     static  void    RemoveObjFromPlayerEqu(CString ObjectId);
     static  void    RemoveObjFromPlayerInv(CString ObjectId, int Count);
     static  void    RemoveObjFromRoom(CString ObjectId);
@@ -84,5 +84,7 @@ class Object
     CString         WearPosition;
     int             Weight;
 };
+
+inline Object      *pObject;
 
 #endif

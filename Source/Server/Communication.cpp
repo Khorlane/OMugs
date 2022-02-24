@@ -1752,7 +1752,6 @@ void Communication::DoAssist()
 
 void Communication::DoBuy()
 {
-  Object  *pObject;
   int      Cost;
   CString  Desc1;
   CString  ObjectId;
@@ -1780,7 +1779,7 @@ void Communication::DoBuy()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  ObjectName = Utility::GetWord(CmdStr, 2);
+  ObjectName = GetWord(CmdStr, 2);
   if (ObjectName == "")
   { // No object given
     pDnodeActor->PlayerOut += "Buy what?";
@@ -1797,7 +1796,8 @@ void Communication::DoBuy()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  pObject = Shop::IsShopObj(RoomId, ObjectName);
+  pObject = NULL;
+  Shop::IsShopObj(RoomId, ObjectName); // Sets pObject
   if (!pObject)
   { // Object not in shop for player to buy
     pDnodeActor->PlayerOut += "That item cannot be bought here.";
@@ -1810,6 +1810,7 @@ void Communication::DoBuy()
   Desc1    = pObject->Desc1;
   Cost     = pObject->Cost;
   delete pObject;
+  pObject = NULL;
   if (pDnodeActor->pPlayer->Silver < Cost)
   { // Player cannot afford item
     pDnodeActor->PlayerOut += "You cannot afford that item.";
@@ -2233,7 +2234,6 @@ void Communication::DoDelete()
 
 void Communication::DoDestroy()
 {
-  Object  *pObject;
   CString  ObjectName;
   CString  TmpStr;
 
@@ -2258,7 +2258,8 @@ void Communication::DoDestroy()
   TmpStr = Utility::GetWord(CmdStr, 2);
   ObjectName = TmpStr;
   TmpStr.MakeLower();
-  pObject = Object::IsObjInPlayerInv(TmpStr);
+  pObject = NULL;
+  Object::IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
   {
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -2280,6 +2281,7 @@ void Communication::DoDestroy()
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();        
   delete pObject;
+  pObject = NULL;
 }
 
 /***********************************************************
@@ -2288,7 +2290,6 @@ void Communication::DoDestroy()
 
 void Communication::DoDrink()
 {
-  Object  *pObject;
   CString  DrinkMsg;
   CString  ObjectName;
   CString  RoomId;
@@ -2356,7 +2357,8 @@ void Communication::DoDrink()
   TmpStr = Utility::GetWord(CmdStr, 2);
   ObjectName = TmpStr;
   TmpStr.MakeLower();
-  pObject = Object::IsObjInPlayerInv(TmpStr);
+  pObject = NULL;
+  Object::IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
   { // Object not found in player's inventory
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -2402,6 +2404,7 @@ void Communication::DoDrink()
   Object::RemoveObjFromPlayerInv(pObject->ObjectId, 1);
   // Clean up and give prompt
   delete pObject;
+  pObject = NULL;
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
 }
@@ -2412,7 +2415,6 @@ void Communication::DoDrink()
 
 void Communication::DoDrop()
 {
-  Object  *pObject;
   CString  DropMsg;
   CString  ObjectName;
   CString  TmpStr;
@@ -2438,7 +2440,8 @@ void Communication::DoDrop()
   TmpStr = Utility::GetWord(CmdStr, 2);
   ObjectName = TmpStr;
   TmpStr.MakeLower();
-  pObject = Object::IsObjInPlayerInv(TmpStr);
+  pObject = NULL;
+  Object::IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
   {
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -2470,6 +2473,7 @@ void Communication::DoDrop()
   // Add object to room
   Object::AddObjToRoom(pDnodeActor->pPlayer->RoomId, pObject->ObjectId);
   delete pObject;
+  pObject = NULL;
 }
 
 /***********************************************************
@@ -2478,7 +2482,6 @@ void Communication::DoDrop()
 
 void Communication::DoEat()
 {
-  Object  *pObject;
   CString  EatMsg;
   CString  ObjectName;
   CString  TmpStr;
@@ -2504,7 +2507,8 @@ void Communication::DoEat()
   TmpStr = Utility::GetWord(CmdStr, 2);
   ObjectName = TmpStr;
   TmpStr.MakeLower();
-  pObject = Object::IsObjInPlayerInv(TmpStr);
+  pObject = NULL;
+  Object::IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
   {
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -2550,6 +2554,7 @@ void Communication::DoEat()
   Object::RemoveObjFromPlayerInv(pObject->ObjectId, 1);
   // Clean up and give prompt
   delete pObject;
+  pObject = NULL;
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
 }
@@ -2620,7 +2625,6 @@ void Communication::DoEquipment()
 
 void Communication::DoExamine()
 {
-  Object  *pObject;
   bool     ObjectFound;
   CString  ObjectName;
   CString  ObjectType;
@@ -2653,21 +2657,24 @@ void Communication::DoExamine()
   ObjectName = TmpStr;
   TmpStr.MakeLower();
   // Check room
-  pObject = Object::IsObjInRoom(TmpStr);
+  pObject = NULL;
+  Object::IsObjInRoom(TmpStr); // Sets pObject
   if (pObject)
   { // Object is in the room
     ObjectFound = true;
   }
   else
   { // Check player inventory
-    pObject = Object::IsObjInPlayerInv(TmpStr);
+    pObject = NULL;
+    Object::IsObjInPlayerInv(TmpStr); // Sets pObject
     if (pObject)
     { // Object is in player's inventory
       ObjectFound = true;
     }
     else
     { // Check player equipment
-      pObject = Object::IsObjInPlayerEqu(TmpStr);
+      pObject = NULL;
+      Object::IsObjInPlayerEqu(TmpStr); // Sets pObject
       if (pObject)
       { // Object is in player's equipment
         ObjectFound = true;
@@ -2707,6 +2714,7 @@ void Communication::DoExamine()
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
   delete pObject;
+  pObject = NULL;
 }
 
 /***********************************************************
@@ -3060,7 +3068,6 @@ void Communication::DoFollow(Dnode *pDnode, CString CmdStr1)
 
 void Communication::DoGet()
 {
-  Object  *pObject;
   CString  GetMsg;
   CString  ObjectName;
   CString  TmpStr;
@@ -3086,7 +3093,8 @@ void Communication::DoGet()
   TmpStr = Utility::GetWord(CmdStr, 2);
   ObjectName = TmpStr;
   TmpStr.MakeLower();
-  pObject = Object::IsObjInRoom(TmpStr);
+  pObject = NULL;
+  Object::IsObjInRoom(TmpStr); // Sets pObject
   if (!pObject)
   {
     pDnodeActor->PlayerOut += "There doesn't seem to be a(n) ";
@@ -3103,6 +3111,7 @@ void Communication::DoGet()
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();      
     delete pObject;
+    pObject = NULL;
     return;
   }
   //**********************
@@ -3126,6 +3135,7 @@ void Communication::DoGet()
   // Add object to player's inventory
   Object::AddObjToPlayerInv(pDnodeTgt, pObject->ObjectId);
   delete pObject;
+  pObject = NULL;
 }
 
 /***********************************************************
@@ -3134,7 +3144,6 @@ void Communication::DoGet()
 
 void Communication::DoGive()
 {
-  Object  *pObject;
   CString  GiveMsg;
   CString  ObjectName;
   CString  PlayerName;
@@ -3171,7 +3180,8 @@ void Communication::DoGive()
   TmpStr = Utility::GetWord(CmdStr, 2);
   ObjectName = TmpStr;
   TmpStr.MakeLower();
-  pObject = Object::IsObjInPlayerInv(TmpStr);
+  pObject = NULL;
+  Object::IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
   { // Player does not have object
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -3263,6 +3273,7 @@ void Communication::DoGive()
   Object::RemoveObjFromPlayerInv(pObject->ObjectId, 1);
   Object::AddObjToPlayerInv(pDnodeTgt, pObject->ObjectId);
   delete pObject;
+  pObject = NULL;
 }
 
 /***********************************************************
@@ -4206,7 +4217,6 @@ void Communication::DoList()
 void Communication::DoLoad()
 {
   Mobile  *pMobile;
-  Object  *pObject;
   CString  LoadMsg;
   CString  MobileId;
   CString  ObjectId;
@@ -4246,8 +4256,9 @@ void Communication::DoLoad()
   //***************
   if (TmpStr == "object")
   { // Loading an object
-    ObjectId = Utility::GetWord(CmdStr, 3);
-    pObject = Object::IsObject(ObjectId);
+    ObjectId = GetWord(CmdStr, 3);
+    pObject = NULL;
+    Object::IsObject(ObjectId); // Sets pObject
     if (!pObject)
     { // Object does not exist
       pDnodeActor->PlayerOut += "Object not found.\r\n";
@@ -4256,6 +4267,7 @@ void Communication::DoLoad()
       return;
     }
     delete pObject;
+    pObject = NULL;
     Object::AddObjToPlayerInv(pDnodeActor, ObjectId);
     pDnodeActor->PlayerOut += "Load successful\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -4711,7 +4723,6 @@ void Communication::DoRefresh()
 
 void Communication::DoRemove()
 {
-  Object  *pObject;
   CString  ObjectName;
   CString  RemoveMsg;
   CString  TmpStr;
@@ -4743,7 +4754,8 @@ void Communication::DoRemove()
   // Get pointer to object
   ObjectName = TmpStr;
   TmpStr.MakeLower();
-  pObject = Object::IsObjInPlayerEqu(TmpStr);
+  pObject = NULL;
+  Object::IsObjInPlayerEqu(TmpStr); // Sets pObject
   if (!pObject)
   { // Object not in equipment
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -4782,6 +4794,7 @@ void Communication::DoRemove()
     pDnodeActor->pPlayer->WeaponType   = "Hand";
   }
   delete pObject;
+  pObject = NULL;
 }
 
 /***********************************************************
@@ -4960,7 +4973,6 @@ void Communication::DoSay()
 
 void Communication::DoSell()
 {
-  Object  *pObject;
   int      Cost;
   CString  Desc1;
   int      InvCountInt;
@@ -5001,7 +5013,8 @@ void Communication::DoSell()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  pObject = Object::IsObjInPlayerInv(ObjectName);
+  pObject = NULL;
+  Object::IsObjInPlayerInv(ObjectName); // Sets pObject
   if (!pObject)
   { // Player doesn't have object
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -5016,7 +5029,8 @@ void Communication::DoSell()
   Desc1       = pObject->Desc1;
   Cost        = pObject->Cost;
   InvCountStr = pObject->Count;
-  pObject     = Shop::IsShopObj(RoomId, ObjectName);
+  pObject     = NULL;
+  Shop::IsShopObj(RoomId, ObjectName); // Sets pObject
   if (!pObject)
   { // Player cannot sell object to this shop
     pDnodeActor->PlayerOut += "That item cannot be sold here.";
@@ -5026,6 +5040,7 @@ void Communication::DoSell()
     return;
   }
   delete pObject;
+  pObject = NULL;
   //********************
   //* Check sell count *
   //********************
@@ -5948,7 +5963,6 @@ void Communication::DoWake()
 
 void Communication::DoWear()
 {
-  Object  *pObject;
   CString  ObjectName;
   CString  TmpStr;
   bool     WearFailed;
@@ -5974,14 +5988,15 @@ void Communication::DoWear()
   TmpStr = Utility::GetWord(CmdStr, 2);
   ObjectName = TmpStr;
   TmpStr.MakeLower();
-  pObject = Object::IsObjInPlayerInv(TmpStr);
+  pObject = NULL;
+  Object::IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
   { // Player does not have object in inventory
     pDnodeActor->PlayerOut += "You don't have a(n) ";
     pDnodeActor->PlayerOut += ObjectName;
     pDnodeActor->PlayerOut += ".\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
-    pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();      
+    pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
   pObject->Type.MakeLower();
@@ -5993,6 +6008,7 @@ void Communication::DoWear()
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     delete pObject;
+    pObject = NULL;
     return;
   }
   // Handle wear positions that require left or right
@@ -6007,6 +6023,7 @@ void Communication::DoWear()
       pDnodeActor->pPlayer->CreatePrompt();
       pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
       delete pObject;
+      pObject = NULL;
       return;
     }
     pObject->WearPosition += TmpStr;
@@ -6025,6 +6042,7 @@ void Communication::DoWear()
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     delete pObject;
+    pObject = NULL;
     return;
   }
   // Increase player's ArmorClass
@@ -6043,6 +6061,7 @@ void Communication::DoWear()
   pDnodeTgt = pDnodeActor;
   SendToRoom(pDnodeActor->pPlayer->RoomId, WearMsg);
   delete pObject;
+  pObject = NULL;
 }
 
 /***********************************************************
@@ -6061,7 +6080,7 @@ void Communication::DoWhere()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();      
     return;
   }
-  SearchId = Utility::GetWord(CmdStr, 2);
+  SearchId = GetWord(CmdStr, 2);
   SearchId.MakeLower();
   // Find Players
   pDnodeTgt = GetTargetDnode(SearchId);
@@ -6079,17 +6098,21 @@ void Communication::DoWhere()
     Mobile::WhereMob(SearchId);
   }
   else
-  if (Object::IsObject(SearchId))
-  { // Find Objects
-    Object::WhereObj(SearchId);
-  }
-  else
-  { // Could not find it
-    pDnodeActor->PlayerOut += "\r\n";
-    pDnodeActor->PlayerOut += "No ";
-    pDnodeActor->PlayerOut += SearchId;
-    pDnodeActor->PlayerOut += " found.";
-    pDnodeActor->PlayerOut += "\r\n";
+  {
+    pObject = NULL;
+    Object::IsObject(SearchId);
+    if (pObject)
+    { // Find Objects
+      Object::WhereObj(SearchId);
+    }
+    else
+    { // Could not find it
+      pDnodeActor->PlayerOut += "\r\n";
+      pDnodeActor->PlayerOut += "No ";
+      pDnodeActor->PlayerOut += SearchId;
+      pDnodeActor->PlayerOut += " found.";
+      pDnodeActor->PlayerOut += "\r\n";
+    }
   }
   // Prompt
   pDnodeActor->pPlayer->CreatePrompt();
@@ -6161,7 +6184,6 @@ void Communication::DoWho()
 
 void Communication::DoWield()
 {
-  Object  *pObject;
   CString  ObjectName;
   CString  TmpStr;
   CString  WearPosition;
@@ -6189,7 +6211,8 @@ void Communication::DoWield()
   TmpStr = Utility::GetWord(CmdStr, 2);
   ObjectName = TmpStr;
   TmpStr.MakeLower();
-  pObject = Object::IsObjInPlayerInv(TmpStr);
+  pObject = NULL;
+  Object::IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
   { // Player does not have object in inventory
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -6224,6 +6247,7 @@ void Communication::DoWield()
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     delete pObject;
+    pObject = NULL;
     return;
   }
   // Remove object from player's inventory
@@ -6249,6 +6273,7 @@ void Communication::DoWield()
   pDnodeActor->pPlayer->WeaponType   = pObject->WeaponType;
   pDnodeActor->pPlayer->Save();
   delete pObject;
+  pObject = NULL;
 }
 
 /***********************************************************
@@ -7282,7 +7307,6 @@ void Communication::ViolenceMobileLoot(CString Loot)
 
 bool Communication::ViolenceMobileLootHandOut(CString Loot)
 {
-  Object  *pObject;
   Dnode   *pDnodeGrpMem;
   Player  *pPlayerGrpLdr;
   int      Chance;
@@ -7302,7 +7326,8 @@ bool Communication::ViolenceMobileLootHandOut(CString Loot)
     Chance = Utility::GetRandomNumber(100);
     if (Chance < Percent)
     { // Random number came up less than 'percent chance of getting loot'
-      pObject = Object::IsObject(ObjectId);
+      pObject = NULL;
+      Object::IsObject(ObjectId); // Sets pObject
       if (!pObject)
       { // Object does not exist, Log it
         LogBuf += "Loot object not found";
@@ -7340,6 +7365,7 @@ bool Communication::ViolenceMobileLootHandOut(CString Loot)
         }
       }
       delete pObject;
+      pObject = NULL;
       Object::AddObjToPlayerInv(pDnodeActor, ObjectId);
       GotLoot = true;
     }
