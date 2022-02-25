@@ -23,6 +23,8 @@
 
 CStdioFile SocialFile;
 
+Dnode *GetTargetDnode(CString TargetName); // Communication
+
 /***********************************************************
 * Social constructor                                       *
 ************************************************************/
@@ -270,7 +272,7 @@ void Social::Socialize(CString MinPos, CString MsgText)
     return;
   }
   // Do some checks to determine if target is valid
-  pDnodeTgt = Communication::GetTargetDnode(TargetName);
+  pDnodeTgt = GetTargetDnode(TargetName);
   if (!pDnodeTgt)
   { // Target is not online and/or not in 'playing' state
     TargetNotHere = true;

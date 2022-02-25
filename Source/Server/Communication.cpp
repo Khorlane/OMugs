@@ -28,6 +28,13 @@ int              ListenSocket;
 fd_set           OutSet;
 vector<string>   ValidCmds;
 
+void    AddObjToPlayerInv(Dnode *pDnodeTgt1, CString ObjectId); // Object
+Dnode  *GetDnode();                                             // Descriptor
+Mobile *IsMobInRoom(CString MobileName);                        // Mobile
+Mobile *IsMobValid(CString MobileId);                           // Mobile
+void    ShowRoom(Dnode* pDnode);                                // Room
+void    ShowPlayerEqu(Dnode* pDnodeTgt1);                       // Object
+
 /***********************************************************
  * Communication class constructor                         *
  ***********************************************************/
@@ -66,7 +73,7 @@ Dnode *Communication::GetTargetDnode(CString TargetName)
   { // Loop thru all connections
     pDnodeLookup = pDnodeCursor;
 // TODO - Can the line above replace the line below ???    
-    pDnodeLookup = Descriptor::GetDnode();
+    pDnodeLookup = GetDnode();
     LookupName = pDnodeLookup->PlayerName;
     LookupName.MakeLower();
     if (TargetName == LookupName)
@@ -184,7 +191,7 @@ void Communication::SendToAll(CString PlayerMsg, CString AllMsg)
   SetpDnodeCursorFirst();
   while (!EndOfDnodeList())
   { // Loop thru all connections
-    pDnodeOthers = Descriptor::GetDnode();
+    pDnodeOthers = GetDnode();
     if (pDnodeActor == pDnodeOthers)
     { // Send to player
       pDnodeActor->PlayerOut += PlayerMsg;
@@ -221,7 +228,7 @@ void Communication::SendToRoom(CString TargetRoomId, CString MsgText)
   SetpDnodeCursorFirst();
   while (!EndOfDnodeList())
   { // Loop thru all connections
-    pDnodeOthers = Descriptor::GetDnode();
+    pDnodeOthers = GetDnode();
     if (pDnodeOthers->PlayerStatePlaying)
     { // Player is logged in and playing
       LookupRoomId = pDnodeOthers->pPlayer->RoomId;
@@ -277,7 +284,7 @@ void Communication::ShowPlayersInRoom(Dnode *pDnode)
   SetpDnodeCursorFirst();
   while (!EndOfDnodeList())
   { // Loop thru all connections
-    pDnodeOthers = Descriptor::GetDnode();
+    pDnodeOthers = GetDnode();
     if (pDnode != pDnodeOthers)
     { // It's another player
       if (pDnodeOthers->PlayerStatePlaying)
@@ -342,7 +349,7 @@ void Communication::SockCheckForNewConnections()
   SetpDnodeCursorFirst();
   while (!EndOfDnodeList())
   { // Loop thru all connections
-    pDnodeActor = Descriptor::GetDnode();
+    pDnodeActor = GetDnode();
     FD_SET(pDnodeActor->DnodeFd, &InpSet);
     FD_SET(pDnodeActor->DnodeFd, &OutSet);
     FD_SET(pDnodeActor->DnodeFd, &ExcSet);
@@ -517,7 +524,7 @@ void Communication::SockRecv()
   SetpDnodeCursorFirst();
   while (!EndOfDnodeList())
   { // Loop thru all connections
-    pDnodeActor = Descriptor::GetDnode();
+    pDnodeActor = GetDnode();
     //***************************
     //* Check connection status *
     //***************************
@@ -655,7 +662,7 @@ void Communication::SockRecv()
       SetpDnodeCursorFirst();
       while (!EndOfDnodeList())
       { // Loop thru all connections
-        pDnodeOthers = Descriptor::GetDnode();
+        pDnodeOthers = GetDnode();
         if (!pDnodeOthers->PlayerStateBye)
         { // If player is not already going Bye Bye
           pDnodeOthers->PlayerStateBye = true;
@@ -1823,7 +1830,7 @@ void Communication::DoBuy()
   //* Buy the object *
   //*******************
   // Add object to player's inventory
-  Object::AddObjToPlayerInv(pDnodeActor, ObjectId);
+  AddObjToPlayerInv(pDnodeActor, ObjectId);
   // Player receives some money
   pDnodeActor->pPlayer->SetMoney('-', Cost, "Silver");
   // Send messages
@@ -1984,7 +1991,7 @@ void Communication::DoConsider()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  pMobile = Mobile::IsMobInRoom(Target);
+  pMobile = IsMobInRoom(Target);
   if (!pMobile)
   { // Target mobile is not here
     pDnodeActor->PlayerOut += "There doesn't seem to be a(n) ";
@@ -2617,7 +2624,7 @@ void Communication::DoEquipment()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  Object::ShowPlayerEqu(pDnodeActor);
+  ShowPlayerEqu(pDnodeActor);
 }
 
 /***********************************************************
@@ -2816,7 +2823,7 @@ void Communication::DoFlee()
   SetpDnodeCursorFirst();
   while (!EndOfDnodeList())
   { // Loop thru all connections
-    pDnodeOthers = Descriptor::GetDnode();
+    pDnodeOthers = GetDnode();
     if (pDnodeOthers->PlayerStateFighting)
     { // Players who are fighting
       if (RoomIdBeforeFleeing == pDnodeOthers->pPlayer->RoomId)
@@ -3134,7 +3141,7 @@ void Communication::DoGet()
   pDnodeTgt = pDnodeActor;
   SendToRoom(pDnodeActor->pPlayer->RoomId, GetMsg);
   // Add object to player's inventory
-  Object::AddObjToPlayerInv(pDnodeTgt, pObject->ObjectId);
+  AddObjToPlayerInv(pDnodeTgt, pObject->ObjectId);
   delete pObject;
   pObject = NULL;
 }
@@ -3272,7 +3279,7 @@ void Communication::DoGive()
   //* Transfer object ownership *
   //*****************************
   RemoveObjFromPlayerInv(pObject->ObjectId, 1);
-  Object::AddObjToPlayerInv(pDnodeTgt, pObject->ObjectId);
+  AddObjToPlayerInv(pDnodeTgt, pObject->ObjectId);
   delete pObject;
   pObject = NULL;
 }
@@ -3890,7 +3897,7 @@ void Communication::DoHail()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  pMobile = Mobile::IsMobInRoom(Target);
+  pMobile = IsMobInRoom(Target);
   if (!pMobile)
   { // Target mobile is not here
     pDnodeActor->PlayerOut += "Try hailing an NPC that is in this room.";
@@ -4097,7 +4104,7 @@ void Communication::DoKill()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  pMobile = Mobile::IsMobInRoom(Target);
+  pMobile = IsMobInRoom(Target);
   if (!pMobile)
   { // Target mobile is not here
     pDnodeActor->PlayerOut += "There doesn't seem to be a(n) ";
@@ -4269,7 +4276,7 @@ void Communication::DoLoad()
     }
     delete pObject;
     pObject = NULL;
-    Object::AddObjToPlayerInv(pDnodeActor, ObjectId);
+    AddObjToPlayerInv(pDnodeActor, ObjectId);
     pDnodeActor->PlayerOut += "Load successful\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -4282,7 +4289,7 @@ void Communication::DoLoad()
   { // Loading an mobile
     MobileId = GetWord(CmdStr, 3);
     MobileId.MakeLower();
-    pMobile = Mobile::IsMobValid(MobileId);
+    pMobile = IsMobValid(MobileId);
     if (!pMobile)
     { // Mobile does not exist
       pDnodeActor->PlayerOut += "Mobile not found.\r\n";
@@ -4369,7 +4376,7 @@ void Communication::DoLook(CString CmdStr1)
   //*****************
   if (TmpStr == "")
   { // Just look
-    Room::ShowRoom(pDnodeActor);
+    ShowRoom(pDnodeActor);
     return;
   }
   //**********************
@@ -4401,13 +4408,13 @@ void Communication::DoLook(CString CmdStr1)
   }
   if (IsPlayer)
   { // Show player
-    Object::ShowPlayerEqu(pDnodeTgt);
+    ShowPlayerEqu(pDnodeTgt);
     return;
   }
   //*******************
   //* Is it a mobile? *
   //*******************
-  pMobile = Mobile::IsMobInRoom(TargetName);
+  pMobile = IsMobInRoom(TargetName);
   if (pMobile)
   { // Player is looking at a mob
     TmpStr = MakeFirstLower(pMobile->Desc1);
@@ -4785,7 +4792,7 @@ void Communication::DoRemove()
   pDnodeTgt = pDnodeActor;
   SendToRoom(pDnodeActor->pPlayer->RoomId, RemoveMsg);
   // Add object to player's inventory
-  Object::AddObjToPlayerInv(pDnodeTgt, pObject->ObjectId);
+  AddObjToPlayerInv(pDnodeTgt, pObject->ObjectId);
   TmpStr = pObject->Type;
   TmpStr.MakeLower();
   if (TmpStr == "weapon")
@@ -6094,7 +6101,7 @@ void Communication::DoWhere()
     pDnodeActor->PlayerOut += "\r\n";
   }
   else
-  if (Mobile::IsMobValid(SearchId))
+  if (IsMobValid(SearchId))
   { // Find Mobiles
     WhereMob(SearchId);
   }
@@ -6140,7 +6147,7 @@ void Communication::DoWho()
   SetpDnodeCursorFirst();
   while (!EndOfDnodeList())
   { // Loop thru all connections
-    pDnodeOthers = Descriptor::GetDnode();
+    pDnodeOthers = GetDnode();
     if (pDnodeOthers->PlayerStatePlaying)
     { // Who are 'playing'
       if (pDnodeOthers->PlayerStateInvisible)
@@ -6593,7 +6600,7 @@ void Communication::LogonWaitMaleFemale()
     AllMsg += ".";
     AllMsg += "\r\n";
     SendToAll(PlayerMsg, AllMsg);
-    Room::ShowRoom(pDnodeActor);
+    ShowRoom(pDnodeActor);
     LogBuf  = "New player ";
     LogBuf += pDnodeActor->PlayerName;
     LogIt(LogBuf);
@@ -6771,7 +6778,7 @@ void Communication::LogonWaitPassword()
       SetpDnodeCursorFirst();
       while (!EndOfDnodeList())
       { // Loop thru all connections
-        pDnodeOthers = Descriptor::GetDnode();
+        pDnodeOthers = GetDnode();
         if (pDnodeActor != pDnodeOthers)
         { // Check other connections
           if (pDnodeActor->PlayerName == pDnodeOthers->PlayerName)
@@ -6822,7 +6829,7 @@ void Communication::LogonWaitPassword()
         AllMsg += " has entered the game.";
         AllMsg += "\r\n";
         SendToAll(PlayerMsg, AllMsg);
-        Room::ShowRoom(pDnodeActor);
+        ShowRoom(pDnodeActor);
         LogBuf  = "Returning player ";
         LogBuf += pDnodeActor->PlayerName;
         LogIt(LogBuf);
@@ -6908,7 +6915,7 @@ void Communication::RepositionDnodeCursor()
   SetpDnodeCursorFirst();
   while (!EndOfDnodeList())
   { // Loop thru all connections
-    pDnodeOthers = Descriptor::GetDnode();
+    pDnodeOthers = GetDnode();
     if (pDnodeActor == pDnodeOthers)
     { // pDnodeCursor is now correctly positioned
       break;
@@ -7200,7 +7207,7 @@ void Communication::ViolenceMobileDied(CString MobileBeenWhacked,
   SetpDnodeCursorFirst();
   while (!EndOfDnodeList())
   { // Loop thru all connections
-    pDnodeOthers = Descriptor::GetDnode();
+    pDnodeOthers = GetDnode();
     if (pDnodeOthers->PlayerStateFighting)
     { // Players who are fighting
       MobileIdCheck = GetPlayerMobMobileId(pDnodeOthers->PlayerName);
@@ -7367,7 +7374,7 @@ bool Communication::ViolenceMobileLootHandOut(CString Loot)
       }
       delete pObject;
       pObject = NULL;
-      Object::AddObjToPlayerInv(pDnodeActor, ObjectId);
+      AddObjToPlayerInv(pDnodeActor, ObjectId);
       GotLoot = true;
     }
   }
@@ -7497,7 +7504,7 @@ void Communication::ViolencePlayerDied(CString MobileDesc1)
   RoomIdBeforeDying = pDnodeActor->pPlayer->RoomId;
   // Move player to a safe room, stop the fight
   pDnodeActor->pPlayer->RoomId = SAFE_ROOM;
-  Room::ShowRoom(pDnodeActor);  
+  ShowRoom(pDnodeActor);
   pDnodeActor->PlayerStateFighting = false;
   // Get mobile id for mob that dead player was fighting
   MobileIdSave = GetPlayerMobMobileId(pDnodeActor->PlayerName);
@@ -7509,7 +7516,7 @@ void Communication::ViolencePlayerDied(CString MobileDesc1)
   SetpDnodeCursorFirst();
   while (!EndOfDnodeList())
   { // Loop thru all connections
-    pDnodeOthers = Descriptor::GetDnode();
+    pDnodeOthers = GetDnode();
     if (pDnodeOthers->PlayerStateFighting)
     { // Players who are fighting
       if (RoomIdBeforeDying == pDnodeOthers->pPlayer->RoomId)

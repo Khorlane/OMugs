@@ -336,6 +336,11 @@ bool AddObjToPlayerEqu(CString WearPosition, CString ObjectId)
   return Object::AddObjToPlayerEqu(WearPosition, ObjectId);
 }
 
+void AddObjToPlayerInv(Dnode* pDnodeTgt1, CString ObjectId)
+{
+  Object::AddObjToPlayerInv(pDnodeTgt1, ObjectId);
+}
+
 void AddObjToRoom(CString RoomId, CString ObjectId)
 {
   Object::AddObjToRoom(RoomId, ObjectId);
@@ -375,6 +380,7 @@ float CalcLevelExperience(int Level)
 {
   return Player::CalcLevelExperience(Level);
 }
+
 int CalcPct(int Dividend, int Divisor)
 {
   return Utility::CalcPct(Dividend, Divisor);
@@ -460,6 +466,11 @@ int GetCount()
   return Dnode::GetCount();
 }
 
+Dnode *GetDnode()
+{
+  return Descriptor::GetDnode();
+}
+
 string GetHomeDir()
 {
   return Utility::GetHomeDir();
@@ -535,6 +546,11 @@ CString GetSqlStmt(CString SqlStmtId)
   return Utility::GetSqlStmt(SqlStmtId);
 }
 
+Dnode *GetTargetDnode(CString TargetName)
+{
+  return Communication::GetTargetDnode(TargetName);
+}
+
 string GetValidMobRoomExits(string RoomId)
 {
   return Room::GetValidMobRoomExits(RoomId);
@@ -564,9 +580,20 @@ bool IsExit(string MudCmdIsExit)
 {
   return Room::IsExit(MudCmdIsExit);
 }
+
 bool IsHelp()
 {
   return Help::IsHelp();
+}
+
+Mobile *IsMobInRoom(CString MobileName)
+{
+  return Mobile::IsMobInRoom(MobileName);
+}
+
+Mobile *IsMobValid(CString MobileId)
+{
+  return Mobile::IsMobValid(MobileId);
 }
 
 bool IsMobileIdInRoom(CString RoomId, CString MobileId)
@@ -658,6 +685,7 @@ void LogIt(CString LogBuf)
 {
   Log::LogIt(ConvertCStringToString(LogBuf));
 }
+
 CString MakeFirstLower(CString String)
 {
   return Utility::MakeFirstLower(String);
@@ -723,9 +751,34 @@ void SetpDnodeCursorNext()
   Descriptor::SetpDnodeCursorNext();
 }
 
+void ShowMobsInRoom(Dnode *pDnode)
+{
+  Mobile::ShowMobsInRoom(pDnode);
+}
+
+void ShowObjsInRoom(Dnode *pDnode)
+{
+  Object::ShowObjsInRoom(pDnode);
+}
+
+void ShowPlayerEqu(Dnode *pDnodeTgt1)
+{
+  Object::ShowPlayerEqu(pDnodeTgt1);
+}
+
 void ShowPlayerInv()
 {
   Object::ShowPlayerInv();
+}
+
+void ShowPlayersInRoom(Dnode *pDnode)
+{
+  Communication::ShowPlayersInRoom(pDnode);
+}
+
+void ShowRoom(Dnode *pDnode)
+{
+  Room::ShowRoom(pDnode);
 }
 
 void SockCheckForNewConnections()

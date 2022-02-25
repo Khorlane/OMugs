@@ -23,6 +23,11 @@
 
 ifstream      RoomFile;
 
+Dnode *GetTargetDnode(CString TargetName); // Communication
+void   ShowMobsInRoom(Dnode *pDnode);      // Mobile
+void   ShowObjsInRoom(Dnode *pDnode);      // Object
+void   ShowPlayersInRoom(Dnode *pDnode);   // Communication
+
 /***********************************************************
 * Room constructor                                         *
 ************************************************************/
@@ -339,10 +344,9 @@ void Room::ShowRoom(Dnode *pDnode)
   ShowRoomDesc(pDnode);
   ShowRoomExits(pDnode);
   CloseFile();
-// TODO - Fix these ShowPlayersInRoom(), ShowObjsInRoom(), ShowMobsInRoom()
-  Communication::ShowPlayersInRoom(pDnode);
-  Object::ShowObjsInRoom(pDnode);
-  Mobile::ShowMobsInRoom(pDnode);
+  ShowPlayersInRoom(pDnode);
+  ShowObjsInRoom(pDnode);
+  ShowMobsInRoom(pDnode);
   pDnode->PlayerOut += "\r\n";
   pDnode->pPlayer->CreatePrompt();
   pDnode->PlayerOut += pDnode->pPlayer->GetOutput();
@@ -376,8 +380,7 @@ void Room::MoveFollowers(Dnode *pDnode, string ExitToRoomId)
     { // No followers or no more followers
      return;
     }
-// TODO - Fix GetTargetDnode()
-    pDnodeGrpMem = Communication::GetTargetDnode(pDnode->pPlayer->pPlayerFollowers[i]->Name);
+    pDnodeGrpMem = GetTargetDnode(pDnode->pPlayer->pPlayerFollowers[i]->Name);
     if (!pDnodeGrpMem)
     { // Follower is not online and/or not in 'playing' state
       continue;
