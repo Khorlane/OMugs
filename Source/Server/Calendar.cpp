@@ -232,6 +232,7 @@ void Calendar::LoadDayNamesArray()
     DayNames.push_back(Stuff);
     getline(DayNamesFile, Stuff);
   }
+  DayNames.push_back(Stuff);
   DayNamesFile.close();
   LogBuf = "DayNames array loaded";
   LogIt(LogBuf);
@@ -258,6 +259,7 @@ void Calendar::LoadDayOfMonthArray()
     DayOfMonth.push_back(Stuff);
     getline(DayOfMonthFile, Stuff);
   }
+  DayOfMonth.push_back(Stuff);
   DayOfMonthFile.close();
   LogBuf = "DayOfMonth array loaded";
   LogIt(LogBuf);
@@ -284,6 +286,7 @@ void Calendar::LoadHourNamesArray()
     HourNames.push_back(Stuff);
     getline(HourNamesFile, Stuff);
   }
+  HourNames.push_back(Stuff);
   HourNamesFile.close();
   LogBuf = "HourNames array loaded";
   LogIt(LogBuf);
@@ -310,6 +313,7 @@ void Calendar::LoadMonthNamesArray()
     MonthNames.push_back(Stuff);
     getline(MonthNamesFile, Stuff);
   }
+  MonthNames.push_back(Stuff);
   MonthNamesFile.close();
   LogBuf = "MonthNames array loaded";
   LogIt(LogBuf);
