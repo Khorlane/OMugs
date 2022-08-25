@@ -339,6 +339,7 @@ void Communication::SockCheckForNewConnections()
   int                   SocketCount;
   static struct timeval TimeOut{};
 
+  DEBUGIT(5);
   TimeOut.tv_sec = 0;
   TimeOut.tv_usec = 1;
   FD_ZERO(&InpSet);
@@ -380,6 +381,7 @@ void Communication::SockClosePort(int Port)
   CString LogBuf;
   int     Result;
 
+  DEBUGIT(1);
   // Close the socket (pg 70)
   Result = ::closesocket(ListenSocket);
   if (Result!= 0)
@@ -407,6 +409,7 @@ void Communication::SockOpenPort(int Port)
   WORD          VersionRequested;
   WSADATA       WsaData;
 
+  DEBUGIT(1);
   FionbioParm       = 1;
   ld.l_onoff        = 0;
   ld.l_linger       = 0;
@@ -419,8 +422,8 @@ void Communication::SockOpenPort(int Port)
     sprintf(Buf, "%s", strerror(errno));
     LogBuf = "WinSock not available!: " + ConvertStringToCString(Buf);
     LogIt(LogBuf);
-    AfxMessageBox("Communication::SockOpenPort - WinSock not available", MB_ICONSTOP);
-    _endthread();
+    PrintIt("Communication::SockOpenPort - WinSock not available");
+    exit(1);
   }
   // Establish a streaming socket (pg 51)
   ListenSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -429,38 +432,38 @@ void Communication::SockOpenPort(int Port)
     sprintf(Buf, "%s", strerror(errno));
     LogBuf = "Communication:SockOpenPort - Error: initializing socket: " + ConvertStringToCString(Buf);
     LogIt(LogBuf);
-    AfxMessageBox("Communication::SockOpenPort - Error: initializing socket", MB_ICONSTOP);
-    _endthread();
+    PrintIt("Communication::SockOpenPort - Error: initializing socket");
+    exit(1);
   }
   // Enable reuse of local socket name (pg 305)
   Result = setsockopt(ListenSocket, SOL_SOCKET, SO_REUSEADDR, (char *)&OptionValue, sizeof(OptionValue));
   if (Result != 0)
   {
     sprintf(Buf, "%s", strerror(errno));
-    LogBuf = "Communication:SockOpenPort - Error: setsockopt: SOL_SOCKET SO_REUSEADDR" + ConvertStringToCString(Buf);
+    LogBuf = "Communication:SockOpenPort - Error: setsockopt: SO_REUSEADDR: " + ConvertStringToCString(Buf);
     LogIt(LogBuf);
-    AfxMessageBox("Communication::SockOpenPort - Error: setsockopt", MB_ICONSTOP);
-    _endthread();
+    PrintIt("Communication::SockOpenPort - Error: setsockopt: SO_REUSEADDR");
+    exit(1);
   }
   // Establish underlying TCP/IP buffer size (pg 305)
   Result = setsockopt(ListenSocket, SOL_SOCKET, SO_SNDBUF, (char *) &OptionValue, sizeof(OptionValue));
   if (Result != 0)
   {
     sprintf(Buf, "%s", strerror(errno));
-    LogBuf = "Communication:SockOpenPort - Error: setsockopt SNDBUF: " + ConvertStringToCString(Buf);
+    LogBuf = "Communication:SockOpenPort - Error: setsockopt: SO_SNDBUF: " + ConvertStringToCString(Buf);
     LogIt(LogBuf);
-    AfxMessageBox("Communication::SockOpenPort - Error: setsockopt SNDBUF", MB_ICONSTOP);
-    _endthread();
+    PrintIt("Communication::SockOpenPort - Error: setsockopt: SO_SNDBUF");
+    exit(1);
   }
   // Disable linger and set timeout to zero (pg 301)
   Result = setsockopt(ListenSocket, SOL_SOCKET, SO_LINGER, (char *) &ld, sizeof(ld));
   if (Result != 0)
   {
     sprintf(Buf, "%s", strerror(errno));
-    LogBuf = "Communication:SockOpenPort - Error: setsockopt SO_LINGER: " + ConvertStringToCString(Buf);
+    LogBuf = "Communication:SockOpenPort - Error: setsockopt: SO_LINGER: " + ConvertStringToCString(Buf);
     LogIt(LogBuf);
-    AfxMessageBox("Communication::SockOpenPort - Error: setsockopt SO_LINGER", MB_ICONSTOP);
-    _endthread();
+    PrintIt("Communication::SockOpenPort - Error: setsockopt: SO_LINGER");
+    exit(1);
   }
   // Initialize sockaddr structure (pg 53)
   memset((char *)&sa, 0, sizeof(sa));
@@ -472,31 +475,31 @@ void Communication::SockOpenPort(int Port)
   if (Result != 0)
   {
     sprintf(Buf, "%s", strerror(errno));
-    LogBuf = "Communication:SockOpenPort - Error: bind " + ConvertStringToCString(Buf);
+    LogBuf = "Communication:SockOpenPort - Error: bind: " + ConvertStringToCString(Buf);
     LogIt(LogBuf);
-    AfxMessageBox("Communication::SockOpenPort - Error: bind", MB_ICONSTOP);
-    _endthread();
+    PrintIt("Communication::SockOpenPort - Error: bind");
+    exit(1);
   }
   // Make socket nonblocking (pg 286)
   Result = ioctlsocket(ListenSocket, FIONBIO, &FionbioParm);
   if (Result != 0)
   {
     sprintf(Buf, "%s", strerror(errno));
-    LogBuf = "Communication:SockOpenPort ioctlsocket: " + ConvertStringToCString(Buf);
+    LogBuf = "Communication:SockOpenPort - Error: ioctlsocket: " + ConvertStringToCString(Buf);
     LogIt(LogBuf);
-    AfxMessageBox("Communication::SockOpenPort - Error: ioctlsocket", MB_ICONSTOP);
-    _endthread();
+    PrintIt("Communication::SockOpenPort - Error: ioctlsocket");
+    exit(1);
   }
   // Listen on port and limit pending connections (pg 60)
   Result = listen(ListenSocket, 20);
   if (Result != 0)
   {
     sprintf(Buf, "%s", strerror(errno));
-    LogBuf = "Communication:SockOpenPort - Error: listen " + ConvertStringToCString(Buf);
+    LogBuf = "Communication:SockOpenPort - Error: listen: " + ConvertStringToCString(Buf);
     LogIt(LogBuf);
     ::closesocket(ListenSocket);
-    AfxMessageBox("Communication::SockOpenPort - Error: listen", MB_ICONSTOP);
-    _endthread();
+    PrintIt("Communication::SockOpenPort - Error: listen");
+    exit(1);
   }
   sprintf(Buf, "%d", Port);
   LogBuf = "Listening on port " + ConvertStringToCString(Buf);
@@ -518,6 +521,7 @@ void Communication::SockRecv()
   CString  LogBuf;
   int      RecvByteCount;
 
+  DEBUGIT(5);
   //***********************
   //* Service connections *
   //***********************
@@ -1489,6 +1493,7 @@ void Communication::DoAdvance()
   CString  TargetNameSave;
   CString  TmpStr;
 
+  DEBUGIT(1);
   PlayerName      = pDnodeActor->PlayerName;
   TargetName      = GetWord(CmdStr, 2);
   PlayerNameSave  = PlayerName;
@@ -1594,6 +1599,7 @@ void Communication::DoAdvance()
 
 void Communication::DoAfk()
 {
+  DEBUGIT(1);
   if (pDnodeActor->PlayerStateAfk)
   { // Player returning from AFK
     pDnodeActor->PlayerStateAfk = false;
@@ -1625,6 +1631,7 @@ void Communication::DoAssist()
   CString  TargetNameSave;
   bool     TargetNotHere;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -1766,6 +1773,7 @@ void Communication::DoBuy()
   CString  RoomId;
   CString  TmpStr;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -1856,6 +1864,7 @@ void Communication::DoChat()
   CString ChatMsg;
   CString PlayerMsg;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -1896,6 +1905,7 @@ void Communication::DoColor()
 {
   CString TmpStr;
 
+  DEBUGIT(1);
   TmpStr = GetWord(CmdStr, 2);
   TmpStr.MakeLower();
   if (TmpStr == "on")
@@ -1945,6 +1955,7 @@ void Communication::DoConsider()
   CString  RoomId;
   CString  Target;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -2087,6 +2098,7 @@ void Communication::DoDelete()
   CString  PlayerFileName;
   CString  PlayerMsg;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -2244,6 +2256,7 @@ void Communication::DoDestroy()
   CString  ObjectName;
   CString  TmpStr;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -2305,6 +2318,7 @@ void Communication::DoDrink()
   CString  RoomType;
   CString  TmpStr;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -2427,6 +2441,7 @@ void Communication::DoDrop()
   CString  ObjectName;
   CString  TmpStr;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -2494,6 +2509,7 @@ void Communication::DoEat()
   CString  ObjectName;
   CString  TmpStr;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -2576,6 +2592,7 @@ void Communication::DoEmote()
   CString EmoteMsg;
   CString TmpStr;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -2620,6 +2637,7 @@ void Communication::DoEmote()
 
 void Communication::DoEquipment()
 {
+  DEBUGIT(1);
   if (IsSleeping())
   { // Player is sleeping, send msg, command is not done
     return;
@@ -2638,6 +2656,7 @@ void Communication::DoExamine()
   CString  ObjectType;
   CString  TmpStr;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -2746,6 +2765,7 @@ void Communication::DoFlee()
   CString     Target;
   CString     TmpStr;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -2871,6 +2891,7 @@ void Communication::DoFollow(Dnode *pDnode, CString CmdStr1)
   bool     TargetInGroup;
   CString  TmpStr;
 
+  DEBUGIT(1);
   CmdStr = CmdStr1;
   i      = 0;
   j      = 0;
@@ -3080,6 +3101,7 @@ void Communication::DoGet()
   CString  ObjectName;
   CString  TmpStr;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -3159,6 +3181,7 @@ void Communication::DoGive()
   bool     TargetNotHere;
   CString  TmpStr;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -3293,6 +3316,7 @@ void Communication::DoGo()
   CString MudCmdIsExit;
   CString TmpStr;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -3349,6 +3373,7 @@ void Communication::DoGoTo()
   string  sRoomId;
   CString csRoomId;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -3399,6 +3424,7 @@ void Communication::DoGoToArrive()
   CString GoToArrive;
   CString TmpStr;
 
+  DEBUGIT(1);
   TmpStr = GetWord(CmdStr, 2);
   TmpStr.MakeLower();
   if (TmpStr == "")
@@ -3475,6 +3501,7 @@ void Communication::DoGoToDepart()
   CString GoToDepart;
   CString TmpStr;
 
+  DEBUGIT(1);
   TmpStr = GetWord(CmdStr, 2);
   TmpStr.MakeLower();
   if (TmpStr == "")
@@ -3557,6 +3584,7 @@ void Communication::DoGroup()
   CString  TargetNameSave;
   CString  TmpStr;
 
+  DEBUGIT(1);
   if (IsSleeping())
   { // Player is sleeping, send msg, command is not done
     return;
@@ -3785,6 +3813,7 @@ void Communication::DoGsay()
   CString  GsayMsg;
   int      i;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -3855,6 +3884,7 @@ void Communication::DoHail()
   CString  RoomId;
   CString  Target;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -3943,6 +3973,7 @@ void Communication::DoHail()
 
 void Communication::DoHelp()
 {
+  DEBUGIT(1);
   if (IsHelp())
   { // Help was found and sent to player
     return;
@@ -3965,6 +3996,7 @@ void Communication::DoHelp()
 
 void Communication::DoInventory()
 {
+  DEBUGIT(1);
   if (IsSleeping())
   { // Player is sleeping, send msg, command is not done
     return;
@@ -3980,6 +4012,7 @@ void Communication::DoInvisible()
 {
   CString TmpStr;
 
+  DEBUGIT(1);
   TmpStr = GetWord(CmdStr, 2);
   TmpStr.MakeLower();
   if (TmpStr == "on")
@@ -4033,6 +4066,7 @@ void Communication::DoKill()
   CString  RoomType;
   CString  Target;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -4194,6 +4228,7 @@ void Communication::DoKill()
 
 void Communication::DoList()
 {
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -4230,6 +4265,7 @@ void Communication::DoLoad()
   CString  ObjectId;
   CString  TmpStr;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -4318,6 +4354,7 @@ void Communication::DoLoad()
 
 void Communication::DoLogon()
 {
+  DEBUGIT(1);
   if (pDnodeActor->PlayerStateWaitNewCharacter)
   { // New character 'y-n' prompt
     pDnodeActor->PlayerStateWaitNewCharacter = false;
@@ -4365,6 +4402,7 @@ void Communication::DoLook(CString CmdStr1)
   CString  TargetName;
   CString  TmpStr;
 
+  DEBUGIT(1);
   CmdStr = CmdStr1;
   if (IsSleeping())
   { // Player is sleeping, send msg, command is not done
@@ -4441,6 +4479,7 @@ void Communication::DoLook(CString CmdStr1)
 
 void Communication::DoMoney()
 {
+  DEBUGIT(1);
   if (IsSleeping())
   { // Player is sleeping, send msg, command is not done
     return;
@@ -4462,6 +4501,7 @@ void Communication::DoMotd()
   CString    Stuff;
   int        Success;
 
+  DEBUGIT(1);
   // Read Motd file
   MotdFileName = MOTD_DIR;
   MotdFileName += "Motd";
@@ -4497,6 +4537,7 @@ void Communication::DoOneWhack()
 {
   CString TmpStr;
 
+  DEBUGIT(1);
   TmpStr = GetWord(CmdStr, 2);
   TmpStr.MakeLower();
   if (TmpStr == "on")
@@ -4541,6 +4582,7 @@ void Communication::DoPassword()
   CString NewPassword1;
   CString NewPassword2;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -4607,6 +4649,7 @@ void Communication::DoPlayed()
   time_t PlayerAgeSec;
   time_t TimePlayedSec;
 
+  DEBUGIT(1);
   pDnodeActor->pPlayer->Save(); // Save() updates TimePlayed
   NowSec        = time(0);
   BornSec       = pDnodeActor->pPlayer->Born;
@@ -4657,7 +4700,8 @@ void Communication::DoQuit()
   CString AllMsg;
   CString LogBuf;
   CString PlayerMsg;
-  
+
+  DEBUGIT(1);
   if (IsSleeping())
   { // Player is sleeping, send msg, command is not done
     return;
@@ -4691,6 +4735,7 @@ void Communication::DoRefresh()
 {
   CString TmpStr;
 
+  DEBUGIT(1);
   if (WordCount(CmdStr) > 2)
   { // Invalid command format
     pDnodeActor->PlayerOut += "You may refresh only one thing at time.";
@@ -4735,6 +4780,7 @@ void Communication::DoRemove()
   CString  RemoveMsg;
   CString  TmpStr;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -4817,6 +4863,7 @@ void Communication::DoRestore(CString CmdStr1)
   CString  TargetName;
   CString  TargetNameSave;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -4886,6 +4933,7 @@ void Communication::DoRoomInfo()
 {
   CString TmpStr;
 
+  DEBUGIT(1);
   TmpStr = GetWord(CmdStr, 2);
   TmpStr.MakeLower();
   if (TmpStr == "on")
@@ -4915,6 +4963,7 @@ void Communication::DoRoomInfo()
 
 void Communication::DoSave()
 {
+  DEBUGIT(1);
   pDnodeActor->pPlayer->Save();
   pDnodeActor->PlayerOut += "Saved!";
   pDnodeActor->PlayerOut += "\r\n";
@@ -4931,6 +4980,7 @@ void Communication::DoSay()
   CString SayMsg;
   CString TmpStr;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -4992,6 +5042,7 @@ void Communication::DoSell()
   CString  SellCountStr;
   CString  TmpStr;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -5132,6 +5183,7 @@ void Communication::DoShow()
   CString    MudCmdChk;
   CString    ValCmdInfo;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -5273,6 +5325,7 @@ void Communication::DoSit()
 {
   CString SitMsg;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -5315,6 +5368,7 @@ void Communication::DoSleep()
 {
   CString SleepMsg;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -5357,6 +5411,7 @@ void Communication::DoStand()
 {
   CString StandMsg;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -5397,6 +5452,7 @@ void Communication::DoStand()
 
 void Communication::DoStatus()
 {
+  DEBUGIT(1);
   pDnodeActor->pPlayer->ShowStatus();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
   pDnodeActor->pPlayer->CreatePrompt();
@@ -5413,6 +5469,7 @@ void Communication::DoStop()
   CString GoGoGoFileName;
   CString StopItFileName;
 
+  DEBUGIT(1);
   StateStopping = true;
   LogBuf  = pDnodeActor->PlayerName;
   LogBuf += " issued the STOP command";
@@ -5437,6 +5494,7 @@ void Communication::DoTell()
   CString  TargetNameSave;
   CString  TellMsg;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -5514,6 +5572,7 @@ void Communication::DoTime()
 {
   CString DisplayCurrentTime;
 
+  DEBUGIT(1);
   // Server time
   time_t now = chrono::system_clock::to_time_t(chrono::system_clock::now());
   string s(30, '\0');
@@ -5540,6 +5599,7 @@ void Communication::DoTitle()
   CString Title;
   CString TmpStr;
 
+  DEBUGIT(1);
   TmpStr = GetWord(CmdStr, 2);
   TmpStr.MakeLower();
   if (TmpStr == "")
@@ -5622,6 +5682,7 @@ void Communication::DoTrain()
   CString UnTrainCost;
   CString WeaponType;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -5939,6 +6000,7 @@ void Communication::DoWake()
 {
   CString WakeMsg;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -5977,6 +6039,7 @@ void Communication::DoWear()
   CString  WearMsg;
   CString  WearPosition;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************
@@ -6080,6 +6143,7 @@ void Communication::DoWhere()
 {
   CString  SearchId;
 
+  DEBUGIT(1);
   if (WordCount(CmdStr) != 2)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Nothing given to search for!";
@@ -6136,6 +6200,7 @@ void Communication::DoWho()
   CString  DisplayName;
   CString  DisplayLevel;
 
+  DEBUGIT(1);
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += "&C";
   pDnodeActor->PlayerOut += "Players online";
@@ -6198,6 +6263,7 @@ void Communication::DoWield()
   bool     WieldFailed;
   CString  WieldMsg;
 
+  DEBUGIT(1);
   //********************
   //* Validate command *
   //********************

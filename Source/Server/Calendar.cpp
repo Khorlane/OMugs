@@ -50,6 +50,7 @@ Calendar::Calendar()
 
 Calendar::~Calendar()
 {
+  DEBUGIT(1);
   SaveTime();
 }
 
@@ -65,6 +66,7 @@ void Calendar::AdvanceTime()
 {
   time_t NowSec;
 
+  DEBUGIT(5);
   time(&NowSec);
   if (NowSec < TimeToAdvanceHour)
   { // Not time to advance the hour
@@ -101,6 +103,7 @@ void Calendar::AdvanceTime()
 
 string Calendar::GetTime()
 {
+  DEBUGIT(1);
   FormattedDateTime = "";
 
   Stuff = DayNames[DayOfWeek-1];
@@ -135,6 +138,7 @@ string Calendar::GetTime()
 
 void Calendar::CloseCalendarFile()
 {
+  DEBUGIT(1);
   CalendarFileInp.close();
 }
 
@@ -144,6 +148,7 @@ void Calendar::CloseCalendarFile()
 
 void Calendar::GetStartTime()
 {
+  DEBUGIT(1);
   getline(CalendarFileInp, Stuff);
   CloseCalendarFile();
   Year      = stoi(StrGetWord(Stuff, 1));
@@ -194,6 +199,7 @@ void Calendar::GetStartTime()
 
 void Calendar::OpenCalendarFile()
 {
+  DEBUGIT(1);
   CalendarFileIsOpen = false;
   CalendarFileName   = CONTROL_DIR;
   CalendarFileName  += "Calendar.txt";
@@ -216,6 +222,7 @@ void Calendar::OpenCalendarFile()
 
 void Calendar::LoadDayNamesArray()
 {
+  DEBUGIT(1);
   DayNamesFileName =  DAY_NAMES_DIR;
   DayNamesFileName += "DayNames.txt";
   DayNamesFile.open(DayNamesFileName);
@@ -243,6 +250,7 @@ void Calendar::LoadDayNamesArray()
 
 void Calendar::LoadDayOfMonthArray()
 {
+  DEBUGIT(1);
   DayOfMonthFileName  =  DAY_NAMES_DIR;
   DayOfMonthFileName += "DayOfMonth.txt";
   DayOfMonthFile.open(DayOfMonthFileName);
@@ -270,6 +278,7 @@ void Calendar::LoadDayOfMonthArray()
 
 void Calendar::LoadHourNamesArray()
 {
+  DEBUGIT(1);
   HourNamesFileName =  HOUR_NAMES_DIR;
   HourNamesFileName += "HourNames.txt";
   HourNamesFile.open(HourNamesFileName);
@@ -297,6 +306,7 @@ void Calendar::LoadHourNamesArray()
 
 void Calendar::LoadMonthNamesArray()
 {
+  DEBUGIT(1);
   MonthNamesFileName =  MONTH_NAMES_DIR;
   MonthNamesFileName += "MonthNames.txt";
   MonthNamesFile.open(MonthNamesFileName);
@@ -324,6 +334,7 @@ void Calendar::LoadMonthNamesArray()
 
 void Calendar::SaveTime()
 {
+  DEBUGIT(1);
   CalendarFileName  = CONTROL_DIR;
   CalendarFileName += "Calendar.txt";
   CalendarFileOut.open(CalendarFileName);

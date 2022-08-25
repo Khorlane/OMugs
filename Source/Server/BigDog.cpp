@@ -37,7 +37,6 @@ void BigDog()
   if (ChgDir(HomeDir))
   { // Change directory failed
     PrintIt("BigDog() - Change directory to HomeDir failed");
-    PrintIt("Hard Exit!");
     exit(1);
   }
   // Set Go Stop, force Go status
@@ -51,7 +50,6 @@ void BigDog()
     if (ReturnCode != 0)
     {
       PrintIt("Rename of 'StopIt' to 'GoGoGo' failed!");
-      PrintIt("Hard Exit!");
       exit(1);
     }
   }
