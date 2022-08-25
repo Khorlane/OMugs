@@ -25,6 +25,7 @@ Calendar::Calendar()
 {
   time_t Timer;
 
+  DEBUGIT(1);
   time(&Timer);
   TimeToAdvanceHour = Timer + REAL_MINUTES_PER_HOUR * 60;
   Year      = 1;
@@ -143,9 +144,7 @@ void Calendar::CloseCalendarFile()
 
 void Calendar::GetStartTime()
 {
-  string x;
-
-  getline (CalendarFileInp, Stuff);
+  getline(CalendarFileInp, Stuff);
   CloseCalendarFile();
   Year      = stoi(StrGetWord(Stuff, 1));
   Month     = stoi(StrGetWord(Stuff, 2));

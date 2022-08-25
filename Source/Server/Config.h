@@ -39,7 +39,9 @@ using namespace std;
 * Macros                                                   *
 ************************************************************/
 
-#define VERSION           "2021.11.23"
+#define VERSION                 "2022.08.25"
+#define DEBUGIT(x)              if (DEBUG_LVL >= x) LogIt((string)__FUNCTION__)
+#define DEBUG_LVL               1      // 0 to turn off, 1 or more to turn on
 
 #define MAC                    300.0f  // Maximum Armor Class
 #define MDRP                    60.0f  // Maximum Damage Reduction Percent
@@ -320,6 +322,7 @@ CString MakeFirstLower(CString String);
 CString MakeFirstUpper(CString String);
 void    OpenLogFile();
 void    Osi(CString ScriptType, CString ScriptId);
+void    PrintIt(string Message);
 CString PronounSubstitute(CString MsgText);
 void    PutMobBackInRoom(CString PlayerName, CString RoomId);
 void    RemoveMobFromRoom(CString RoomId, CString MobileId);

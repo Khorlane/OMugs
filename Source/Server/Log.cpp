@@ -85,6 +85,7 @@ void Log::OpenLogFile()
   string     LogSaveFileName;
   string     LogTime;
  
+  PrintIt("Log::OpenLogFile()");
   LogFileName  = LOG_DIR;
   LogFileName += "SrvrLog.txt";
   if (FileExist(LogFileName))
@@ -101,7 +102,10 @@ void Log::OpenLogFile()
   LogFile.open(LogFileName);
   if(!LogFile.is_open())
   {
-    AfxMessageBox("Log::OpenLogFile - Failed", MB_ICONSTOP);
+    PrintIt("Log::OpenLogFile() - Failed");
+    PrintIt("Hard Exit!");
+    exit(1);
     _endthread();
   }
+  PrintIt("Log File is Open");
 }

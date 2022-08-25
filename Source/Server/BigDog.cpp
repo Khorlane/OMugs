@@ -32,10 +32,13 @@ void BigDog()
   string       StopItFileName;
   int          WhoIsOnlineTick;
 
+  PrintIt("OMugs Starting");
+  PrintIt("BigDog()");
   if (ChgDir(HomeDir))
   { // Change directory failed
-    AfxMessageBox("BigDog - Change directory to HomeDir failed", MB_ICONSTOP);
-    _endthread();
+    PrintIt("BigDog() - Change directory to HomeDir failed");
+    PrintIt("Hard Exit!");
+    exit(1);
   }
   // Set Go Stop, force Go status
   StopItFileName  = CONTROL_DIR;
@@ -47,8 +50,8 @@ void BigDog()
     ReturnCode = Rename(StopItFileName, GoGoGoFileName);
     if (ReturnCode != 0)
     {
-      printf("Rename of 'StopIt' to 'GoGoGo' failed!");
-      printf("Hard Exit!");
+      PrintIt("Rename of 'StopIt' to 'GoGoGo' failed!");
+      PrintIt("Hard Exit!");
       exit(1);
     }
   }
@@ -214,6 +217,13 @@ int GetTimeSeconds()
   const auto seconds = std::chrono::duration_cast<std::chrono::seconds>(epoch); // Cast the duration into seconds
   int Seconds = (int)seconds.count();                                           // Get the number of seconds
   return Seconds;
+}
+
+void PrintIt(string Message)
+{
+  Message = "\r\n" + Message + "\r\n";
+  TRACE(Message.c_str());
+  printf(Message.c_str());
 }
 
 //
