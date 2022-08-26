@@ -323,7 +323,7 @@ CString MakeFirstUpper(CString String);
 void    OpenLogFile();
 void    Osi(CString ScriptType, CString ScriptId);
 void    PrintIt(string Message);
-CString PronounSubstitute(CString MsgText);
+string  PronounSubstitute(string MsgText);
 void    PutMobBackInRoom(CString PlayerName, CString RoomId);
 void    RemoveMobFromRoom(CString RoomId, CString MobileId);
 void    RemoveObjFromPlayerEqu(CString ObjectId);

@@ -79,8 +79,8 @@ bool Descriptor::DeleteNode()
   Result = ::closesocket(pDnodeCursor->DnodeFd);
   if (Result != 0)
   {
-    AfxMessageBox("Descriptor::DeleteNode - Error: closesocket", MB_ICONSTOP);
-    _endthread();
+    PrintIt("Descriptor::DeleteNode - Error: closesocket");
+    exit(1);
   }
   pDnodeActor = NULL;
   pDnode = pDnodeCursor->pDnodePrev;

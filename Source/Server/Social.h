@@ -39,12 +39,12 @@ class Social
   private:
     void    static  CloseFile();
     bool    static  OpenFile();
-    bool    static  PositionNotOk(Dnode *pDnode, CString MinPos);
-    int     static  PosNbr(CString Position);
-    CString static  ReadLine();
-    void    static  SendToPlayer(CString MsgText);
-    void    static  SendToTarget(Dnode *pDnodeTgt, CString MsgText);
-    void    static  Socialize(CString MinPos, CString MsgText);
+    bool    static  PositionNotOk(Dnode *pDnode, string MinPos);
+    int     static  PosNbr(string Position);
+    string  static  ReadLine();
+    void    static  SendToPlayer(string MsgText);
+    void    static  SendToTarget(Dnode *pDnodeTgt, string MsgText);
+    void    static  Socialize(string MinPos, string MsgText);
 };
 
 #endif

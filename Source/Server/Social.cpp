@@ -21,7 +21,7 @@
 * Globals                                                  *
 ************************************************************/
 
-CStdioFile SocialFile;
+ifstream   SocialFile;
 
 Dnode *GetTargetDnode(CString TargetName); // Communication
 
@@ -52,9 +52,9 @@ Social::~Social()
 bool Social::IsSocial()
 {
   bool     Found;
-  CString  MinPos;
-  CString  MsgText;
-  CString  TmpStr;
+  string   MinPos;
+  string   MsgText;
+  string   TmpStr;
 
   Found = false;
   if (!OpenFile())
@@ -65,16 +65,15 @@ bool Social::IsSocial()
   while (MsgText != "End of Socials")
   { // Loop until social is found or end of file
     MsgText = ReadLine();
-    MsgText.TrimLeft();
-    MsgText.TrimLeft();
-    if (MsgText.Left(9) == "Social : ")
+    MsgText = StrTrimLeft(MsgText);
+    if (StrLeft(MsgText, 9) == "Social : ")
     { // Ok, a social has been found
-      TmpStr = MsgText.Right(MsgText.GetLength() - 9);
-      if (TmpStr == MudCmd)
+      TmpStr = StrRight(MsgText, MsgText.length() - 9);
+      if (TmpStr == ConvertCStringToString(MudCmd))
       { // THE social has been found
         Found = true;
         MsgText = ReadLine();
-        MinPos = MsgText.Right(MsgText.GetLength() - 9);
+        MinPos = StrRight(MsgText, MsgText.length() - 9);
         if (PositionNotOk(pDnodeActor, MinPos))
         { // Player is not in the minimum position
           pDnodeActor->PlayerOut += "You are not in a position to that right now.\r\n";
@@ -109,7 +108,7 @@ bool Social::IsSocial()
 
 void Social::CloseFile()
 {
-  SocialFile.Close();
+  SocialFile.close();
 }
 
 /***********************************************************
@@ -118,15 +117,12 @@ void Social::CloseFile()
 
 bool Social::OpenFile()
 {
-  CString SocialFileName;
-  int     Success;
+  string  SocialFileName;
   
   SocialFileName =  SOCIAL_DIR;
   SocialFileName += "Social.txt";
-  Success = SocialFile.Open(SocialFileName,
-                 CFile::modeRead |
-                 CFile::typeText);
-  if(Success)
+  SocialFile.open(SocialFileName);
+  if(SocialFile.is_open())
   {
     return true;
   }
@@ -140,13 +136,13 @@ bool Social::OpenFile()
 * Is player in a valid position for the social             *
 ************************************************************/
 
-bool Social::PositionNotOk(Dnode *pDnode, CString MinPos)
+bool Social::PositionNotOk(Dnode *pDnode, string MinPos)
 {
   int MinPosNbr;
   int PlayerPosNbr;
 
   MinPosNbr = PosNbr(MinPos);
-  PlayerPosNbr = PosNbr(pDnodeActor->pPlayer->Position);
+  PlayerPosNbr = PosNbr(ConvertCStringToString(pDnodeActor->pPlayer->Position));
   if (PlayerPosNbr < MinPosNbr)
   {
     return true;
@@ -161,7 +157,7 @@ bool Social::PositionNotOk(Dnode *pDnode, CString MinPos)
 * Convert position to a number                             *
 ************************************************************/
 
-int Social::PosNbr(CString Position)
+int Social::PosNbr(string Position)
 {
   if (Position == "sleep")
   {
@@ -182,11 +178,11 @@ int Social::PosNbr(CString Position)
 * Read a line from social file                             *
 ************************************************************/
 
-CString Social::ReadLine()
+string Social::ReadLine()
 {
-  CString MsgText;
+  string MsgText;
 
-  SocialFile.ReadString(MsgText);
+  getline(SocialFile, MsgText);
   return MsgText;
 }
 
@@ -194,9 +190,9 @@ CString Social::ReadLine()
 * Send substituted message to player                       *
 ************************************************************/
 
-void Social::SendToPlayer(CString MsgText)
+void Social::SendToPlayer(string MsgText)
 {
-  pDnodeActor->PlayerOut += MsgText;
+  pDnodeActor->PlayerOut += ConvertStringToCString(MsgText);
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -206,11 +202,11 @@ void Social::SendToPlayer(CString MsgText)
 * Send substituted message to target                       *
 ************************************************************/
 
-void Social::SendToTarget(Dnode *pDnodeTgt1, CString MsgText)
+void Social::SendToTarget(Dnode *pDnodeTgt1, string MsgText)
 {
   pDnodeTgt = pDnodeTgt1;
   pDnodeTgt->PlayerOut += "\r\n";
-  pDnodeTgt->PlayerOut += MsgText;
+  pDnodeTgt->PlayerOut += ConvertStringToCString(MsgText);
   pDnodeTgt->PlayerOut += "\r\n";
   pDnodeTgt->pPlayer->CreatePrompt();
   pDnodeTgt->PlayerOut += pDnodeTgt->pPlayer->GetOutput();
@@ -220,25 +216,25 @@ void Social::SendToTarget(Dnode *pDnodeTgt1, CString MsgText)
 * Social command                                           *
 ************************************************************/
 
-void Social::Socialize(CString MinPos, CString MsgText)
+void Social::Socialize(string MinPos, string MsgText)
 {
   int      i;
   int      LineCount;
-  CString  PlayerName;
-  CString  TargetName;
-  CString  TargetNameSave;
+  string   PlayerName;
+  string   TargetName;
+  string   TargetNameSave;
   bool     TargetNotHere;
 
   pDnodeSrc = pDnodeActor;
   pDnodeTgt = NULL;
   TargetNotHere = false;
   MsgText = ReadLine();
-  LineCount = atoi(MsgText.Right(MsgText.GetLength() - 9));
+  LineCount = stoi(StrRight(MsgText, MsgText.length() - 9));
   PlayerName = pDnodeActor->PlayerName;
-  PlayerName.MakeLower();
+  PlayerName = StrMakeLower(PlayerName);
   TargetName = GetWord(CmdStr, 2);
   TargetNameSave = TargetName;
-  TargetName.MakeLower();
+  TargetName = StrMakeLower(TargetName);
   if (LineCount == 2)
   { // The social does not accept a target
     if (TargetName != "")
@@ -258,7 +254,7 @@ void Social::Socialize(CString MinPos, CString MsgText)
     SendToPlayer(MsgText);
     MsgText = ReadLine();
     MsgText = PronounSubstitute(MsgText);
-    SendToRoom(pDnodeActor->pPlayer->RoomId, MsgText);
+    SendToRoom(pDnodeActor->pPlayer->RoomId, ConvertStringToCString(MsgText));
     return;
   }
   if (PlayerName == TargetName)
@@ -272,7 +268,7 @@ void Social::Socialize(CString MinPos, CString MsgText)
     return;
   }
   // Do some checks to determine if target is valid
-  pDnodeTgt = GetTargetDnode(TargetName);
+  pDnodeTgt = GetTargetDnode(ConvertStringToCString(TargetName));
   if (!pDnodeTgt)
   { // Target is not online and/or not in 'playing' state
     TargetNotHere = true;
@@ -324,6 +320,6 @@ void Social::Socialize(CString MinPos, CString MsgText)
     MsgText = ReadLine();
     // Message to the others
     MsgText = PronounSubstitute(MsgText);
-    SendToRoom(pDnodeActor->pPlayer->RoomId, MsgText);
+    SendToRoom(pDnodeActor->pPlayer->RoomId, ConvertStringToCString(MsgText));
   }
 }

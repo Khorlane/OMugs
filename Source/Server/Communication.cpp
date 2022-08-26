@@ -840,7 +840,7 @@ CString Communication::CommandCheck(CString MudCmdChk)
   CString WhoCanDo;
 
   CommandCheckResult = "Not Found";
-  for (auto ValidCmd : ValidCmds)
+  for (auto& ValidCmd : ValidCmds)
   { // For each string in the ValidCmds vector
     ValCmdInfo = ConvertStringToCString(ValidCmd);
     ValCmd     = GetWord(ValCmdInfo, 1);
@@ -2239,7 +2239,7 @@ void Communication::DoDelete()
   AllMsg += "\r\n";
   pDnodeSrc = pDnodeActor;
   pDnodeTgt = NULL;
-  AllMsg  = PronounSubstitute(AllMsg);
+  AllMsg    = ConvertStringToCString(PronounSubstitute(ConvertCStringToString(AllMsg)));
   pDnodeSrc = NULL;
   pDnodeTgt = NULL;
   SendToAll(PlayerMsg, AllMsg);
@@ -2803,7 +2803,7 @@ void Communication::DoFlee()
   FleeMsg += pDnodeActor->PlayerName;
   FleeMsg += " has fled for $pHisHers life!!";
   FleeMsg += "&N";
-  FleeMsg = PronounSubstitute(FleeMsg);
+  FleeMsg = ConvertStringToCString(PronounSubstitute(ConvertCStringToString(FleeMsg)));
   pDnodeSrc = pDnodeActor;
   pDnodeTgt = pDnodeActor;
   SendToRoom(RoomIdBeforeFleeing, FleeMsg);
@@ -5222,7 +5222,7 @@ void Communication::DoShow()
     pDnodeActor->PlayerOut += "\r\n";
     pDnodeActor->PlayerOut += "--------";
     pDnodeActor->PlayerOut += "\r\n";
-    for (auto ValidCmd : ValidCmds)
+    for (auto& ValidCmd : ValidCmds)
     { // For each string in the ValidCmds vector
       ValCmdInfo = ConvertStringToCString(ValidCmd);
       MudCmdChk  = GetWord(ValCmdInfo, 1);

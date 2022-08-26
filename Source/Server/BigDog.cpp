@@ -714,7 +714,7 @@ void Osi(CString ScriptType, CString ScriptId)
   World::Osi(ScriptType, ScriptId);
 }
 
-CString PronounSubstitute(CString MsgText)
+string PronounSubstitute(string MsgText)
 {
   return Utility::PronounSubstitute(MsgText);
 }

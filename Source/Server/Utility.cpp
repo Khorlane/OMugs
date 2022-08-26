@@ -470,12 +470,12 @@ CString Utility::MakeFirstUpper(CString String)
 * Substitute $thingies to more meaningful pronouns         *
 ************************************************************/
 
-CString Utility::PronounSubstitute(CString MsgText)
+string Utility::PronounSubstitute(string MsgText)
 {
-  CString PronounHeShe;
-  CString PronounHimHer;
-  CString PronounHisHers;
-  CString PronounHimselfHerself;
+  string PronounHeShe;
+  string PronounHimHer;
+  string PronounHisHers;
+  string PronounHimselfHerself;
 
   if (pDnodeSrc->pPlayer->Sex == "M")
   { // Set male player pronouns
@@ -492,11 +492,11 @@ CString Utility::PronounSubstitute(CString MsgText)
     PronounHimselfHerself = "herself";
   }
   // Make the player substitutions
-  MsgText.Replace("$P",               pDnodeSrc->PlayerName);
-  MsgText.Replace("$pHeShe",          PronounHeShe);
-  MsgText.Replace("$pHimHer",         PronounHimHer);
-  MsgText.Replace("$pHisHers",        PronounHisHers);
-  MsgText.Replace("$pHimselfHerself", PronounHimselfHerself);
+  StrReplace(MsgText, "$P",               ConvertCStringToString(pDnodeSrc->PlayerName));
+  StrReplace(MsgText, "$pHeShe",          PronounHeShe);
+  StrReplace(MsgText, "$pHimHer",         PronounHimHer);
+  StrReplace(MsgText, "$pHisHers",        PronounHisHers);
+  StrReplace(MsgText, "$pHimselfHerself", PronounHimselfHerself);
   if (pDnodeTgt)
   { // There is a valid target
     if (pDnodeTgt->pPlayer->Sex == "M")
@@ -514,11 +514,11 @@ CString Utility::PronounSubstitute(CString MsgText)
       PronounHimselfHerself = "herself";
     }
     // Make the target substitutions
-    MsgText.Replace("$T",               pDnodeTgt->PlayerName);
-    MsgText.Replace("$tHeShe",          PronounHeShe);
-    MsgText.Replace("$tHimHer",         PronounHimHer);
-    MsgText.Replace("$tHisHers",        PronounHisHers);
-    MsgText.Replace("$tHimselfHerself", PronounHimselfHerself);
+    StrReplace(MsgText, "$T",               ConvertCStringToString(pDnodeTgt->PlayerName));
+    StrReplace(MsgText, "$tHeShe",          PronounHeShe);
+    StrReplace(MsgText, "$tHimHer",         PronounHimHer);
+    StrReplace(MsgText, "$tHisHers",        PronounHisHers);
+    StrReplace(MsgText, "$tHimselfHerself", PronounHimselfHerself);
   }
   return MsgText;
 }
