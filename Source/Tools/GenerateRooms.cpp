@@ -287,7 +287,7 @@ void GenerateRooms::Parse1()
   }
   TmpStr = "RoomType:";
   Stuff.Delete(0,TmpStr.GetLength()+1);
-  Stuff.TrimLeft();
+  Stuff = StrTrimLeft(Stuff);
   n = Stuff.Find('\r');
   Stuff.Delete(n,Stuff.GetLength()-n);
   oRoomType = Stuff;
@@ -303,7 +303,7 @@ void GenerateRooms::Parse1()
   }
   TmpStr = "Terrain:";
   oTerrain = Stuff.Right(Stuff.GetLength()-n-TmpStr.GetLength());
-  oTerrain.TrimLeft();
+  oTerrain = StrTrimLeft(oTerrain);
   oTerrain.TrimRight();
   //************
   //* RoomDesc *

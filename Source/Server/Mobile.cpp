@@ -691,7 +691,7 @@ CString Mobile::GetMobDesc1(CString MobileId)
     MobileFile.ReadString(Stuff);
   }
   Desc1 = Stuff.Right(Stuff.GetLength()-6);
-  Desc1.TrimLeft();
+  Desc1 = StrTrimLeft(Desc1);
   MobileFile.Close();
   return Desc1;
 }
@@ -1353,7 +1353,7 @@ void Mobile::GetNextMobNbr()
   NextMobNbrFile.ReadString(Stuff);
   NextMobNbrFile.Close();
   // Increment next mobile number
-  Stuff.TrimLeft();
+  Stuff = StrTrimLeft(Stuff);
   Stuff.TrimRight();
   NextMobNbr        = Stuff;
   NextMobNbrInteger = atoi(Stuff);
@@ -1512,25 +1512,25 @@ void Mobile::ParseStuff()
     if (Stuff.Left(9) == "MobileId:")
     {
       MobileId = Stuff.Right(Stuff.GetLength()-9);
-      MobileId.TrimLeft();
+      MobileId = StrTrimLeft(MobileId);
     }
     else
     if (Stuff.Left(6) == "Names:")
     {
       Names = Stuff.Right(Stuff.GetLength()-6);
-      Names.TrimLeft();
+      Names = StrTrimLeft(Names);
     }
     else
     if (Stuff.Left(6) == "Desc1:")
     {
       Desc1 = Stuff.Right(Stuff.GetLength()-6);
-      Desc1.TrimLeft();
+      Desc1 = StrTrimLeft(Desc1);
     }
     else
     if (Stuff.Left(6) == "Desc2:")
     {
       Desc2 = Stuff.Right(Stuff.GetLength()-6);
-      Desc2.TrimLeft();
+      Desc2 = StrTrimLeft(Desc2);
     }
     else
     if (Stuff.Left(6) == "Desc3:")
@@ -1541,13 +1541,13 @@ void Mobile::ParseStuff()
     if (Stuff.Left(7) == "Action:")
     {
       Action = Stuff.Right(Stuff.GetLength()-7);
-      Action.TrimLeft();
+      Action = StrTrimLeft(Action);
     }
     else
     if (Stuff.Left(8) == "Faction:")
     {
       Faction = Stuff.Right(Stuff.GetLength()-8);
-      Faction.TrimLeft();
+      Faction = StrTrimLeft(Faction);
     }
     else
     if (Stuff.Left(6) == "Level:")
@@ -1570,7 +1570,7 @@ void Mobile::ParseStuff()
     if (Stuff.Left(7) == "Attack:")
     {
       Attack = Stuff.Right(Stuff.GetLength()-7);
-      Attack.TrimLeft();
+      Attack = StrTrimLeft(Attack);
       Attack.MakeLower();
     }
     else
@@ -1589,13 +1589,13 @@ void Mobile::ParseStuff()
     if (Stuff.Left(5) == "Loot:")
     {
       Loot = Stuff.Right(Stuff.GetLength()-5);
-      Loot.TrimLeft();
+      Loot = StrTrimLeft(Loot);
     }
     else
     if (Stuff.Left(5) == "Talk:")
     {
       Talk = Stuff.Right(Stuff.GetLength()-5);
-      Talk.TrimLeft();
+      Talk = StrTrimLeft(Talk);
     }
     ReadLine();
   }
@@ -1608,6 +1608,6 @@ void Mobile::ParseStuff()
 void Mobile::ReadLine()
 {
   MobileFile.ReadString(Stuff);
-  Stuff.TrimLeft();
+  Stuff = StrTrimLeft(Stuff);
   Stuff.TrimRight();
 }

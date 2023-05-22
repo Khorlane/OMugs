@@ -135,7 +135,7 @@ int Violence::GetMobileArmor(CString MobileId)
   MobStatsArmorFile.ReadString(Stuff);
   MobStatsArmorFile.Close();
   // Return mobile's Armor
-  Stuff.TrimLeft();
+  Stuff = StrTrimLeft(Stuff);
   Stuff.TrimRight();
   MobileArmor = atoi(Stuff);
   return MobileArmor;
@@ -168,7 +168,7 @@ CString Violence::GetMobileAttack(CString MobileId)
   MobStatsAttackFile.ReadString(Stuff);
   MobStatsAttackFile.Close();
   // Return mobile's Attack
-  Stuff.TrimLeft();
+  Stuff = StrTrimLeft(Stuff);
   Stuff.TrimRight();
   MobileAttack = Stuff;
   return MobileAttack;
@@ -201,7 +201,7 @@ int Violence::GetMobileDamage(CString MobileId)
   MobStatsDamageFile.ReadString(Stuff);
   MobStatsDamageFile.Close();
   // Return mobile's Damage
-  Stuff.TrimLeft();
+  Stuff = StrTrimLeft(Stuff);
   Stuff.TrimRight();
   MobileDamage = atoi(Stuff);
   return MobileDamage;
@@ -234,7 +234,7 @@ CString Violence::GetMobileDesc1(CString MobileId)
   MobStatsDesc1File.ReadString(Stuff);
   MobStatsDesc1File.Close();
   // Return mobile's Desc1
-  Stuff.TrimLeft();
+  Stuff = StrTrimLeft(Stuff);
   Stuff.TrimRight();
   MobileDesc1 = Stuff;
   return MobileDesc1;
@@ -266,7 +266,7 @@ CString Violence::GetMobileExpPointsLevel(CString MobileId)
   MobStatsExpPointsFile.ReadString(Stuff);
   MobStatsExpPointsFile.Close();
   // Return mobile's ExpPoints
-  Stuff.TrimLeft();
+  Stuff = StrTrimLeft(Stuff);
   Stuff.TrimRight();
   return Stuff;
 }
@@ -328,7 +328,7 @@ CString Violence::GetMobileLoot(CString MobileId)
   MobStatsLootFile.ReadString(Stuff);
   MobStatsLootFile.Close();
   // Return mobile's Loot
-  Stuff.TrimLeft();
+  Stuff = StrTrimLeft(Stuff);
   Stuff.TrimRight();
   MobileLoot = Stuff;
   return MobileLoot;
@@ -361,7 +361,7 @@ CString Violence::GetMobileRoom(CString MobileId)
   MobStatsRoomFile.ReadString(Stuff);
   MobStatsRoomFile.Close();
   // Return mobile's Room
-  Stuff.TrimLeft();
+  Stuff = StrTrimLeft(Stuff);
   Stuff.TrimRight();
   MobileRoom = Stuff;
   return MobileRoom;
@@ -395,7 +395,7 @@ CString Violence::GetMobPlayerMobileId(CString PlayerName, int i)
     MobPlayerFile.ReadString(MobileId);
   }
   MobPlayerFile.Close();
-  MobileId.TrimLeft();
+  MobileId = StrTrimLeft(MobileId);
   MobileId.TrimRight();
   if (MobileId == "")
   {
@@ -428,7 +428,7 @@ CString Violence::GetPlayerMobMobileId(CString PlayerName)
   }
   PlayerMobFile.ReadString(MobileId);
   PlayerMobFile.Close();
-  MobileId.TrimLeft();
+  MobileId = StrTrimLeft(MobileId);
   MobileId.TrimRight();
   return MobileId;
 }

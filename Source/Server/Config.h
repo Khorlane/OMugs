@@ -348,6 +348,7 @@ string  StrLeft(string Str1, int Len);
 string  StrMakeLower(string Str1);
 void    StrReplace(string& str, const string& from, const string& to);
 string  StrRight(string Str1, int Len);
+CString StrTrimLeft(CString Str1);
 string  StrTrimLeft(string Str1);
 string  StrTrimRight(string Str1);
 CString TranslateWord(CString Word);

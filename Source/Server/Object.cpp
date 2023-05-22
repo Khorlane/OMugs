@@ -1521,25 +1521,25 @@ void Object::ParseStuff()
     if (Stuff.Left(9) == "ObjectId:")
     {
       ObjectId = Stuff.Right(Stuff.GetLength()-9);
-      ObjectId.TrimLeft();
+      ObjectId = StrTrimLeft(ObjectId);
     }
     else
     if (Stuff.Left(6) == "Names:")
     {
       Names = Stuff.Right(Stuff.GetLength()-6);
-      Names.TrimLeft();
+      Names = StrTrimLeft(Names);
     }
     else
     if (Stuff.Left(6) == "Desc1:")
     {
       Desc1 = Stuff.Right(Stuff.GetLength()-6);
-      Desc1.TrimLeft();
+      Desc1 = StrTrimLeft(Desc1);
     }
     else
     if (Stuff.Left(6) == "Desc2:")
     {
       Desc2 = Stuff.Right(Stuff.GetLength()-6);
-      Desc2.TrimLeft();
+      Desc2 = StrTrimLeft(Desc2);
     }
     else
     if (Stuff.Left(6) == "Desc3:")
@@ -1560,7 +1560,7 @@ void Object::ParseStuff()
     if (Stuff.Left(5) == "Type:")
     {
       Type = Stuff.Right(Stuff.GetLength()-5);
-      Type.TrimLeft();
+      Type = StrTrimLeft(Type);
     }
     else
     if (Stuff.Left(11) == "ArmorValue:")
@@ -1571,7 +1571,7 @@ void Object::ParseStuff()
     if (Stuff.Left(10) == "ArmorWear:")
     {
       ArmorWear = Stuff.Right(Stuff.GetLength()-10);
-      ArmorWear.TrimLeft();
+      ArmorWear = StrTrimLeft(ArmorWear);
       WearPosition = ArmorWear;
       WearPosition.MakeLower();
     }
@@ -1579,7 +1579,7 @@ void Object::ParseStuff()
     if (Stuff.Left(11) == "WeaponType:")
     {
       WeaponType = Stuff.Right(Stuff.GetLength()-11);
-      WeaponType.TrimLeft();
+      WeaponType = StrTrimLeft(WeaponType);
       ArmorWear = "wielded";
       WearPosition = "wielded";
     }
@@ -1609,6 +1609,6 @@ void Object::ParseStuff()
 void Object::ReadLine()
 {
   ObjectFile.ReadString(Stuff);
-  Stuff.TrimLeft();
+  Stuff = StrTrimLeft(Stuff);
   Stuff.TrimRight();
 }

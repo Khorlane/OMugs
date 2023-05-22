@@ -79,7 +79,7 @@ void Shop::IsShopObj(CString RoomId, CString ObjectName)
   ShopFile.ReadString(Stuff);
   while (Stuff != "End of Items")
   { // Read 'item' lines in ShopFile
-    Stuff.TrimLeft();
+    Stuff = StrTrimLeft(Stuff);
     Stuff.TrimRight();
     Stuff.MakeLower();
     if (GetWord(Stuff, 1) == "item:")
@@ -123,7 +123,7 @@ void Shop::IsShopObj(CString RoomId, CString ObjectName)
   ShopFile.ReadString(Stuff);
   while (Stuff != "End of Items")
   { // Read 'item' lines in ShopFile
-    Stuff.TrimLeft();
+    Stuff = StrTrimLeft(Stuff);
     Stuff.TrimRight();
     Stuff.MakeLower();
     if (GetWord(Stuff, 1) == "item:")
@@ -223,7 +223,7 @@ void Shop::ListObjects()
   ShopFile.ReadString(Stuff);
   while (Stuff != "End of Items")
   { // Read 'item' lines in ShopFile
-    Stuff.TrimLeft();
+    Stuff = StrTrimLeft(Stuff);
     Stuff.TrimRight();
     Stuff.MakeLower();
     if (GetWord(Stuff, 1) == "item:")

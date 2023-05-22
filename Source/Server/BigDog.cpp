@@ -156,7 +156,7 @@ void BigDog()
 
 void AppTestCode()
 {
-  // Put test code here. It will be executed before dialogs are presented.
+  // Put test code here. It will be executed first, even before dialogs are presented.
 }
 
 //
@@ -228,22 +228,26 @@ void PrintIt(string Message)
 // String Functions
 //
 
+// Find a string in a string (temporary)
 int StrFindOneOf(CString HayStack, string Needle)
 {
   string HayStack1 = ConvertCStringToString(HayStack);
   return HayStack1.find_first_of(Needle);
 }
 
+// Find a string in a string
 int StrFindOneOf(string HayStack, string Needle)
 {
   return HayStack.find_first_of(Needle);
 }
 
+// Get the Word indicated by WordNbr (temporary)
 string StrGetWord(CString Str1, int WordNbr)
 {
   return StrGetWord(ConvertCStringToString(Str1), WordNbr);
 }
 
+// Get the Word indicated by WordNbr
 string StrGetWord(string Str1, int WordNbr)
 {
   int    i;
@@ -259,6 +263,7 @@ string StrGetWord(string Str1, int WordNbr)
   return "";
 }
 
+// Get the rest of the Words in a string starting with the Word indicated by WordNbr
 string StrGetWords(string Str1, int WordNbr)
 {
   int    i;
@@ -280,11 +285,13 @@ string StrGetWords(string Str1, int WordNbr)
   return "";
 }
 
+// Get the left portion of a string
 string StrLeft(string Str1, int Len)
 {
   return Str1.substr(0, Len);
 }
 
+// Lower case the whole string
 string StrMakeLower(string Str1)
 {
   transform(Str1.begin(), Str1.end(), Str1.begin(),
@@ -292,6 +299,7 @@ string StrMakeLower(string Str1)
   return Str1;
 }
 
+// Replace a string in a string
 void StrReplace(string& str, const string& from, const string& to)
 {
   if (from.empty())
@@ -303,6 +311,7 @@ void StrReplace(string& str, const string& from, const string& to)
   }
 }
 
+// Get the right side of a string
 string StrRight(string Str1, int Len)
 {
   if (Str1 == "")
@@ -312,6 +321,16 @@ string StrRight(string Str1, int Len)
   return Str1.substr(Str1.length() - Len, Len);
 }
 
+// Remove leading whitespace (temporary)
+CString StrTrimLeft(CString Str1)
+{
+  string x;
+  x = ConvertCStringToString(Str1);
+  x = StrTrimLeft(x);
+  return ConvertStringToCString(x);
+}
+
+// Remove leading whitespace
 string StrTrimLeft(string Str1)
 {
   if (Str1 == "")
@@ -323,6 +342,7 @@ string StrTrimLeft(string Str1)
   return Str1.substr(First, Str1.length());
 }
 
+// Remove trailing whitespace
 string StrTrimRight(string Str1)
 {
   const auto Last = Str1.find_last_not_of(" \r\n");

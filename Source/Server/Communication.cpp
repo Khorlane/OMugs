@@ -3755,7 +3755,7 @@ void Communication::DoGroup()
     pDnodeActor->PlayerOut += "Your group is full, maximum of ";
     sprintf(Buf, "%d", GRP_LIMIT);
     TmpStr = ConvertStringToCString(Buf);
-    TmpStr.TrimLeft();
+    TmpStr = StrTrimLeft(TmpStr);
     TmpStr.TrimRight();
     pDnodeActor->PlayerOut+= TmpStr;
     pDnodeActor->PlayerOut += " members allowed.\r\n";

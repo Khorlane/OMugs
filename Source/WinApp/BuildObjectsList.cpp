@@ -235,7 +235,7 @@ bool BuildObjectsList::PopulateListOk()
     if (Stuff.Left(5) == "type:")
     { // 'type:' is found
       TmpStr = Stuff.Right(Stuff.GetLength()-5);
-      TmpStr.TrimLeft();
+      TmpStr = StrTrimLeft(TmpStr);
       if (TmpStr == Type)
       { // Type selected matches type for this object
         //*********
@@ -251,7 +251,7 @@ bool BuildObjectsList::PopulateListOk()
           ReadLine(); // ArmorValue
           ReadLine(); // ArmorWear
           TmpStr = Stuff.Right(Stuff.GetLength()-10);
-          TmpStr.TrimLeft();
+          TmpStr = StrTrimLeft(TmpStr);
           if (TmpStr == ArmorWear)
           { // ArmorWear matches
             ObjectFile.Close();
@@ -275,7 +275,7 @@ bool BuildObjectsList::PopulateListOk()
           }
           ReadLine(); // WeaponType
           TmpStr = Stuff.Right(Stuff.GetLength()-11);
-          TmpStr.TrimLeft();
+          TmpStr = StrTrimLeft(TmpStr);
           if (TmpStr == WeaponType)
           { // WeaponType matches
             ObjectFile.Close();
@@ -305,7 +305,7 @@ bool BuildObjectsList::PopulateListOk()
 void BuildObjectsList::ReadLine()
 {
   ObjectFile.ReadString(Stuff);
-  Stuff.TrimLeft();
+  Stuff = StrTrimLeft(Stuff);
   Stuff.TrimRight();
   Stuff.MakeLower();
 }

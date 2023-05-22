@@ -328,21 +328,21 @@ void BuildMobiles::ParseStuff()
     if (Stuff.Left(9) == "MobileId:")
     {
       MobileId = Stuff.Right(Stuff.GetLength()-9);
-      MobileId.TrimLeft();
+      MobileId = StrTrimLeft(MobileId);
     }
     else
     // Names
     if (Stuff.Left(6) == "Names:")
     {
       Names = Stuff.Right(Stuff.GetLength()-6);
-      Names.TrimLeft();
+      Names = StrTrimLeft(Names);
     }
     else
     // Sex
     if (Stuff.Left(4) == "Sex:")
     {
       Sex = Stuff.Right(Stuff.GetLength()-4);
-      Sex.TrimLeft();
+      Sex = StrTrimLeft(Sex);
       if (Sex == "M")
       {
         SexRadio = 0;
@@ -362,14 +362,14 @@ void BuildMobiles::ParseStuff()
     if (Stuff.Left(6) == "Desc1:")
     {
       Desc1 = Stuff.Right(Stuff.GetLength()-6);
-      Desc1.TrimLeft();
+      Desc1 = StrTrimLeft(Desc1);
     }
     else
     // Desc2
     if (Stuff.Left(6) == "Desc2:")
     {
       Desc2 = Stuff.Right(Stuff.GetLength()-6);
-      Desc2.TrimLeft();
+      Desc2 = StrTrimLeft(Desc2);
     }
     else
     // Desc3
@@ -397,7 +397,7 @@ void BuildMobiles::ParseStuff()
       ActionNoMove  = false;
       ActionWimpy   = false;
       Action = Stuff.Right(Stuff.GetLength()-7);
-      Action.TrimLeft();
+      Action = StrTrimLeft(Action);
       if (Action.Find("None") > -1)
       {
         ActionNone = true;
@@ -432,7 +432,7 @@ void BuildMobiles::ParseStuff()
     if (Stuff.Left(8) == "Faction:")
     {
       Faction = Stuff.Right(Stuff.GetLength()-8);
-      Faction.TrimLeft();
+      Faction = StrTrimLeft(Faction);
       if (Faction.Find("Good") > -1)
       {
         FactionRadio = 0;
@@ -463,28 +463,28 @@ void BuildMobiles::ParseStuff()
     if (Stuff.Left(6) == "Level:")
     {
       Level = Stuff.Right(Stuff.GetLength()-6);
-      Level.TrimLeft();
+      Level = StrTrimLeft(Level);
     }
     else
     // HitPoints
     if (Stuff.Left(10) == "HitPoints:")
     {
-      HitPoints  = Stuff.Right(Stuff.GetLength()-10);
-      HitPoints.TrimLeft();
+      HitPoints = Stuff.Right(Stuff.GetLength()-10);
+      HitPoints = StrTrimLeft(HitPoints);
     }
     else
     // Armor
     if (Stuff.Left(6) == "Armor:")
     {
-      Armor  = Stuff.Right(Stuff.GetLength()-6);
-      Armor.TrimLeft();
+      Armor = Stuff.Right(Stuff.GetLength()-6);
+      Armor = StrTrimLeft(Armor);
     }
     else
     // Attack
     if (Stuff.Left(7) == "Attack:")
     {
       Attack = Stuff.Right(Stuff.GetLength()-7);
-      Attack.TrimLeft();
+      Attack = StrTrimLeft(Attack);
       if (Attack.Find("Bites") > -1)
       {
         AttackRadio = 0;
@@ -544,28 +544,28 @@ void BuildMobiles::ParseStuff()
     // Damage
     if (Stuff.Left(7) == "Damage:")
     {
-      Damage  = Stuff.Right(Stuff.GetLength()-7);
-      Damage.TrimLeft();
+      Damage = Stuff.Right(Stuff.GetLength()-7);
+      Damage = StrTrimLeft(Damage);
     }
     else
     if (Stuff.Left(10) == "ExpPoints:")
     {
-      ExpPoints  = Stuff.Right(Stuff.GetLength()-10);
-      ExpPoints.TrimLeft();
+      ExpPoints = Stuff.Right(Stuff.GetLength()-10);
+      ExpPoints = StrTrimLeft(ExpPoints);
     }
     else
     // Loot
     if (Stuff.Left(5) == "Loot:")
     {
       Loot = Stuff.Right(Stuff.GetLength()-5);
-      Loot.TrimLeft();
+      Loot = StrTrimLeft(Loot);
     }
     else
     // Talk
     if (Stuff.Left(5) == "Talk:")
     {
       Talk = Stuff.Right(Stuff.GetLength()-5);
-      Talk.TrimLeft();
+      Talk = StrTrimLeft(Talk);
     }
     ReadLine();
   }
@@ -579,7 +579,7 @@ void BuildMobiles::ParseStuff()
 void BuildMobiles::ReadLine()
 {
   MobileFile.ReadString(Stuff);
-  Stuff.TrimLeft();
+  Stuff = StrTrimLeft(Stuff);
   Stuff.TrimRight();
 }
 
