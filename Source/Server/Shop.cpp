@@ -236,7 +236,7 @@ void Shop::ListObjects()
         sprintf(Buf, "%-45s", (LPCSTR) pObject->Desc1);
         ShopText = ConvertStringToCString(Buf);
         TmpStr = ShopText;
-        i = TmpStr.Remove('&');
+        i = StrCountChar(TmpStr, '&');
         i = i * 2;
         for (j = 1; j <= i; j++)
         { // Color codes will be removed, so adjust length

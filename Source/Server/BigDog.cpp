@@ -157,6 +157,14 @@ void BigDog()
 void AppTestCode()
 {
   // Put test code here. It will be executed first, even before dialogs are presented.
+  CString TmpStr1 = "&CThis&N is a &CR&Noom ";
+  int i = StrCountChar(TmpStr1, '&');
+  string TmpStr2 = "&CThis&N is a &CR&Noom ";
+  int j = StrCountChar(TmpStr2, '&');
+  string TestStr = "   abc def    hi  jkl  ";
+  StrReplace(TestStr, "  ", " ");
+  TestStr = StrTrimLeft(TestStr);
+  TestStr = StrTrimRight(TestStr);
 }
 
 //
@@ -227,6 +235,20 @@ void PrintIt(string Message)
 //
 // String Functions
 //
+// 
+// Count characters in a string (temporary)
+int StrCountChar(CString Str1, char c)
+{
+  string x;
+  x = ConvertCStringToString(Str1);
+  return StrCountChar(x, c);
+}
+
+// Count characters in a string
+int StrCountChar(string Str1, char c)
+{
+  return count(Str1.begin(), Str1.end(), c);
+}
 
 // Find a string in a string (temporary)
 int StrFindOneOf(CString HayStack, string Needle)
@@ -332,6 +354,13 @@ string StrMakeUpper(string Str1)
   return Str1;
 }
 
+// Remove all occurrences of a character from a string
+string StrRemove(string Str1, char c)
+{
+  Str1.erase(remove(Str1.begin(), Str1.end(), c), Str1.end());
+  return Str1;
+}
+
 // Replace a string in a string
 void StrReplace(string &str, const string &from, const string &to)
 {
@@ -390,6 +419,12 @@ string StrTrimRight(string Str1)
   const auto Last = Str1.find_last_not_of(" \r\n");
   if (Last == string::npos) return "";
   return Str1.substr(0, Last + 1);
+}
+
+// Count words in a string
+int StrWordCount(CString Str1)
+{
+  return 1;
 }
 
 //
