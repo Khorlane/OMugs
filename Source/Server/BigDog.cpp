@@ -242,14 +242,36 @@ int StrCountChar(string Str1, char c)
   return count(Str1.begin(), Str1.end(), c);
 }
 
-// Find a string in a string (temporary)
+int StrCountWords(CString Str1)
+{
+  string x;
+  x = ConvertCStringToString(Str1);
+  return StrCountWords(x);
+}
+
+// Count number of words in a string
+int StrCountWords(string Str1)
+{
+  string S1, TmpStr;
+  vector<string> Words;
+
+  S1 = StrSqueeze(Str1);
+  stringstream SS1(S1);
+  while (getline(SS1, TmpStr, ' '))
+  {
+    Words.push_back(TmpStr);
+  }
+  return Words.size();
+}
+
+// Find one of the characters specified in Needle in the HayStack (temporary)
 int StrFindOneOf(CString HayStack, string Needle)
 {
   string HayStack1 = ConvertCStringToString(HayStack);
   return HayStack1.find_first_of(Needle);
 }
 
-// Find a string in a string
+// Find one of the characters specified in Needle in the HayStack
 int StrFindOneOf(string HayStack, string Needle)
 {
   return HayStack.find_first_of(Needle);
@@ -383,6 +405,20 @@ string StrRight(string Str1, int Len)
   return Str1.substr(Str1.length() - Len, Len);
 }
 
+// Remove leading, trailing, and extra spaces
+string StrSqueeze(string Str1)
+{
+  size_t EndOfString = std::string::npos;
+
+  Str1 = StrTrimLeft(Str1);
+  Str1 = StrTrimRight(Str1);
+  while (Str1.find("  ") != EndOfString)
+  {
+    StrReplace(Str1, "  ", " ");
+  }
+  return Str1;
+}
+
 // Remove leading whitespace (temporary)
 CString StrTrimLeft(CString Str1)
 {
@@ -419,12 +455,6 @@ string StrTrimRight(string Str1)
   const auto Last = Str1.find_last_not_of(" \r\n");
   if (Last == string::npos) return "";
   return Str1.substr(0, Last + 1);
-}
-
-// Count words in a string
-int StrWordCount(CString Str1)
-{
-  return 1;
 }
 
 //

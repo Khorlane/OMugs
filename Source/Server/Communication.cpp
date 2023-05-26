@@ -938,7 +938,7 @@ void Communication::CommandParse()
   MudCmd.MakeLower();
   // Translate 'n' into 'go north'
   MudCmd = TranslateWord(MudCmd);
-  if (WordCount(MudCmd) == 2)
+  if (StrCountWords(MudCmd) == 2)
   { // Re-get MudCmd. In the case of 'go north', MudCmd is 'go'
     CmdStr = MudCmd;
     MudCmd = GetWord(CmdStr, 1);
@@ -1643,7 +1643,7 @@ void Communication::DoAssist()
   { // Player is fighting, send msg, command is not done
     return;
   }
-  if (WordCount(CmdStr) < 2)
+  if (StrCountWords(CmdStr) < 2)
   { // No object or target
     pDnodeActor->PlayerOut += "Assist whom?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -1803,7 +1803,7 @@ void Communication::DoBuy()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  if (WordCount(CmdStr) > 2)
+  if (StrCountWords(CmdStr) > 2)
   { // Buy command not only takes 1 object
     pDnodeActor->PlayerOut += "The buy command must be followed by only one word.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -1963,7 +1963,7 @@ void Communication::DoConsider()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  if (WordCount(CmdStr) < 2)
+  if (StrCountWords(CmdStr) < 2)
   { // No target
     pDnodeActor->PlayerOut += "Consider whom or what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -1971,7 +1971,7 @@ void Communication::DoConsider()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  if (WordCount(CmdStr) > 2)
+  if (StrCountWords(CmdStr) > 2)
   { // Two many targets
     pDnodeActor->PlayerOut += "Hmm, you are confused. Try 'help consider'.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -2110,7 +2110,7 @@ void Communication::DoDelete()
   { // Player is fighting, send msg, command is not done
     return;
   }
-  if (WordCount(CmdStr) < 3)
+  if (StrCountWords(CmdStr) < 3)
   {
     pDnodeActor->PlayerOut += "You must provide your name and password.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -2264,7 +2264,7 @@ void Communication::DoDestroy()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  if (WordCount(CmdStr) == 1)
+  if (StrCountWords(CmdStr) == 1)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Destroy what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -2330,7 +2330,7 @@ void Communication::DoDrink()
   { // Toss out 'from', just extra verbage for player's benefit
     CmdStr.Delete(5,5);
   }
-  if (WordCount(CmdStr) == 1)
+  if (StrCountWords(CmdStr) == 1)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Drink from what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -2449,7 +2449,7 @@ void Communication::DoDrop()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  if (WordCount(CmdStr) == 1)
+  if (StrCountWords(CmdStr) == 1)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Drop what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -2517,7 +2517,7 @@ void Communication::DoEat()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  if (WordCount(CmdStr) == 1)
+  if (StrCountWords(CmdStr) == 1)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Eat what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -2668,7 +2668,7 @@ void Communication::DoExamine()
   { // Player is fighting, send msg, command is not done
     return;
   }
-  if (WordCount(CmdStr) == 1)
+  if (StrCountWords(CmdStr) == 1)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Examine what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -2871,7 +2871,7 @@ void Communication::DoFlee()
   { // No available target for MobileIdSave
     return;
   }
-  CandidateCount  = WordCount(CandidateList);
+  CandidateCount  = StrCountWords(CandidateList);
   CandidateTarget = GetRandomNumber(CandidateCount);
   Target          = GetWord(CandidateList, CandidateTarget);
   CreateMobPlayer(Target, MobileIdSave);
@@ -3109,7 +3109,7 @@ void Communication::DoGet()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  if (WordCount(CmdStr) == 1)
+  if (StrCountWords(CmdStr) == 1)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Get what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -3189,7 +3189,7 @@ void Communication::DoGive()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  if (WordCount(CmdStr) < 2)
+  if (StrCountWords(CmdStr) < 2)
   { // No object or target
     pDnodeActor->PlayerOut += "Give what and to whom?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -3197,7 +3197,7 @@ void Communication::DoGive()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  if (WordCount(CmdStr) < 3)
+  if (StrCountWords(CmdStr) < 3)
   { // No target
     pDnodeActor->PlayerOut += "Give it to whom?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -3896,7 +3896,7 @@ void Communication::DoHail()
   { // Player is fighting, send msg, command is not done
     return;
   }
-  if (WordCount(CmdStr) < 2)
+  if (StrCountWords(CmdStr) < 2)
   { // No target
     pDnodeActor->PlayerOut += "You need a target.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -3904,7 +3904,7 @@ void Communication::DoHail()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  if (WordCount(CmdStr) > 2)
+  if (StrCountWords(CmdStr) > 2)
   { // Two many targets
     pDnodeActor->PlayerOut += "Only one target at a time.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4100,7 +4100,7 @@ void Communication::DoKill()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  if (WordCount(CmdStr) < 2)
+  if (StrCountWords(CmdStr) < 2)
   { // No target
     pDnodeActor->PlayerOut += "You need a target.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4108,7 +4108,7 @@ void Communication::DoKill()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  if (WordCount(CmdStr) > 2)
+  if (StrCountWords(CmdStr) > 2)
   { // Two many targets
     pDnodeActor->PlayerOut += "Only one target at a time.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4269,7 +4269,7 @@ void Communication::DoLoad()
   //********************
   //* Validate command *
   //********************
-  if (WordCount(CmdStr) == 1)
+  if (StrCountWords(CmdStr) == 1)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Load what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4277,7 +4277,7 @@ void Communication::DoLoad()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }  
-  if (WordCount(CmdStr) != 3)
+  if (StrCountWords(CmdStr) != 3)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Usage: load obj{ect}|mob{ile} <target>";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4590,7 +4590,7 @@ void Communication::DoPassword()
   { // Player is fighting, send msg, command is not done
     return;
   }
-  if (WordCount(CmdStr) != 4)
+  if (StrCountWords(CmdStr) != 4)
   {
     pDnodeActor->PlayerOut += "Password command requires: ";
     pDnodeActor->PlayerOut += "Password NewPassword NewPassword";
@@ -4736,7 +4736,7 @@ void Communication::DoRefresh()
   CString TmpStr;
 
   DEBUGIT(1);
-  if (WordCount(CmdStr) > 2)
+  if (StrCountWords(CmdStr) > 2)
   { // Invalid command format
     pDnodeActor->PlayerOut += "You may refresh only one thing at time.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4788,7 +4788,7 @@ void Communication::DoRemove()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  if (WordCount(CmdStr) > 2)
+  if (StrCountWords(CmdStr) > 2)
   { // Invalid command format, like 'remove shirt pants'
     pDnodeActor->PlayerOut += "You may remove only one item at time.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -5187,7 +5187,7 @@ void Communication::DoShow()
   //********************
   //* Validate command *
   //********************
-  if (WordCount(CmdStr) > 2)
+  if (StrCountWords(CmdStr) > 2)
   { // Invalid command format
     pDnodeActor->PlayerOut += "You may show only one thing at time.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -5710,7 +5710,7 @@ void Communication::DoTrain()
   SkillPointsUsed += pDnodeActor->pPlayer->SkillSword;
   SkillPointsRemaining = PLAYER_SKILL_PER_LEVEL * pDnodeActor->pPlayer->Level - SkillPointsUsed;
   // Do some more checking
-  if (WordCount(CmdStr) > 4)
+  if (StrCountWords(CmdStr) > 4)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Train command syntax error, try'er again.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -6047,7 +6047,7 @@ void Communication::DoWear()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  if (WordCount(CmdStr) == 1)
+  if (StrCountWords(CmdStr) == 1)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Wear what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -6144,7 +6144,7 @@ void Communication::DoWhere()
   CString  SearchId;
 
   DEBUGIT(1);
-  if (WordCount(CmdStr) != 2)
+  if (StrCountWords(CmdStr) != 2)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Nothing given to search for!";
     pDnodeActor->PlayerOut += "\r\n";
@@ -6271,7 +6271,7 @@ void Communication::DoWield()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  if (WordCount(CmdStr) == 1)
+  if (StrCountWords(CmdStr) == 1)
   { // Invalid command format
     pDnodeActor->PlayerOut += "Wield what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -7609,7 +7609,7 @@ void Communication::ViolencePlayerDied(CString MobileDesc1)
   { // MobileIdSave's target is still in room, nothing to do
     return;
   }
-  CandidateCount  = WordCount(CandidateList);
+  CandidateCount  = StrCountWords(CandidateList);
   CandidateTarget = GetRandomNumber(CandidateCount);
   Target          = GetWord(CandidateList, CandidateTarget);
   CreateMobPlayer(Target, MobileIdSave);

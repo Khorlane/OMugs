@@ -780,7 +780,7 @@ void World::MakeMobilesMove2()
             sRoomId = ConvertCStringToString(RoomId);
             sValidMobRoomExits = GetValidMobRoomExits(sRoomId);;
             ValidMobRoomExits = ConvertStringToCString(sValidMobRoomExits);
-            ExitCount         = WordCount(ValidMobRoomExits);
+            ExitCount         = StrCountWords(ValidMobRoomExits);
             if (ExitCount > 0)
             { // Mob has at least one exit available
               ExitNumber        = GetRandomNumber(ExitCount);

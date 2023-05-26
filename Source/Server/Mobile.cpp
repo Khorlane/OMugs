@@ -1025,7 +1025,7 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
   }
   RoomMobFile.Close();
   // Remove mobs, that attacked a player, from room
-  RemoveMobCount = WordCount(MobileIdsToBeRemoved);
+  RemoveMobCount = StrCountWords(MobileIdsToBeRemoved);
   for (i = 1; i <= RemoveMobCount; i++)
   {
     MobileId = GetWord(MobileIdsToBeRemoved, i);

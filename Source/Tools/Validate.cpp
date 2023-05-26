@@ -672,7 +672,7 @@ void Validate::ValidateLibraryRooms()
       RoomTypeError = false;
       if (FieldName == "RoomType:")
       { // RoomType validation
-        j = WordCount(FieldValue);
+        j = StrCountWords(FieldValue);
         for (i = 1; i <= j; i++)
         { // Check each word in FieldValue
           TmpStr = GetWord(FieldValue, i);
