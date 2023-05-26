@@ -6633,7 +6633,7 @@ void Communication::LogonWaitMaleFemale()
   CString  LogBuf;
   CString  PlayerMsg;
 
-  CmdStr.MakeUpper();
+  CmdStr = StrMakeUpper(CmdStr);
   if (!(StrFindOneOf(CmdStr, "MF") == 0 && CmdStr.GetLength() == 1))
   { // Not M or F
     pDnodeActor->PlayerStateWaitMaleFemale = true;
@@ -6726,7 +6726,7 @@ void Communication::LogonWaitName()
 
 void Communication::LogonWaitNameConfirmation()
 {
-  CmdStr.MakeUpper();
+  CmdStr = StrMakeUpper(CmdStr);
   if (!(StrFindOneOf(CmdStr, "YN") == 0 && CmdStr.GetLength() == 1))
   { // Not Y or N ... try again
     pDnodeActor->PlayerStateWaitNameConfirmation = true;
@@ -6793,7 +6793,7 @@ void Communication::LogonWaitNameConfirmation()
 
 void Communication::LogonWaitNewCharacter()
 {
-  CmdStr.MakeUpper();
+  CmdStr = StrMakeUpper(CmdStr);
   if (!(StrFindOneOf(CmdStr, "YN") == 0 && CmdStr.GetLength() == 1))
   { // Not Y or N ... try again
     pDnodeActor->PlayerStateWaitNewCharacter = true;

@@ -299,6 +299,23 @@ string StrMakeLower(string Str1)
   return Str1;
 }
 
+// Upper case the whole string (temporary)
+CString StrMakeUpper(CString Str1)
+{
+  string x;
+  x = ConvertCStringToString(Str1);
+  x = StrMakeUpper(x);
+  return ConvertStringToCString(x);
+}
+
+// Upper case the whole string
+string StrMakeUpper(string Str1)
+{
+  transform(Str1.begin(), Str1.end(), Str1.begin(),
+    [](unsigned char c) { return toupper(c); });
+  return Str1;
+}
+
 // Replace a string in a string
 void StrReplace(string &str, const string &from, const string &to)
 {

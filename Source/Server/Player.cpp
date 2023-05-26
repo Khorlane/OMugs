@@ -671,7 +671,7 @@ void Player::ParsePlayerStuff()
     if (Stuff.Left(4) == "Sex:")
     {
       Sex = Stuff.Right(Stuff.GetLength()-4);
-      Sex.MakeUpper();
+      Sex = StrMakeUpper(Sex);
     }
     else
     // Sivler
