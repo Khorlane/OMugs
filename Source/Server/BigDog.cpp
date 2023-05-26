@@ -157,14 +157,6 @@ void BigDog()
 void AppTestCode()
 {
   // Put test code here. It will be executed first, even before dialogs are presented.
-  CString TmpStr1 = "&CThis&N is a &CR&Noom ";
-  int i = StrCountChar(TmpStr1, '&');
-  string TmpStr2 = "&CThis&N is a &CR&Noom ";
-  int j = StrCountChar(TmpStr2, '&');
-  string TestStr = "   abc def    hi  jkl  ";
-  StrReplace(TestStr, "  ", " ");
-  TestStr = StrTrimLeft(TestStr);
-  TestStr = StrTrimRight(TestStr);
 }
 
 //
@@ -352,6 +344,14 @@ string StrMakeUpper(string Str1)
   transform(Str1.begin(), Str1.end(), Str1.begin(),
     [](unsigned char c) { return toupper(c); });
   return Str1;
+}
+
+CString StrRemove(CString Str1, char c)
+{
+  string x;
+  x = ConvertCStringToString(Str1);
+  x = StrRemove(x, c);
+  return ConvertStringToCString(x);
 }
 
 // Remove all occurrences of a character from a string

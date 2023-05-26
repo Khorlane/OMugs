@@ -274,7 +274,7 @@ void GenerateRooms::Parse1()
   sprintf(Buf, "%d", CurrentRoomNbr);
   TmpStr = ConvertStringToCString(Buf);
   oRoomId = oRoomName + TmpStr;
-  oRoomId.Remove(' ');
+  oRoomId = StrRemove(oRoomId, ' ');
   //************
   //* RoomType *
   //************
@@ -465,7 +465,7 @@ void GenerateRooms::Parse2()
   ToRoomNbr = ConvertStringToCString(Buf);
   ToRoomName = iToRoomName;
   oExitToRoomId = ToRoomName + ToRoomNbr;
-  oExitToRoomId.Remove(' ');
+  oExitToRoomId = StrRemove(oExitToRoomId, ' ');
   //***************************
   //* Start writing exit info *
   //***************************

@@ -352,6 +352,7 @@ string  StrMakeFirstUpper(string Str1);
 string  StrMakeLower(string Str1);
 CString StrMakeUpper(CString Str1);
 string  StrMakeUpper(string Str1);
+CString StrRemove(CString Str1, char c);
 string  StrRemove(string Str1, char c);
 void    StrReplace(string &str, const string &from, const string &to);
 string  StrRight(string Str1, int Len);
