@@ -1470,7 +1470,7 @@ void Communication::CommandParse()
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
   // Log it
-  MudCmd  = MakeFirstUpper(MudCmd);
+  MudCmd  = StrMakeFirstUpper(MudCmd);
   LogBuf  = MudCmd;
   LogBuf += " is in command array, but Do";
   LogBuf += MudCmd;
@@ -6681,7 +6681,7 @@ void Communication::LogonWaitMaleFemale()
 void Communication::LogonWaitName()
 {
   // Fix name so first letter is upper case, rest are lower case
-  pDnodeActor->PlayerName = MakeFirstUpper(CmdStr);
+  pDnodeActor->PlayerName = StrMakeFirstUpper(CmdStr);
   if (pDnodeActor->PlayerNewCharacter == "Y")
   { // New player
     pDnodeActor->PlayerStateWaitNameConfirmation = true;

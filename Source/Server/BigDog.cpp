@@ -291,6 +291,22 @@ string StrLeft(string Str1, int Len)
   return Str1.substr(0, Len);
 }
 
+// Make First Letter Uppercase (temporary)
+CString StrMakeFirstUpper(CString Str1)
+{
+  string x;
+  x = ConvertCStringToString(Str1);
+  x = StrMakeFirstUpper(x);
+  return ConvertStringToCString(x);
+}
+
+// Make First Letter Uppercase
+string StrMakeFirstUpper(string Str1)
+{
+  Str1[0] = toupper(Str1[0]);
+  return Str1;
+}
+
 // Lower case the whole string
 string StrMakeLower(string Str1)
 {

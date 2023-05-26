@@ -613,7 +613,7 @@ CString Violence::WhackPlayer(CString MobileDesc1,
   CString TmpStr;
 
   // Capitalize first leter of first word of MobileDesc1
-  MobileDesc1 = MakeFirstUpper(MobileDesc1);
+  MobileDesc1 = StrMakeFirstUpper(MobileDesc1);
   // Format damage message
   sprintf(Buf, "%d", DamageToPlayer);
   TmpStr = ConvertStringToCString(Buf);

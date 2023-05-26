@@ -1413,7 +1413,7 @@ CString Mobile::MobTalk()
   }
   // Mobile is going to talk
   MobileMsg  = "&W";
-  MobileMsg += MakeFirstUpper(Desc1);
+  MobileMsg += StrMakeFirstUpper(Desc1);
   MobileMsg += " says:";
   MobileMsg += "&N";
   MobileMsg += "\r\n";
