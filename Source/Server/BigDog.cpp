@@ -300,7 +300,7 @@ string StrMakeLower(string Str1)
 }
 
 // Replace a string in a string
-void StrReplace(string& str, const string& from, const string& to)
+void StrReplace(string &str, const string &from, const string &to)
 {
   if (from.empty())
     return;
@@ -340,6 +340,15 @@ string StrTrimLeft(string Str1)
   const auto First = Str1.find_first_not_of(" \r\n");
   if (First == string::npos) return "";
   return Str1.substr(First, Str1.length());
+}
+
+// Remove trailing whitespace (temporary)
+CString StrTrimRight(CString Str1)
+{
+  string x;
+  x = ConvertCStringToString(Str1);
+  x = StrTrimRight(x);
+  return ConvertStringToCString(x);
 }
 
 // Remove trailing whitespace

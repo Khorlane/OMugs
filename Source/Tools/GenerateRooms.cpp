@@ -304,7 +304,7 @@ void GenerateRooms::Parse1()
   TmpStr = "Terrain:";
   oTerrain = Stuff.Right(Stuff.GetLength()-n-TmpStr.GetLength());
   oTerrain = StrTrimLeft(oTerrain);
-  oTerrain.TrimRight();
+  oTerrain = StrTrimRight(oTerrain);
   //************
   //* RoomDesc *
   //************
@@ -392,7 +392,7 @@ void GenerateRooms::Parse2()
   {
     AlternateExit.Delete(0, 3);
   }
-  AlternateExit.TrimRight();
+  AlternateExit = StrTrimRight(AlternateExit);
   //************
   //* ExitName *
   //************

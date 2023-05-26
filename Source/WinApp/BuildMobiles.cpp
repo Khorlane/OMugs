@@ -580,7 +580,7 @@ void BuildMobiles::ReadLine()
 {
   MobileFile.ReadString(Stuff);
   Stuff = StrTrimLeft(Stuff);
-  Stuff.TrimRight();
+  Stuff = StrTrimRight(Stuff);
 }
 
 /***********************************************************
@@ -673,7 +673,7 @@ void BuildMobiles::WriteStuff()
   {
     Stuff += "Wimpy ";
   }
-  Stuff.TrimRight();
+  Stuff = StrTrimRight(Stuff);
   Stuff += "\n";
   // Faction
   Stuff += "Faction:   ";

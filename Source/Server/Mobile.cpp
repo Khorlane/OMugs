@@ -1354,7 +1354,7 @@ void Mobile::GetNextMobNbr()
   NextMobNbrFile.Close();
   // Increment next mobile number
   Stuff = StrTrimLeft(Stuff);
-  Stuff.TrimRight();
+  Stuff = StrTrimRight(Stuff);
   NextMobNbr        = Stuff;
   NextMobNbrInteger = atoi(Stuff);
   NextMobNbrInteger++;
@@ -1609,5 +1609,5 @@ void Mobile::ReadLine()
 {
   MobileFile.ReadString(Stuff);
   Stuff = StrTrimLeft(Stuff);
-  Stuff.TrimRight();
+  Stuff = StrTrimRight(Stuff);
 }

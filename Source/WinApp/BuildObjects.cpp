@@ -496,7 +496,7 @@ void BuildObjects::ReadLine()
 {
   ObjectFile.ReadString(Stuff);
   Stuff = StrTrimLeft(Stuff);
-  Stuff.TrimRight();
+  Stuff = StrTrimRight(Stuff);
 }
 
 /***********************************************************

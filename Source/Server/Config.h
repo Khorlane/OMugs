@@ -350,6 +350,7 @@ void    StrReplace(string& str, const string& from, const string& to);
 string  StrRight(string Str1, int Len);
 CString StrTrimLeft(CString Str1);
 string  StrTrimLeft(string Str1);
+CString StrTrimRight(CString Str1);
 string  StrTrimRight(string Str1);
 CString TranslateWord(CString Word);
 void    UpdateMobInWorld(CString MobileId, CString AddRemove);

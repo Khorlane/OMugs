@@ -3756,7 +3756,7 @@ void Communication::DoGroup()
     sprintf(Buf, "%d", GRP_LIMIT);
     TmpStr = ConvertStringToCString(Buf);
     TmpStr = StrTrimLeft(TmpStr);
-    TmpStr.TrimRight();
+    TmpStr = StrTrimRight(TmpStr);
     pDnodeActor->PlayerOut+= TmpStr;
     pDnodeActor->PlayerOut += " members allowed.\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
