@@ -1147,7 +1147,7 @@ void Player::ShowStatus()
   // Position
   Output += "Position:     ";
   TmpStr = Position;
-  TmpStr.Replace("s", "S");
+  StrReplace(TmpStr, "s", "S");
   if (TmpStr == "Sit")
   { // Add extra 't'
     TmpStr += "t";

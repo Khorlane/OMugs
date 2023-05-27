@@ -1045,7 +1045,7 @@ void Validate::ValidateRunningPlayers()
     while (Stuff != "")
     { // For all lines
       LineCount++;
-      Stuff.Replace(':',' ');
+      StrReplace(Stuff, ":", " ");
       FieldName  = StrGetWord(Stuff, 1);
       FieldValue = StrGetWord(Stuff, 2);
       //****************************

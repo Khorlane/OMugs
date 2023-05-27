@@ -186,11 +186,7 @@ CString Utility::GetSqlStmt(CString SqlStmtId)
     SqlStmtFile.ReadString(Stuff);
   }
   SqlStmtFile.Close();
-  do
-  { // Rip out all extra spaces
-    RipOutMoreSpaces = SqlStmt.Replace("  "," ");
-  }
-  while (RipOutMoreSpaces);
+  SqlStmt = StrSqueeze(SqlStmt);
   return SqlStmt;
 }
 

@@ -157,6 +157,10 @@ void BigDog()
 void AppTestCode()
 {
   // Put test code here. It will be executed first, even before dialogs are presented.
+  CString x = " This    is    a test of SQUEEZe(   )  ";
+  StrReplace(x, "SQUEEZe", "Squeeze");
+  string y = " This    is    a test of SQUEEZe(   )  ";
+  StrReplace(y, "SQUEEZe", "Squeeze");
 }
 
 //
@@ -413,6 +417,15 @@ string StrRemove(string Str1, char c)
   return Str1;
 }
 
+// Replace a string in a string (temporary)
+void StrReplace(CString &str, const string &from, const string &to)
+{
+  string x;
+  x = ConvertCStringToString(str);
+  StrReplace(x, from, to);
+  str = ConvertStringToCString(x);
+}
+
 // Replace a string in a string
 void StrReplace(string &str, const string &from, const string &to)
 {
@@ -433,6 +446,12 @@ string StrRight(string Str1, int Len)
     return "";
   }
   return Str1.substr(Str1.length() - Len, Len);
+}
+
+// Remove leading, trailing, and extra spaces
+CString StrSqueeze(CString Str1)
+{
+  return ConvertStringToCString(StrSqueeze(ConvertCStringToString(Str1)));
 }
 
 // Remove leading, trailing, and extra spaces

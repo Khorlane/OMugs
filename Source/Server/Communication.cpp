@@ -742,8 +742,8 @@ void Communication::SockRecv()
             LogBuf += " ";
           }
           LogBuf += ConvertStringToCString(pDnodeActor->PlayerInp);
-          LogBuf.Replace("\r", " ");
-          LogBuf.Replace("\n", " ");
+          StrReplace(LogBuf, "\r", " ");
+          StrReplace(LogBuf, "\n", " ");
           LogIt(LogBuf);
         }
         CommandParse();
@@ -3470,15 +3470,15 @@ void Communication::DoGoToArrive()
   TmpStr = GetWords(CmdStr, 2);
   GoToArrive = TmpStr;
   // Strip out color codes so arrival message length can be checked
-  TmpStr.Replace("&N", "");
-  TmpStr.Replace("&K", "");
-  TmpStr.Replace("&R", "");
-  TmpStr.Replace("&G", "");
-  TmpStr.Replace("&Y", "");
-  TmpStr.Replace("&B", "");
-  TmpStr.Replace("&M", "");
-  TmpStr.Replace("&C", "");
-  TmpStr.Replace("&W", "");
+  StrReplace(TmpStr, "&N", "");
+  StrReplace(TmpStr, "&K", "");
+  StrReplace(TmpStr, "&R", "");
+  StrReplace(TmpStr, "&G", "");
+  StrReplace(TmpStr, "&Y", "");
+  StrReplace(TmpStr, "&B", "");
+  StrReplace(TmpStr, "&M", "");
+  StrReplace(TmpStr, "&C", "");
+  StrReplace(TmpStr, "&W", "");
   if (TmpStr.GetLength() > 60)
   {
     pDnodeActor->PlayerOut += "Arrival message must be less than 61 characters, color codes do not count.\r\n";
@@ -3547,15 +3547,15 @@ void Communication::DoGoToDepart()
   TmpStr = GetWords(CmdStr, 2);
   GoToDepart = TmpStr;
   // Strip out color codes so arrival message length can be checked
-  TmpStr.Replace("&N", "");
-  TmpStr.Replace("&K", "");
-  TmpStr.Replace("&R", "");
-  TmpStr.Replace("&G", "");
-  TmpStr.Replace("&Y", "");
-  TmpStr.Replace("&B", "");
-  TmpStr.Replace("&M", "");
-  TmpStr.Replace("&C", "");
-  TmpStr.Replace("&W", "");
+  StrReplace(TmpStr, "&N", "");
+  StrReplace(TmpStr, "&K", "");
+  StrReplace(TmpStr, "&R", "");
+  StrReplace(TmpStr, "&G", "");
+  StrReplace(TmpStr, "&Y", "");
+  StrReplace(TmpStr, "&B", "");
+  StrReplace(TmpStr, "&M", "");
+  StrReplace(TmpStr, "&C", "");
+  StrReplace(TmpStr, "&W", "");
   if (TmpStr.GetLength() > 60)
   {
     pDnodeActor->PlayerOut += "Departure message must be less than 61 characters, color codes do not count.\r\n";
@@ -5645,15 +5645,15 @@ void Communication::DoTitle()
   TmpStr = GetWords(CmdStr, 2);
   Title = TmpStr;
   // Strip out color codes so Title length can be checked
-  TmpStr.Replace("&N", "");
-  TmpStr.Replace("&K", "");
-  TmpStr.Replace("&R", "");
-  TmpStr.Replace("&G", "");
-  TmpStr.Replace("&Y", "");
-  TmpStr.Replace("&B", "");
-  TmpStr.Replace("&M", "");
-  TmpStr.Replace("&C", "");
-  TmpStr.Replace("&W", "");
+  StrReplace(TmpStr, "&N", "");
+  StrReplace(TmpStr, "&K", "");
+  StrReplace(TmpStr, "&R", "");
+  StrReplace(TmpStr, "&G", "");
+  StrReplace(TmpStr, "&Y", "");
+  StrReplace(TmpStr, "&B", "");
+  StrReplace(TmpStr, "&M", "");
+  StrReplace(TmpStr, "&C", "");
+  StrReplace(TmpStr, "&W", "");
   if (TmpStr.GetLength() > 40)
   {
     pDnodeActor->PlayerOut += "Title must be less than 41 characters, color codes do not count.\r\n";

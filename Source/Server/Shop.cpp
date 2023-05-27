@@ -211,12 +211,12 @@ void Shop::ListObjects()
   // Line two
   sprintf(Buf, "%-45s", " ");
   ShopText = ConvertStringToCString(Buf);
-  ShopText.Replace(" ", "-");
+  StrReplace(ShopText, " ", "-");
   pDnodeActor->PlayerOut += ShopText;
   pDnodeActor->PlayerOut += " ";
   sprintf(Buf, "%-6s", " ");
   ShopText = ConvertStringToCString(Buf);
-  ShopText.Replace(" ", "-");
+  StrReplace(ShopText, " ", "-");
   pDnodeActor->PlayerOut += ShopText;
   pDnodeActor->PlayerOut += "\r\n";
   // List items for trade
