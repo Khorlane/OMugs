@@ -227,7 +227,7 @@ void PrintIt(string Message)
 //
 // String Functions
 //
-// 
+
 // Count characters in a string (temporary)
 int StrCountChar(CString Str1, char c)
 {
@@ -262,6 +262,30 @@ int StrCountWords(string Str1)
     Words.push_back(TmpStr);
   }
   return Words.size();
+}
+
+// Delete the word specified by WordNbr and Squeeze() (temporary)
+CString StrDeleteWord(CString Str1, int WordNbr)
+{
+  return ConvertStringToCString(StrDeleteWord(ConvertCStringToString(Str1), WordNbr));
+}
+
+// Delete the word specified by WordNbr and Squeeze()
+string StrDeleteWord(string Str1, int WordNbr)
+{
+  string S1, TmpStr;
+  vector<string> Words;
+
+  S1 = StrSqueeze(Str1);
+  stringstream SS1(S1);
+  while (getline(SS1, TmpStr, ' '))
+  {
+    Words.push_back(TmpStr);
+  }
+  Str1.clear();
+  Words.erase(Words.begin() + WordNbr - 1);
+  for (auto const& s : Words) { Str1 += s; Str1 += " "; }
+  return Str1;
 }
 
 // Find one of the characters specified in Needle in the HayStack (temporary)

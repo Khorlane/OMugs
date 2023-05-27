@@ -22,7 +22,7 @@
 ************************************************************/
 
 // Vector for tokens not found in symbol table
-char *SymbolStrings[] =
+const char *SymbolStrings[] =
 {
   "",           // tcDummy,
   "{",          // tcBraceL,

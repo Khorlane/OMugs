@@ -7490,7 +7490,7 @@ void Communication::ViolencePlayer()
   MobileBeenWhacked = WhackMobile(MobileId, DamageToMobile, MobileDesc1, WeaponType);
   // Player has whacked the mobile
   DeadOrAlive = GetWord(MobileBeenWhacked, 1);
-  MobileBeenWhacked = DeleteWord(MobileBeenWhacked, 1);
+  MobileBeenWhacked = StrDeleteWord(MobileBeenWhacked, 1);
   DeadOrAlive.MakeLower();
   if (DeadOrAlive == "alive")
   { // Mobile is not dead, Send fight messages to player
