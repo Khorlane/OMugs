@@ -82,9 +82,9 @@ void Shop::IsShopObj(CString RoomId, CString ObjectName)
     Stuff = StrTrimLeft(Stuff);
     Stuff = StrTrimRight(Stuff);
     Stuff.MakeLower();
-    if (GetWord(Stuff, 1) == "item:")
+    if (StrGetWord(Stuff, 1) == "item:")
     { // Found an item
-      ObjectId = GetWord(Stuff, 2);
+      ObjectId = StrGetWord(Stuff, 2);
       ObjectName.MakeLower();
       if (ObjectName == ObjectId)
       { // Found a match
@@ -126,9 +126,9 @@ void Shop::IsShopObj(CString RoomId, CString ObjectName)
     Stuff = StrTrimLeft(Stuff);
     Stuff = StrTrimRight(Stuff);
     Stuff.MakeLower();
-    if (GetWord(Stuff, 1) == "item:")
+    if (StrGetWord(Stuff, 1) == "item:")
     { // Found an item
-      ObjectId = GetWord(Stuff, 2);
+      ObjectId = StrGetWord(Stuff, 2);
       pObject = new Object(ObjectId);
       if (pObject)
       { // Check for a match
@@ -226,9 +226,9 @@ void Shop::ListObjects()
     Stuff = StrTrimLeft(Stuff);
     Stuff = StrTrimRight(Stuff);
     Stuff.MakeLower();
-    if (GetWord(Stuff, 1) == "item:")
+    if (StrGetWord(Stuff, 1) == "item:")
     { // Found an item
-      ObjectId = GetWord(Stuff, 2);
+      ObjectId = StrGetWord(Stuff, 2);
       pObject = NULL;
       IsObject(ObjectId); // Sets pObject
       if (pObject)

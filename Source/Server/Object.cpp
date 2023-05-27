@@ -131,7 +131,7 @@ bool Object::AddObjToPlayerEqu(CString WearPosition, CString ObjectId)
       PlayerEquFile.ReadString(Stuff);
       continue;
     }
-    WearPositionCheck = GetWord(Stuff, 1);
+    WearPositionCheck = StrGetWord(Stuff, 1);
     if (WearPosition < WearPositionCheck)
     { // Add new object in alphabetical order by translated WearPosition
       ObjectId = WearPosition + " " + ObjectId;
@@ -246,7 +246,7 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, CString ObjectId)
       PlayerObjFile.ReadString(Stuff);
       continue;
     }
-    ObjectIdCheck = GetWord(Stuff, 2);
+    ObjectIdCheck = StrGetWord(Stuff, 2);
     if (ObjectId < ObjectIdCheck)
     { // Add new object in alphabetical order
       ObjectId = "1 " + ObjectId;
@@ -260,7 +260,7 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, CString ObjectId)
     }
     if (ObjectId == ObjectIdCheck)
     { // Existing object same as new object, add 1 to count
-      ObjCount = atoi(GetWord(Stuff, 1));
+      ObjCount = atoi(StrGetWord(Stuff, 1));
       ObjCount++;
       sprintf(Buf, "%d", ObjCount);
       TmpStr = ConvertStringToCString(Buf);
@@ -363,7 +363,7 @@ void Object::AddObjToRoom(CString RoomId, CString ObjectId)
       RoomObjFile.ReadString(Stuff);
       continue;
     }
-    ObjectIdCheck = GetWord(Stuff, 2);
+    ObjectIdCheck = StrGetWord(Stuff, 2);
     if (ObjectId < ObjectIdCheck)
     { // Add new object in alphabetical order
       ObjectId = "1 " + ObjectId;
@@ -377,7 +377,7 @@ void Object::AddObjToRoom(CString RoomId, CString ObjectId)
     }
     if (ObjectId == ObjectIdCheck)
     { // Existing object same as new object, add 1 to count
-      ObjCount = atoi(GetWord(Stuff, 1));
+      ObjCount = atoi(StrGetWord(Stuff, 1));
       ObjCount++;
       sprintf(Buf, "%d", ObjCount);
       TmpStr = ConvertStringToCString(Buf);
@@ -443,7 +443,7 @@ int Object::CalcPlayerArmorClass()
   PlayerEquFile.ReadString(Stuff);
   while (Stuff != "")
   {
-    ObjectId = GetWord(Stuff, 2);
+    ObjectId = StrGetWord(Stuff, 2);
     pObject = new Object(ObjectId);
     ArmorClass += pObject->ArmorValue;
     delete pObject;
@@ -488,7 +488,7 @@ void Object::IsObjInPlayerEqu(CString ObjectName)
   PlayerEquFile.ReadString(Stuff);
   while (Stuff != "")
   { // For each player equipment object 
-    ObjectId = GetWord(Stuff, 2);
+    ObjectId = StrGetWord(Stuff, 2);
     ObjectName.MakeLower();
     if (ObjectName == ObjectId)
     { // Found a match
@@ -525,7 +525,7 @@ void Object::IsObjInPlayerEqu(CString ObjectName)
   PlayerEquFile.ReadString(Stuff);
   while (Stuff != "")
   { // For each player equipment object 
-    ObjectId = GetWord(Stuff, 2);
+    ObjectId = StrGetWord(Stuff, 2);
     pObject = new Object(ObjectId);
     if (!pObject)
     { // Object does not exist, Log it
@@ -590,14 +590,14 @@ void Object::IsObjInPlayerInv(CString ObjectName)
   PlayerObjFile.ReadString(Stuff);
   while (Stuff != "")
   { // For all items in player inventory
-    ObjectId = GetWord(Stuff, 2);
+    ObjectId = StrGetWord(Stuff, 2);
     ObjectName.MakeLower();
     if (ObjectName == ObjectId)
     { // Found a match
       pObject = new Object(ObjectId);
       if (pObject)
       { // Object exists
-        pObject->Count = GetWord(Stuff, 1);
+        pObject->Count = StrGetWord(Stuff, 1);
         return;
       }
       else
@@ -628,7 +628,7 @@ void Object::IsObjInPlayerInv(CString ObjectName)
   PlayerObjFile.ReadString(Stuff);
   while (Stuff != "")
   { // For all items in player inventory
-    ObjectId = GetWord(Stuff, 2);
+    ObjectId = StrGetWord(Stuff, 2);
     pObject  = new Object(ObjectId);
     if (!pObject)
     { // Object does not exist, Log it
@@ -640,7 +640,7 @@ void Object::IsObjInPlayerInv(CString ObjectName)
       pObject = NULL;
       return;
     }
-    pObject->Count = GetWord(Stuff, 1);
+    pObject->Count = StrGetWord(Stuff, 1);
     NamesCheck     = pObject->Names;
     NamesCheck.MakeLower();
     if (IsWord(ObjectName, NamesCheck))
@@ -693,7 +693,7 @@ void Object::IsObjInRoom(CString ObjectName)
   RoomObjFile.ReadString(Stuff);
   while (Stuff != "")
   { // For each item in room
-    ObjectId = GetWord(Stuff, 2);
+    ObjectId = StrGetWord(Stuff, 2);
     ObjectName.MakeLower();
     if (ObjectName == ObjectId)
     { // Found a match
@@ -730,7 +730,7 @@ void Object::IsObjInRoom(CString ObjectName)
   RoomObjFile.ReadString(Stuff);
   while (Stuff != "")
   { // For each item in room
-    ObjectId = GetWord(Stuff, 2);
+    ObjectId = StrGetWord(Stuff, 2);
     pObject = new Object(ObjectId);
     if (!pObject)
     { // Object does not exist, Log it
@@ -844,7 +844,7 @@ void Object::RemoveObjFromPlayerEqu(CString ObjectId)
       PlayerEquFile.ReadString(Stuff);
       continue;
     }
-    ObjectIdCheck = GetWord(Stuff, 2);
+    ObjectIdCheck = StrGetWord(Stuff, 2);
     if (ObjectId == ObjectIdCheck)
     { // Found it, skipping it will remove it from the file
       ObjectIdRemoved = true;
@@ -931,10 +931,10 @@ void Object::RemoveObjFromPlayerInv(CString ObjectId, int Count)
       PlayerObjFile.ReadString(Stuff);
       continue;
     }
-    ObjectIdCheck = GetWord(Stuff, 2);
+    ObjectIdCheck = StrGetWord(Stuff, 2);
     if (ObjectId == ObjectIdCheck)
     { // Found it, subtract 'count' from ObjCount
-      ObjCount = atoi(GetWord(Stuff, 1));
+      ObjCount = atoi(StrGetWord(Stuff, 1));
       ObjCount -= Count;
       ObjectIdRemoved = true;
       if (ObjCount > 0)
@@ -1028,10 +1028,10 @@ void Object::RemoveObjFromRoom(CString ObjectId)
       RoomObjFile.ReadString(Stuff);
       continue;
     }
-    ObjectIdCheck = GetWord(Stuff, 2);
+    ObjectIdCheck = StrGetWord(Stuff, 2);
     if (ObjectId == ObjectIdCheck)
     { // Found it, subtract 1 from count
-      ObjCount = atoi(GetWord(Stuff, 1));
+      ObjCount = atoi(StrGetWord(Stuff, 1));
       ObjCount--;
       ObjectIdRemoved = true;
       if (ObjCount > 0)
@@ -1117,9 +1117,9 @@ void Object::ShowPlayerEqu(Dnode *pDnodeTgt1)
   PlayerEquFile.ReadString(Stuff);
   while (Stuff != "")
   {
-    WearPosition = GetWord(Stuff, 1);
+    WearPosition = StrGetWord(Stuff, 1);
     WearPosition = TranslateWord(WearPosition);
-    ObjectId = GetWord(Stuff, 2);
+    ObjectId = StrGetWord(Stuff, 2);
     pObject = new Object(ObjectId);
     pDnodeActor->PlayerOut += WearPosition;
     pDnodeActor->PlayerOut += pObject->Desc1;
@@ -1168,8 +1168,8 @@ void Object::ShowPlayerInv()
   PlayerObjFile.ReadString(Stuff);
   while (Stuff != "")
   {
-    ObjectCount = GetWord(Stuff, 1);
-    ObjectId = GetWord(Stuff, 2);
+    ObjectCount = StrGetWord(Stuff, 1);
+    ObjectId = StrGetWord(Stuff, 2);
     pObject = new Object(ObjectId);
     pDnodeActor->PlayerOut += "(" + ObjectCount + ") ";
     pDnodeActor->PlayerOut += pObject->Desc1;
@@ -1211,8 +1211,8 @@ void Object::ShowObjsInRoom(Dnode *pDnode)
   RoomObjFile.ReadString(Stuff);
   while (Stuff != "")
   { // For each object in the room
-    ObjectCount = GetWord(Stuff, 1);
-    ObjectId    = GetWord(Stuff, 2);
+    ObjectCount = StrGetWord(Stuff, 1);
+    ObjectId    = StrGetWord(Stuff, 2);
     pObject     = new Object(ObjectId);
     pObject->Type.MakeLower();
     pDnode->PlayerOut += "\r\n";
@@ -1288,7 +1288,7 @@ void Object::WhereObjPlayerEqu(CString ObjectIdSearch)
     PlayerEquFile.ReadString(Stuff);
     while (Stuff != "")
     {
-      ObjectId      = GetWord(Stuff, 2);
+      ObjectId      = StrGetWord(Stuff, 2);
       if (ObjectId == ObjectIdSearch)
       {
         pDnodeActor->PlayerOut += PlayerName;
@@ -1357,7 +1357,7 @@ void Object::WhereObjPlayerObj(CString ObjectIdSearch)
     PlayerObjFile.ReadString(Stuff);
     while (Stuff != "")
     {
-      ObjectId      = GetWord(Stuff, 2);
+      ObjectId      = StrGetWord(Stuff, 2);
       if (ObjectId == ObjectIdSearch)
       {
         pDnodeActor->PlayerOut += PlayerName;
@@ -1427,7 +1427,7 @@ void Object::WhereObjRoomObj(CString ObjectIdSearch)
     RoomObjFile.ReadString(Stuff);
     while (Stuff != "")
     { // For each room object
-      ObjectId = GetWord(Stuff, 2);
+      ObjectId = StrGetWord(Stuff, 2);
       if (ObjectId == ObjectIdSearch)
       { // Match
         pDnodeActor->PlayerOut += RoomName;

@@ -119,7 +119,7 @@ void Mobile::AddMobToRoom(CString RoomId, CString MobileId)
       RoomMobFile.ReadString(Stuff);
       continue;
     }
-    MobileIdCheck = GetWord(Stuff, 2);
+    MobileIdCheck = StrGetWord(Stuff, 2);
     if (MobileId < MobileIdCheck)
     { // Add new mobile in alphabetical order
       TmpStr  = "1 ";
@@ -134,7 +134,7 @@ void Mobile::AddMobToRoom(CString RoomId, CString MobileId)
     }
     if (MobileId == MobileIdCheck)
     { // Existing mobile same as new mobile, add 1 to count
-      MobCount = atoi(GetWord(Stuff, 1));
+      MobCount = atoi(StrGetWord(Stuff, 1));
       MobCount++;
       sprintf(Buf, "%d", MobCount);
       TmpStr = ConvertStringToCString(Buf);
@@ -255,7 +255,7 @@ int Mobile::CountMobOldWayNotUsedNow(CString MobileIdSearch)
     RoomMobFile.ReadString(Stuff);
     while (Stuff != "")
     {
-      MobileId      = GetWord(Stuff, 2);
+      MobileId      = StrGetWord(Stuff, 2);
       PositionOfDot = MobileId.Find('.');
       if (PositionOfDot > 1)
       { // Mobile is hurt but not fighting
@@ -263,7 +263,7 @@ int Mobile::CountMobOldWayNotUsedNow(CString MobileIdSearch)
       }
       if (MobileId == MobileIdSearch)
       { // Found a non-fighting mobile, count it
-        TmpStr = GetWord(Stuff, 1);
+        TmpStr = StrGetWord(Stuff, 1);
         Count += atoi(TmpStr);
       }
       RoomMobFile.ReadString(Stuff);
@@ -453,7 +453,7 @@ void Mobile::DeleteMobPlayer(CString PlayerName, CString MobileId)
       MobPlayerFile.ReadString(Stuff);
       continue;
     }
-    MobileIdCheck = GetWord(Stuff, 1);
+    MobileIdCheck = StrGetWord(Stuff, 1);
     MobileIdCheck.MakeLower();
     if (MobileId == MobileIdCheck)
     { // Found it, delete it
@@ -584,7 +584,7 @@ Mobile *Mobile::IsMobInRoom(CString MobileName)
   RoomMobFile.ReadString(Stuff);
   while (Stuff != "")
   { // Process each mobile in the room
-    MobileId = GetWord(Stuff, 2);
+    MobileId = StrGetWord(Stuff, 2);
     if (MobileId == MobileName)
     { // This mobile is a match
       RoomMobFile.Close();
@@ -618,7 +618,7 @@ Mobile *Mobile::IsMobInRoom(CString MobileName)
   RoomMobFile.ReadString(Stuff);
   while (Stuff != "")
   { // Process each mobile in the room
-    MobileId      = GetWord(Stuff, 2);
+    MobileId      = StrGetWord(Stuff, 2);
     PositionOfDot = MobileId.Find('.');
     MobileHurt    = false;
     if (PositionOfDot > 1)
@@ -722,7 +722,7 @@ bool Mobile::IsMobileIdInRoom(CString RoomId, CString MobileId)
   RoomMobFile.ReadString(Stuff);
   while (Stuff != "")
   { // Process each mobile in the room
-    MobileIdCheck = GetWord(Stuff, 2);
+    MobileIdCheck = StrGetWord(Stuff, 2);
     if (MobileId == MobileIdCheck)
     { // Found matching mobile
       RoomMobFile.Close();
@@ -797,7 +797,7 @@ void Mobile::PutMobBackInRoom(CString PlayerName, CString RoomIdBeforeFleeing)
   MobPlayerFile.ReadString(Stuff);
   while (Stuff != "")
   {
-    MobileId = GetWord(Stuff, 1);
+    MobileId = StrGetWord(Stuff, 1);
     MobileId.MakeLower();
     // Read mobile stats hit points file
     MobStatsHitPointsFileName = MOB_STATS_HPT_DIR;
@@ -813,8 +813,8 @@ void Mobile::PutMobBackInRoom(CString PlayerName, CString RoomIdBeforeFleeing)
     }
     MobStatsHitPointsFile.ReadString(Stuff);
     MobStatsHitPointsFile.Close();
-    MobHitPointsTotal = GetWord(Stuff, 1);
-    MobHitPointsLeft  = GetWord(Stuff, 2);
+    MobHitPointsTotal = StrGetWord(Stuff, 1);
+    MobHitPointsLeft  = StrGetWord(Stuff, 2);
     if (MobHitPointsTotal == MobHitPointsLeft)
     { // Mobile is not hurt
       DeleteMobStats(MobileId);
@@ -894,10 +894,10 @@ void Mobile::RemoveMobFromRoom(CString RoomId, CString MobileId)
       RoomMobFile.ReadString(Stuff);
       continue;
     }
-    MobileIdCheck = GetWord(Stuff, 2);
+    MobileIdCheck = StrGetWord(Stuff, 2);
     if (MobileId == MobileIdCheck)
     { // Found it, subtract 1 from count
-      MobCount = atoi(GetWord(Stuff, 1));
+      MobCount = atoi(StrGetWord(Stuff, 1));
       MobCount--;
       MobileIdRemoved = true;
       if (MobCount > 0)
@@ -971,8 +971,8 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
   RoomMobFile.ReadString(Stuff);
   while (Stuff != "")
   {
-    MobileCount = GetWord(Stuff, 1);
-    MobileId    = GetWord(Stuff, 2);
+    MobileCount = StrGetWord(Stuff, 1);
+    MobileId    = StrGetWord(Stuff, 2);
     PositionOfDot = MobileId.Find('.');
     MobileHurt = false;
     if (PositionOfDot > 1)
@@ -1028,7 +1028,7 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
   RemoveMobCount = StrCountWords(MobileIdsToBeRemoved);
   for (i = 1; i <= RemoveMobCount; i++)
   {
-    MobileId = GetWord(MobileIdsToBeRemoved, i);
+    MobileId = StrGetWord(MobileIdsToBeRemoved, i);
     RemoveMobFromRoom(pDnode->pPlayer->RoomId, MobileId);
   }
 }
@@ -1162,7 +1162,7 @@ void Mobile::WhereMob(CString MobileIdSearch)
     RoomMobFile.ReadString(Stuff);
     while (Stuff != "")
     {
-      MobileId      = GetWord(Stuff, 2);
+      MobileId      = StrGetWord(Stuff, 2);
       PositionOfDot = MobileId.Find('.');
       MobileHurt    = false;
       if (PositionOfDot > 1)
@@ -1419,11 +1419,11 @@ CString Mobile::MobTalk()
   MobileMsg += "\r\n";
   // Select random message number
   MobTalkFile.ReadString(Stuff);
-  MsgCount = atoi(GetWord(Stuff, 4));
+  MsgCount = atoi(StrGetWord(Stuff, 4));
   RndMsgNbr = GetRandomNumber(MsgCount);
   // Search for selected message number
   MobTalkFile.ReadString(Stuff);
-  while (atoi(GetWord(Stuff, 2)) != RndMsgNbr)
+  while (atoi(StrGetWord(Stuff, 2)) != RndMsgNbr)
   { // Find the selected message
     if (MobTalkFile.GetPosition() == MobTalkFile.GetLength())
     { // End of file and message was not found

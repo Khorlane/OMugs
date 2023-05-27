@@ -232,7 +232,7 @@ void Social::Socialize(string MinPos, string MsgText)
   LineCount = stoi(StrRight(MsgText, MsgText.length() - 9));
   PlayerName = pDnodeActor->PlayerName;
   PlayerName = StrMakeLower(PlayerName);
-  TargetName = GetWord(CmdStr, 2);
+  TargetName = StrGetWord(CmdStr, 2);
   TargetNameSave = TargetName;
   TargetName = StrMakeLower(TargetName);
   if (LineCount == 2)

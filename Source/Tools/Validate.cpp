@@ -192,7 +192,7 @@ void Validate::ValidateLibraryLoot()
     while (Stuff != "")
     { // For all lines
       LineCount++;
-      ObjectId = GetWord(Stuff, 3);
+      ObjectId = StrGetWord(Stuff, 3);
       //************
       //* ObjectId *
       //************
@@ -284,8 +284,8 @@ void Validate::ValidateLibraryMobiles()
     while (Stuff != "")
     { // For all lines
       LineCount++;
-      FieldName  = GetWord(Stuff, 1);
-      FieldValue = GetWord(Stuff, 2);
+      FieldName  = StrGetWord(Stuff, 1);
+      FieldValue = StrGetWord(Stuff, 2);
       //********************************
       //* MobileId field must be first *
       //********************************
@@ -450,8 +450,8 @@ void Validate::ValidateLibraryObjects()
     while (Stuff != "")
     { // For all lines
       LineCount++;
-      FieldName  = GetWord(Stuff, 1);
-      FieldValue = GetWord(Stuff, 2);
+      FieldName  = StrGetWord(Stuff, 1);
+      FieldValue = StrGetWord(Stuff, 2);
       //********************************
       //* ObjectId field must be first *
       //********************************
@@ -496,8 +496,8 @@ void Validate::ValidateLibraryObjects()
           //***************
           ObjectFile.ReadString(Stuff);
           LineCount++;
-          FieldName  = GetWord(Stuff, 1);
-          FieldValue = GetWord(Stuff, 2);
+          FieldName  = StrGetWord(Stuff, 1);
+          FieldValue = StrGetWord(Stuff, 2);
           if (FieldName != "ArmorValue:")
           { // ArmorValue must follow 'Type: Armor' specification
             Message = "ArmorValue must follow 'Type: Armor' specification";
@@ -509,8 +509,8 @@ void Validate::ValidateLibraryObjects()
           //**************
           ObjectFile.ReadString(Stuff);
           LineCount++;
-          FieldName  = GetWord(Stuff, 1);
-          FieldValue = GetWord(Stuff, 2);
+          FieldName  = StrGetWord(Stuff, 1);
+          FieldValue = StrGetWord(Stuff, 2);
           if (FieldName != "ArmorWear:")
           { // ArmorWear must follow 'ArmorValue' specification
             Message = "ArmorWear must follow 'ArmorValue' specification";
@@ -536,8 +536,8 @@ void Validate::ValidateLibraryObjects()
           //***************
           ObjectFile.ReadString(Stuff);
           LineCount++;
-          FieldName  = GetWord(Stuff, 1);
-          FieldValue = GetWord(Stuff, 2);
+          FieldName  = StrGetWord(Stuff, 1);
+          FieldValue = StrGetWord(Stuff, 2);
           if (FieldName != "WeaponType:")
           { // WeaponType must follow 'Type: Weapon' specification
             Message = "WeaponType must follow 'Type: Weapon' specification";
@@ -558,8 +558,8 @@ void Validate::ValidateLibraryObjects()
           //*****************
           ObjectFile.ReadString(Stuff);
           LineCount++;
-          FieldName  = GetWord(Stuff, 1);
-          FieldValue = GetWord(Stuff, 2);
+          FieldName  = StrGetWord(Stuff, 1);
+          FieldValue = StrGetWord(Stuff, 2);
           if (FieldName != "WeaponDamage:")
           { // WeaponDamage must follow WeaponType specification
             Message = "WeaponDamage must follow WeaponType specification";
@@ -640,7 +640,7 @@ void Validate::ValidateLibraryRooms()
     while (Stuff != "End of Room")
     { // For all lines
       LineCount++;
-      FieldName  = GetWord(Stuff, 1);
+      FieldName  = StrGetWord(Stuff, 1);
       FieldValue = GetWords(Stuff, 2);
       //********************************
       //* RoomId field must be first *
@@ -675,7 +675,7 @@ void Validate::ValidateLibraryRooms()
         j = StrCountWords(FieldValue);
         for (i = 1; i <= j; i++)
         { // Check each word in FieldValue
-          TmpStr = GetWord(FieldValue, i);
+          TmpStr = StrGetWord(FieldValue, i);
           if (IsWord(TmpStr, "None Dark Drink NoFight NoNPC"))
           { // Valid RoomType
             if (TmpStr != "None")
@@ -806,8 +806,8 @@ void Validate::ValidateLibraryShops()
     while (Stuff != "End of Shop")
     { // For all lines
       LineCount++;
-      FieldName  = GetWord(Stuff, 1);
-      FieldValue = GetWord(Stuff, 2);
+      FieldName  = StrGetWord(Stuff, 1);
+      FieldValue = StrGetWord(Stuff, 2);
       if (FieldName != "Item:")
       { // Not an item line
         ShopFile.ReadString(Stuff);
@@ -949,8 +949,8 @@ void Validate::ValidateLibraryWorldMobiles()
     while (Stuff != "")
     { // For all lines
       LineCount++;
-      FieldName  = GetWord(Stuff, 1);
-      FieldValue = GetWord(Stuff, 2);
+      FieldName  = StrGetWord(Stuff, 1);
+      FieldValue = StrGetWord(Stuff, 2);
       //**********
       //* RoomId *
       //**********
@@ -1046,8 +1046,8 @@ void Validate::ValidateRunningPlayers()
     { // For all lines
       LineCount++;
       Stuff.Replace(':',' ');
-      FieldName  = GetWord(Stuff, 1);
-      FieldValue = GetWord(Stuff, 2);
+      FieldName  = StrGetWord(Stuff, 1);
+      FieldValue = StrGetWord(Stuff, 2);
       //****************************
       //* Name field must be first *
       //****************************
@@ -1166,8 +1166,8 @@ void Validate::ValidateRunningPlayersPlayerEqu()
     while (Stuff != "")
     { // For all lines
       LineCount++;
-      WearPosition = GetWord(Stuff, 1);
-      ObjectId     = GetWord(Stuff, 2);
+      WearPosition = StrGetWord(Stuff, 1);
+      ObjectId     = StrGetWord(Stuff, 2);
       //*****************
       //* Wear position *
       //*****************
@@ -1273,7 +1273,7 @@ void Validate::ValidateRunningPlayersPlayerObj()
     while (Stuff != "")
     { // For all lines
       LineCount++;
-      ObjectId = GetWord(Stuff, 2);
+      ObjectId = StrGetWord(Stuff, 2);
       //************
       //* ObjectId *
       //************
@@ -1397,7 +1397,7 @@ void Validate::ValidateRunningRoomMob()
     while (Stuff != "")
     { // For all lines
       LineCount++;
-      MobileId = GetWord(Stuff, 2);
+      MobileId = StrGetWord(Stuff, 2);
       PositionOfDot = MobileId.Find('.');
       if (PositionOfDot > 1)
       { // Mobile is hurt
@@ -1526,7 +1526,7 @@ void Validate::ValidateRunningRoomObj()
     while (Stuff != "")
     { // For all lines
       LineCount++;
-      ObjectId = GetWord(Stuff, 2);
+      ObjectId = StrGetWord(Stuff, 2);
       //************
       //* ObjectId *
       //************

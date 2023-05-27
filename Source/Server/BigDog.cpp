@@ -302,9 +302,9 @@ int StrFindOneOf(string HayStack, string Needle)
 }
 
 // Get the Word indicated by WordNbr (temporary)
-string StrGetWord(CString Str1, int WordNbr)
+CString StrGetWord(CString Str1, int WordNbr)
 {
-  return StrGetWord(ConvertCStringToString(Str1), WordNbr);
+  return ConvertStringToCString(StrGetWord(ConvertCStringToString(Str1), WordNbr));
 }
 
 // Get the Word indicated by WordNbr

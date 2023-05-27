@@ -347,7 +347,7 @@ CString StrDeleteWord(CString Str1, int WordNbr);
 string  StrDeleteWord(string Str1, int WordNbr);
 int     StrFindOneOf(CString HayStack, string Needle);
 int     StrFindOneOf(string HayStack, string Needle);
-string  StrGetWord(CString Str1, int WordNbr);
+CString StrGetWord(CString Str1, int WordNbr);
 string  StrGetWord(string Str1, int WordNbr);
 string  StrGetWords(string Str1, int WordNbr);
 string  StrLeft(string Str1, int Len);

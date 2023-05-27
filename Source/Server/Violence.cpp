@@ -461,8 +461,8 @@ CString Violence::WhackMobile(CString MobileId,
 
   // Get mobile's total hit points and hit points left
   MobHitPointsInfo  = GetMobileHitPoints(MobileId);
-  MobHitPointsTotal = atoi(GetWord(MobHitPointsInfo, 1));
-  MobHitPointsLeft  = atoi(GetWord(MobHitPointsInfo, 2));
+  MobHitPointsTotal = atoi(StrGetWord(MobHitPointsInfo, 1));
+  MobHitPointsLeft  = atoi(StrGetWord(MobHitPointsInfo, 2));
   MobHealthPctOld = CalcPct(MobHitPointsLeft, MobHitPointsTotal);
   // Reduce mobile's hit points by damage done and write to file
   MobHitPointsLeft = MobHitPointsLeft - DamageToMobile;
