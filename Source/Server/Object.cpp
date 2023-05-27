@@ -83,7 +83,7 @@ bool Object::AddObjToPlayerEqu(CString WearPosition, CString ObjectId)
   bool       WearWieldFailed;
 
   WearWieldFailed = false;
-  ObjectId.MakeLower();
+  ObjectId = StrMakeLower(ObjectId);
   // Open PlayerEqu file
   PlayerEquFileName =  PLAYER_EQU_DIR;
   PlayerEquFileName += pDnodeActor->PlayerName;
@@ -199,7 +199,7 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, CString ObjectId)
   CString    TmpStr;
 
   pDnodeTgt = pDnodeTgt1;
-  ObjectId.MakeLower();
+  ObjectId = StrMakeLower(ObjectId);
   // Open PlayerObj file
   PlayerObjFileName =  PLAYER_OBJ_DIR;
   PlayerObjFileName += pDnodeTgt->PlayerName;
@@ -316,7 +316,7 @@ void Object::AddObjToRoom(CString RoomId, CString ObjectId)
   int        Success;
   CString    TmpStr;
 
-  ObjectId.MakeLower();
+  ObjectId = StrMakeLower(ObjectId);
   // Open RoomObj file
   RoomObjFileName =  ROOM_OBJ_DIR;
   RoomObjFileName += RoomId;
@@ -489,7 +489,7 @@ void Object::IsObjInPlayerEqu(CString ObjectName)
   while (Stuff != "")
   { // For each player equipment object 
     ObjectId = StrGetWord(Stuff, 2);
-    ObjectName.MakeLower();
+    ObjectName = StrMakeLower(ObjectName);
     if (ObjectName == ObjectId)
     { // Found a match
       pObject = new Object(ObjectId);
@@ -538,7 +538,7 @@ void Object::IsObjInPlayerEqu(CString ObjectName)
       return;
     }
     NamesCheck = pObject->Names;
-    NamesCheck.MakeLower();
+    NamesCheck = StrMakeLower(NamesCheck);
     if (IsWord(ObjectName, NamesCheck))
     { // Match
       return;
@@ -591,7 +591,7 @@ void Object::IsObjInPlayerInv(CString ObjectName)
   while (Stuff != "")
   { // For all items in player inventory
     ObjectId = StrGetWord(Stuff, 2);
-    ObjectName.MakeLower();
+    ObjectName = StrMakeLower(ObjectName);
     if (ObjectName == ObjectId)
     { // Found a match
       pObject = new Object(ObjectId);
@@ -642,7 +642,7 @@ void Object::IsObjInPlayerInv(CString ObjectName)
     }
     pObject->Count = StrGetWord(Stuff, 1);
     NamesCheck     = pObject->Names;
-    NamesCheck.MakeLower();
+    NamesCheck = StrMakeLower(NamesCheck);
     if (IsWord(ObjectName, NamesCheck))
     { // Match
       return;
@@ -694,7 +694,7 @@ void Object::IsObjInRoom(CString ObjectName)
   while (Stuff != "")
   { // For each item in room
     ObjectId = StrGetWord(Stuff, 2);
-    ObjectName.MakeLower();
+    ObjectName = StrMakeLower(ObjectName);
     if (ObjectName == ObjectId)
     { // Found a match
       pObject = new Object(ObjectId);
@@ -743,7 +743,7 @@ void Object::IsObjInRoom(CString ObjectName)
       return;
     }
     NamesCheck = pObject->Names;
-    NamesCheck.MakeLower();
+    NamesCheck = StrMakeLower(NamesCheck);
     if (IsWord(ObjectName, NamesCheck))
     { // Match
       return;
@@ -806,7 +806,7 @@ void Object::RemoveObjFromPlayerEqu(CString ObjectId)
   int        Success;
   CString    TmpStr;
 
-  ObjectId.MakeLower();
+  ObjectId = StrMakeLower(ObjectId);
   // Open PlayerEqu file
   PlayerEquFileName =  PLAYER_EQU_DIR;
   PlayerEquFileName += pDnodeActor->PlayerName;
@@ -893,7 +893,7 @@ void Object::RemoveObjFromPlayerInv(CString ObjectId, int Count)
   int        Success;
   CString    TmpStr;
 
-  ObjectId.MakeLower();
+  ObjectId = StrMakeLower(ObjectId);
   // Open PlayerObj file
   PlayerObjFileName =  PLAYER_OBJ_DIR;
   PlayerObjFileName += pDnodeActor->PlayerName;
@@ -990,7 +990,7 @@ void Object::RemoveObjFromRoom(CString ObjectId)
   int        Success;
   CString    TmpStr;
 
-  ObjectId.MakeLower();
+  ObjectId = StrMakeLower(ObjectId);
   // Open RoomObj file
   RoomObjFileName =  ROOM_OBJ_DIR;
   RoomObjFileName += pDnodeActor->pPlayer->RoomId;
@@ -1214,7 +1214,7 @@ void Object::ShowObjsInRoom(Dnode *pDnode)
     ObjectCount = StrGetWord(Stuff, 1);
     ObjectId    = StrGetWord(Stuff, 2);
     pObject     = new Object(ObjectId);
-    pObject->Type.MakeLower();
+    pObject->Type = StrMakeLower(pObject->Type);
     pDnode->PlayerOut += "\r\n";
     if (pObject->Type != "notake")
     { // Should be only 1 NoTake type object in a room, like signs or statues
@@ -1573,7 +1573,7 @@ void Object::ParseStuff()
       ArmorWear = Stuff.Right(Stuff.GetLength()-10);
       ArmorWear = StrTrimLeft(ArmorWear);
       WearPosition = ArmorWear;
-      WearPosition.MakeLower();
+      WearPosition = StrMakeLower(WearPosition);
     }
     else
     if (Stuff.Left(11) == "WeaponType:")

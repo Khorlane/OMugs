@@ -66,7 +66,7 @@ void Mobile::AddMobToRoom(CString RoomId, CString MobileId)
   CString    TmpStr;
 
   UpdateMobInWorld(MobileId, "add");
-  MobileId.MakeLower();
+  MobileId = StrMakeLower(MobileId);
   // Open RoomMob file
   RoomMobFileName =  ROOM_MOB_DIR;
   RoomMobFileName += RoomId;
@@ -227,7 +227,7 @@ int Mobile::CountMobOldWayNotUsedNow(CString MobileIdSearch)
   CString    TmpStr;
 
   Count = 0;
-  MobileIdSearch.MakeLower();
+  MobileIdSearch = StrMakeLower(MobileIdSearch);
   if (ChgDir(ROOM_MOB_DIR))
   { // Change directory failed
     AfxMessageBox("Mobile::WhereMob - Change directory to ROOM_MOB_DIR failed", MB_ICONSTOP);
@@ -410,7 +410,7 @@ void Mobile::DeleteMobPlayer(CString PlayerName, CString MobileId)
   int        Success;
   CString    TmpStr;
 
-  MobileId.MakeLower();
+  MobileId = StrMakeLower(MobileId);
   // Open MobPlayer file
   MobPlayerFileName =  MOB_PLAYER_DIR;
   MobPlayerFileName += PlayerName;
@@ -454,7 +454,7 @@ void Mobile::DeleteMobPlayer(CString PlayerName, CString MobileId)
       continue;
     }
     MobileIdCheck = StrGetWord(Stuff, 1);
-    MobileIdCheck.MakeLower();
+    MobileIdCheck = StrMakeLower(MobileIdCheck);
     if (MobileId == MobileIdCheck)
     { // Found it, delete it
       MobileIdDeleted = true;
@@ -640,7 +640,7 @@ Mobile *Mobile::IsMobInRoom(CString MobileName)
       }
     }
     NamesCheck = pMobile->Names;
-    NamesCheck.MakeLower();
+    NamesCheck = StrMakeLower(NamesCheck);
     if (IsWord(MobileName, NamesCheck))
     { // This mobile is a match
       RoomMobFile.Close();
@@ -798,7 +798,7 @@ void Mobile::PutMobBackInRoom(CString PlayerName, CString RoomIdBeforeFleeing)
   while (Stuff != "")
   {
     MobileId = StrGetWord(Stuff, 1);
-    MobileId.MakeLower();
+    MobileId = StrMakeLower(MobileId);
     // Read mobile stats hit points file
     MobStatsHitPointsFileName = MOB_STATS_HPT_DIR;
     MobStatsHitPointsFileName += MobileId;
@@ -851,7 +851,7 @@ void Mobile::RemoveMobFromRoom(CString RoomId, CString MobileId)
   CString    TmpStr;
 
   UpdateMobInWorld(MobileId, "remove");
-  MobileId.MakeLower();
+  MobileId = StrMakeLower(MobileId);
   // Open RoomMob file
   RoomMobFileName =  ROOM_MOB_DIR;
   RoomMobFileName += RoomId;
@@ -1571,7 +1571,7 @@ void Mobile::ParseStuff()
     {
       Attack = Stuff.Right(Stuff.GetLength()-7);
       Attack = StrTrimLeft(Attack);
-      Attack.MakeLower();
+      Attack = StrMakeLower(Attack);
     }
     else
     if (Stuff.Left(7) == "Damage:")

@@ -493,7 +493,7 @@ CString Violence::WhackMobile(CString MobileId,
   MobStatsHitPointsFile.Close();
   // Format whack message
   MobHealthPct = CalcHealthPct(MobHitPointsLeft, MobHitPointsTotal);
-  WeaponType.MakeLower();
+  WeaponType = StrMakeLower(WeaponType);
   WeaponAction = TranslateWord(WeaponType);
   sprintf(Buf, "%d", DamageToMobile);
   DamageAmount = ConvertStringToCString(Buf);

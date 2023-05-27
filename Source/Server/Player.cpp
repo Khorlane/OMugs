@@ -211,9 +211,9 @@ bool Player::IsNameValid(CString Name)
     AfxMessageBox("Player::IsNameValid - Error opening valid name file, it may not exist", MB_ICONSTOP);
     _endthread();
   }
-  Name.MakeLower();
+  Name = StrMakeLower(Name);
   ValidNameFile.ReadString(NameIn);
-  NameIn.MakeLower();
+  NameIn = StrMakeLower(NameIn);
   while (NameIn != "")
   { // Read all names
     if (Name == NameIn)
@@ -399,7 +399,7 @@ int Player::GetWeaponSkill()
   int WeaponSkill;
 
   WeaponSkill = 0;
-  WeaponType.MakeLower();
+  WeaponType = StrMakeLower(WeaponType);
   if (WeaponType == "axe")
   { // Axe
     WeaponSkill = SkillAxe;
@@ -472,7 +472,7 @@ void Player::ParsePlayerStuff()
     if (Stuff.Left(6) == "Admin:")
     {
       TmpStr = Stuff.Right(Stuff.GetLength()-6);
-      TmpStr.MakeLower();
+      TmpStr = StrMakeLower(TmpStr);
       if (TmpStr == "yes")
       {
         Admin = true;
@@ -493,7 +493,7 @@ void Player::ParsePlayerStuff()
     if (Stuff.Left(12) == "AllowAssist:")
     {
       TmpStr = Stuff.Right(Stuff.GetLength()-12);
-      TmpStr.MakeLower();
+      TmpStr = StrMakeLower(TmpStr);
       if (TmpStr == "yes")
       {
         AllowAssist = true;
@@ -508,7 +508,7 @@ void Player::ParsePlayerStuff()
     if (Stuff.Left(11) == "AllowGroup:")
     {
       TmpStr = Stuff.Right(Stuff.GetLength()-11);
-      TmpStr.MakeLower();
+      TmpStr = StrMakeLower(TmpStr);
       if (TmpStr == "yes")
       {
         AllowGroup = true;
@@ -535,7 +535,7 @@ void Player::ParsePlayerStuff()
     if (Stuff.Left(6) == "Color:")
     {
       TmpStr = Stuff.Right(Stuff.GetLength()-6);
-      TmpStr.MakeLower();
+      TmpStr = StrMakeLower(TmpStr);
       if (TmpStr == "yes")
       {
         Color = true;
@@ -594,7 +594,7 @@ void Player::ParsePlayerStuff()
     if (Stuff.Left(10) == "Invisible:")
     {
       TmpStr = Stuff.Right(Stuff.GetLength()-10);
-      TmpStr.MakeLower();
+      TmpStr = StrMakeLower(TmpStr);
       if (TmpStr == "yes")
       {
         Invisible = true;
@@ -623,7 +623,7 @@ void Player::ParsePlayerStuff()
     if (Stuff.Left(9) == "OneWhack:")
     {
       TmpStr = Stuff.Right(Stuff.GetLength()-9);
-      TmpStr.MakeLower();
+      TmpStr = StrMakeLower(TmpStr);
       if (TmpStr == "yes")
       {
         OneWhack = true;
@@ -656,7 +656,7 @@ void Player::ParsePlayerStuff()
     if (Stuff.Left(9) == "RoomInfo:")
     {
       TmpStr = Stuff.Right(Stuff.GetLength()-9);
-      TmpStr.MakeLower();
+      TmpStr = StrMakeLower(TmpStr);
       if (TmpStr == "yes")
       {
         RoomInfo = true;
@@ -757,7 +757,7 @@ void Player::ParsePlayerStuff()
     if (Stuff.Left(11) == "WeaponType:")
     {
       WeaponType = Stuff.Right(Stuff.GetLength()-11);
-      WeaponType.MakeLower();
+      WeaponType = StrMakeLower(WeaponType);
     }
     else
     // Unidentified field in the player's file

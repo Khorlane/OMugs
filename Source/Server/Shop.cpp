@@ -81,11 +81,11 @@ void Shop::IsShopObj(CString RoomId, CString ObjectName)
   { // Read 'item' lines in ShopFile
     Stuff = StrTrimLeft(Stuff);
     Stuff = StrTrimRight(Stuff);
-    Stuff.MakeLower();
+    Stuff = StrMakeLower(Stuff);
     if (StrGetWord(Stuff, 1) == "item:")
     { // Found an item
       ObjectId = StrGetWord(Stuff, 2);
-      ObjectName.MakeLower();
+      ObjectName = StrMakeLower(ObjectName);
       if (ObjectName == ObjectId)
       { // Found a match
         pObject = new Object(ObjectId);
@@ -125,7 +125,7 @@ void Shop::IsShopObj(CString RoomId, CString ObjectName)
   { // Read 'item' lines in ShopFile
     Stuff = StrTrimLeft(Stuff);
     Stuff = StrTrimRight(Stuff);
-    Stuff.MakeLower();
+    Stuff = StrMakeLower(Stuff);
     if (StrGetWord(Stuff, 1) == "item:")
     { // Found an item
       ObjectId = StrGetWord(Stuff, 2);
@@ -133,7 +133,7 @@ void Shop::IsShopObj(CString RoomId, CString ObjectName)
       if (pObject)
       { // Check for a match
         NamesCheck = pObject->Names;
-        NamesCheck.MakeLower();
+        NamesCheck = StrMakeLower(NamesCheck);
         Success = NamesCheck.Find(ObjectName);
         if (Success != -1)
         { // Match, Object found in this shop
@@ -225,7 +225,7 @@ void Shop::ListObjects()
   { // Read 'item' lines in ShopFile
     Stuff = StrTrimLeft(Stuff);
     Stuff = StrTrimRight(Stuff);
-    Stuff.MakeLower();
+    Stuff = StrMakeLower(Stuff);
     if (StrGetWord(Stuff, 1) == "item:")
     { // Found an item
       ObjectId = StrGetWord(Stuff, 2);

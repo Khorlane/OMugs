@@ -367,6 +367,12 @@ string StrMakeFirstUpper(string Str1)
   return Str1;
 }
 
+// Lower case the whole string (temporary)
+CString StrMakeLower(CString Str1)
+{
+  return ConvertStringToCString(StrMakeLower(ConvertCStringToString(Str1)));
+}
+
 // Lower case the whole string
 string StrMakeLower(string Str1)
 {

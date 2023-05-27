@@ -76,7 +76,7 @@ bool Validate::ValidateIt(CString ValidationType)
   CString LogBuf;
 
   ValErr = false;
-  ValidationType.MakeLower();
+  ValidationType = StrMakeLower(ValidationType);
   if (ValidationType == "all")
   {
     Validate::ValidateAll();
@@ -351,7 +351,7 @@ void Validate::ValidateLibraryMobiles()
       //***********
       if (FieldName == "Attack:")
       { // Faction field validation
-        FieldValue.MakeLower();
+        FieldValue = StrMakeLower(FieldValue);
         if (IsNotWord(FieldValue, "bites claws crushes hits mauls pierces punches slashes stabs stings thrashes"))
         { // Invalid mobile attack
           Message = "Mobile attack is invalid";

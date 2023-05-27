@@ -307,7 +307,7 @@ void BuildObjectsList::ReadLine()
   ObjectFile.ReadString(Stuff);
   Stuff = StrTrimLeft(Stuff);
   Stuff = StrTrimRight(Stuff);
-  Stuff.MakeLower();
+  Stuff = StrMakeLower(Stuff);
 }
 
 /***********************************************************
@@ -362,7 +362,7 @@ void BuildObjectsList::SetFilter()
   {
     Type = "NotImplementedYet";
   }
-  Type.MakeLower();
+  Type = StrMakeLower(Type);
   //*************
   //* ArmorWear *
   //*************
@@ -450,7 +450,7 @@ void BuildObjectsList::SetFilter()
   {
     ArmorWear = "Feet";
   }
-  ArmorWear.MakeLower();
+  ArmorWear = StrMakeLower(ArmorWear);
   //***************
   //* Weapon Type *
   //***************
@@ -498,5 +498,5 @@ void BuildObjectsList::SetFilter()
   {
     WeaponType = "Sword";
   }
-  WeaponType.MakeLower();
+  WeaponType = StrMakeLower(WeaponType);
 }

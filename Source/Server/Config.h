@@ -353,6 +353,7 @@ string  StrGetWords(string Str1, int WordNbr);
 string  StrLeft(string Str1, int Len);
 CString StrMakeFirstUpper(CString Str1);
 string  StrMakeFirstUpper(string Str1);
+CString StrMakeLower(CString Str1);
 string  StrMakeLower(string Str1);
 CString StrMakeUpper(CString Str1);
 string  StrMakeUpper(string Str1);

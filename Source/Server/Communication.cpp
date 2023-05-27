@@ -66,7 +66,7 @@ Dnode *Communication::GetTargetDnode(CString TargetName)
   CString  LookupName;
 
   TargetFound = false;
-  TargetName.MakeLower();
+  TargetName = StrMakeLower(TargetName);
   // Get Dnode pointer for target player
   SetpDnodeCursorFirst();
   while (!EndOfDnodeList())
@@ -75,7 +75,7 @@ Dnode *Communication::GetTargetDnode(CString TargetName)
 // TODO - Can the line above replace the line below ???    
     pDnodeLookup = GetDnode();
     LookupName = pDnodeLookup->PlayerName;
-    LookupName.MakeLower();
+    LookupName = StrMakeLower(LookupName);
     if (TargetName == LookupName)
     { // Target found
       if (pDnodeLookup->PlayerStatePlaying)
@@ -935,14 +935,14 @@ void Communication::CommandParse()
   // Get MudCmd *
   //*************
   MudCmd = StrGetWord(CmdStr, 1);
-  MudCmd.MakeLower();
+  MudCmd = StrMakeLower(MudCmd);
   // Translate 'n' into 'go north'
   MudCmd = TranslateWord(MudCmd);
   if (StrCountWords(MudCmd) == 2)
   { // Re-get MudCmd. In the case of 'go north', MudCmd is 'go'
     CmdStr = MudCmd;
     MudCmd = StrGetWord(CmdStr, 1);
-    MudCmd.MakeLower();
+    MudCmd = StrMakeLower(MudCmd);
   }
   // Check for spamming
   if (MudCmd != "go")
@@ -1498,8 +1498,8 @@ void Communication::DoAdvance()
   TargetName      = StrGetWord(CmdStr, 2);
   PlayerNameSave  = PlayerName;
   TargetNameSave  = TargetName;
-  PlayerName.MakeLower();
-  TargetName.MakeLower();
+  PlayerName = StrMakeLower(PlayerName);
+  TargetName = StrMakeLower(TargetName);
   Level = atoi(StrGetWord(CmdStr, 3));
   sprintf(Buf, "%d", Level);
   LevelString = ConvertStringToCString(Buf);
@@ -1654,8 +1654,8 @@ void Communication::DoAssist()
   PlayerNameCheck = pDnodeActor->PlayerName;
   TargetNameCheck = StrGetWord(CmdStr, 2);
   TargetNameSave  = TargetNameCheck;
-  PlayerNameCheck.MakeLower();
-  TargetNameCheck.MakeLower();
+  PlayerNameCheck = StrMakeLower(PlayerNameCheck);
+  TargetNameCheck = StrMakeLower(TargetNameCheck);
   if (PlayerNameCheck == TargetNameCheck)
   { // Player is trying to assist themself
     pDnodeActor->PlayerOut += "You can't assist youself.\r\n";
@@ -1907,7 +1907,7 @@ void Communication::DoColor()
 
   DEBUGIT(1);
   TmpStr = StrGetWord(CmdStr, 2);
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   if (TmpStr == "on")
   { // Turn color on
     pDnodeActor->pPlayer->Color = true;
@@ -1982,10 +1982,10 @@ void Communication::DoConsider()
   PlayerName      = pDnodeActor->PlayerName;
   RoomId          = pDnodeActor->pPlayer->RoomId;
   PlayerNameCheck = PlayerName;
-  PlayerNameCheck.MakeLower();
+  PlayerNameCheck = StrMakeLower(PlayerNameCheck);
   Target = StrGetWord(CmdStr, 2);
   MobileName = Target;
-  Target.MakeLower();
+  Target = StrMakeLower(Target);
   if (Target == PlayerNameCheck)
   { // Trying to kill self
     pDnodeActor->PlayerOut += "Consider yourself considered!";
@@ -2277,7 +2277,7 @@ void Communication::DoDestroy()
   //****************************
   TmpStr = StrGetWord(CmdStr, 2);
   ObjectName = TmpStr;
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
   IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
@@ -2349,8 +2349,8 @@ void Communication::DoDrink()
     string sRoomName;
     sRoomName = GetRoomName(sRoomId);
     TmpStr = StrGetWord(CmdStr, 2);
-    TmpStr.MakeLower();
-    RoomName.MakeLower();
+    TmpStr = StrMakeLower(TmpStr);
+    RoomName = StrMakeLower(RoomName);
     if (IsWord(TmpStr, RoomName))
     { //*****************
       //* Player drinks *
@@ -2378,7 +2378,7 @@ void Communication::DoDrink()
   //****************************
   TmpStr = StrGetWord(CmdStr, 2);
   ObjectName = TmpStr;
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
   IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
@@ -2393,7 +2393,7 @@ void Communication::DoDrink()
   //*******************
   //* Is object drink? *
   //*******************
-  pObject->Type.MakeLower();
+  pObject->Type = StrMakeLower(pObject->Type);
   if (pObject->Type != "drink")
   { // Object is not a drink
     pDnodeActor->PlayerOut += "You can't drink ";
@@ -2462,7 +2462,7 @@ void Communication::DoDrop()
   //****************************
   TmpStr = StrGetWord(CmdStr, 2);
   ObjectName = TmpStr;
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
   IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
@@ -2530,7 +2530,7 @@ void Communication::DoEat()
   //****************************
   TmpStr = StrGetWord(CmdStr, 2);
   ObjectName = TmpStr;
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
   IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
@@ -2545,7 +2545,7 @@ void Communication::DoEat()
   //*******************
   //* Is object food? *
   //*******************
-  pObject->Type.MakeLower();
+  pObject->Type = StrMakeLower(pObject->Type);
   if (pObject->Type != "food")
   {
     pDnodeActor->PlayerOut += "You can't eat ";
@@ -2682,7 +2682,7 @@ void Communication::DoExamine()
   ObjectFound = false;
   TmpStr = StrGetWord(CmdStr, 2);
   ObjectName = TmpStr;
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   // Check room
   pObject = NULL;
   IsObjInRoom(TmpStr); // Sets pObject
@@ -2730,7 +2730,7 @@ void Communication::DoExamine()
   pDnodeActor->PlayerOut += pObject->Type;
   pDnodeActor->PlayerOut += "\r\n";
   ObjectType = pObject->Type;
-  ObjectType.MakeLower();
+  ObjectType = StrMakeLower(ObjectType);
   if (ObjectType == "weapon")
   { // Object is a weapon
     pDnodeActor->PlayerOut += "Weapon type: ";
@@ -2904,7 +2904,7 @@ void Communication::DoFollow(Dnode *pDnode, CString CmdStr1)
   }
   Target = StrGetWord(CmdStr, 2);
   TmpStr = Target;
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   if (Target == "")
   { // Follow with no target
     pDnode->PlayerOut += "Who would you like to follow?\r\n";
@@ -3122,7 +3122,7 @@ void Communication::DoGet()
   //**********************************************
   TmpStr = StrGetWord(CmdStr, 2);
   ObjectName = TmpStr;
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
   IsObjInRoom(TmpStr); // Sets pObject
   if (!pObject)
@@ -3210,7 +3210,7 @@ void Communication::DoGive()
   //****************************
   TmpStr = StrGetWord(CmdStr, 2);
   ObjectName = TmpStr;
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
   IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
@@ -3228,9 +3228,9 @@ void Communication::DoGive()
   TargetNotHere = false;
   TmpStr = StrGetWord(CmdStr, 3);
   TargetName = TmpStr;
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   PlayerName = pDnodeActor->PlayerName;
-  PlayerName.MakeLower();
+  PlayerName = StrMakeLower(PlayerName);
   if (PlayerName == TmpStr)
   { // Player is trying to give something to themself
     pDnodeActor->PlayerOut += "Giving something to youself is just plain silly!\r\n";
@@ -3426,7 +3426,7 @@ void Communication::DoGoToArrive()
 
   DEBUGIT(1);
   TmpStr = StrGetWord(CmdStr, 2);
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   if (TmpStr == "")
   { // Player entered 'gotoarrive' by itself
     if (pDnodeActor->pPlayer->GoToArrive == "")
@@ -3503,7 +3503,7 @@ void Communication::DoGoToDepart()
 
   DEBUGIT(1);
   TmpStr = StrGetWord(CmdStr, 2);
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   if (TmpStr == "")
   { // Player entered 'gotodepart' by itself
     if (pDnodeActor->pPlayer->GoToDepart == "")
@@ -3592,8 +3592,8 @@ void Communication::DoGroup()
   PlayerNameCheck = pDnodeActor->PlayerName;
   TargetNameCheck = StrGetWord(CmdStr, 2);
   TargetNameSave  = TargetNameCheck;
-  PlayerNameCheck.MakeLower();
-  TargetNameCheck.MakeLower();
+  PlayerNameCheck = StrMakeLower(PlayerNameCheck);
+  TargetNameCheck = StrMakeLower(TargetNameCheck);
   //************************
   //* Group with no target *
   //************************
@@ -3915,10 +3915,10 @@ void Communication::DoHail()
   PlayerName      = pDnodeActor->PlayerName;
   RoomId          = pDnodeActor->pPlayer->RoomId;
   PlayerNameCheck = PlayerName;
-  PlayerNameCheck.MakeLower();
+  PlayerNameCheck = StrMakeLower(PlayerNameCheck);
   Target = StrGetWord(CmdStr, 2);
   MobileName = Target;
-  Target.MakeLower();
+  Target = StrMakeLower(Target);
   if (Target == PlayerNameCheck)
   { // Trying to kill self
     pDnodeActor->PlayerOut += "Hailing yourself is just plain silly.";
@@ -4014,7 +4014,7 @@ void Communication::DoInvisible()
 
   DEBUGIT(1);
   TmpStr = StrGetWord(CmdStr, 2);
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   if (TmpStr == "on")
   { // Turn Invisible on
     pDnodeActor->pPlayer->Invisible = true;
@@ -4118,10 +4118,10 @@ void Communication::DoKill()
   }
   PlayerName      = pDnodeActor->PlayerName;
   PlayerNameCheck = PlayerName;
-  PlayerNameCheck.MakeLower();
+  PlayerNameCheck = StrMakeLower(PlayerNameCheck);
   Target = StrGetWord(CmdStr, 2);
   MobileName = Target;
-  Target.MakeLower();
+  Target = StrMakeLower(Target);
   if (Target == PlayerNameCheck)
   { // Trying to kill self
     pDnodeActor->PlayerOut += "That would be just awful.";
@@ -4286,7 +4286,7 @@ void Communication::DoLoad()
     return;
   }
   TmpStr = StrGetWord(CmdStr, 2);
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   TmpStr = TranslateWord(TmpStr);
   if (IsNotWord(TmpStr,"object mobile"))
   { // obj or mob must be specified
@@ -4324,7 +4324,7 @@ void Communication::DoLoad()
   if (TmpStr == "mobile")
   { // Loading an mobile
     MobileId = StrGetWord(CmdStr, 3);
-    MobileId.MakeLower();
+    MobileId = StrMakeLower(MobileId);
     pMobile = IsMobValid(MobileId);
     if (!pMobile)
     { // Mobile does not exist
@@ -4431,7 +4431,7 @@ void Communication::DoLook(CString CmdStr1)
   //*******************
   IsPlayer = true;
   TargetName = TmpStr;
-  TargetName.MakeLower();
+  TargetName = StrMakeLower(TargetName);
   pDnodeTgt = GetTargetDnode(TargetName);
   if (!pDnodeTgt)
   { // Target is not online and/or not in 'playing' state
@@ -4539,7 +4539,7 @@ void Communication::DoOneWhack()
 
   DEBUGIT(1);
   TmpStr = StrGetWord(CmdStr, 2);
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   if (TmpStr == "on")
   { // Turn OneWhack on
     pDnodeActor->pPlayer->OneWhack = true;
@@ -4753,7 +4753,7 @@ void Communication::DoRefresh()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();      
     return;
   }
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   if (TmpStr == "commands")
   { // Refresh commands array
     CommandArrayLoad();
@@ -4807,7 +4807,7 @@ void Communication::DoRemove()
   }
   // Get pointer to object
   ObjectName = TmpStr;
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
   IsObjInPlayerEqu(TmpStr); // Sets pObject
   if (!pObject)
@@ -4840,7 +4840,7 @@ void Communication::DoRemove()
   // Add object to player's inventory
   AddObjToPlayerInv(pDnodeTgt, pObject->ObjectId);
   TmpStr = pObject->Type;
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   if (TmpStr == "weapon")
   { // Now player has no weapon
     pDnodeActor->pPlayer->WeaponDamage = PLAYER_DMG_HAND;
@@ -4871,8 +4871,8 @@ void Communication::DoRestore(CString CmdStr1)
   PlayerName      = pDnodeActor->PlayerName;
   TargetName      = StrGetWord(CmdStr, 2);
   TargetNameSave  = TargetName;
-  PlayerName.MakeLower();
-  TargetName.MakeLower();
+  PlayerName = StrMakeLower(PlayerName);
+  TargetName = StrMakeLower(TargetName);
   if (TargetName.GetLength() < 1)
   { // No target, assume self
     TargetName = PlayerName;
@@ -4935,7 +4935,7 @@ void Communication::DoRoomInfo()
 
   DEBUGIT(1);
   TmpStr = StrGetWord(CmdStr, 2);
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   if (TmpStr == "on")
   {
     pDnodeActor->pPlayer->RoomInfo = true;
@@ -5105,7 +5105,7 @@ void Communication::DoSell()
   //********************
   InvCountInt = atoi(InvCountStr);
   SellCountStr = StrGetWord(CmdStr, 3);
-  SellCountStr.MakeLower(); // In case player typed 'all'
+  SellCountStr = StrMakeLower(SellCountStr); // In case player typed 'all'
   if (SellCountStr == "")
   { // Player did not specify a sell count
     SellCountInt = 1;
@@ -5204,7 +5204,7 @@ void Communication::DoShow()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();      
     return;
   }
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   if (IsNotWord(TmpStr, "commands socials help"))
   { // Show target not valid
     pDnodeActor->PlayerOut += "Show what??";
@@ -5502,8 +5502,8 @@ void Communication::DoTell()
   PlayerName      = pDnodeActor->PlayerName;
   TargetName      = StrGetWord(CmdStr, 2);
   TargetNameSave  = TargetName;
-  PlayerName.MakeLower();
-  TargetName.MakeLower();
+  PlayerName = StrMakeLower(PlayerName);
+  TargetName = StrMakeLower(TargetName);
   if (TargetName == PlayerName)
   {
     pDnodeActor->PlayerOut += "Seems silly to tell yourself something!\r\n";
@@ -5601,7 +5601,7 @@ void Communication::DoTitle()
 
   DEBUGIT(1);
   TmpStr = StrGetWord(CmdStr, 2);
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   if (TmpStr == "")
   { // Player entered 'title' by itself
     if (pDnodeActor->pPlayer->Title == "")
@@ -5698,7 +5698,7 @@ void Communication::DoTrain()
   WeaponType  = StrGetWord(CmdStr, 2);
   MinusSign   = StrGetWord(CmdStr, 3);
   UnTrainCost = StrGetWord(CmdStr, 4);
-  WeaponType.MakeLower();
+  WeaponType = StrMakeLower(WeaponType);
   // Calculate skill points used and remaining
   SkillPointsUsed  = 0;
   SkillPointsUsed += pDnodeActor->pPlayer->SkillAxe;
@@ -6058,7 +6058,7 @@ void Communication::DoWear()
   // Get pointer to object
   TmpStr = StrGetWord(CmdStr, 2);
   ObjectName = TmpStr;
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
   IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
@@ -6070,7 +6070,7 @@ void Communication::DoWear()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  pObject->Type.MakeLower();
+  pObject->Type = StrMakeLower(pObject->Type);
   if (pObject->Type != "armor")
   { // Player can't wear stuff that is NOT armor
     pDnodeActor->PlayerOut += "You can't wear ";
@@ -6086,7 +6086,7 @@ void Communication::DoWear()
   if (IsWord(pObject->WearPosition,"ear wrist finger ankle"))
   { // Object must be worn using left and right
     TmpStr = StrGetWord(CmdStr, 3);
-    TmpStr.MakeLower();
+    TmpStr = StrMakeLower(TmpStr);
     if (IsNotWord(TmpStr,"left right"))
     { // Player did not specify left or right
       pDnodeActor->PlayerOut += "You must specify left or right";
@@ -6153,7 +6153,7 @@ void Communication::DoWhere()
     return;
   }
   SearchId = StrGetWord(CmdStr, 2);
-  SearchId.MakeLower();
+  SearchId = StrMakeLower(SearchId);
   // Find Players
   pDnodeTgt = GetTargetDnode(SearchId);
   if (pDnodeTgt)
@@ -6284,7 +6284,7 @@ void Communication::DoWield()
   //*************************
   TmpStr = StrGetWord(CmdStr, 2);
   ObjectName = TmpStr;
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
   IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
@@ -6300,7 +6300,7 @@ void Communication::DoWield()
   //* Is it a weapon? *
   //*******************
   TmpStr = pObject->Type;
-  TmpStr.MakeLower();
+  TmpStr = StrMakeLower(TmpStr);
   if (TmpStr != "weapon")
   { // Player is trying to wield something that is not a weapon
     pDnodeActor->PlayerOut += "Try wielding a weapon.";
@@ -7491,7 +7491,7 @@ void Communication::ViolencePlayer()
   // Player has whacked the mobile
   DeadOrAlive = StrGetWord(MobileBeenWhacked, 1);
   MobileBeenWhacked = StrDeleteWord(MobileBeenWhacked, 1);
-  DeadOrAlive.MakeLower();
+  DeadOrAlive = StrMakeLower(DeadOrAlive);
   if (DeadOrAlive == "alive")
   { // Mobile is not dead, Send fight messages to player
     pDnodeActor->PlayerOut += "\r\n";
