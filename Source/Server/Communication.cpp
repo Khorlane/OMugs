@@ -690,7 +690,7 @@ void Communication::SockRecv()
     //**********************
     //* Send player output *
     //**********************
-    if (pDnodeActor->PlayerOut.GetLength() > 0)
+    if (StrGetLength(pDnodeActor->PlayerOut) > 0)
     { // Player has output, handle color codes
       Color();
       // 'send' resquires a standard c string
@@ -905,7 +905,7 @@ void Communication::CommandParse()
   // Get next command string *
   //**************************
   CmdStr = ConvertStringToCString(pDnodeActor->PlayerInp);
-  CmdStrLength = CmdStr.GetLength();
+  CmdStrLength = StrGetLength(CmdStr);
   PositionOfNewline = StrFindOneOf(CmdStr, "\r\n");
   if (PositionOfNewline < 0)
   { // No newline found, skip out
@@ -1869,7 +1869,7 @@ void Communication::DoChat()
   //* Validate command *
   //********************
   ChatMsg = GetWords(CmdStr, 2);
-  if (ChatMsg.GetLength() < 1)
+  if (StrGetLength(ChatMsg) < 1)
   { // Player did not enter any chat
     pDnodeActor->PlayerOut += "You start to chat, but, about what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -2601,7 +2601,7 @@ void Communication::DoEmote()
     return;
   }
   EmoteMsg = GetWords(CmdStr, 2);
-  if (EmoteMsg.GetLength() < 1)
+  if (StrGetLength(EmoteMsg) < 1)
   { // Player did not enter anything to say
     pDnodeActor->PlayerOut += "You try to show emotion, but fail.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -2867,7 +2867,7 @@ void Communication::DoFlee()
   // Player is gone, so delete MobPlayer completely
   DeleteMobPlayer(PlayerName1, "file");
   // Select a new target for MobileIdSave
-  if (CandidateList.GetLength() == 0)
+  if (StrGetLength(CandidateList) == 0)
   { // No available target for MobileIdSave
     return;
   }
@@ -3479,7 +3479,7 @@ void Communication::DoGoToArrive()
   StrReplace(TmpStr, "&M", "");
   StrReplace(TmpStr, "&C", "");
   StrReplace(TmpStr, "&W", "");
-  if (TmpStr.GetLength() > 60)
+  if (StrGetLength(TmpStr) > 60)
   {
     pDnodeActor->PlayerOut += "Arrival message must be less than 61 characters, color codes do not count.\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -3556,7 +3556,7 @@ void Communication::DoGoToDepart()
   StrReplace(TmpStr, "&M", "");
   StrReplace(TmpStr, "&C", "");
   StrReplace(TmpStr, "&W", "");
-  if (TmpStr.GetLength() > 60)
+  if (StrGetLength(TmpStr) > 60)
   {
     pDnodeActor->PlayerOut += "Departure message must be less than 61 characters, color codes do not count.\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -3597,7 +3597,7 @@ void Communication::DoGroup()
   //************************
   //* Group with no target *
   //************************
-  if (TargetNameCheck.GetLength() < 1)
+  if (StrGetLength(TargetNameCheck) < 1)
   { // No target given
       pDnodeActor->PlayerOut += "Group with whom?\r\n";
       pDnodeActor->pPlayer->CreatePrompt();
@@ -3620,7 +3620,7 @@ void Communication::DoGroup()
     { // Player is in a group, show members
       pDnodeActor->PlayerOut += pDnodeActor->pPlayer->pPlayerGrpMember[0]->Name;
       pDnodeActor->PlayerOut += " \r\n";
-      j = pDnodeActor->pPlayer->pPlayerGrpMember[0]->Name.GetLength();
+      j = StrGetLength(pDnodeActor->pPlayer->pPlayerGrpMember[0]->Name);
       for (i = 1; i < j + 1; i++)
       {
         pDnodeActor->PlayerOut += "-";
@@ -3825,7 +3825,7 @@ void Communication::DoGsay()
     return;
   }
   GsayMsg = GetWords(CmdStr, 2);
-  if (GsayMsg.GetLength() < 1)
+  if (StrGetLength(GsayMsg) < 1)
   { // Player typed gsay but did not type a message
     pDnodeActor->PlayerOut += "Are you trying to say something to the group?\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -3960,7 +3960,7 @@ void Communication::DoHail()
   SendToRoom(RoomId, HailMsg);
   MobileMsg = pMobile->MobTalk();
   // Stip last \r\n from message, SendToRoom adds a \r\n
-  MobileMsg = MobileMsg.Left(MobileMsg.GetLength()-2);
+  MobileMsg = StrLeft(MobileMsg, StrGetLength(MobileMsg) - 2);
   pDnodeSrc = NULL;
   pDnodeTgt = NULL;
   SendToRoom(RoomId, MobileMsg);
@@ -4745,7 +4745,7 @@ void Communication::DoRefresh()
     return;
   }
   TmpStr = StrGetWord(CmdStr, 2);
-  if (TmpStr.GetLength() == 0)
+  if (StrGetLength(TmpStr) == 0)
   { // Player did not provide an target to be refreshed
     pDnodeActor->PlayerOut += "Refresh what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4797,7 +4797,7 @@ void Communication::DoRemove()
     return;
   }
   TmpStr = StrGetWord(CmdStr, 2);
-  if (TmpStr.GetLength() == 0)
+  if (StrGetLength(TmpStr) == 0)
   { // Player did not provide an object to be removed
     pDnodeActor->PlayerOut += "Remove what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4873,7 +4873,7 @@ void Communication::DoRestore(CString CmdStr1)
   TargetNameSave  = TargetName;
   PlayerName = StrMakeLower(PlayerName);
   TargetName = StrMakeLower(TargetName);
-  if (TargetName.GetLength() < 1)
+  if (StrGetLength(TargetName) < 1)
   { // No target, assume self
     TargetName = PlayerName;
   }
@@ -4989,7 +4989,7 @@ void Communication::DoSay()
     return;
   }
   SayMsg = GetWords(CmdStr, 2);
-  if (SayMsg.GetLength() < 1)
+  if (StrGetLength(SayMsg) < 1)
   { // Player did not enter anything to say
     pDnodeActor->PlayerOut += "You try to speak, but no words come out of your mouth.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -5196,7 +5196,7 @@ void Communication::DoShow()
     return;
   }
   TmpStr = StrGetWord(CmdStr, 2);
-  if (TmpStr.GetLength() == 0)
+  if (StrGetLength(TmpStr) == 0)
   { // Player did not provide a target to be shown
     pDnodeActor->PlayerOut += "Show what?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -5270,7 +5270,7 @@ void Communication::DoShow()
       { // Read the whole file
         if (HelpText.Left(5) == "Help:")
         { // Found a help topic
-          pDnodeActor->PlayerOut += HelpText.Right(HelpText.GetLength() - 5);
+          pDnodeActor->PlayerOut += StrRight(HelpText, StrGetLength(HelpText) - 5);
           pDnodeActor->PlayerOut += "\r\n";
         }
         HelpFile.ReadString(HelpText);
@@ -5304,7 +5304,7 @@ void Communication::DoShow()
       { // Read the whole file
         if (SocialText.Left(9) == "Social : ")
         { // Found a help topic
-          pDnodeActor->PlayerOut += SocialText.Right(SocialText.GetLength() - 9);
+          pDnodeActor->PlayerOut += StrRight(SocialText, StrGetLength(SocialText) - 9);
           pDnodeActor->PlayerOut += "\r\n";
         }
         SocialFile.ReadString(SocialText);
@@ -5511,7 +5511,7 @@ void Communication::DoTell()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  if (TargetName.GetLength() < 1)
+  if (StrGetLength(TargetName) < 1)
   {
     pDnodeActor->PlayerOut += "Tell who?\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -5519,7 +5519,7 @@ void Communication::DoTell()
     return;
   }
   TellMsg = GetWords(CmdStr, 3);
-  if (TellMsg.GetLength() < 1)
+  if (StrGetLength(TellMsg) < 1)
   {
     pDnodeActor->PlayerOut += "Um, tell ";
     pDnodeActor->PlayerOut += TargetNameSave;
@@ -5654,7 +5654,7 @@ void Communication::DoTitle()
   StrReplace(TmpStr, "&M", "");
   StrReplace(TmpStr, "&C", "");
   StrReplace(TmpStr, "&W", "");
-  if (TmpStr.GetLength() > 40)
+  if (StrGetLength(TmpStr) > 40)
   {
     pDnodeActor->PlayerOut += "Title must be less than 41 characters, color codes do not count.\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -6634,7 +6634,7 @@ void Communication::LogonWaitMaleFemale()
   CString  PlayerMsg;
 
   CmdStr = StrMakeUpper(CmdStr);
-  if (!(StrFindOneOf(CmdStr, "MF") == 0 && CmdStr.GetLength() == 1))
+  if (!(StrFindOneOf(CmdStr, "MF") == 0 && StrGetLength(CmdStr) == 1))
   { // Not M or F
     pDnodeActor->PlayerStateWaitMaleFemale = true;
     pDnodeActor->PlayerOut += "You must enter a M or F.";
@@ -6727,7 +6727,7 @@ void Communication::LogonWaitName()
 void Communication::LogonWaitNameConfirmation()
 {
   CmdStr = StrMakeUpper(CmdStr);
-  if (!(StrFindOneOf(CmdStr, "YN") == 0 && CmdStr.GetLength() == 1))
+  if (!(StrFindOneOf(CmdStr, "YN") == 0 && StrGetLength(CmdStr) == 1))
   { // Not Y or N ... try again
     pDnodeActor->PlayerStateWaitNameConfirmation = true;
     pDnodeActor->PlayerOut += "\r\n";
@@ -6794,7 +6794,7 @@ void Communication::LogonWaitNameConfirmation()
 void Communication::LogonWaitNewCharacter()
 {
   CmdStr = StrMakeUpper(CmdStr);
-  if (!(StrFindOneOf(CmdStr, "YN") == 0 && CmdStr.GetLength() == 1))
+  if (!(StrFindOneOf(CmdStr, "YN") == 0 && StrGetLength(CmdStr) == 1))
   { // Not Y or N ... try again
     pDnodeActor->PlayerStateWaitNewCharacter = true;
     pDnodeActor->PlayerOut += "\r\n";
@@ -7605,7 +7605,7 @@ void Communication::ViolencePlayerDied(CString MobileDesc1)
   // Player is gone, so delete MobPlayer completely
   DeleteMobPlayer(pDnodeActor->PlayerName, "file");
   // Select a new target for MobileIdSave
-  if (CandidateList.GetLength() == 0)
+  if (StrGetLength(CandidateList) == 0)
   { // MobileIdSave's target is still in room, nothing to do
     return;
   }

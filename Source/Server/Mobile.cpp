@@ -159,7 +159,7 @@ void Mobile::AddMobToRoom(CString RoomId, CString MobileId)
     RoomMobTmpFile.WriteString(TmpStr);
     MobileIdAdded = true;
   }
-  BytesInFile = RoomMobTmpFileName.GetLength();
+  BytesInFile = StrGetLength(RoomMobTmpFileName); // TODO What is this doing?
   RoomMobFile.Close();
   RoomMobTmpFile.Close();
   CFile::Remove(RoomMobFileName);
@@ -594,7 +594,7 @@ Mobile *Mobile::IsMobInRoom(CString MobileName)
       { // Mobile is hurt but not fighting
         MobileHurt   = true;
         MobileIdHurt = MobileId;
-        MobNbr       = MobileId.Right(MobileId.GetLength()-PositionOfDot-1);
+        MobNbr       = StrRight(MobileId, StrGetLength(MobileId) - PositionOfDot - 1);
         MobileId     = MobileId.Left(PositionOfDot);
       }
       pMobile = new Mobile(MobileId);
@@ -625,7 +625,7 @@ Mobile *Mobile::IsMobInRoom(CString MobileName)
     { // Mobile is hurt but not fighting
       MobileHurt   = true;
       MobileIdHurt = MobileId;
-      MobNbr       = MobileId.Right(MobileId.GetLength()-PositionOfDot-1);
+      MobNbr       = StrRight(MobileId, StrGetLength(MobileId) - PositionOfDot - 1);
       MobileId     = MobileId.Left(PositionOfDot);
     }
     pMobile = new Mobile(MobileId);
@@ -690,7 +690,7 @@ CString Mobile::GetMobDesc1(CString MobileId)
   {
     MobileFile.ReadString(Stuff);
   }
-  Desc1 = Stuff.Right(Stuff.GetLength()-6);
+  Desc1 = StrRight(Stuff, StrGetLength(Stuff)-6);
   Desc1 = StrTrimLeft(Desc1);
   MobileFile.Close();
   return Desc1;
@@ -979,7 +979,7 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
     { // Mobile is hurt but not fighting
       MobileHurt = true;
       MobileIdHurt = MobileId;
-      MobNbr = MobileId.Right(MobileId.GetLength()-PositionOfDot-1);
+      MobNbr = StrRight(MobileId, StrGetLength(MobileId) - PositionOfDot - 1);
       MobileId = MobileId.Left(PositionOfDot);
     }
     pMobile = new Mobile(MobileId);
@@ -1158,7 +1158,7 @@ void Mobile::WhereMob(CString MobileIdSearch)
       AfxMessageBox("Mobile::WhereMob - Open RoomMob file failed", MB_ICONSTOP);
       _endthread();
     }
-    RoomName = FileName.Left(FileName.GetLength()-4);
+    RoomName = StrLeft(FileName, StrGetLength(FileName)-4);
     RoomMobFile.ReadString(Stuff);
     while (Stuff != "")
     {
@@ -1511,25 +1511,25 @@ void Mobile::ParseStuff()
   {
     if (Stuff.Left(9) == "MobileId:")
     {
-      MobileId = Stuff.Right(Stuff.GetLength()-9);
+      MobileId = StrRight(Stuff, StrGetLength(Stuff)-9);
       MobileId = StrTrimLeft(MobileId);
     }
     else
     if (Stuff.Left(6) == "Names:")
     {
-      Names = Stuff.Right(Stuff.GetLength()-6);
+      Names = StrRight(Stuff, StrGetLength(Stuff) - 6);
       Names = StrTrimLeft(Names);
     }
     else
     if (Stuff.Left(6) == "Desc1:")
     {
-      Desc1 = Stuff.Right(Stuff.GetLength()-6);
+      Desc1 = StrRight(Stuff, StrGetLength(Stuff) - 6);
       Desc1 = StrTrimLeft(Desc1);
     }
     else
     if (Stuff.Left(6) == "Desc2:")
     {
-      Desc2 = Stuff.Right(Stuff.GetLength()-6);
+      Desc2 = StrRight(Stuff, StrGetLength(Stuff) - 6);
       Desc2 = StrTrimLeft(Desc2);
     }
     else
@@ -1540,61 +1540,61 @@ void Mobile::ParseStuff()
     else
     if (Stuff.Left(7) == "Action:")
     {
-      Action = Stuff.Right(Stuff.GetLength()-7);
+      Action = StrRight(Stuff, StrGetLength(Stuff) - 7);
       Action = StrTrimLeft(Action);
     }
     else
     if (Stuff.Left(8) == "Faction:")
     {
-      Faction = Stuff.Right(Stuff.GetLength()-8);
+      Faction = StrRight(Stuff, StrGetLength(Stuff) - 8);
       Faction = StrTrimLeft(Faction);
     }
     else
     if (Stuff.Left(6) == "Level:")
     {
-      Level = atoi(Stuff.Right(Stuff.GetLength()-6));
+      Level = atoi(StrRight(Stuff, StrGetLength(Stuff) - 6));
     }
     else
     if (Stuff.Left(10) == "HitPoints:")
     {
-      HitPoints  = atoi(Stuff.Right(Stuff.GetLength()-10));
+      HitPoints  = atoi(StrRight(Stuff, StrGetLength(Stuff) - 10));
       HitPoints += Level * MOB_HPT_PER_LEVEL;
     }
     else
     if (Stuff.Left(6) == "Armor:")
     {
-      Armor  = atoi(Stuff.Right(Stuff.GetLength()-6));
+      Armor  = atoi(StrRight(Stuff, StrGetLength(Stuff) - 6));
       Armor += Level * MOB_ARM_PER_LEVEL;
     }
     else
     if (Stuff.Left(7) == "Attack:")
     {
-      Attack = Stuff.Right(Stuff.GetLength()-7);
+      Attack = StrRight(Stuff, StrGetLength(Stuff) - 7);
       Attack = StrTrimLeft(Attack);
       Attack = StrMakeLower(Attack);
     }
     else
     if (Stuff.Left(7) == "Damage:")
     {
-      Damage  = atoi(Stuff.Right(Stuff.GetLength()-7));
+      Damage  = atoi(StrRight(Stuff, StrGetLength(Stuff) - 7));
       Damage += Level * MOB_DMG_PER_LEVEL;
     }
     else
     if (Stuff.Left(10) == "ExpPoints:")
     {
-      ExpPoints  = atoi(Stuff.Right(Stuff.GetLength()-10));
+      ExpPoints  = atoi(StrRight(Stuff, StrGetLength(Stuff) - 10));
       ExpPoints += Level * MOB_EXP_PER_LEVEL;
     }
     else
     if (Stuff.Left(5) == "Loot:")
     {
-      Loot = Stuff.Right(Stuff.GetLength()-5);
+      Loot = StrRight(Stuff, StrGetLength(Stuff) - 5);
       Loot = StrTrimLeft(Loot);
     }
     else
     if (Stuff.Left(5) == "Talk:")
     {
-      Talk = Stuff.Right(Stuff.GetLength()-5);
+      Talk = StrRight(Stuff, StrGetLength(Stuff) - 5);
       Talk = StrTrimLeft(Talk);
     }
     ReadLine();

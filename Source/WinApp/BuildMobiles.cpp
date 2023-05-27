@@ -327,21 +327,21 @@ void BuildMobiles::ParseStuff()
     // MobileId
     if (Stuff.Left(9) == "MobileId:")
     {
-      MobileId = Stuff.Right(Stuff.GetLength()-9);
+      MobileId = StrRight(Stuff, StrGetLength(Stuff) - 9);
       MobileId = StrTrimLeft(MobileId);
     }
     else
     // Names
     if (Stuff.Left(6) == "Names:")
     {
-      Names = Stuff.Right(Stuff.GetLength()-6);
+      Names = StrRight(Stuff, StrGetLength(Stuff) - 6);
       Names = StrTrimLeft(Names);
     }
     else
     // Sex
     if (Stuff.Left(4) == "Sex:")
     {
-      Sex = Stuff.Right(Stuff.GetLength()-4);
+      Sex = StrRight(Stuff, StrGetLength(Stuff) - 4);
       Sex = StrTrimLeft(Sex);
       if (Sex == "M")
       {
@@ -361,14 +361,14 @@ void BuildMobiles::ParseStuff()
     // Desc1
     if (Stuff.Left(6) == "Desc1:")
     {
-      Desc1 = Stuff.Right(Stuff.GetLength()-6);
+      Desc1 = StrRight(Stuff, StrGetLength(Stuff) - 6);
       Desc1 = StrTrimLeft(Desc1);
     }
     else
     // Desc2
     if (Stuff.Left(6) == "Desc2:")
     {
-      Desc2 = Stuff.Right(Stuff.GetLength()-6);
+      Desc2 = StrRight(Stuff, StrGetLength(Stuff) - 6);
       Desc2 = StrTrimLeft(Desc2);
     }
     else
@@ -383,7 +383,7 @@ void BuildMobiles::ParseStuff()
         Desc3 += "\r\n";
         MobileFile.ReadString(Stuff); // Do not use Readline()
       }
-      Desc3 = Desc3.Left(Desc3.GetLength()-2);
+      Desc3 = StrLeft(Desc3, StrGetLength(Desc3) - 2);
     }
     else
     // Action
@@ -396,7 +396,7 @@ void BuildMobiles::ParseStuff()
       ActionHelp    = false;
       ActionNoMove  = false;
       ActionWimpy   = false;
-      Action = Stuff.Right(Stuff.GetLength()-7);
+      Action = StrRight(Stuff, StrGetLength(Stuff) - 7);
       Action = StrTrimLeft(Action);
       if (Action.Find("None") > -1)
       {
@@ -431,7 +431,7 @@ void BuildMobiles::ParseStuff()
     // Faction
     if (Stuff.Left(8) == "Faction:")
     {
-      Faction = Stuff.Right(Stuff.GetLength()-8);
+      Faction = StrRight(Stuff, StrGetLength(Stuff) - 8);
       Faction = StrTrimLeft(Faction);
       if (Faction.Find("Good") > -1)
       {
@@ -462,28 +462,28 @@ void BuildMobiles::ParseStuff()
     // Level
     if (Stuff.Left(6) == "Level:")
     {
-      Level = Stuff.Right(Stuff.GetLength()-6);
+      Level = StrRight(Stuff, StrGetLength(Stuff) - 6);
       Level = StrTrimLeft(Level);
     }
     else
     // HitPoints
     if (Stuff.Left(10) == "HitPoints:")
     {
-      HitPoints = Stuff.Right(Stuff.GetLength()-10);
+      HitPoints = StrRight(Stuff, StrGetLength(Stuff) - 10);
       HitPoints = StrTrimLeft(HitPoints);
     }
     else
     // Armor
     if (Stuff.Left(6) == "Armor:")
     {
-      Armor = Stuff.Right(Stuff.GetLength()-6);
+      Armor = StrRight(Stuff, StrGetLength(Stuff) - 6);
       Armor = StrTrimLeft(Armor);
     }
     else
     // Attack
     if (Stuff.Left(7) == "Attack:")
     {
-      Attack = Stuff.Right(Stuff.GetLength()-7);
+      Attack = StrRight(Stuff, StrGetLength(Stuff) - 7);
       Attack = StrTrimLeft(Attack);
       if (Attack.Find("Bites") > -1)
       {
@@ -544,27 +544,27 @@ void BuildMobiles::ParseStuff()
     // Damage
     if (Stuff.Left(7) == "Damage:")
     {
-      Damage = Stuff.Right(Stuff.GetLength()-7);
+      Damage = StrRight(Stuff, StrGetLength(Stuff) - 7);
       Damage = StrTrimLeft(Damage);
     }
     else
     if (Stuff.Left(10) == "ExpPoints:")
     {
-      ExpPoints = Stuff.Right(Stuff.GetLength()-10);
+      ExpPoints = StrRight(Stuff, StrGetLength(Stuff) - 10);
       ExpPoints = StrTrimLeft(ExpPoints);
     }
     else
     // Loot
     if (Stuff.Left(5) == "Loot:")
     {
-      Loot = Stuff.Right(Stuff.GetLength()-5);
+      Loot = StrRight(Stuff, StrGetLength(Stuff) - 5);
       Loot = StrTrimLeft(Loot);
     }
     else
     // Talk
     if (Stuff.Left(5) == "Talk:")
     {
-      Talk = Stuff.Right(Stuff.GetLength()-5);
+      Talk = StrRight(Stuff, StrGetLength(Stuff) - 5);
       Talk = StrTrimLeft(Talk);
     }
     ReadLine();

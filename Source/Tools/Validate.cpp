@@ -50,12 +50,12 @@ void Validate::LogValErr(CString Message, CString FileName)
   CString LogBuf;
   CString TmpStr;
 
-  if (Message.GetLength() > 50)
+  if (StrGetLength(Message) > 50)
   { // Message is too long, chop it off
     Message = Message.Left(50);
   }
   Message = " - " + Message + " ";
-  while (Message.GetLength() < 55)
+  while (StrGetLength(Message) < 55)
   {
     Message += "-";
   }
@@ -177,7 +177,7 @@ void Validate::ValidateLibraryLoot()
     }
     // Open player file
     LootFileName = FileList.GetFileName();
-    PlayerName = LootFileName.Left(LootFileName.GetLength()-4);
+    PlayerName = StrLeft(LootFileName, StrGetLength(LootFileName) - 4);
     LootFileName = LOOT_DIR + LootFileName;
     Success = LootFile.Open(LootFileName,
                  CFile::modeRead |
@@ -269,7 +269,7 @@ void Validate::ValidateLibraryMobiles()
     }
     // Open mobile file
     MobileFileName = FileList.GetFileName();
-    MobileId = MobileFileName.Left(MobileFileName.GetLength()-4);
+    MobileId = StrLeft(MobileFileName, StrGetLength(MobileFileName) - 4);
     MobileFileName = MOBILES_DIR + MobileFileName;
     Success = MobileFile.Open(MobileFileName,
                    CFile::modeRead |
@@ -435,7 +435,7 @@ void Validate::ValidateLibraryObjects()
     }
     // Open object file
     ObjectFileName = FileList.GetFileName();
-    ObjectId = ObjectFileName.Left(ObjectFileName.GetLength()-4);
+    ObjectId = StrLeft(ObjectFileName, StrGetLength(ObjectFileName)-4);
     ObjectFileName = OBJECTS_DIR + ObjectFileName;
     Success = ObjectFile.Open(ObjectFileName,
                    CFile::modeRead |
@@ -625,7 +625,7 @@ void Validate::ValidateLibraryRooms()
     }
     // Open room file
     RoomFileName = FileList.GetFileName();
-    RoomId = RoomFileName.Left(RoomFileName.GetLength()-4);
+    RoomId = StrLeft(RoomFileName, StrGetLength(RoomFileName) - 4);
     RoomFileName = ROOMS_DIR + RoomFileName;
     Success = RoomFile.Open(RoomFileName,
                  CFile::modeRead |
@@ -791,7 +791,7 @@ void Validate::ValidateLibraryShops()
     }
     // Open player file
     ShopFileName = FileList.GetFileName();
-    PlayerName = ShopFileName.Left(ShopFileName.GetLength()-4);
+    PlayerName = StrLeft(ShopFileName, StrGetLength(ShopFileName) - 4);
     ShopFileName = SHOPS_DIR + ShopFileName;
     Success = ShopFile.Open(ShopFileName,
                  CFile::modeRead |
@@ -907,7 +907,7 @@ void Validate::ValidateLibraryWorldMobiles()
     { // Skip ReadMe files
       continue;
     }
-    WorldMobileName = WorldMobileFileName.Left(WorldMobileFileName.GetLength()-4);
+    WorldMobileName = StrLeft(WorldMobileFileName, StrGetLength(WorldMobileFileName) - 4);
     MobileId = WorldMobileName;
     WorldMobileFileName = WORLD_MOBILES_DIR + WorldMobileFileName;
     Success = WorldMobileFile.Open(WorldMobileFileName,
@@ -1030,7 +1030,7 @@ void Validate::ValidateRunningPlayers()
     }
     // Open player file
     PlayerFileName = FileList.GetFileName();
-    PlayerName = PlayerFileName.Left(PlayerFileName.GetLength()-4);
+    PlayerName = StrLeft(PlayerFileName, StrGetLength(PlayerFileName) - 4);
     PlayerFileName = PLAYER_DIR + PlayerFileName;
     Success = PlayerFile.Open(PlayerFileName,
                    CFile::modeRead |
@@ -1151,7 +1151,7 @@ void Validate::ValidateRunningPlayersPlayerEqu()
     }
     // Open player file
     PlayerEquFileName = FileList.GetFileName();
-    PlayerName = PlayerEquFileName.Left(PlayerEquFileName.GetLength()-4);
+    PlayerName = StrLeft(PlayerEquFileName, StrGetLength(PlayerEquFileName) - 4);
     PlayerEquFileName = PLAYER_EQU_DIR + PlayerEquFileName;
     Success = PlayerEquFile.Open(PlayerEquFileName,
                       CFile::modeRead |
@@ -1258,7 +1258,7 @@ void Validate::ValidateRunningPlayersPlayerObj()
     }
     // Open player file
     PlayerObjFileName = FileList.GetFileName();
-    PlayerName = PlayerObjFileName.Left(PlayerObjFileName.GetLength()-4);
+    PlayerName = StrLeft(PlayerObjFileName, StrGetLength(PlayerObjFileName) - 4);
     PlayerObjFileName = PLAYER_OBJ_DIR + PlayerObjFileName;
     Success = PlayerObjFile.Open(PlayerObjFileName,
                       CFile::modeRead |
@@ -1356,7 +1356,7 @@ void Validate::ValidateRunningRoomMob()
     { // Skip ReadMe files
       continue;
     }
-    RoomId = RoomMobFileName.Left(RoomMobFileName.GetLength()-4);
+    RoomId = StrLeft(RoomMobFileName, StrGetLength(RoomMobFileName) - 4);
     RoomMobFileName = ROOM_MOB_DIR + RoomMobFileName;
     Success = RoomMobFile.Open(RoomMobFileName,
                     CFile::modeRead |
@@ -1485,7 +1485,7 @@ void Validate::ValidateRunningRoomObj()
     { // Skip ReadMe files
       continue;
     }
-    RoomId = RoomObjFileName.Left(RoomObjFileName.GetLength()-4);
+    RoomId = StrLeft(RoomObjFileName, StrGetLength(RoomObjFileName) - 4);
     RoomObjFileName = ROOM_OBJ_DIR + RoomObjFileName;
     Success = RoomObjFile.Open(RoomObjFileName,
                     CFile::modeRead |

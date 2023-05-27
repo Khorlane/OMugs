@@ -286,10 +286,10 @@ void GenerateRooms::Parse1()
     _endthread();
   }
   TmpStr = "RoomType:";
-  Stuff.Delete(0,TmpStr.GetLength()+1);
+  Stuff.Delete(0, StrGetLength(TmpStr) + 1);
   Stuff = StrTrimLeft(Stuff);
   n = Stuff.Find('\r');
-  Stuff.Delete(n,Stuff.GetLength()-n);
+  Stuff.Delete(n, StrGetLength(Stuff) - n);
   oRoomType = Stuff;
   //***********
   //* Terrain *
@@ -302,7 +302,7 @@ void GenerateRooms::Parse1()
     _endthread();
   }
   TmpStr = "Terrain:";
-  oTerrain = Stuff.Right(Stuff.GetLength()-n-TmpStr.GetLength());
+  oTerrain = StrRight(Stuff, StrGetLength(Stuff) - n - StrGetLength(TmpStr));
   oTerrain = StrTrimLeft(oTerrain);
   oTerrain = StrTrimRight(oTerrain);
   //************

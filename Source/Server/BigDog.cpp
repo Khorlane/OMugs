@@ -157,10 +157,6 @@ void BigDog()
 void AppTestCode()
 {
   // Put test code here. It will be executed first, even before dialogs are presented.
-  CString x = " This    is    a test of SQUEEZe(   )  ";
-  StrReplace(x, "SQUEEZe", "Squeeze");
-  string y = " This    is    a test of SQUEEZe(   )  ";
-  StrReplace(y, "SQUEEZe", "Squeeze");
 }
 
 //
@@ -305,6 +301,18 @@ int StrFindOneOf(string HayStack, string Needle)
   return HayStack.find_first_of(Needle);
 }
 
+// Get length of a string (temporary)
+int StrGetLength(CString Str1)
+{
+  return StrGetLength(ConvertCStringToString(Str1));
+}
+
+// Get length of a string
+int StrGetLength(string Str1)
+{
+  return Str1.length();
+}
+
 // Get the Word indicated by WordNbr (temporary)
 CString StrGetWord(CString Str1, int WordNbr)
 {
@@ -347,6 +355,12 @@ string StrGetWords(string Str1, int WordNbr)
     }
   }
   return "";
+}
+
+// Get the left portion of a string (temporary)
+CString StrLeft(CString Str1, int Len)
+{
+  return ConvertStringToCString(StrLeft(ConvertCStringToString(Str1), Len));
 }
 
 // Get the left portion of a string
@@ -438,7 +452,13 @@ void StrReplace(string &str, const string &from, const string &to)
   }
 }
 
-// Get the right side of a string
+// Get the right portion of a string (temporary)
+CString StrRight(CString Str1, int Len)
+{
+  return ConvertStringToCString(StrRight(ConvertCStringToString(Str1), Len));
+}
+
+// Get the right portion of a string
 string StrRight(string Str1, int Len)
 {
   if (Str1 == "")

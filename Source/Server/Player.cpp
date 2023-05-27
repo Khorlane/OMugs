@@ -465,13 +465,13 @@ void Player::ParsePlayerStuff()
     // Password
     if (Stuff.Left(9) == "Password:")
     { 
-      Password = Stuff.Right(Stuff.GetLength()-9);
+      Password = StrRight(Stuff, StrGetLength(Stuff) - 9);
     }
     else
     // Admin
     if (Stuff.Left(6) == "Admin:")
     {
-      TmpStr = Stuff.Right(Stuff.GetLength()-6);
+      TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 6);
       TmpStr = StrMakeLower(TmpStr);
       if (TmpStr == "yes")
       {
@@ -492,7 +492,7 @@ void Player::ParsePlayerStuff()
     // AllowAssist
     if (Stuff.Left(12) == "AllowAssist:")
     {
-      TmpStr = Stuff.Right(Stuff.GetLength()-12);
+      TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 12);
       TmpStr = StrMakeLower(TmpStr);
       if (TmpStr == "yes")
       {
@@ -507,7 +507,7 @@ void Player::ParsePlayerStuff()
     // AllowGroup
     if (Stuff.Left(11) == "AllowGroup:")
     {
-      TmpStr = Stuff.Right(Stuff.GetLength()-11);
+      TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 11);
       TmpStr = StrMakeLower(TmpStr);
       if (TmpStr == "yes")
       {
@@ -528,13 +528,13 @@ void Player::ParsePlayerStuff()
     // Born
     if (Stuff.Left(5) == "Born:")
     {
-      Born = atol(Stuff.Right(Stuff.GetLength()-5));
+      Born = atol(StrRight(Stuff, StrGetLength(Stuff) - 5));
     }
     else
     // Color
     if (Stuff.Left(6) == "Color:")
     {
-      TmpStr = Stuff.Right(Stuff.GetLength()-6);
+      TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 6);
       TmpStr = StrMakeLower(TmpStr);
       if (TmpStr == "yes")
       {
@@ -549,13 +549,13 @@ void Player::ParsePlayerStuff()
     // Experience
     if (Stuff.Left(11) == "Experience:")
     {
-      Experience = (float) atof(Stuff.Right(Stuff.GetLength()-11));
+      Experience = (float) atof(StrRight(Stuff, StrGetLength(Stuff) - 11));
     }
     else
     // GoToArrive
     if (Stuff.Left(11) == "GoToArrive:")
     {
-      GoToArrive = Stuff.Right(Stuff.GetLength()-11);
+      GoToArrive = StrRight(Stuff, StrGetLength(Stuff) - 11);
       if (Admin)
       { // Player is an Admin
         if (GoToArrive == "")
@@ -568,7 +568,7 @@ void Player::ParsePlayerStuff()
     // GoToDepart
     if (Stuff.Left(11) == "GoToDepart:")
     {
-      GoToDepart = Stuff.Right(Stuff.GetLength()-11);
+      GoToDepart = StrRight(Stuff, StrGetLength(Stuff) - 11);
       if (Admin)
       { // Player is an Admin
         if (GoToDepart == "")
@@ -581,19 +581,19 @@ void Player::ParsePlayerStuff()
     // HitPoints
     if (Stuff.Left(10) == "HitPoints:")
     {
-      HitPoints = atoi(Stuff.Right(Stuff.GetLength()-10));
+      HitPoints = atoi(StrRight(Stuff, StrGetLength(Stuff) - 10));
     }
     else
     // Hunger
     if (Stuff.Left(7) == "Hunger:")
     {
-      Hunger = atoi(Stuff.Right(Stuff.GetLength()-7));
+      Hunger = atoi(StrRight(Stuff, StrGetLength(Stuff) - 7));
     }
     else
     // Invisible
     if (Stuff.Left(10) == "Invisible:")
     {
-      TmpStr = Stuff.Right(Stuff.GetLength()-10);
+      TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 10);
       TmpStr = StrMakeLower(TmpStr);
       if (TmpStr == "yes")
       {
@@ -610,19 +610,19 @@ void Player::ParsePlayerStuff()
     // Level
     if (Stuff.Left(6) == "Level:")
     {
-      Level = atoi(Stuff.Right(Stuff.GetLength()-6));
+      Level = atoi(StrRight(Stuff, StrGetLength(Stuff) - 6));
     }
     else
     // MovePoints
     if (Stuff.Left(11) == "MovePoints:")
     {
-      MovePoints = atoi(Stuff.Right(Stuff.GetLength()-11));
+      MovePoints = atoi(StrRight(Stuff, StrGetLength(Stuff) - 11));
     }
     else
     // OneWhack
     if (Stuff.Left(9) == "OneWhack:")
     {
-      TmpStr = Stuff.Right(Stuff.GetLength()-9);
+      TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 9);
       TmpStr = StrMakeLower(TmpStr);
       if (TmpStr == "yes")
       {
@@ -643,19 +643,19 @@ void Player::ParsePlayerStuff()
     // Position
     if (Stuff.Left(9) == "Position:")
     {
-      Position = Stuff.Right(Stuff.GetLength()-9);
+      Position = StrRight(Stuff, StrGetLength(Stuff) - 9);
     }
     else
     // RoomId
     if (Stuff.Left(7) == "RoomId:")
     {
-      RoomId = Stuff.Right(Stuff.GetLength()-7);
+      RoomId = StrRight(Stuff, StrGetLength(Stuff) - 7);
     }
     else
     // RoomInfo
     if (Stuff.Left(9) == "RoomInfo:")
     {
-      TmpStr = Stuff.Right(Stuff.GetLength()-9);
+      TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 9);
       TmpStr = StrMakeLower(TmpStr);
       if (TmpStr == "yes")
       {
@@ -670,93 +670,93 @@ void Player::ParsePlayerStuff()
     // Sex
     if (Stuff.Left(4) == "Sex:")
     {
-      Sex = Stuff.Right(Stuff.GetLength()-4);
+      Sex = StrRight(Stuff, StrGetLength(Stuff) - 4);
       Sex = StrMakeUpper(Sex);
     }
     else
     // Sivler
     if (Stuff.Left(7) == "Silver:")
     {
-      Amount = atoi(Stuff.Right(Stuff.GetLength()-7));
+      Amount = atoi(StrRight(Stuff, StrGetLength(Stuff) - 7));
       SetMoney('+', Amount, "Silver");
     }
     else
     // SkillAxe
     if (Stuff.Left(9) == "SkillAxe:")
     {
-      SkillAxe = atoi(Stuff.Right(Stuff.GetLength()-9));
+      SkillAxe = atoi(StrRight(Stuff, StrGetLength(Stuff) - 9));
     }
     else
     // SkillClub
     if (Stuff.Left(10) == "SkillClub:")
     {
-      SkillClub = atoi(Stuff.Right(Stuff.GetLength()-10));
+      SkillClub = atoi(StrRight(Stuff, StrGetLength(Stuff) - 10));
     }
     else
     // SkillDagger
     if (Stuff.Left(12) == "SkillDagger:")
     {
-      SkillDagger = atoi(Stuff.Right(Stuff.GetLength()-12));
+      SkillDagger = atoi(StrRight(Stuff, StrGetLength(Stuff) - 12));
     }
     else
     // SkillHammer
     if (Stuff.Left(12) == "SkillHammer:")
     {
-      SkillHammer = atoi(Stuff.Right(Stuff.GetLength()-12));
+      SkillHammer = atoi(StrRight(Stuff, StrGetLength(Stuff) - 12));
     }
     else
     // SkillSpear
     if (Stuff.Left(11) == "SkillSpear:")
     {
-      SkillSpear = atoi(Stuff.Right(Stuff.GetLength()-11));
+      SkillSpear = atoi(StrRight(Stuff, StrGetLength(Stuff) - 11));
     }
     else
     // SkillStaff
     if (Stuff.Left(11) == "SkillStaff:")
     {
-      SkillStaff = atoi(Stuff.Right(Stuff.GetLength()-11));
+      SkillStaff = atoi(StrRight(Stuff, StrGetLength(Stuff) - 11));
     }
     else
     // SkillSword
     if (Stuff.Left(11) == "SkillSword:")
     {
-      SkillSword = atoi(Stuff.Right(Stuff.GetLength()-11));
+      SkillSword = atoi(StrRight(Stuff, StrGetLength(Stuff) - 11));
     }
     else
     // Thirst
     if (Stuff.Left(7) == "Thirst:")
     {
-      Thirst = atoi(Stuff.Right(Stuff.GetLength()-7));
+      Thirst = atoi(StrRight(Stuff, StrGetLength(Stuff) - 7));
     }
     else
     // TimePlayed
     if (Stuff.Left(11) == "TimePlayed:")
     {
-      TimePlayed = atol(Stuff.Right(Stuff.GetLength()-11));
+      TimePlayed = atol(StrRight(Stuff, StrGetLength(Stuff) - 11));
     }
     else
     // Title
     if (Stuff.Left(6) == "Title:")
     {
-      Title = Stuff.Right(Stuff.GetLength()-6);
+      Title = StrRight(Stuff, StrGetLength(Stuff) - 6);
     }
     else
     // WeaponDamage
     if (Stuff.Left(13) == "WeaponDamage:")
     {
-      WeaponDamage = atoi(Stuff.Right(Stuff.GetLength()-13));
+      WeaponDamage = atoi(StrRight(Stuff, StrGetLength(Stuff) - 13));
     }
     else
     // WeaponDesc1
     if (Stuff.Left(12) == "WeaponDesc1:")
     {
-      WeaponDesc1 = Stuff.Right(Stuff.GetLength()-12);
+      WeaponDesc1 = StrRight(Stuff, StrGetLength(Stuff) - 12);
     }
     else
     // WeaponType
     if (Stuff.Left(11) == "WeaponType:")
     {
-      WeaponType = Stuff.Right(Stuff.GetLength()-11);
+      WeaponType = StrRight(Stuff, StrGetLength(Stuff) - 11);
       WeaponType = StrMakeLower(WeaponType);
     }
     else
@@ -1092,7 +1092,7 @@ void Player::ShowStatus()
   TmpStr = ConvertStringToCString(Buf);
   TmpStr = TmpStr.Left(TmpStr.Find('.'));
   Exp2   = FormatCommas(TmpStr);
-  while (Exp1.GetLength() < Exp2.GetLength())
+  while (StrGetLength(Exp1) < StrGetLength(Exp2))
   {
     Exp1.Insert(0,' ');
   }
@@ -1269,12 +1269,12 @@ bool Player::PlayerRoomHasNotBeenHere()
   int     RoomNbr;
   CString RoomNbrStr;
 
-  if (PlayerRoomString.GetLength() == 0)
+  if (StrGetLength(PlayerRoomString) == 0)
   {
     PlayerRoomStringRead();
   }
   // Get RoomNbr from RoomId
-  CharPos = RoomId.GetLength()-1;
+  CharPos = StrGetLength(RoomId) - 1;
   Char    = RoomId.GetAt(CharPos);
   while (isdigit(Char))
   {

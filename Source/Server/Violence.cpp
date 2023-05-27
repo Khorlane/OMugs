@@ -489,7 +489,7 @@ CString Violence::WhackMobile(CString MobileId,
   TmpStr = ConvertStringToCString(Buf);
   Stuff += TmpStr;
   MobStatsHitPointsFile.WriteString(Stuff);
-  MobStatsHitPointsFile.SetLength(Stuff.GetLength());
+  MobStatsHitPointsFile.SetLength(StrGetLength(Stuff));
   MobStatsHitPointsFile.Close();
   // Format whack message
   MobHealthPct = CalcHealthPct(MobHitPointsLeft, MobHitPointsTotal);

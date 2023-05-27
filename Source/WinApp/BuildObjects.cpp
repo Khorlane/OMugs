@@ -220,28 +220,28 @@ void BuildObjects::ParseStuff()
     // ObjectId
     if (Stuff.Left(9) == "ObjectId:")
     {
-      ObjectId = Stuff.Right(Stuff.GetLength()-9);
+      ObjectId = StrRight(Stuff, StrGetLength(Stuff) - 9);
       ObjectId = StrTrimLeft(ObjectId);
     }
     else
     // Names
     if (Stuff.Left(6) == "Names:")
     {
-      Names = Stuff.Right(Stuff.GetLength()-6);
+      Names = StrRight(Stuff, StrGetLength(Stuff) - 6);
       Names = StrTrimLeft(Names);
     }
     else
     // Desc1
     if (Stuff.Left(6) == "Desc1:")
     {
-      Desc1 = Stuff.Right(Stuff.GetLength()-6);
+      Desc1 = StrRight(Stuff, StrGetLength(Stuff) - 6);
       Desc1 = StrTrimLeft(Desc1);
     }
     else
     // Desc2
     if (Stuff.Left(6) == "Desc2:")
     {
-      Desc2 = Stuff.Right(Stuff.GetLength()-6);
+      Desc2 = StrRight(Stuff, StrGetLength(Stuff) - 6);
       Desc2 = StrTrimLeft(Desc2);
     }
     else
@@ -256,27 +256,27 @@ void BuildObjects::ParseStuff()
         Desc3 += "\r\n";
         ObjectFile.ReadString(Stuff); // Do not use Readline()
       }
-      Desc3 = Desc3.Left(Desc3.GetLength()-2);
+      Desc3 = StrLeft(Desc3, StrGetLength(Desc3) - 2);
     }
     else
     // Weight
     if (Stuff.Left(7) == "Weight:")
     {
-      Weight = Stuff.Right(Stuff.GetLength()-7);
+      Weight = StrRight(Stuff, StrGetLength(Stuff) - 7);
       Weight = StrTrimLeft(Weight);
     }
     else
     // Cost
     if (Stuff.Left(5) == "Cost:")
     {
-      Cost = Stuff.Right(Stuff.GetLength()-5);
+      Cost = StrRight(Stuff, StrGetLength(Stuff) - 5);
       Cost = StrTrimLeft(Cost);
     }
     else
     // Type
     if (Stuff.Left(5) == "Type:")
     {
-      Type = Stuff.Right(Stuff.GetLength()-5);
+      Type = StrRight(Stuff, StrGetLength(Stuff) - 5);
       Type = StrTrimLeft(Type);
       // Armor
       if (Type == "Armor")
@@ -290,7 +290,7 @@ void BuildObjects::ParseStuff()
           ObjectFile.Close();
           return;
         }
-        ArmorValue = Stuff.Right(Stuff.GetLength()-11);
+        ArmorValue = StrRight(Stuff, StrGetLength(Stuff) - 11);
         ArmorValue = StrTrimLeft(ArmorValue);
         // ArmorWear
         ReadLine();
@@ -300,7 +300,7 @@ void BuildObjects::ParseStuff()
           ObjectFile.Close();
           return;
         }
-        ArmorWear = Stuff.Right(Stuff.GetLength()-10);
+        ArmorWear = StrRight(Stuff, StrGetLength(Stuff) - 10);
         ArmorWear = StrTrimLeft(ArmorWear);
         if (ArmorWear == "Head")
         {
@@ -390,7 +390,7 @@ void BuildObjects::ParseStuff()
           ObjectFile.Close();
           return;
         }
-        WeaponType = Stuff.Right(Stuff.GetLength()-11);
+        WeaponType = StrRight(Stuff, StrGetLength(Stuff) - 11);
         WeaponType = StrTrimLeft(WeaponType);
         if (WeaponType == "Axe")
         {
@@ -434,7 +434,7 @@ void BuildObjects::ParseStuff()
           ObjectFile.Close();
           return;
         }
-        WeaponDamage = Stuff.Right(Stuff.GetLength()-13);
+        WeaponDamage = StrRight(Stuff, StrGetLength(Stuff) - 13);
         WeaponDamage = StrTrimLeft(WeaponDamage);
       }
       else
@@ -450,7 +450,7 @@ void BuildObjects::ParseStuff()
           ObjectFile.Close();
           return;
         }
-        DrinkPct = Stuff.Right(Stuff.GetLength()-9);
+        DrinkPct = StrRight(Stuff, StrGetLength(Stuff) - 9);
         DrinkPct = StrTrimLeft(DrinkPct);
       }
       else
@@ -466,7 +466,7 @@ void BuildObjects::ParseStuff()
           ObjectFile.Close();
           return;
         }
-        FoodPct = Stuff.Right(Stuff.GetLength()-8);
+        FoodPct = StrRight(Stuff, StrGetLength(Stuff) - 8);
         FoodPct = StrTrimLeft(FoodPct);
       }
       else

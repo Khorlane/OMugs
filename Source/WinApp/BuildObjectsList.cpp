@@ -200,7 +200,7 @@ void BuildObjectsList::PopulateList()
       continue;
     }
     ObjectFileName = FileList.GetFileName();
-    ObjectId = ObjectFileName.Left(ObjectFileName.GetLength()-4);
+    ObjectId = StrLeft(ObjectFileName, StrGetLength(ObjectFileName)-4);
     if (PopulateListOk())
     { // Object passed through the filters, add it to the list
       ObjectsListBox.AddString(ObjectId);
@@ -234,7 +234,7 @@ bool BuildObjectsList::PopulateListOk()
   { // Read lines until EOF
     if (Stuff.Left(5) == "type:")
     { // 'type:' is found
-      TmpStr = Stuff.Right(Stuff.GetLength()-5);
+      TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 5);
       TmpStr = StrTrimLeft(TmpStr);
       if (TmpStr == Type)
       { // Type selected matches type for this object
@@ -250,7 +250,7 @@ bool BuildObjectsList::PopulateListOk()
           }
           ReadLine(); // ArmorValue
           ReadLine(); // ArmorWear
-          TmpStr = Stuff.Right(Stuff.GetLength()-10);
+          TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 10);
           TmpStr = StrTrimLeft(TmpStr);
           if (TmpStr == ArmorWear)
           { // ArmorWear matches
@@ -274,7 +274,7 @@ bool BuildObjectsList::PopulateListOk()
             return true;
           }
           ReadLine(); // WeaponType
-          TmpStr = Stuff.Right(Stuff.GetLength()-11);
+          TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 11);
           TmpStr = StrTrimLeft(TmpStr);
           if (TmpStr == WeaponType)
           { // WeaponType matches

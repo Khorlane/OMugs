@@ -164,7 +164,7 @@ bool Object::AddObjToPlayerEqu(CString WearPosition, CString ObjectId)
     PlayerEquFileTmp.WriteString(ObjectId);
     ObjectIdAdded = true;
   }
-  BytesInFile = PlayerEquFileNameTmp.GetLength();
+  BytesInFile = StrGetLength(PlayerEquFileNameTmp);
   PlayerEquFile.Close();
   PlayerEquFileTmp.Close();
   CFile::Remove(PlayerEquFileName);
@@ -283,7 +283,7 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, CString ObjectId)
     PlayerObjFileTmp.WriteString(ObjectId);
     ObjectIdAdded = true;
   }
-  BytesInFile = PlayerObjFileNameTmp.GetLength();
+  BytesInFile = StrGetLength(PlayerObjFileNameTmp);
   PlayerObjFile.Close();
   PlayerObjFileTmp.Close();
   CFile::Remove(PlayerObjFileName);
@@ -400,7 +400,7 @@ void Object::AddObjToRoom(CString RoomId, CString ObjectId)
     RoomObjFileTmp.WriteString(ObjectId);
     ObjectIdAdded = true;
   }
-  BytesInFile = RoomObjFileNameTmp.GetLength();
+  BytesInFile = StrGetLength(RoomObjFileNameTmp);
   RoomObjFile.Close();
   RoomObjFileTmp.Close();
   CFile::Remove(RoomObjFileName);
@@ -861,7 +861,7 @@ void Object::RemoveObjFromPlayerEqu(CString ObjectId)
     AfxMessageBox("Object::RemoveObjFromPlayerEqu - Object not removed", MB_ICONSTOP);
     _endthread();
   }
-  BytesInFile = PlayerEquFileNameTmp.GetLength();
+  BytesInFile = StrGetLength(PlayerEquFileNameTmp);
   PlayerEquFile.Close();
   PlayerEquFileTmp.Close();
   CFile::Remove(PlayerEquFileName);
@@ -958,7 +958,7 @@ void Object::RemoveObjFromPlayerInv(CString ObjectId, int Count)
     AfxMessageBox("Object::RemoveObjFromPlayerInv - Object not removed", MB_ICONSTOP);
     _endthread();
   }
-  BytesInFile = PlayerObjFileNameTmp.GetLength();
+  BytesInFile = StrGetLength(PlayerObjFileNameTmp); // TODO What is this doing?
   PlayerObjFile.Close();
   PlayerObjFileTmp.Close();
   CFile::Remove(PlayerObjFileName);
@@ -1284,7 +1284,7 @@ void Object::WhereObjPlayerEqu(CString ObjectIdSearch)
       AfxMessageBox("Object::WhereObjPlayerEqu - Open PlayerEqu file failed", MB_ICONSTOP);
       _endthread();
     }
-    PlayerName = FileName.Left(FileName.GetLength()-4);
+    PlayerName = StrLeft(FileName, StrGetLength(FileName) - 4);
     PlayerEquFile.ReadString(Stuff);
     while (Stuff != "")
     {
@@ -1353,7 +1353,7 @@ void Object::WhereObjPlayerObj(CString ObjectIdSearch)
       AfxMessageBox("Object::WhereObjPlayerObj - Open PlayerObj file failed", MB_ICONSTOP);
       _endthread();
     }
-    PlayerName = FileName.Left(FileName.GetLength()-4);
+    PlayerName = StrLeft(FileName, StrGetLength(FileName) - 4);
     PlayerObjFile.ReadString(Stuff);
     while (Stuff != "")
     {
@@ -1423,7 +1423,7 @@ void Object::WhereObjRoomObj(CString ObjectIdSearch)
       AfxMessageBox("Object::WhereObj - Open RoomObj file failed", MB_ICONSTOP);
       _endthread();
     }
-    RoomName = FileName.Left(FileName.GetLength()-4);
+    RoomName = StrLeft(FileName, StrGetLength(FileName) - 4);
     RoomObjFile.ReadString(Stuff);
     while (Stuff != "")
     { // For each room object
@@ -1520,25 +1520,25 @@ void Object::ParseStuff()
   {
     if (Stuff.Left(9) == "ObjectId:")
     {
-      ObjectId = Stuff.Right(Stuff.GetLength()-9);
+      ObjectId = StrRight(Stuff, StrGetLength(Stuff) - 9);
       ObjectId = StrTrimLeft(ObjectId);
     }
     else
     if (Stuff.Left(6) == "Names:")
     {
-      Names = Stuff.Right(Stuff.GetLength()-6);
+      Names = StrRight(Stuff, StrGetLength(Stuff) - 6);
       Names = StrTrimLeft(Names);
     }
     else
     if (Stuff.Left(6) == "Desc1:")
     {
-      Desc1 = Stuff.Right(Stuff.GetLength()-6);
+      Desc1 = StrRight(Stuff, StrGetLength(Stuff) - 6);
       Desc1 = StrTrimLeft(Desc1);
     }
     else
     if (Stuff.Left(6) == "Desc2:")
     {
-      Desc2 = Stuff.Right(Stuff.GetLength()-6);
+      Desc2 = StrRight(Stuff, StrGetLength(Stuff) - 6);
       Desc2 = StrTrimLeft(Desc2);
     }
     else
@@ -1549,28 +1549,28 @@ void Object::ParseStuff()
     else
     if (Stuff.Left(7) == "Weight:")
     {
-      Weight = atoi(Stuff.Right(Stuff.GetLength()-7));
+      Weight = atoi(StrRight(Stuff, StrGetLength(Stuff) - 7));
     }
     else
     if (Stuff.Left(5) == "Cost:")
     {
-      Cost = atoi(Stuff.Right(Stuff.GetLength()-5));
+      Cost = atoi(StrRight(Stuff, StrGetLength(Stuff) - 5));
     }
     else
     if (Stuff.Left(5) == "Type:")
     {
-      Type = Stuff.Right(Stuff.GetLength()-5);
+      Type = StrRight(Stuff, StrGetLength(Stuff) - 5);
       Type = StrTrimLeft(Type);
     }
     else
     if (Stuff.Left(11) == "ArmorValue:")
     {
-      ArmorValue = atoi(Stuff.Right(Stuff.GetLength()-11));
+      ArmorValue = atoi(StrRight(Stuff, StrGetLength(Stuff) - 11));
     }
     else
     if (Stuff.Left(10) == "ArmorWear:")
     {
-      ArmorWear = Stuff.Right(Stuff.GetLength()-10);
+      ArmorWear = StrRight(Stuff, StrGetLength(Stuff) - 10);
       ArmorWear = StrTrimLeft(ArmorWear);
       WearPosition = ArmorWear;
       WearPosition = StrMakeLower(WearPosition);
@@ -1578,7 +1578,7 @@ void Object::ParseStuff()
     else
     if (Stuff.Left(11) == "WeaponType:")
     {
-      WeaponType = Stuff.Right(Stuff.GetLength()-11);
+      WeaponType = StrRight(Stuff, StrGetLength(Stuff) - 11);
       WeaponType = StrTrimLeft(WeaponType);
       ArmorWear = "wielded";
       WearPosition = "wielded";
@@ -1586,17 +1586,17 @@ void Object::ParseStuff()
     else
     if (Stuff.Left(13) == "WeaponDamage:")
     {
-      WeaponDamage = atoi(Stuff.Right(Stuff.GetLength()-13));
+      WeaponDamage = atoi(StrRight(Stuff, StrGetLength(Stuff) - 13));
     }
     else
     if (Stuff.Left(8) == "FoodPct:")
     {
-      FoodPct = atoi(Stuff.Right(Stuff.GetLength()-8));
+      FoodPct = atoi(StrRight(Stuff, StrGetLength(Stuff) - 8));
     }
     else
     if (Stuff.Left(9) == "DrinkPct:")
     {
-      DrinkPct = atoi(Stuff.Right(Stuff.GetLength()-9));
+      DrinkPct = atoi(StrRight(Stuff, StrGetLength(Stuff) - 9));
     }
     ReadLine();
   }

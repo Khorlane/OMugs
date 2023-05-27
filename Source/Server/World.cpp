@@ -77,7 +77,7 @@ void World::CreateSpawnMobileEvents()
       continue;
     }
     WorldMobileFileName = FileList.GetFileName();
-    MobileId = WorldMobileFileName.Left(WorldMobileFileName.GetLength()-4);
+    MobileId = StrLeft(WorldMobileFileName, StrGetLength(WorldMobileFileName) - 4);
     if (MobileId == "ReadMe")
     {
       continue;
@@ -251,8 +251,8 @@ void World::CheckSpawnMobileEvents()
     }
     // Is it time for this event
     EventFileName += FileList.GetFileName();
-    EventTime = EventFileName.Left(EventFileName.GetLength()-4);
-    EventTime = EventTime.Right(EventTime.GetLength()-1);
+    EventTime = StrLeft(EventFileName, StrGetLength(EventFileName) - 4);
+    EventTime = StrRight(EventTime, StrGetLength(EventTime) - 1);
     if (EventTime > CheckTime)
     { // Event is in the future, so skip it
       continue;
@@ -344,7 +344,7 @@ void World::HealMobiles()
       continue;
     }
     MobStatsHitPointsFileName = FileList.GetFileName();
-    MobileId = MobStatsHitPointsFileName.Left(MobStatsHitPointsFileName.GetLength()-4);
+    MobileId = StrLeft(MobStatsHitPointsFileName, StrGetLength(MobStatsHitPointsFileName) - 4);
     MobFighting = HealMobilesFightCheck("MobPlayer", MobileId);
     if (MobFighting)
     { // Mobile is fighting, no heal
@@ -731,7 +731,7 @@ void World::MakeMobilesMove2()
       RoomMobListFile.ReadString(RoomMobFileName);
       continue;
     }
-    RoomId = RoomMobFileName.Left(RoomMobFileName.GetLength()-4);
+    RoomId = StrLeft(RoomMobFileName, StrGetLength(RoomMobFileName) - 4);
     // Open RoomMob file
     RoomMobFileName =  ROOM_MOB_DIR + RoomMobFileName;
     Success = RoomMobFile.Open(RoomMobFileName,
