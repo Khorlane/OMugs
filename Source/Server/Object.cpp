@@ -164,7 +164,7 @@ bool Object::AddObjToPlayerEqu(CString WearPosition, CString ObjectId)
     PlayerEquFileTmp.WriteString(ObjectId);
     ObjectIdAdded = true;
   }
-  BytesInFile = StrGetLength(PlayerEquFileNameTmp);
+  BytesInFile = StrGetLength(PlayerEquFileNameTmp); // TODO What is this doing?
   PlayerEquFile.Close();
   PlayerEquFileTmp.Close();
   CFile::Remove(PlayerEquFileName);

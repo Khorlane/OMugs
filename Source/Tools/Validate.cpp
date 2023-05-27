@@ -435,7 +435,7 @@ void Validate::ValidateLibraryObjects()
     }
     // Open object file
     ObjectFileName = FileList.GetFileName();
-    ObjectId = StrLeft(ObjectFileName, StrGetLength(ObjectFileName)-4);
+    ObjectId = StrLeft(ObjectFileName, StrGetLength(ObjectFileName) - 4);
     ObjectFileName = OBJECTS_DIR + ObjectFileName;
     Success = ObjectFile.Open(ObjectFileName,
                    CFile::modeRead |

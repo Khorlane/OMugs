@@ -1158,7 +1158,7 @@ void Mobile::WhereMob(CString MobileIdSearch)
       AfxMessageBox("Mobile::WhereMob - Open RoomMob file failed", MB_ICONSTOP);
       _endthread();
     }
-    RoomName = StrLeft(FileName, StrGetLength(FileName)-4);
+    RoomName = StrLeft(FileName, StrGetLength(FileName) - 4);
     RoomMobFile.ReadString(Stuff);
     while (Stuff != "")
     {
@@ -1511,7 +1511,7 @@ void Mobile::ParseStuff()
   {
     if (Stuff.Left(9) == "MobileId:")
     {
-      MobileId = StrRight(Stuff, StrGetLength(Stuff)-9);
+      MobileId = StrRight(Stuff, StrGetLength(Stuff) - 9);
       MobileId = StrTrimLeft(MobileId);
     }
     else
