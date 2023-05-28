@@ -279,7 +279,7 @@ void GenerateRooms::Parse1()
   //* RoomType *
   //************
   Stuff = iRoomType;
-  n = Stuff.Find("RoomType:");
+  n = StrFind(Stuff, "RoomType:");
   if (n != 0)
   { // Sanity check
     AfxMessageBox("GenerateRooms::Parse1 - RoomType: not where it should be", MB_ICONSTOP);
@@ -295,7 +295,7 @@ void GenerateRooms::Parse1()
   //* Terrain *
   //***********
   Stuff = iRoomType;
-  n = Stuff.Find("Terrain:");
+  n = StrFind(Stuff, "Terrain:");
   if (n == 0)
   { // Sanity check
     AfxMessageBox("GenerateRooms::Parse1 - Terrain: not where it should be", MB_ICONSTOP);

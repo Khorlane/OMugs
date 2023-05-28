@@ -398,31 +398,31 @@ void BuildMobiles::ParseStuff()
       ActionWimpy   = false;
       Action = StrRight(Stuff, StrGetLength(Stuff) - 7);
       Action = StrTrimLeft(Action);
-      if (Action.Find("None") > -1)
+      if (StrFind(Action, "None") > -1)
       {
         ActionNone = true;
       }
-      if (Action.Find("Aggro") > -1)
+      if (StrFind(Action, "Aggro") > -1)
       {
         ActionAggro = true;
       }
-      if (Action.Find("Faction") > -1)
+      if (StrFind(Action, "Faction") > -1)
       {
         ActionFaction = true;
       }
-      if (Action.Find("Destroy") > -1)
+      if (StrFind(Action, "Destroy") > -1)
       {
         ActionDestroy = true;
       }
-      if (Action.Find("Help") > -1)
+      if (StrFind(Action, "Help") > -1)
       {
         ActionHelp = true;
       }
-      if (Action.Find("NoMove") > -1)
+      if (StrFind(Action, "NoMove") > -1)
       {
         ActionNoMove = true;
       }
-      if (Action.Find("Wimpy") > -1)
+      if (StrFind(Action, "Wimpy") > -1)
       {
         ActionWimpy = true;
       }
@@ -433,27 +433,27 @@ void BuildMobiles::ParseStuff()
     {
       Faction = StrRight(Stuff, StrGetLength(Stuff) - 8);
       Faction = StrTrimLeft(Faction);
-      if (Faction.Find("Good") > -1)
+      if (StrFind(Faction, "Good") > -1)
       {
         FactionRadio = 0;
       }
       else
-      if (Faction.Find("Lawful") > -1)
+      if (StrFind(Faction, "Lawful") > -1)
       {
         FactionRadio = 1;
       }
       else
-      if (Faction.Find("Neutral") > -1)
+      if (StrFind(Faction, "Neutral") > -1)
       {
         FactionRadio = 2;
       }
       else
-      if (Faction.Find("Lawless") > -1)
+      if (StrFind(Faction, "Lawless") > -1)
       {
         FactionRadio = 3;
       }
       else
-      if (Faction.Find("Evil") > -1)
+      if (StrFind(Faction, "Evil") > -1)
       {
         FactionRadio = 4;
       }
@@ -485,57 +485,57 @@ void BuildMobiles::ParseStuff()
     {
       Attack = StrRight(Stuff, StrGetLength(Stuff) - 7);
       Attack = StrTrimLeft(Attack);
-      if (Attack.Find("Bites") > -1)
+      if (StrFind(Attack, "Bites") > -1)
       {
         AttackRadio = 0;
       }
       else
-      if (Attack.Find("Claws") > -1)
+      if (StrFind(Attack, "Claws") > -1)
       {
         AttackRadio = 1;
       }
       else
-      if (Attack.Find("Crushes") > -1)
+      if (StrFind(Attack, "Crushes") > -1)
       {
         AttackRadio = 2;
       }
       else
-      if (Attack.Find("Hits") > -1)
+      if (StrFind(Attack, "Hits") > -1)
       {
         AttackRadio = 3;
       }
       else
-      if (Attack.Find("Mauls") > -1)
+      if (StrFind(Attack, "Mauls") > -1)
       {
         AttackRadio = 4;
       }
       else
-      if (Attack.Find("Pierces") > -1)
+      if (StrFind(Attack, "Pierces") > -1)
       {
         AttackRadio = 5;
       }
       else
-      if (Attack.Find("Punches") > -1)
+      if (StrFind(Attack, "Punches") > -1)
       {
         AttackRadio = 6;
       }
       else
-      if (Attack.Find("Slashes") > -1)
+      if (StrFind(Attack, "Slashes") > -1)
       {
         AttackRadio = 7;
       }
       else
-      if (Attack.Find("Stabs") > -1)
+      if (StrFind(Attack, "Stabs") > -1)
       {
         AttackRadio = 8;
       }
       else
-      if (Attack.Find("Stings") > -1)
+      if (StrFind(Attack, "Stings") > -1)
       {
         AttackRadio = 9;
       }
       else
-      if (Attack.Find("Thrashes") > -1)
+      if (StrFind(Attack, "Thrashes") > -1)
       {
         AttackRadio = 10;
       }

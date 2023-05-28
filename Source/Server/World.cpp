@@ -585,7 +585,7 @@ void World::MakeMobilesMove1()
       continue;
     }
     RoomMobFileName = FileList.GetFileName();
-    if (RoomMobFileName.Find("Spawn") == -1)
+    if (StrFind(RoomMobFileName, "Spawn") == -1)
     { // Not a spawn room, Random position in list
       sprintf(Buf, "%05d",rand());
       TmpStr = ConvertStringToCString(Buf);
@@ -767,7 +767,7 @@ void World::MakeMobilesMove2()
       { // Mobile may move
         for (i = 1; i <= MobCount; i++)
         { // For each mobile occurrence
-          if (RoomId.Find("Spawn") == -1)
+          if (StrFind(RoomId, "Spawn") == -1)
           { // Not a spawn room, Get random chance of mob moving
             RandomPct = GetRandomNumber(100);
           }

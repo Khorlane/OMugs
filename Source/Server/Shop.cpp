@@ -134,7 +134,7 @@ void Shop::IsShopObj(CString RoomId, CString ObjectName)
       { // Check for a match
         NamesCheck = pObject->Names;
         NamesCheck = StrMakeLower(NamesCheck);
-        Success = NamesCheck.Find(ObjectName);
+        Success = StrFind(NamesCheck, ObjectName);
         if (Success != -1)
         { // Match, Object found in this shop
           ShopFile.Close();
