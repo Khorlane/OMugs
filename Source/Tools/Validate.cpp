@@ -1398,7 +1398,7 @@ void Validate::ValidateRunningRoomMob()
     { // For all lines
       LineCount++;
       MobileId = StrGetWord(Stuff, 2);
-      PositionOfDot = MobileId.Find('.');
+      PositionOfDot = StrFindFirstChar(MobileId, '.');
       if (PositionOfDot > 1)
       { // Mobile is hurt
         MobileId = StrLeft(MobileId, PositionOfDot);

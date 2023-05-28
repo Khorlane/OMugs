@@ -288,7 +288,7 @@ void GenerateRooms::Parse1()
   TmpStr = "RoomType:";
   Stuff.Delete(0, StrGetLength(TmpStr) + 1);
   Stuff = StrTrimLeft(Stuff);
-  n = Stuff.Find('\r');
+  n = StrFindFirstChar(Stuff, '\r');
   Stuff.Delete(n, StrGetLength(Stuff) - n);
   oRoomType = Stuff;
   //***********

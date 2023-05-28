@@ -345,6 +345,8 @@ int     StrCountWords(CString Str1);
 int     StrCountWords(string Str1);
 CString StrDeleteWord(CString Str1, int WordNbr);
 string  StrDeleteWord(string Str1, int WordNbr);
+int     StrFindFirstChar(CString Str1, char c);
+int     StrFindFirstChar(string Str1, char c);
 int     StrFindOneOf(CString HayStack, string Needle);
 int     StrFindOneOf(string HayStack, string Needle);
 int     StrGetLength(CString Str1);

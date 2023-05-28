@@ -288,6 +288,18 @@ string StrDeleteWord(string Str1, int WordNbr)
   return Str1;
 }
 
+// Find first occurrence of a character in a string (Temporary)
+int StrFindFirstChar(CString Str1, char c)
+{
+  return StrFindFirstChar(ConvertCStringToString(Str1), c);
+}
+
+// Find first occurrence of a character in a string
+int StrFindFirstChar(string Str1, char c)
+{
+  return Str1.find_first_of(c);
+}
+
 // Find one of the characters specified in Needle in the HayStack (temporary)
 int StrFindOneOf(CString HayStack, string Needle)
 {

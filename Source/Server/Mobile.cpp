@@ -256,7 +256,7 @@ int Mobile::CountMobOldWayNotUsedNow(CString MobileIdSearch)
     while (Stuff != "")
     {
       MobileId      = StrGetWord(Stuff, 2);
-      PositionOfDot = MobileId.Find('.');
+      PositionOfDot = StrFindFirstChar(MobileId, '.');
       if (PositionOfDot > 1)
       { // Mobile is hurt but not fighting
         MobileId = StrLeft(MobileId, PositionOfDot);
@@ -588,7 +588,7 @@ Mobile *Mobile::IsMobInRoom(CString MobileName)
     if (MobileId == MobileName)
     { // This mobile is a match
       RoomMobFile.Close();
-      PositionOfDot = MobileId.Find('.');
+      PositionOfDot = StrFindFirstChar(MobileId, '.');
       MobileHurt    = false;
       if (PositionOfDot > 1)
       { // Mobile is hurt but not fighting
@@ -619,7 +619,7 @@ Mobile *Mobile::IsMobInRoom(CString MobileName)
   while (Stuff != "")
   { // Process each mobile in the room
     MobileId      = StrGetWord(Stuff, 2);
-    PositionOfDot = MobileId.Find('.');
+    PositionOfDot = StrFindFirstChar(MobileId, '.');
     MobileHurt    = false;
     if (PositionOfDot > 1)
     { // Mobile is hurt but not fighting
@@ -669,7 +669,7 @@ CString Mobile::GetMobDesc1(CString MobileId)
   CString    Stuff;
   int        Success;
 
-  PositionOfDot = MobileId.Find('.');
+  PositionOfDot = StrFindFirstChar(MobileId, '.');
   if (PositionOfDot > 1)
   { // Mobile is hurt but not fighting
     MobileId = StrLeft(MobileId, PositionOfDot);
@@ -818,7 +818,7 @@ void Mobile::PutMobBackInRoom(CString PlayerName, CString RoomIdBeforeFleeing)
     if (MobHitPointsTotal == MobHitPointsLeft)
     { // Mobile is not hurt
       DeleteMobStats(MobileId);
-      PositionOfDot = MobileId.Find('.');
+      PositionOfDot = StrFindFirstChar(MobileId, '.');
       if (PositionOfDot > 1)
       { // Get MobileId
         MobileId = StrLeft(MobileId, PositionOfDot);
@@ -973,7 +973,7 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
   {
     MobileCount = StrGetWord(Stuff, 1);
     MobileId    = StrGetWord(Stuff, 2);
-    PositionOfDot = MobileId.Find('.');
+    PositionOfDot = StrFindFirstChar(MobileId, '.');
     MobileHurt = false;
     if (PositionOfDot > 1)
     { // Mobile is hurt but not fighting
@@ -1163,7 +1163,7 @@ void Mobile::WhereMob(CString MobileIdSearch)
     while (Stuff != "")
     {
       MobileId      = StrGetWord(Stuff, 2);
-      PositionOfDot = MobileId.Find('.');
+      PositionOfDot = StrFindFirstChar(MobileId, '.');
       MobileHurt    = false;
       if (PositionOfDot > 1)
       { // Mobile is hurt but not fighting
@@ -1208,7 +1208,7 @@ void Mobile::UpdateMobInWorld(CString MobileId, CString AddRemove)
   CString    TmpStr;
   
   MobInWorldCount = 0;
-  PositionOfDot = MobileId.Find('.');
+  PositionOfDot = StrFindFirstChar(MobileId, '.');
   if (PositionOfDot > 1)
   { // Get MobileId
     MobileId = StrLeft(MobileId, PositionOfDot);

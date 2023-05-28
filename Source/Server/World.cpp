@@ -361,7 +361,7 @@ void World::HealMobiles()
     RoomId = GetMobileRoom(MobileId);
     RemoveMobFromRoom(RoomId, MobileId);
     DeleteMobStats(MobileId);
-    PositionOfDot = MobileId.Find('.');
+    PositionOfDot = StrFindFirstChar(MobileId, '.');
     MobileId = StrLeft(MobileId, PositionOfDot);
     AddMobToRoom(RoomId, MobileId);
   }
@@ -748,7 +748,7 @@ void World::MakeMobilesMove2()
       MobCount = atoi(StrGetWord(Stuff, 1));
       MobileId = StrGetWord(Stuff, 2);
       MobileIdCheck = MobileId;
-      PositionOfDot = MobileIdCheck.Find('.');
+      PositionOfDot = StrFindFirstChar(MobileIdCheck, '.');
       if (PositionOfDot > 1)
       { // Mobile is hurt but not fighting
         MobileIdCheck = StrLeft(MobileIdCheck, PositionOfDot);
@@ -932,7 +932,7 @@ void World::MakeMobilesMove3()
     pDnodeTgt = NULL;
     SendToRoom(RoomId,       LeaveMsg);
     SendToRoom(ExitToRoomId, ArriveMsg);
-    PositionOfDot = MobileId.Find('.');
+    PositionOfDot = StrFindFirstChar(MobileId, '.');
     if (PositionOfDot > 1)
     { // Delete 'MobStats' Room file
       MobStatsFileName = MOB_STATS_ROOM_DIR;

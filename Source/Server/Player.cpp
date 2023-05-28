@@ -1085,12 +1085,12 @@ void Player::ShowStatus()
   // Current Experience and Experience needed for next level
   sprintf(Buf, "%f15.0", Experience);
   TmpStr = ConvertStringToCString(Buf);
-  TmpStr = TmpStr.Left(TmpStr.Find('.'));
+  TmpStr = StrLeft(TmpStr, StrFindFirstChar(TmpStr, '.'));
   Exp1   = FormatCommas(TmpStr);
 
   sprintf(Buf, "%f15.0", CalcLevelExperience(Level + 1));
   TmpStr = ConvertStringToCString(Buf);
-  TmpStr = StrLeft(TmpStr, TmpStr.Find('.'));
+  TmpStr = StrLeft(TmpStr, StrFindFirstChar(TmpStr, '.'));
   Exp2   = FormatCommas(TmpStr);
   while (StrGetLength(Exp1) < StrGetLength(Exp2))
   {
