@@ -52,7 +52,7 @@ void Validate::LogValErr(CString Message, CString FileName)
 
   if (StrGetLength(Message) > 50)
   { // Message is too long, chop it off
-    Message = Message.Left(50);
+    Message = StrLeft(Message, 50);
   }
   Message = " - " + Message + " ";
   while (StrGetLength(Message) < 55)
@@ -1401,7 +1401,7 @@ void Validate::ValidateRunningRoomMob()
       PositionOfDot = MobileId.Find('.');
       if (PositionOfDot > 1)
       { // Mobile is hurt
-        MobileId = MobileId.Left(PositionOfDot);
+        MobileId = StrLeft(MobileId, PositionOfDot);
       }
 
       //************

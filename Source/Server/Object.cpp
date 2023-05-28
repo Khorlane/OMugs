@@ -1518,57 +1518,57 @@ void Object::ParseStuff()
   ReadLine();
   while (Stuff != "")
   {
-    if (Stuff.Left(9) == "ObjectId:")
+    if (StrLeft(Stuff, 9) == "ObjectId:")
     {
       ObjectId = StrRight(Stuff, StrGetLength(Stuff) - 9);
       ObjectId = StrTrimLeft(ObjectId);
     }
     else
-    if (Stuff.Left(6) == "Names:")
+    if (StrLeft(Stuff, 6) == "Names:")
     {
       Names = StrRight(Stuff, StrGetLength(Stuff) - 6);
       Names = StrTrimLeft(Names);
     }
     else
-    if (Stuff.Left(6) == "Desc1:")
+    if (StrLeft(Stuff, 6) == "Desc1:")
     {
       Desc1 = StrRight(Stuff, StrGetLength(Stuff) - 6);
       Desc1 = StrTrimLeft(Desc1);
     }
     else
-    if (Stuff.Left(6) == "Desc2:")
+    if (StrLeft(Stuff, 6) == "Desc2:")
     {
       Desc2 = StrRight(Stuff, StrGetLength(Stuff) - 6);
       Desc2 = StrTrimLeft(Desc2);
     }
     else
-    if (Stuff.Left(6) == "Desc3:")
+    if (StrLeft(Stuff, 6) == "Desc3:")
     {
     // Desc3 can be multi-line and is dealt with in 'ExamineObj'
     }
     else
-    if (Stuff.Left(7) == "Weight:")
+    if (StrLeft(Stuff, 7) == "Weight:")
     {
       Weight = atoi(StrRight(Stuff, StrGetLength(Stuff) - 7));
     }
     else
-    if (Stuff.Left(5) == "Cost:")
+    if (StrLeft(Stuff, 5) == "Cost:")
     {
       Cost = atoi(StrRight(Stuff, StrGetLength(Stuff) - 5));
     }
     else
-    if (Stuff.Left(5) == "Type:")
+    if (StrLeft(Stuff, 5) == "Type:")
     {
       Type = StrRight(Stuff, StrGetLength(Stuff) - 5);
       Type = StrTrimLeft(Type);
     }
     else
-    if (Stuff.Left(11) == "ArmorValue:")
+    if (StrLeft(Stuff, 11) == "ArmorValue:")
     {
       ArmorValue = atoi(StrRight(Stuff, StrGetLength(Stuff) - 11));
     }
     else
-    if (Stuff.Left(10) == "ArmorWear:")
+    if (StrLeft(Stuff, 10) == "ArmorWear:")
     {
       ArmorWear = StrRight(Stuff, StrGetLength(Stuff) - 10);
       ArmorWear = StrTrimLeft(ArmorWear);
@@ -1576,7 +1576,7 @@ void Object::ParseStuff()
       WearPosition = StrMakeLower(WearPosition);
     }
     else
-    if (Stuff.Left(11) == "WeaponType:")
+    if (StrLeft(Stuff, 11) == "WeaponType:")
     {
       WeaponType = StrRight(Stuff, StrGetLength(Stuff) - 11);
       WeaponType = StrTrimLeft(WeaponType);
@@ -1584,17 +1584,17 @@ void Object::ParseStuff()
       WearPosition = "wielded";
     }
     else
-    if (Stuff.Left(13) == "WeaponDamage:")
+    if (StrLeft(Stuff, 13) == "WeaponDamage:")
     {
       WeaponDamage = atoi(StrRight(Stuff, StrGetLength(Stuff) - 13));
     }
     else
-    if (Stuff.Left(8) == "FoodPct:")
+    if (StrLeft(Stuff, 8) == "FoodPct:")
     {
       FoodPct = atoi(StrRight(Stuff, StrGetLength(Stuff) - 8));
     }
     else
-    if (Stuff.Left(9) == "DrinkPct:")
+    if (StrLeft(Stuff, 9) == "DrinkPct:")
     {
       DrinkPct = atoi(StrRight(Stuff, StrGetLength(Stuff) - 9));
     }

@@ -232,7 +232,7 @@ bool BuildObjectsList::PopulateListOk()
   ReadLine();
   while (Stuff != "")
   { // Read lines until EOF
-    if (Stuff.Left(5) == "type:")
+    if (StrLeft(Stuff, 5) == "type:")
     { // 'type:' is found
       TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 5);
       TmpStr = StrTrimLeft(TmpStr);

@@ -218,35 +218,35 @@ void BuildObjects::ParseStuff()
   while (Stuff != "")
   {
     // ObjectId
-    if (Stuff.Left(9) == "ObjectId:")
+    if (StrLeft(Stuff, 9) == "ObjectId:")
     {
       ObjectId = StrRight(Stuff, StrGetLength(Stuff) - 9);
       ObjectId = StrTrimLeft(ObjectId);
     }
     else
     // Names
-    if (Stuff.Left(6) == "Names:")
+    if (StrLeft(Stuff, 6) == "Names:")
     {
       Names = StrRight(Stuff, StrGetLength(Stuff) - 6);
       Names = StrTrimLeft(Names);
     }
     else
     // Desc1
-    if (Stuff.Left(6) == "Desc1:")
+    if (StrLeft(Stuff, 6) == "Desc1:")
     {
       Desc1 = StrRight(Stuff, StrGetLength(Stuff) - 6);
       Desc1 = StrTrimLeft(Desc1);
     }
     else
     // Desc2
-    if (Stuff.Left(6) == "Desc2:")
+    if (StrLeft(Stuff, 6) == "Desc2:")
     {
       Desc2 = StrRight(Stuff, StrGetLength(Stuff) - 6);
       Desc2 = StrTrimLeft(Desc2);
     }
     else
     // Desc3
-    if (Stuff.Left(6) == "Desc3:")
+    if (StrLeft(Stuff, 6) == "Desc3:")
     { 
       Desc3 = "";
       ObjectFile.ReadString(Stuff); // Do not use Readline()
@@ -260,21 +260,21 @@ void BuildObjects::ParseStuff()
     }
     else
     // Weight
-    if (Stuff.Left(7) == "Weight:")
+    if (StrLeft(Stuff, 7) == "Weight:")
     {
       Weight = StrRight(Stuff, StrGetLength(Stuff) - 7);
       Weight = StrTrimLeft(Weight);
     }
     else
     // Cost
-    if (Stuff.Left(5) == "Cost:")
+    if (StrLeft(Stuff, 5) == "Cost:")
     {
       Cost = StrRight(Stuff, StrGetLength(Stuff) - 5);
       Cost = StrTrimLeft(Cost);
     }
     else
     // Type
-    if (Stuff.Left(5) == "Type:")
+    if (StrLeft(Stuff, 5) == "Type:")
     {
       Type = StrRight(Stuff, StrGetLength(Stuff) - 5);
       Type = StrTrimLeft(Type);
@@ -284,7 +284,7 @@ void BuildObjects::ParseStuff()
         TypeDropList = 0;
         // ArmorValue
         ReadLine();
-        if (Stuff.Left(11) != "ArmorValue:")
+        if (StrLeft(Stuff, 11) != "ArmorValue:")
         { // Expecting ArmorValue
           AfxMessageBox("Expecting ArmorValue", MB_ICONSTOP);
           ObjectFile.Close();
@@ -294,7 +294,7 @@ void BuildObjects::ParseStuff()
         ArmorValue = StrTrimLeft(ArmorValue);
         // ArmorWear
         ReadLine();
-        if (Stuff.Left(10) != "ArmorWear:")
+        if (StrLeft(Stuff, 10) != "ArmorWear:")
         { // Expecting ArmorValue
           AfxMessageBox("Expecting ArmorWear", MB_ICONSTOP);
           ObjectFile.Close();
@@ -384,7 +384,7 @@ void BuildObjects::ParseStuff()
         TypeDropList = 1;
         // WeaponType
         ReadLine();
-        if (Stuff.Left(11) != "WeaponType:")
+        if (StrLeft(Stuff, 11) != "WeaponType:")
         { // Expecting WeaponType
           AfxMessageBox("Expecting WeaponType", MB_ICONSTOP);
           ObjectFile.Close();
@@ -428,7 +428,7 @@ void BuildObjects::ParseStuff()
         }
         // WeaponDamage
         ReadLine();
-        if (Stuff.Left(13) != "WeaponDamage:")
+        if (StrLeft(Stuff, 13) != "WeaponDamage:")
         { // Expecting WeaponDamage
           AfxMessageBox("Expecting WeaponDamage", MB_ICONSTOP);
           ObjectFile.Close();
@@ -444,7 +444,7 @@ void BuildObjects::ParseStuff()
         TypeDropList = 2;
         // DrinkPct
         ReadLine();
-        if (Stuff.Left(9) != "DrinkPct:")
+        if (StrLeft(Stuff, 9) != "DrinkPct:")
         { // Expecting DrinkPct
           AfxMessageBox("Expecting DrinkPct", MB_ICONSTOP);
           ObjectFile.Close();
@@ -460,7 +460,7 @@ void BuildObjects::ParseStuff()
         TypeDropList = 3;
         // FoodPct
         ReadLine();
-        if (Stuff.Left(8) != "FoodPct:")
+        if (StrLeft(Stuff, 8) != "FoodPct:")
         { // Expecting FoodPct
           AfxMessageBox("Expecting FoodPct", MB_ICONSTOP);
           ObjectFile.Close();

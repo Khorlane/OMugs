@@ -911,7 +911,7 @@ void Communication::CommandParse()
   { // No newline found, skip out
     return;
   }
-  CmdStr = CmdStr.Left(PositionOfNewline);
+  CmdStr = StrLeft(CmdStr, PositionOfNewline);
   pDnodeActor->PlayerInp = StrRight(pDnodeActor->PlayerInp, CmdStrLength - PositionOfNewline);
   pDnodeActor->PlayerInp = StrTrimLeft(pDnodeActor->PlayerInp);
   if (CmdStr == "")
@@ -5268,7 +5268,7 @@ void Communication::DoShow()
       HelpFile.ReadString(HelpText);
       while (HelpText != "End of Help")
       { // Read the whole file
-        if (HelpText.Left(5) == "Help:")
+        if (StrLeft(HelpText, 5) == "Help:")
         { // Found a help topic
           pDnodeActor->PlayerOut += StrRight(HelpText, StrGetLength(HelpText) - 5);
           pDnodeActor->PlayerOut += "\r\n";
@@ -5302,7 +5302,7 @@ void Communication::DoShow()
       SocialFile.ReadString(SocialText);
       while (SocialText != "End of Socials")
       { // Read the whole file
-        if (SocialText.Left(9) == "Social : ")
+        if (StrLeft(SocialText, 9) == "Social : ")
         { // Found a help topic
           pDnodeActor->PlayerOut += StrRight(SocialText, StrGetLength(SocialText) - 9);
           pDnodeActor->PlayerOut += "\r\n";

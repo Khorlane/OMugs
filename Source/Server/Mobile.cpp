@@ -259,7 +259,7 @@ int Mobile::CountMobOldWayNotUsedNow(CString MobileIdSearch)
       PositionOfDot = MobileId.Find('.');
       if (PositionOfDot > 1)
       { // Mobile is hurt but not fighting
-        MobileId = MobileId.Left(PositionOfDot);
+        MobileId = StrLeft(MobileId, PositionOfDot);
       }
       if (MobileId == MobileIdSearch)
       { // Found a non-fighting mobile, count it
@@ -595,7 +595,7 @@ Mobile *Mobile::IsMobInRoom(CString MobileName)
         MobileHurt   = true;
         MobileIdHurt = MobileId;
         MobNbr       = StrRight(MobileId, StrGetLength(MobileId) - PositionOfDot - 1);
-        MobileId     = MobileId.Left(PositionOfDot);
+        MobileId     = StrLeft(MobileId, PositionOfDot);
       }
       pMobile = new Mobile(MobileId);
       pMobile->Hurt   = MobileHurt;
@@ -626,7 +626,7 @@ Mobile *Mobile::IsMobInRoom(CString MobileName)
       MobileHurt   = true;
       MobileIdHurt = MobileId;
       MobNbr       = StrRight(MobileId, StrGetLength(MobileId) - PositionOfDot - 1);
-      MobileId     = MobileId.Left(PositionOfDot);
+      MobileId     = StrLeft(MobileId, PositionOfDot);
     }
     pMobile = new Mobile(MobileId);
     pMobile->Hurt    = MobileHurt;
@@ -672,7 +672,7 @@ CString Mobile::GetMobDesc1(CString MobileId)
   PositionOfDot = MobileId.Find('.');
   if (PositionOfDot > 1)
   { // Mobile is hurt but not fighting
-    MobileId = MobileId.Left(PositionOfDot);
+    MobileId = StrLeft(MobileId, PositionOfDot);
   }
   MobileFileName =  MOBILES_DIR;
   MobileFileName += MobileId;
@@ -686,7 +686,7 @@ CString Mobile::GetMobDesc1(CString MobileId)
     _endthread();
   }
   Stuff = "";
-  while (Stuff.Left(6) != "Desc1:")
+  while (StrLeft(Stuff, 6) != "Desc1:")
   {
     MobileFile.ReadString(Stuff);
   }
@@ -821,7 +821,7 @@ void Mobile::PutMobBackInRoom(CString PlayerName, CString RoomIdBeforeFleeing)
       PositionOfDot = MobileId.Find('.');
       if (PositionOfDot > 1)
       { // Get MobileId
-        MobileId = MobileId.Left(PositionOfDot);
+        MobileId = StrLeft(MobileId, PositionOfDot);
       }
     }
     AddMobToRoom(RoomIdBeforeFleeing, MobileId);
@@ -980,7 +980,7 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
       MobileHurt = true;
       MobileIdHurt = MobileId;
       MobNbr = StrRight(MobileId, StrGetLength(MobileId) - PositionOfDot - 1);
-      MobileId = MobileId.Left(PositionOfDot);
+      MobileId = StrLeft(MobileId, PositionOfDot);
     }
     pMobile = new Mobile(MobileId);
     pMobile->Hurt = MobileHurt;
@@ -1168,7 +1168,7 @@ void Mobile::WhereMob(CString MobileIdSearch)
       if (PositionOfDot > 1)
       { // Mobile is hurt but not fighting
         MobileHurt = true;
-        MobileId   = MobileId.Left(PositionOfDot);
+        MobileId   = StrLeft(MobileId, PositionOfDot);
       }
       if (MobileId == MobileIdSearch)
       {
@@ -1211,7 +1211,7 @@ void Mobile::UpdateMobInWorld(CString MobileId, CString AddRemove)
   PositionOfDot = MobileId.Find('.');
   if (PositionOfDot > 1)
   { // Get MobileId
-    MobileId = MobileId.Left(PositionOfDot);
+    MobileId = StrLeft(MobileId, PositionOfDot);
   }
   // Open Mobile InWorld file
   MobInWorldFileName =  CONTROL_MOB_INWORLD_DIR;
@@ -1509,90 +1509,90 @@ void Mobile::ParseStuff()
   ReadLine();
   while (Stuff != "")
   {
-    if (Stuff.Left(9) == "MobileId:")
+    if (StrLeft(Stuff, 9) == "MobileId:")
     {
       MobileId = StrRight(Stuff, StrGetLength(Stuff) - 9);
       MobileId = StrTrimLeft(MobileId);
     }
     else
-    if (Stuff.Left(6) == "Names:")
+    if (StrLeft(Stuff, 6) == "Names:")
     {
       Names = StrRight(Stuff, StrGetLength(Stuff) - 6);
       Names = StrTrimLeft(Names);
     }
     else
-    if (Stuff.Left(6) == "Desc1:")
+    if (StrLeft(Stuff, 6) == "Desc1:")
     {
       Desc1 = StrRight(Stuff, StrGetLength(Stuff) - 6);
       Desc1 = StrTrimLeft(Desc1);
     }
     else
-    if (Stuff.Left(6) == "Desc2:")
+    if (StrLeft(Stuff, 6) == "Desc2:")
     {
       Desc2 = StrRight(Stuff, StrGetLength(Stuff) - 6);
       Desc2 = StrTrimLeft(Desc2);
     }
     else
-    if (Stuff.Left(6) == "Desc3:")
+    if (StrLeft(Stuff, 6) == "Desc3:")
     {
     // Desc3 can be multi-line and is dealt with in 'ExamineMob'
     }
     else
-    if (Stuff.Left(7) == "Action:")
+    if (StrLeft(Stuff, 7) == "Action:")
     {
       Action = StrRight(Stuff, StrGetLength(Stuff) - 7);
       Action = StrTrimLeft(Action);
     }
     else
-    if (Stuff.Left(8) == "Faction:")
+    if (StrLeft(Stuff, 8) == "Faction:")
     {
       Faction = StrRight(Stuff, StrGetLength(Stuff) - 8);
       Faction = StrTrimLeft(Faction);
     }
     else
-    if (Stuff.Left(6) == "Level:")
+    if (StrLeft(Stuff, 6) == "Level:")
     {
       Level = atoi(StrRight(Stuff, StrGetLength(Stuff) - 6));
     }
     else
-    if (Stuff.Left(10) == "HitPoints:")
+    if (StrLeft(Stuff, 10) == "HitPoints:")
     {
       HitPoints  = atoi(StrRight(Stuff, StrGetLength(Stuff) - 10));
       HitPoints += Level * MOB_HPT_PER_LEVEL;
     }
     else
-    if (Stuff.Left(6) == "Armor:")
+    if (StrLeft(Stuff, 6) == "Armor:")
     {
       Armor  = atoi(StrRight(Stuff, StrGetLength(Stuff) - 6));
       Armor += Level * MOB_ARM_PER_LEVEL;
     }
     else
-    if (Stuff.Left(7) == "Attack:")
+    if (StrLeft(Stuff, 7) == "Attack:")
     {
       Attack = StrRight(Stuff, StrGetLength(Stuff) - 7);
       Attack = StrTrimLeft(Attack);
       Attack = StrMakeLower(Attack);
     }
     else
-    if (Stuff.Left(7) == "Damage:")
+    if (StrLeft(Stuff, 7) == "Damage:")
     {
       Damage  = atoi(StrRight(Stuff, StrGetLength(Stuff) - 7));
       Damage += Level * MOB_DMG_PER_LEVEL;
     }
     else
-    if (Stuff.Left(10) == "ExpPoints:")
+    if (StrLeft(Stuff, 10) == "ExpPoints:")
     {
       ExpPoints  = atoi(StrRight(Stuff, StrGetLength(Stuff) - 10));
       ExpPoints += Level * MOB_EXP_PER_LEVEL;
     }
     else
-    if (Stuff.Left(5) == "Loot:")
+    if (StrLeft(Stuff, 5) == "Loot:")
     {
       Loot = StrRight(Stuff, StrGetLength(Stuff) - 5);
       Loot = StrTrimLeft(Loot);
     }
     else
-    if (Stuff.Left(5) == "Talk:")
+    if (StrLeft(Stuff, 5) == "Talk:")
     {
       Talk = StrRight(Stuff, StrGetLength(Stuff) - 5);
       Talk = StrTrimLeft(Talk);

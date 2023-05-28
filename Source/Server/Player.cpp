@@ -457,19 +457,19 @@ void Player::ParsePlayerStuff()
   ReadLine();
   while (Stuff != "")
   { // Name
-    if (Stuff.Left(5) == "Name:")
+    if (StrLeft(Stuff, 5) == "Name:")
     {
       TmpStr = ""; // Already got the name
     }
     else
     // Password
-    if (Stuff.Left(9) == "Password:")
+    if (StrLeft(Stuff, 9) == "Password:")
     { 
       Password = StrRight(Stuff, StrGetLength(Stuff) - 9);
     }
     else
     // Admin
-    if (Stuff.Left(6) == "Admin:")
+    if (StrLeft(Stuff, 6) == "Admin:")
     {
       TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 6);
       TmpStr = StrMakeLower(TmpStr);
@@ -484,13 +484,13 @@ void Player::ParsePlayerStuff()
     }
     else
     // AFK
-    if(Stuff.Left(4) == "AFK:")
+    if(StrLeft(Stuff, 4) == "AFK:")
     {
       TmpStr = ""; // Does not matter what is the file
     }
     else
     // AllowAssist
-    if (Stuff.Left(12) == "AllowAssist:")
+    if (StrLeft(Stuff, 12) == "AllowAssist:")
     {
       TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 12);
       TmpStr = StrMakeLower(TmpStr);
@@ -505,7 +505,7 @@ void Player::ParsePlayerStuff()
     }
     else
     // AllowGroup
-    if (Stuff.Left(11) == "AllowGroup:")
+    if (StrLeft(Stuff, 11) == "AllowGroup:")
     {
       TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 11);
       TmpStr = StrMakeLower(TmpStr);
@@ -520,19 +520,19 @@ void Player::ParsePlayerStuff()
     }
     else
     // ArmorClass
-    if (Stuff.Left(11) == "ArmorClass:")
+    if (StrLeft(Stuff, 11) == "ArmorClass:")
     {
       ArmorClass = CalcPlayerArmorClass();
     }
     else
     // Born
-    if (Stuff.Left(5) == "Born:")
+    if (StrLeft(Stuff, 5) == "Born:")
     {
       Born = atol(StrRight(Stuff, StrGetLength(Stuff) - 5));
     }
     else
     // Color
-    if (Stuff.Left(6) == "Color:")
+    if (StrLeft(Stuff, 6) == "Color:")
     {
       TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 6);
       TmpStr = StrMakeLower(TmpStr);
@@ -547,13 +547,13 @@ void Player::ParsePlayerStuff()
     }
     else
     // Experience
-    if (Stuff.Left(11) == "Experience:")
+    if (StrLeft(Stuff, 11) == "Experience:")
     {
       Experience = (float) atof(StrRight(Stuff, StrGetLength(Stuff) - 11));
     }
     else
     // GoToArrive
-    if (Stuff.Left(11) == "GoToArrive:")
+    if (StrLeft(Stuff, 11) == "GoToArrive:")
     {
       GoToArrive = StrRight(Stuff, StrGetLength(Stuff) - 11);
       if (Admin)
@@ -566,7 +566,7 @@ void Player::ParsePlayerStuff()
     }
     else
     // GoToDepart
-    if (Stuff.Left(11) == "GoToDepart:")
+    if (StrLeft(Stuff, 11) == "GoToDepart:")
     {
       GoToDepart = StrRight(Stuff, StrGetLength(Stuff) - 11);
       if (Admin)
@@ -579,19 +579,19 @@ void Player::ParsePlayerStuff()
     }
     else
     // HitPoints
-    if (Stuff.Left(10) == "HitPoints:")
+    if (StrLeft(Stuff, 10) == "HitPoints:")
     {
       HitPoints = atoi(StrRight(Stuff, StrGetLength(Stuff) - 10));
     }
     else
     // Hunger
-    if (Stuff.Left(7) == "Hunger:")
+    if (StrLeft(Stuff, 7) == "Hunger:")
     {
       Hunger = atoi(StrRight(Stuff, StrGetLength(Stuff) - 7));
     }
     else
     // Invisible
-    if (Stuff.Left(10) == "Invisible:")
+    if (StrLeft(Stuff, 10) == "Invisible:")
     {
       TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 10);
       TmpStr = StrMakeLower(TmpStr);
@@ -608,19 +608,19 @@ void Player::ParsePlayerStuff()
     }
     else
     // Level
-    if (Stuff.Left(6) == "Level:")
+    if (StrLeft(Stuff, 6) == "Level:")
     {
       Level = atoi(StrRight(Stuff, StrGetLength(Stuff) - 6));
     }
     else
     // MovePoints
-    if (Stuff.Left(11) == "MovePoints:")
+    if (StrLeft(Stuff, 11) == "MovePoints:")
     {
       MovePoints = atoi(StrRight(Stuff, StrGetLength(Stuff) - 11));
     }
     else
     // OneWhack
-    if (Stuff.Left(9) == "OneWhack:")
+    if (StrLeft(Stuff, 9) == "OneWhack:")
     {
       TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 9);
       TmpStr = StrMakeLower(TmpStr);
@@ -635,25 +635,25 @@ void Player::ParsePlayerStuff()
     }
     else
     // Online
-    if (Stuff.Left(7) == "Online:")
+    if (StrLeft(Stuff, 7) == "Online:")
     {
       TmpStr = ""; // Does not matter what is the file
     }
     else
     // Position
-    if (Stuff.Left(9) == "Position:")
+    if (StrLeft(Stuff, 9) == "Position:")
     {
       Position = StrRight(Stuff, StrGetLength(Stuff) - 9);
     }
     else
     // RoomId
-    if (Stuff.Left(7) == "RoomId:")
+    if (StrLeft(Stuff, 7) == "RoomId:")
     {
       RoomId = StrRight(Stuff, StrGetLength(Stuff) - 7);
     }
     else
     // RoomInfo
-    if (Stuff.Left(9) == "RoomInfo:")
+    if (StrLeft(Stuff, 9) == "RoomInfo:")
     {
       TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 9);
       TmpStr = StrMakeLower(TmpStr);
@@ -668,93 +668,93 @@ void Player::ParsePlayerStuff()
     }
     else
     // Sex
-    if (Stuff.Left(4) == "Sex:")
+    if (StrLeft(Stuff, 4) == "Sex:")
     {
       Sex = StrRight(Stuff, StrGetLength(Stuff) - 4);
       Sex = StrMakeUpper(Sex);
     }
     else
     // Sivler
-    if (Stuff.Left(7) == "Silver:")
+    if (StrLeft(Stuff, 7) == "Silver:")
     {
       Amount = atoi(StrRight(Stuff, StrGetLength(Stuff) - 7));
       SetMoney('+', Amount, "Silver");
     }
     else
     // SkillAxe
-    if (Stuff.Left(9) == "SkillAxe:")
+    if (StrLeft(Stuff, 9) == "SkillAxe:")
     {
       SkillAxe = atoi(StrRight(Stuff, StrGetLength(Stuff) - 9));
     }
     else
     // SkillClub
-    if (Stuff.Left(10) == "SkillClub:")
+    if (StrLeft(Stuff, 10) == "SkillClub:")
     {
       SkillClub = atoi(StrRight(Stuff, StrGetLength(Stuff) - 10));
     }
     else
     // SkillDagger
-    if (Stuff.Left(12) == "SkillDagger:")
+    if (StrLeft(Stuff, 12) == "SkillDagger:")
     {
       SkillDagger = atoi(StrRight(Stuff, StrGetLength(Stuff) - 12));
     }
     else
     // SkillHammer
-    if (Stuff.Left(12) == "SkillHammer:")
+    if (StrLeft(Stuff, 12) == "SkillHammer:")
     {
       SkillHammer = atoi(StrRight(Stuff, StrGetLength(Stuff) - 12));
     }
     else
     // SkillSpear
-    if (Stuff.Left(11) == "SkillSpear:")
+    if (StrLeft(Stuff, 11) == "SkillSpear:")
     {
       SkillSpear = atoi(StrRight(Stuff, StrGetLength(Stuff) - 11));
     }
     else
     // SkillStaff
-    if (Stuff.Left(11) == "SkillStaff:")
+    if (StrLeft(Stuff, 11) == "SkillStaff:")
     {
       SkillStaff = atoi(StrRight(Stuff, StrGetLength(Stuff) - 11));
     }
     else
     // SkillSword
-    if (Stuff.Left(11) == "SkillSword:")
+    if (StrLeft(Stuff, 11) == "SkillSword:")
     {
       SkillSword = atoi(StrRight(Stuff, StrGetLength(Stuff) - 11));
     }
     else
     // Thirst
-    if (Stuff.Left(7) == "Thirst:")
+    if (StrLeft(Stuff, 7) == "Thirst:")
     {
       Thirst = atoi(StrRight(Stuff, StrGetLength(Stuff) - 7));
     }
     else
     // TimePlayed
-    if (Stuff.Left(11) == "TimePlayed:")
+    if (StrLeft(Stuff, 11) == "TimePlayed:")
     {
       TimePlayed = atol(StrRight(Stuff, StrGetLength(Stuff) - 11));
     }
     else
     // Title
-    if (Stuff.Left(6) == "Title:")
+    if (StrLeft(Stuff, 6) == "Title:")
     {
       Title = StrRight(Stuff, StrGetLength(Stuff) - 6);
     }
     else
     // WeaponDamage
-    if (Stuff.Left(13) == "WeaponDamage:")
+    if (StrLeft(Stuff, 13) == "WeaponDamage:")
     {
       WeaponDamage = atoi(StrRight(Stuff, StrGetLength(Stuff) - 13));
     }
     else
     // WeaponDesc1
-    if (Stuff.Left(12) == "WeaponDesc1:")
+    if (StrLeft(Stuff, 12) == "WeaponDesc1:")
     {
       WeaponDesc1 = StrRight(Stuff, StrGetLength(Stuff) - 12);
     }
     else
     // WeaponType
-    if (Stuff.Left(11) == "WeaponType:")
+    if (StrLeft(Stuff, 11) == "WeaponType:")
     {
       WeaponType = StrRight(Stuff, StrGetLength(Stuff) - 11);
       WeaponType = StrMakeLower(WeaponType);
@@ -1090,7 +1090,7 @@ void Player::ShowStatus()
 
   sprintf(Buf, "%f15.0", CalcLevelExperience(Level + 1));
   TmpStr = ConvertStringToCString(Buf);
-  TmpStr = TmpStr.Left(TmpStr.Find('.'));
+  TmpStr = StrLeft(TmpStr, TmpStr.Find('.'));
   Exp2   = FormatCommas(TmpStr);
   while (StrGetLength(Exp1) < StrGetLength(Exp2))
   {

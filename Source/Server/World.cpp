@@ -362,7 +362,7 @@ void World::HealMobiles()
     RemoveMobFromRoom(RoomId, MobileId);
     DeleteMobStats(MobileId);
     PositionOfDot = MobileId.Find('.');
-    MobileId = MobileId.Left(PositionOfDot);
+    MobileId = StrLeft(MobileId, PositionOfDot);
     AddMobToRoom(RoomId, MobileId);
   }
 }
@@ -751,7 +751,7 @@ void World::MakeMobilesMove2()
       PositionOfDot = MobileIdCheck.Find('.');
       if (PositionOfDot > 1)
       { // Mobile is hurt but not fighting
-        MobileIdCheck = MobileIdCheck.Left(PositionOfDot);
+        MobileIdCheck = StrLeft(MobileIdCheck, PositionOfDot);
       }
       //* Is the MobNoMoveFlag set?
       ControlMobNoMoveFileName =  CONTROL_MOB_NOMOVE_DIR;

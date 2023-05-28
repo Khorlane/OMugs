@@ -388,7 +388,7 @@ void GenerateRooms::Parse2()
   //* Alternate exit *
   //******************
   AlternateExit =iAlternateExit;
-  if (AlternateExit.Left(3) == "go ")
+  if (StrLeft(AlternateExit, 3) == "go ")
   {
     AlternateExit.Delete(0, 3);
   }
