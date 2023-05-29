@@ -447,22 +447,6 @@ CString Utility::MakeFirstLower(CString String)
 }
 
 /***********************************************************
- * Make first letter uppercase                             *
- ***********************************************************/
-
-CString Utility::MakeFirstUpper(CString String)
-{
-  CString FirstLetter;
-  CString TheRest;
-
-  FirstLetter = String.Left(1);
-  TheRest     = String.Right(String.GetLength()-1);
-  FirstLetter.MakeUpper();
-  String = FirstLetter + TheRest;
-  return String;
-}
-
-/***********************************************************
 * Substitute $thingies to more meaningful pronouns         *
 ************************************************************/
 

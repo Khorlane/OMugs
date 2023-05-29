@@ -924,11 +924,6 @@ CString MakeFirstLower(CString String)
   return Utility::MakeFirstLower(String);
 }
 
-CString MakeFirstUpper(CString String)
-{
-  return Utility::MakeFirstUpper(String);
-}
-
 void OpenLogFile()
 {
   Log::OpenLogFile();

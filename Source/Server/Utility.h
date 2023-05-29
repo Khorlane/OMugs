@@ -42,7 +42,6 @@ class Utility
     static  bool    IsNotWord(CString Word, CString WordList);
     static  bool    IsWord(CString Word, CString WordList);
     static  CString MakeFirstLower(CString String);
-    static  CString MakeFirstUpper(CString String);
     static  string  PronounSubstitute(string MsgText);
     static  CString TranslateWord(CString Word);
     static  int     WordCount(CString String);
