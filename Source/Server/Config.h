@@ -319,7 +319,6 @@ void    ListObjects();
 void    LogIt(CString LogBuf);
 void    LogIt(string LogBuf);
 CString MakeFirstLower(CString String);
-CString MakeFirstUpper(CString String);
 void    OpenLogFile();
 void    Osi(CString ScriptType, CString ScriptId);
 void    PrintIt(string Message);
