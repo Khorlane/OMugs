@@ -1094,7 +1094,7 @@ void Player::ShowStatus()
   Exp2   = FormatCommas(TmpStr);
   while (StrGetLength(Exp1) < StrGetLength(Exp2))
   {
-    Exp1.Insert(0,' ');
+    Exp1 = StrInsertChar(Exp1, 0, ' ');
   }
   Output += "Experience:   ";
   Output += Exp1;
@@ -1278,7 +1278,7 @@ bool Player::PlayerRoomHasNotBeenHere()
   Char    = RoomId.GetAt(CharPos);
   while (isdigit(Char))
   {
-    RoomNbrStr.Insert(0, Char);
+    RoomNbrStr = StrInsert(RoomNbrStr, 0, Char);
     CharPos--;
     Char        = RoomId.GetAt(CharPos);
   }
@@ -1358,7 +1358,7 @@ void Player::PlayerRoomStringRead()
   // Initialize exloration tracking string
   for (PlayerRoomCharPos=0; PlayerRoomCharPos<MAX_ROOMS_CHAR; PlayerRoomCharPos++)
   {
-    PlayerRoomString.Insert(PlayerRoomCharPos, '\x00');
+    PlayerRoomString = StrInsertChar(PlayerRoomString, PlayerRoomCharPos, '\x00');
   }
   BitsetFileName =  PLAYER_ROOM_DIR;
   BitsetFileName += Name;

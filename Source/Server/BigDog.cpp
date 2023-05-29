@@ -398,6 +398,30 @@ string StrGetWords(string Str1, int WordNbr)
   return "";
 }
 
+// Insert string Str2 into string Str1 at Position (temporary)
+CString StrInsert(CString Str1, int Position, CString Str2)
+{
+  return ConvertStringToCString(StrInsert(ConvertCStringToString(Str1), Position, ConvertCStringToString(Str2)));
+}
+
+// Insert string Str2 into string Str1 at Position
+string  StrInsert(string Str1, int Position, string Str2)
+{
+  return Str1.insert(Position, Str2);
+}
+
+// Insert character c into string Str1 at Position (temporary)
+CString StrInsertChar(CString Str1, int Position, char c)
+{
+  return ConvertStringToCString(StrInsertChar(ConvertCStringToString(Str1), Position, c));
+}
+
+// Insert character c into string Str1 at Position
+string StrInsertChar(string Str1, int Position, char c)
+{
+  return Str1.insert(Position, 1, c);
+}
+
 // Get the left portion of a string (temporary)
 CString StrLeft(CString Str1, int Len)
 {

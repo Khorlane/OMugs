@@ -7165,8 +7165,8 @@ void Communication::ViolenceMobile()
     HitPointsMax = pDnodeActor->pPlayer->Level * PLAYER_HPT_PER_LEVEL;
     HealthPct = CalcHealthPct(HitPoints, HitPointsMax);
     // Add heath pct to PlayerBeenWhacked
-    PlayerBeenWhacked.Insert(0, " ");
-    PlayerBeenWhacked.Insert(0, HealthPct);
+    PlayerBeenWhacked = StrInsert(PlayerBeenWhacked, 0, " ");
+    PlayerBeenWhacked = StrInsert(PlayerBeenWhacked, 0, HealthPct);
     pDnodeActor->PlayerOut += PlayerBeenWhacked;
     pDnodeActor->PlayerOut += "\r\n";
     if (HitPoints <= 0)
