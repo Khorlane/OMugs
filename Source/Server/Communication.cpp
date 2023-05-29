@@ -72,7 +72,7 @@ Dnode *Communication::GetTargetDnode(CString TargetName)
   while (!EndOfDnodeList())
   { // Loop thru all connections
     pDnodeLookup = pDnodeCursor;
-// TODO - Can the line above replace the line below ???    
+// TODO - steve - Can the line above replace the line below ???    
     pDnodeLookup = GetDnode();
     LookupName = pDnodeLookup->PlayerName;
     LookupName = StrMakeLower(LookupName);
@@ -2345,7 +2345,7 @@ void Communication::DoDrink()
   sRoomId = ConvertCStringToString(RoomId);
   if (IsRoomType(sRoomId, "Drink"))
   { // Room contains something to drink
-// TODO - Is sRoomName used? Maybe it should be in the 'if' below
+// TODO - steve - Is sRoomName used? Maybe it should be in the 'if' below
     string sRoomName;
     sRoomName = GetRoomName(sRoomId);
     TmpStr = StrGetWord(CmdStr, 2);
@@ -3402,7 +3402,7 @@ void Communication::DoGoTo()
   pDnodeTgt = pDnodeActor;
   SendToRoom(pDnodeActor->pPlayer->RoomId, GoToMsg);
   // GoTo room
-  // TODO - This seems like double talk with the RoomId, even after CString is completely removed
+  // TODO - steve - This seems like double talk with the RoomId, even after CString is completely removed
   sRoomId = ConvertCStringToString(RoomId);
   sRoomId = GetRoomId(sRoomId);
   csRoomId = ConvertStringToCString(sRoomId);

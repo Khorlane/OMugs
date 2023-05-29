@@ -159,7 +159,7 @@ void Mobile::AddMobToRoom(CString RoomId, CString MobileId)
     RoomMobTmpFile.WriteString(TmpStr);
     MobileIdAdded = true;
   }
-  BytesInFile = StrGetLength(RoomMobTmpFileName); // TODO What is this doing?
+  BytesInFile = StrGetLength(RoomMobTmpFileName); // TODO - steve - What is this doing?
   RoomMobFile.Close();
   RoomMobTmpFile.Close();
   CFile::Remove(RoomMobFileName);

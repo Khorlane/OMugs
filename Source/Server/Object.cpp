@@ -164,7 +164,7 @@ bool Object::AddObjToPlayerEqu(CString WearPosition, CString ObjectId)
     PlayerEquFileTmp.WriteString(ObjectId);
     ObjectIdAdded = true;
   }
-  BytesInFile = StrGetLength(PlayerEquFileNameTmp); // TODO What is this doing?
+  BytesInFile = StrGetLength(PlayerEquFileNameTmp); // TODO - steve - What is this doing?
   PlayerEquFile.Close();
   PlayerEquFileTmp.Close();
   CFile::Remove(PlayerEquFileName);
@@ -958,7 +958,7 @@ void Object::RemoveObjFromPlayerInv(CString ObjectId, int Count)
     AfxMessageBox("Object::RemoveObjFromPlayerInv - Object not removed", MB_ICONSTOP);
     _endthread();
   }
-  BytesInFile = StrGetLength(PlayerObjFileNameTmp); // TODO What is this doing?
+  BytesInFile = StrGetLength(PlayerObjFileNameTmp); // TODO - steve - What is this doing?
   PlayerObjFile.Close();
   PlayerObjFileTmp.Close();
   CFile::Remove(PlayerObjFileName);
