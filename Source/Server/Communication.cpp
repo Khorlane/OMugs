@@ -2328,7 +2328,7 @@ void Communication::DoDrink()
   }
   if (StrGetWord(CmdStr, 2) == "from")
   { // Toss out 'from', just extra verbage for player's benefit
-    CmdStr.Delete(5,5);
+    CmdStr = StrDelete(CmdStr, 5, 5);
   }
   if (StrCountWords(CmdStr) == 1)
   { // Invalid command format

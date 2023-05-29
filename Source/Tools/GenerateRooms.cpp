@@ -286,10 +286,10 @@ void GenerateRooms::Parse1()
     _endthread();
   }
   TmpStr = "RoomType:";
-  Stuff.Delete(0, StrGetLength(TmpStr) + 1);
+  Stuff = StrDelete(Stuff, 0, StrGetLength(TmpStr) + 1);
   Stuff = StrTrimLeft(Stuff);
   n = StrFindFirstChar(Stuff, '\r');
-  Stuff.Delete(n, StrGetLength(Stuff) - n);
+  Stuff = StrDelete(Stuff, n, StrGetLength(Stuff) - n);
   oRoomType = Stuff;
   //***********
   //* Terrain *
@@ -390,7 +390,7 @@ void GenerateRooms::Parse2()
   AlternateExit =iAlternateExit;
   if (StrLeft(AlternateExit, 3) == "go ")
   {
-    AlternateExit.Delete(0, 3);
+    AlternateExit= StrDelete(AlternateExit, 0, 3);
   }
   AlternateExit = StrTrimRight(AlternateExit);
   //************

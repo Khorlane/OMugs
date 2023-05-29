@@ -66,11 +66,11 @@ CString Utility::DeleteWord(CString String, int WordNbr)
   Len    = atoi(GetWord(PosLen, 2));
   if (WordNbr < Count)
   { // Not the last word, so delete the word and the blank after the word
-    String.Delete(Pos-1, Len+1);
+    String = StrDelete(String, Pos-1, Len+1);
   }
   else
   { // This is the last word, so delete the word and the blank before the word
-    String.Delete(Pos-2, Len+1);
+    String = StrDelete(String, Pos-2, Len+1);
   }
   return String;
 }

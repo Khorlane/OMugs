@@ -264,6 +264,18 @@ int StrCountWords(string Str1)
   return Words.size();
 }
 
+// Delete characters from a string (temporary)
+CString StrDelete(CString Str1, int Position, int Length)
+{
+  return ConvertStringToCString(StrDelete(ConvertCStringToString(Str1), Position, Length));
+}
+
+// Delete characters from a string
+string StrDelete(string Str1, int Position, int Length)
+{
+  return Str1.erase(Position, Length);
+}
+
 // Delete the word specified by WordNbr and Squeeze() (temporary)
 CString StrDeleteWord(CString Str1, int WordNbr)
 {
