@@ -66,7 +66,7 @@ char Buffer::GetCurrentChar()
 
 char Buffer::GetNextChar()
 {
-  if (InputPosition >= (int) Stuff.length())
+  if (InputPosition >= (int) StrGetLength(Stuff))
   { // End of line
     GetScriptLine();
   }

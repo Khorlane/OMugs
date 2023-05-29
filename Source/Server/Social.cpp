@@ -68,12 +68,12 @@ bool Social::IsSocial()
     MsgText = StrTrimLeft(MsgText);
     if (StrLeft(MsgText, 9) == "Social : ")
     { // Ok, a social has been found
-      TmpStr = StrRight(MsgText, MsgText.length() - 9);
+      TmpStr = StrRight(MsgText, StrGetLength(MsgText) - 9);
       if (TmpStr == ConvertCStringToString(MudCmd))
       { // THE social has been found
         Found = true;
         MsgText = ReadLine();
-        MinPos = StrRight(MsgText, MsgText.length() - 9);
+        MinPos = StrRight(MsgText, StrGetLength(MsgText) - 9);
         if (PositionNotOk(pDnodeActor, MinPos))
         { // Player is not in the minimum position
           pDnodeActor->PlayerOut += "You are not in a position to that right now.\r\n";
@@ -229,7 +229,7 @@ void Social::Socialize(string MinPos, string MsgText)
   pDnodeTgt = NULL;
   TargetNotHere = false;
   MsgText = ReadLine();
-  LineCount = stoi(StrRight(MsgText, MsgText.length() - 9));
+  LineCount = stoi(StrRight(MsgText, StrGetLength(MsgText) - 9));
   PlayerName = pDnodeActor->PlayerName;
   PlayerName = StrMakeLower(PlayerName);
   TargetName = StrGetWord(CmdStr, 2);

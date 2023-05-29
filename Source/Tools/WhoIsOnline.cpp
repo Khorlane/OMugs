@@ -111,37 +111,37 @@ void WhoIsOnline::ParsePlayer()
   { // Name
     if (StrLeft(Stuff, 5) == "Name:")
     {
-      Name = StrRight(Stuff, Stuff.length()-5);
+      Name = StrRight(Stuff, StrGetLength(Stuff) - 5);
     }
     else
     // AFK
     if (StrLeft(Stuff, 4) == "AFK:")
     {
-      Afk = StrRight(Stuff, Stuff.length()-4);
+      Afk = StrRight(Stuff, StrGetLength(Stuff) - 4);
     }
     else
     // Invisible
     if (StrLeft(Stuff, 10) == "Invisible:")
     {
-      Invisible = StrRight(Stuff, Stuff.length()-10);
+      Invisible = StrRight(Stuff, StrGetLength(Stuff) - 10);
     }
     else
     // Level
     if (StrLeft(Stuff, 6) == "Level:")
     {
-      Level = StrRight(Stuff, Stuff.length()-6);
+      Level = StrRight(Stuff, StrGetLength(Stuff) - 6);
     }
     else
     // Online
     if (StrLeft(Stuff, 7) == "Online:")
     {
-      Online = StrRight(Stuff, Stuff.length()-7);
+      Online = StrRight(Stuff, StrGetLength(Stuff) - 7);
     }
     else
     // Title
     if (StrLeft(Stuff, 6) == "Title:")
     {
-      Title = StrRight(Stuff, Stuff.length()-6);
+      Title = StrRight(Stuff, StrGetLength(Stuff) - 6);
     }
     getline(PlayerFile, Stuff);
   }
@@ -181,7 +181,7 @@ void WhoIsOnline::ParsePlayer()
   Stuff += "\n";
   // Title
   Stuff += "<title>";
-  if (Title.length() < 1)
+  if (StrGetLength(Title) < 1)
   { // No title
     Stuff += "_";
   }

@@ -93,7 +93,7 @@ void Log::OpenLogFile()
     sprintf(Buf, "%d", GetTimeSeconds());
     LogTime = Buf;
 
-    LogSaveFileName  = StrLeft(LogFileName, LogFileName.length()-4);
+    LogSaveFileName  = StrLeft(LogFileName, StrGetLength(LogFileName)-4);
     LogSaveFileName += ".";
     LogSaveFileName += LogTime;
     LogSaveFileName += ".txt.";

@@ -69,7 +69,7 @@ bool Help::IsHelp()
     TmpStr   = StrLeft(HelpText,5);
     if (TmpStr == "Help:")
     { // Ok, a Help entry has been found
-      TmpStr = StrRight(HelpText, HelpText.length()-5);
+      TmpStr = StrRight(HelpText, StrGetLength(HelpText)-5);
       TmpStr = StrMakeLower(TmpStr);
       if (TmpStr == HelpLookup)
       { // THE Help entry has been found, show it to player
