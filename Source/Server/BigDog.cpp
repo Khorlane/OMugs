@@ -398,13 +398,23 @@ string StrLeft(string Str1, int Len)
   return Str1.substr(0, Len);
 }
 
+// Make First Letter Lowercase (temporary)
+CString StrMakeFirstLower(CString Str1)
+{
+  return ConvertStringToCString(StrMakeFirstLower(ConvertCStringToString(Str1)));
+}
+
+// Make First Letter Lowercase
+string StrMakeFirstLower(string Str1)
+{
+  Str1[0] = tolower(Str1[0]);
+  return Str1;
+}
+
 // Make First Letter Uppercase (temporary)
 CString StrMakeFirstUpper(CString Str1)
 {
-  string x;
-  x = ConvertCStringToString(Str1);
-  x = StrMakeFirstUpper(x);
-  return ConvertStringToCString(x);
+  return ConvertStringToCString(StrMakeFirstUpper(ConvertCStringToString(Str1)));
 }
 
 // Make First Letter Uppercase
@@ -917,11 +927,6 @@ void LogIt(string LogBuf)
 void LogIt(CString LogBuf)
 {
   Log::LogIt(ConvertCStringToString(LogBuf));
-}
-
-CString MakeFirstLower(CString String)
-{
-  return Utility::MakeFirstLower(String);
 }
 
 void OpenLogFile()

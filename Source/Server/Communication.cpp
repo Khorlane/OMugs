@@ -4455,7 +4455,7 @@ void Communication::DoLook(CString CmdStr1)
   pMobile = IsMobInRoom(TargetName);
   if (pMobile)
   { // Player is looking at a mob
-    TmpStr = MakeFirstLower(pMobile->Desc1);
+    TmpStr = StrMakeFirstLower(pMobile->Desc1);
     pDnodeActor->PlayerOut += "You look at ";
     pDnodeActor->PlayerOut += TmpStr;
     pDnodeActor->PlayerOut += ".";

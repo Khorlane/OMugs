@@ -431,22 +431,6 @@ bool Utility::IsWord(CString Word, CString WordList)
 }
 
 /***********************************************************
- * Make first letter lowercase                             *
- ***********************************************************/
-
-CString Utility::MakeFirstLower(CString String)
-{
-  CString FirstLetter;
-  CString TheRest;
-
-  FirstLetter = String.Left(1);
-  TheRest     = String.Right(String.GetLength()-1);
-  FirstLetter.MakeLower();
-  String = FirstLetter + TheRest;
-  return String;
-}
-
-/***********************************************************
 * Substitute $thingies to more meaningful pronouns         *
 ************************************************************/
 
