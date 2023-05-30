@@ -157,8 +157,8 @@ void BigDog()
 void AppTestCode()
 {
   // Put test code here. It will be executed first, even before dialogs are presented.
-  // TODO - steve - .SetAt()
-  // TODO - steve - .GetAt()
+  // TODO - steve - .SetAt() for CStringArray
+  // TODO - steve - .GetAt() for CStringArray
 }
 
 //
@@ -342,6 +342,18 @@ int StrFindOneOf(CString HayStack, string Needle)
 int StrFindOneOf(string HayStack, string Needle)
 {
   return HayStack.find_first_of(Needle);
+}
+
+// Return the character in Str1 at Position (temporary)
+char StrGetAt(CString Str1, int Position)
+{
+  return StrGetAt(ConvertCStringToString(Str1), Position);
+}
+
+// Return the character in Str1 at Position
+char StrGetAt(string Str1, int Position)
+{
+  return Str1[Position];
 }
 
 // Get length of a string (temporary)
@@ -543,6 +555,19 @@ string StrRight(string Str1, int Len)
     return "";
   }
   return Str1.substr(Str1.length() - Len, Len);
+}
+
+// Replace the character in Str1 at Position (temporary)
+CString StrSetAt(CString Str1, int Position, char c)
+{
+  return ConvertStringToCString(StrSetAt(ConvertCStringToString(Str1), Position, c));
+}
+
+// Replace the character in Str1 at Position
+string StrSetAt(string Str1, int Position, char c)
+{
+  Str1[Position] = c;
+  return Str1;
 }
 
 // Remove leading, trailing, and extra spaces

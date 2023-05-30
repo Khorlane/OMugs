@@ -1275,18 +1275,18 @@ bool Player::PlayerRoomHasNotBeenHere()
   }
   // Get RoomNbr from RoomId
   CharPos = StrGetLength(RoomId) - 1;
-  Char    = RoomId.GetAt(CharPos);
+  Char    = StrGetAt(RoomId, CharPos);
   while (isdigit(Char))
   {
     RoomNbrStr = StrInsert(RoomNbrStr, 0, Char);
     CharPos--;
-    Char        = RoomId.GetAt(CharPos);
+    Char        = StrGetAt(RoomId, CharPos);
   }
   RoomNbr = atoi(RoomNbrStr);
   // Has player been here?
   PlayerRoomCharPos = (int) ceil(RoomNbr/8.0)-1;
   PlayerRoomBitPos  = RoomNbr-(PlayerRoomCharPos*8)-1;
-  PlayerRoomChar    = PlayerRoomString.GetAt(PlayerRoomCharPos);
+  PlayerRoomChar    = StrGetAt(PlayerRoomString, PlayerRoomCharPos);
   PlayerRoomCharToBitsConvert();
 
   if (PlayerRoomBits.test(PlayerRoomBitPos))
@@ -1297,7 +1297,7 @@ bool Player::PlayerRoomHasNotBeenHere()
   { // Player has not been here
     PlayerRoomBits.set(PlayerRoomBitPos);
     PlayerRoomBitsToCharConvert();
-    PlayerRoomString.SetAt(PlayerRoomCharPos, PlayerRoomChar);
+    PlayerRoomString = StrSetAt(PlayerRoomString, PlayerRoomCharPos, PlayerRoomChar);
     PlayerRoomStringWrite();
     return true;
   }
@@ -1374,7 +1374,7 @@ void Player::PlayerRoomStringRead()
   BitsetFile.Read(PlayerRoomBuffer, MAX_ROOMS_CHAR);
   for (PlayerRoomCharPos=0; PlayerRoomCharPos<MAX_ROOMS_CHAR; PlayerRoomCharPos++)
   {
-    PlayerRoomString.SetAt(PlayerRoomCharPos, PlayerRoomBuffer[PlayerRoomCharPos]);
+    PlayerRoomString = StrSetAt(PlayerRoomString, PlayerRoomCharPos, PlayerRoomBuffer[PlayerRoomCharPos]);
   }
   BitsetFile.Close();
 }
