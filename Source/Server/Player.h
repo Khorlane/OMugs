@@ -91,7 +91,7 @@ class Player
     bitset<8>       PlayerRoomBits;
     unsigned char   PlayerRoomChar;
     int             PlayerRoomCharPos;
-    CString         PlayerRoomString;
+    vector<unsigned char> PlayerRoomVector;
 
 // Player file variables
   public:

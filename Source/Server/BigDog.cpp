@@ -154,11 +154,11 @@ void BigDog()
 * Globals                                                  *
 ************************************************************/
 
+vector<string> MyStringVector;
+
 void AppTestCode()
 {
   // Put test code here. It will be executed first, even before dialogs are presented.
-  // TODO - steve - .SetAt() for CStringArray
-  // TODO - steve - .GetAt() for CStringArray
 }
 
 //
@@ -626,6 +626,25 @@ string StrTrimRight(string Str1)
   const auto Last = Str1.find_last_not_of(" \r\n");
   if (Last == string::npos) return "";
   return Str1.substr(0, Last + 1);
+}
+
+// Get the string in StrVector1 at Position
+string  StrVectorGetAt(vector<string> &StrVector1, int Position) // TODO - steve - This function might not be needed
+{
+  return StrVector1[Position];
+}
+
+// Replace the string in StrVector1 at Position
+void StrVectorSetAt(vector<string> &StrVector1, int Position, string Str1) // TODO - steve - This function might not be needed
+{
+  int x = StrVector1.size();
+  x--;
+  if (Position > x)
+  {
+    StrVector1.push_back(Str1);
+    return;
+  }
+  StrVector1[Position] = Str1;
 }
 
 //

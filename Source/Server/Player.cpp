@@ -1269,7 +1269,7 @@ bool Player::PlayerRoomHasNotBeenHere()
   int     RoomNbr;
   CString RoomNbrStr;
 
-  if (StrGetLength(PlayerRoomString) == 0)
+  if (PlayerRoomVector.size() == 0)
   {
     PlayerRoomStringRead();
   }
@@ -1286,7 +1286,7 @@ bool Player::PlayerRoomHasNotBeenHere()
   // Has player been here?
   PlayerRoomCharPos = (int) ceil(RoomNbr/8.0)-1;
   PlayerRoomBitPos  = RoomNbr-(PlayerRoomCharPos*8)-1;
-  PlayerRoomChar    = StrGetAt(PlayerRoomString, PlayerRoomCharPos);
+  PlayerRoomChar    = PlayerRoomVector.at(PlayerRoomCharPos);
   PlayerRoomCharToBitsConvert();
 
   if (PlayerRoomBits.test(PlayerRoomBitPos))
@@ -1297,7 +1297,7 @@ bool Player::PlayerRoomHasNotBeenHere()
   { // Player has not been here
     PlayerRoomBits.set(PlayerRoomBitPos);
     PlayerRoomBitsToCharConvert();
-    PlayerRoomString = StrSetAt(PlayerRoomString, PlayerRoomCharPos, PlayerRoomChar);
+    PlayerRoomVector.at(PlayerRoomCharPos) = PlayerRoomChar;
     PlayerRoomStringWrite();
     return true;
   }
@@ -1345,63 +1345,50 @@ void Player::PlayerRoomBitsToCharConvert()
 }
 
 /***********************************************************
-* Read PlayerRoomString from disk                          *
+* Read PlayerRoomVector from disk                          *
 ************************************************************/
 
 void Player::PlayerRoomStringRead()
 {
-  CStdioFile BitsetFile;
-  CString    BitsetFileName;
-  char       PlayerRoomBuffer[MAX_ROOMS_CHAR];
-  int        Success;
+  string PlayerRoomString;
+  string BitsetFileName;
 
-  // Initialize exloration tracking string
-  for (PlayerRoomCharPos=0; PlayerRoomCharPos<MAX_ROOMS_CHAR; PlayerRoomCharPos++)
-  {
-    PlayerRoomString = StrInsertChar(PlayerRoomString, PlayerRoomCharPos, '\x00');
-  }
-  BitsetFileName =  PLAYER_ROOM_DIR;
+  BitsetFileName = PLAYER_ROOM_DIR;
   BitsetFileName += Name;
   BitsetFileName += ".txt";
-  Success = BitsetFile.Open(BitsetFileName,
-                 CFile::modeRead |
-                 CFile::typeText);
-  if(!Success)
-  {  // Save exloration tracking string and exit
+
+  if (!FileExist(BitsetFileName))
+  {
+    for (PlayerRoomCharPos = 0; PlayerRoomCharPos < MAX_ROOMS_CHAR; PlayerRoomCharPos++)
+    {
+      PlayerRoomVector.push_back('\x00');
+    }
     PlayerRoomStringWrite();
     return;
   }
-  BitsetFile.Read(PlayerRoomBuffer, MAX_ROOMS_CHAR);
-  for (PlayerRoomCharPos=0; PlayerRoomCharPos<MAX_ROOMS_CHAR; PlayerRoomCharPos++)
-  {
-    PlayerRoomString = StrSetAt(PlayerRoomString, PlayerRoomCharPos, PlayerRoomBuffer[PlayerRoomCharPos]);
-  }
-  BitsetFile.Close();
+  
+  PlayerRoomVector.clear();
+  ifstream BitsetFile(BitsetFileName);
+  ostringstream StringStream;
+  StringStream << BitsetFile.rdbuf();
+  PlayerRoomString = StringStream.str();
+  PlayerRoomVector.assign(PlayerRoomString.begin(), PlayerRoomString.end());
+  BitsetFile.close();
 }
 
-
 /***********************************************************
-* Write PlayerRoomString to disk                           *
+* Write PlayerRoomVector to disk                           *
 ************************************************************/
 
 void Player::PlayerRoomStringWrite()
 {
-  CStdioFile BitsetFile;
-  CString    BitsetFileName;
-  int        Success;
+  string BitsetFileName;
 
-  BitsetFileName =  PLAYER_ROOM_DIR;
+  BitsetFileName = PLAYER_ROOM_DIR;
   BitsetFileName += Name;
   BitsetFileName += ".txt";
-  Success = BitsetFile.Open(BitsetFileName,
-                 CFile::modeCreate |
-                 CFile::modeWrite  |
-                 CFile::typeText);
-  if(!Success)
-  {
-    AfxMessageBox("Player::PlayerRoomStringWrite -  file failed to open", MB_ICONSTOP);
-    _endthread();
-  }
-  BitsetFile.Write((LPCTSTR) PlayerRoomString, MAX_ROOMS_CHAR);
-  BitsetFile.Close();
+
+  ofstream BitsetFile(BitsetFileName.c_str(), ios::out | ios::binary);
+  BitsetFile.write((const char*)&PlayerRoomVector[0], PlayerRoomVector.size());
+  BitsetFile.close();
 }

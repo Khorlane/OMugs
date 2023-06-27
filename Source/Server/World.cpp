@@ -540,15 +540,13 @@ void World::MakeMobilesMove1()
 {
   CFileFind    FileList;
   BOOL         MoreFiles;
-  CStringArray RoomMobList;
+  vector<string> RoomMobList;
   CString      RoomMobFileName;
   CStdioFile   RoomMobListFile;
   CString      RoomMobListFileName;
   int          RoomMobListFileSize;
   int          Success;
   CString      TmpStr;
-  int          x;
-  int          y;
 
   // Open MakeMobList file
   RoomMobListFileName =  CONTROL_DIR;
@@ -596,35 +594,19 @@ void World::MakeMobilesMove1()
     }
     TmpStr += " ";
     TmpStr += RoomMobFileName;
-    RoomMobList.Add(TmpStr);
+    RoomMobList.push_back(ConvertCStringToString(TmpStr));
   }
   // sort em
-  y = RoomMobList.GetUpperBound();
-  int i, j;
-  i = 0;
-  while( i < (y - 1) )
-  {
-    j = i + 1;
-    while( j < y )
-    {
-      if( RoomMobList.GetAt(i) > RoomMobList.GetAt(j) )
-      {
-        TmpStr = RoomMobList.GetAt(i);
-        RoomMobList.SetAt(i, RoomMobList.GetAt(j));
-        RoomMobList.SetAt(j, TmpStr);
-      }
-      j++;
-    }
-    i++;
-  }
+   sort(RoomMobList.begin(), RoomMobList.end());
   // Write em
-  for (x = 0; x <= y ; x++)
-  { // For each string in the ValidCmds CStringArray
-    TmpStr = RoomMobList.GetAt(x);
+  for (string item : RoomMobList)
+  {
+    TmpStr = ConvertStringToCString(item);
     TmpStr = StrGetWord(TmpStr, 2);
     TmpStr += "\n";
     RoomMobListFile.WriteString(TmpStr);
   }
+
   RoomMobListFileSize = (int) RoomMobListFile.GetLength();
   RoomMobListFile.Close();
   if (RoomMobListFileSize == 0)
