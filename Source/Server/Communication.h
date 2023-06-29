@@ -65,7 +65,7 @@ class Communication
   private:
     void    static  Color();
     void    static  CommandArrayLoad();
-    CString static  CommandCheck(CString MudCmdChk);
+    string  static  CommandCheck(string MudCmdChk);
     void    static  CommandParse();
     void    static  DoAdvance();
     void    static  DoAfk();

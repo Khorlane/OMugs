@@ -849,7 +849,7 @@ void Communication::CommandArrayLoad()
  * Check command authorization, level, and validity        *
  ***********************************************************/
 
-CString Communication::CommandCheck(CString MudCmdChk)
+string Communication::CommandCheck(string MudCmdChk)
 {
   string  CommandCheckResult;
   string  ValCmd;
@@ -862,7 +862,7 @@ CString Communication::CommandCheck(CString MudCmdChk)
     ValCmdInfo = ValidCmd;
     ValCmd     = StrGetWord(ValCmdInfo, 1);
     WhoCanDo   = StrGetWord(ValCmdInfo, 2);
-    if (ConvertCStringToString(MudCmdChk) == ValCmd)
+    if (MudCmdChk == ValCmd)
     { // Found the command
       if (WhoCanDo == "all")
       { // Anyone can do this command
@@ -900,7 +900,7 @@ CString Communication::CommandCheck(CString MudCmdChk)
     AfxMessageBox("Communication::CommandCheck - Broke!", MB_ICONSTOP);
     _endthread();
   }
-  return ConvertStringToCString(CommandCheckResult);
+  return CommandCheckResult;
 }
 
 /***********************************************************
@@ -993,7 +993,7 @@ void Communication::CommandParse()
   //****************
   MudCmdOk = false;
   MudCmdChk = MudCmd;
-  CommandCheckResult = CommandCheck(ConvertStringToCString(MudCmdChk));
+  CommandCheckResult = CommandCheck(MudCmdChk);
   if (CommandCheckResult == "Ok")
   { // Mud command is Ok for this player
     MudCmdOk = true;
@@ -5233,7 +5233,7 @@ void Communication::DoShow()
     { // For each string in the ValidCmds vector
       ValCmdInfo = ConvertStringToCString(ValidCmd);
       MudCmdChk  = StrGetWord(ValCmdInfo, 1);
-      CommandCheckResult = CommandCheck(ConvertStringToCString(MudCmdChk));
+      CommandCheckResult = CommandCheck(MudCmdChk);
       if (CommandCheckResult == "Ok")
       { // Mud command is Ok for this player
         pDnodeActor->PlayerOut += ConvertStringToCString(MudCmdChk);
