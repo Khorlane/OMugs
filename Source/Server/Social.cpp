@@ -24,6 +24,7 @@
 ifstream   SocialFile;
 
 Dnode *GetTargetDnode(CString TargetName); // Communication
+Dnode *GetTargetDnode( string TargetName); // Communication
 
 /***********************************************************
 * Social constructor                                       *
@@ -268,7 +269,7 @@ void Social::Socialize(string MinPos, string MsgText)
     return;
   }
   // Do some checks to determine if target is valid
-  pDnodeTgt = GetTargetDnode(ConvertStringToCString(TargetName));
+  pDnodeTgt = GetTargetDnode(TargetName);
   if (!pDnodeTgt)
   { // Target is not online and/or not in 'playing' state
     TargetNotHere = true;

@@ -871,7 +871,7 @@ CString GetSqlStmt(CString SqlStmtId)
   return Utility::GetSqlStmt(SqlStmtId);
 }
 
-Dnode *GetTargetDnode(CString TargetName)
+Dnode *GetTargetDnode(string TargetName)
 {
   return Communication::GetTargetDnode(TargetName);
 }

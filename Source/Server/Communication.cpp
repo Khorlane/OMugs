@@ -58,8 +58,11 @@ Communication::~Communication()
 /***********************************************************
 *  Return pointer of target, if target in 'playing' state  *
 ************************************************************/
-
 Dnode *Communication::GetTargetDnode(CString TargetName)
+{
+  return GetTargetDnode(ConvertCStringToString(TargetName));
+}
+Dnode *Communication::GetTargetDnode(string TargetName)
 {
   Dnode   *pDnodeLookup;
   bool     TargetFound;
@@ -76,7 +79,7 @@ Dnode *Communication::GetTargetDnode(CString TargetName)
     pDnodeLookup = GetDnode();
     LookupName = pDnodeLookup->PlayerName;
     LookupName = StrMakeLower(LookupName);
-    if (ConvertCStringToString(TargetName) == LookupName)
+    if (TargetName == LookupName)
     { // Target found
       if (pDnodeLookup->PlayerStatePlaying)
       { // Target is valid
@@ -1526,7 +1529,7 @@ void Communication::DoAdvance()
     return;
   }
   // Get target Dnode pointer
-  pDnodeTgt = GetTargetDnode(ConvertStringToCString(TargetName));
+  pDnodeTgt = GetTargetDnode(TargetName);
   if (!pDnodeTgt)
   { // Target player not found
     pDnodeActor->PlayerOut += ConvertStringToCString(TargetNameSave);
@@ -1703,7 +1706,7 @@ void Communication::DoAssist()
   //* Is target OK ? *
   //******************
   TargetNotHere = false;
-  pDnodeTgt = GetTargetDnode(ConvertStringToCString(TargetNameCheck));
+  pDnodeTgt = GetTargetDnode(TargetNameCheck);
   if (!pDnodeTgt)
   { // Target is not online and/or not in 'playing' state
     TargetNotHere = true;
@@ -3005,7 +3008,7 @@ void Communication::DoFollow(Dnode *pDnode, CString CmdStr1)
   //******************
   //* Target online? *
   //******************
-  pDnodeTgt = GetTargetDnode(ConvertStringToCString(Target));
+  pDnodeTgt = GetTargetDnode(Target);
   if (!pDnodeTgt)
   { // Target not online
     pDnode->PlayerOut += ConvertStringToCString(Target);

@@ -46,6 +46,7 @@ class Communication
     Communication();
     ~Communication();
     Dnode   static *GetTargetDnode(CString TargetName);
+    Dnode   static *GetTargetDnode( string TargetName);
     bool    static  IsFighting();
     bool    static  IsSleeping();
     void    static  SendToAll(CString PlayerMsg, CString AllMsg);

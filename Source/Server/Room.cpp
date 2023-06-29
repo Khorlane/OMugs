@@ -24,6 +24,7 @@
 ifstream      RoomFile;
 
 Dnode *GetTargetDnode(CString TargetName); // Communication
+Dnode *GetTargetDnode( string TargetName); // Communication
 void   ShowMobsInRoom(Dnode *pDnode);      // Mobile
 void   ShowObjsInRoom(Dnode *pDnode);      // Object
 void   ShowPlayersInRoom(Dnode *pDnode);   // Communication
@@ -392,7 +393,7 @@ void Room::MoveFollowers(Dnode *pDnode, string ExitToRoomId)
     { // No followers or no more followers
      return;
     }
-    pDnodeGrpMem = GetTargetDnode(pDnode->pPlayer->pPlayerFollowers[i]->Name);
+    pDnodeGrpMem = GetTargetDnode(ConvertCStringToString(pDnode->pPlayer->pPlayerFollowers[i]->Name));
     if (!pDnodeGrpMem)
     { // Follower is not online and/or not in 'playing' state
       continue;
