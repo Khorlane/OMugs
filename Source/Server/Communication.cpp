@@ -6588,19 +6588,16 @@ void Communication::GrpLeaveMember()
 
 void Communication::LogonGreeting()
 {
-  CStdioFile GreetingFile;
+  ifstream   GreetingFile;
   string     GreetingFileName;
   string     Stuff;
-  int        Success;
 
   // Read greeting file
   GreetingFileName = GREETING_DIR;
   GreetingFileName += "Greeting";
   GreetingFileName += ".txt";
-  Success = GreetingFile.Open(ConvertStringToCString(GreetingFileName),
-                   CFile::modeRead |
-                   CFile::typeText);
-  if(!Success)
+  GreetingFile.open(GreetingFileName);
+  if(!GreetingFile.is_open())
   {
     AfxMessageBox("Communication::LogonGreeting - Open Greeting file failed (read)", MB_ICONSTOP);
     _endthread();
@@ -6608,17 +6605,14 @@ void Communication::LogonGreeting()
   pDnodeActor->PlayerOut += "Version ";
   pDnodeActor->PlayerOut += VERSION;
   pDnodeActor->PlayerOut += "\r\n";
-  CString Stuff1;
-  GreetingFile.ReadString(Stuff1);
-  Stuff = Stuff1;
+  getline(GreetingFile, Stuff);
   while (Stuff != "End of Greeting")
   {
     Stuff += "\r\n";
     pDnodeActor->PlayerOut += ConvertStringToCString(Stuff);
-    GreetingFile.ReadString(Stuff1);
-    Stuff = Stuff1;
+    getline(GreetingFile, Stuff);
   }
-  GreetingFile.Close();
+  GreetingFile.close();
 }
 
 /***********************************************************
