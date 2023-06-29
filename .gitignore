@@ -10,13 +10,11 @@ Running/
 Tmp/
 Utility/
 WebSite/
-Source/Sqlite3/
 
 # Ignore these files
 HomeDir.txt
 ReadMe.txt
 zNotes.txt
-sqlite3.dll
 *.aps
 *.clw
 *.dsp
