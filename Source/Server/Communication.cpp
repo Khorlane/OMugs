@@ -3412,7 +3412,6 @@ void Communication::DoGoTo()
   pDnodeTgt = pDnodeActor;
   SendToRoom(pDnodeActor->pPlayer->RoomId, GoToMsg);
   // GoTo room
-  // TODO - steve - This seems like double talk with the RoomId, even after CString is completely removed
   pDnodeActor->pPlayer->RoomId = ConvertStringToCString(RoomId);
   DoLook("");
   // Send GoTo arrival message
@@ -4500,35 +4499,29 @@ void Communication::DoMoney()
 
 void Communication::DoMotd()
 {
-  CStdioFile MotdFile;
+  ifstream   MotdFile;
   string     MotdFileName;
   string     Stuff;
-  int        Success;
 
   DEBUGIT(1);
   // Read Motd file
   MotdFileName = MOTD_DIR;
   MotdFileName += "Motd";
   MotdFileName += ".txt";
-  Success = MotdFile.Open(ConvertStringToCString(MotdFileName),
-                   CFile::modeRead |
-                   CFile::typeText);
-  if(!Success)
+  MotdFile.open(MotdFileName);
+  if (!MotdFile.is_open())
   {
     AfxMessageBox("Communication::DoMotd - Open Motd file failed (read)", MB_ICONSTOP);
     _endthread();
   }
-  CString Stuff1;
-  MotdFile.ReadString(Stuff1);
-  Stuff = ConvertCStringToString(Stuff1);
+  getline(MotdFile, Stuff);
   while (Stuff != "End of Motd")
   {
     Stuff += "\r\n";
     pDnodeActor->PlayerOut += ConvertStringToCString(Stuff);
-    MotdFile.ReadString(Stuff1);
-    Stuff = ConvertCStringToString(Stuff1);
+    getline(MotdFile, Stuff);
   }
-  MotdFile.Close();
+  MotdFile.close();
   if (pDnodeActor->PlayerStatePlaying)
   {
     pDnodeActor->pPlayer->CreatePrompt();
