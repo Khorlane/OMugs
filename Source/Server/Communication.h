@@ -83,7 +83,7 @@ class Communication
     void    static  DoEquipment();
     void    static  DoExamine();
     void    static  DoFlee();
-    void    static  DoFollow(Dnode *pDnode, CString CmdStr);
+    void    static  DoFollow(Dnode *pDnode, string CmdStr);
     void    static  DoGet();
     void    static  DoGive();
     void    static  DoGo();

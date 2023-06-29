@@ -1171,7 +1171,7 @@ void Communication::CommandParse()
   /* FOLLOW command */
   if (MudCmd == "follow")
   {
-    DoFollow(pDnodeActor, CmdStr);
+    DoFollow(pDnodeActor, ConvertCStringToString(CmdStr));
     return;
   }
 
@@ -2894,7 +2894,7 @@ void Communication::DoFlee()
  * Follow command                                          *
  ***********************************************************/
 
-void Communication::DoFollow(Dnode *pDnode, CString CmdStr1)
+void Communication::DoFollow(Dnode *pDnode, string CmdStr1)
 {
   Dnode   *pDnodeGrpLdr; // Group leader
   Dnode   *pDnodeGrpMem; // Group member
@@ -2905,7 +2905,7 @@ void Communication::DoFollow(Dnode *pDnode, CString CmdStr1)
   string   TmpStr;
 
   DEBUGIT(1);
-  CmdStr = CmdStr1;
+  CmdStr = ConvertStringToCString(CmdStr1);
   i      = 0;
   j      = 0;
   //********************
