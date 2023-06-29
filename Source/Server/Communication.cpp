@@ -7345,7 +7345,7 @@ void Communication::ViolenceMobileLoot(string Loot)
   Stuff = ConvertCStringToString(Stuff1);
   while (Stuff != "")
   {
-    LootFlag = ViolenceMobileLootHandOut(ConvertStringToCString(Stuff));
+    LootFlag = ViolenceMobileLootHandOut(Stuff);
     if (LootFlag)
     { // Ok, player got some loot, so set NoLoot to false
       NoLoot = false;
@@ -7398,7 +7398,7 @@ void Communication::ViolenceMobileLoot(string Loot)
 * Hand out the loot - for real this time                   *
 ************************************************************/
 
-bool Communication::ViolenceMobileLootHandOut(CString Loot)
+bool Communication::ViolenceMobileLootHandOut(string Loot)
 {
   Dnode   *pDnodeGrpMem;
   Player  *pPlayerGrpLdr;
@@ -7411,8 +7411,8 @@ bool Communication::ViolenceMobileLootHandOut(CString Loot)
   int      Percent;
 
   GotLoot  = false;
-  Count    = atoi(StrGetWord(Loot, 1));
-  Percent  = atoi(StrGetWord(Loot, 2));
+  Count    = stoi(StrGetWord(Loot, 1));
+  Percent  = stoi(StrGetWord(Loot, 2));
   ObjectId = StrGetWord(Loot, 3);
   for (i = 1; i <= Count; i++)
   { // For each object, for example twice if '2 60 RatEar' is specified
