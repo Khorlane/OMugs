@@ -7307,7 +7307,7 @@ void Communication::ViolenceMobileDied(string MobileBeenWhacked,
   //********************
   // Hand out the loot *
   //********************
-  ViolenceMobileLoot(ConvertStringToCString(MobileLoot));
+  ViolenceMobileLoot(MobileLoot);
   ViolenceMobileMore();
 }
 
@@ -7315,7 +7315,7 @@ void Communication::ViolenceMobileDied(string MobileBeenWhacked,
 * Hand out the loot                                        *
 ************************************************************/
 
-void Communication::ViolenceMobileLoot(CString Loot)
+void Communication::ViolenceMobileLoot(string Loot)
 {
   Dnode      *pDnodeGrpMem;
   Player     *pPlayerGrpLdr;
