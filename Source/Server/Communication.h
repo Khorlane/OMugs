@@ -100,7 +100,7 @@ class Communication
     void    static  DoList();
     void    static  DoLoad();
     void    static  DoLogon();
-    void    static  DoLook(CString CmdStr);
+    void    static  DoLook(string CmdStr);
     void    static  DoMoney();
     void    static  DoMotd();
     void    static  DoOneWhack();

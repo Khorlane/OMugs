@@ -1283,7 +1283,7 @@ void Communication::CommandParse()
   /* LOOK command */
   if (MudCmd == "look")
   {
-    DoLook(CmdStr);
+    DoLook(ConvertCStringToString(CmdStr));
     return;
   }
 
@@ -4397,7 +4397,7 @@ void Communication::DoLogon()
  * Look command                                            *
  ***********************************************************/
 
-void Communication::DoLook(CString CmdStr1)
+void Communication::DoLook(string CmdStr1)
 {
   Mobile  *pMobile;
   string   Desc1FirstLetter;
@@ -4408,7 +4408,7 @@ void Communication::DoLook(CString CmdStr1)
   string   TmpStr;
 
   DEBUGIT(1);
-  CmdStr = CmdStr1;
+  CmdStr = ConvertStringToCString(CmdStr1);
   if (IsSleeping())
   { // Player is sleeping, send msg, command is not done
     return;
