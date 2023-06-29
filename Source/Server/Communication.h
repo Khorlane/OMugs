@@ -145,7 +145,7 @@ class Communication
     void    static  UpdatePlayerStats();
     void    static  Violence();
     void    static  ViolenceMobile();
-    void    static  ViolenceMobileDied(CString MobBeenWhacked, CString MobileDesc1, CString MobileId);
+    void    static  ViolenceMobileDied(string MobBeenWhacked, string MobileDesc1, string MobileId);
     void    static  ViolenceMobileLoot(CString Loot);
     bool    static  ViolenceMobileLootHandOut(CString Loot);
     void    static  ViolenceMobileMore();

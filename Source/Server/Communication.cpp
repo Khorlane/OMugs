@@ -7202,9 +7202,9 @@ void Communication::ViolenceMobile()
 * Mobile has died                                          *
 ************************************************************/
 
-void Communication::ViolenceMobileDied(CString MobileBeenWhacked,
-                                       CString MobileDesc1,
-                                       CString MobileId)
+void Communication::ViolenceMobileDied(string MobileBeenWhacked,
+                                       string MobileDesc1,
+                                       string MobileId)
 {
   string   DeadMsg;
   int      ExpPoints;
@@ -7216,13 +7216,13 @@ void Communication::ViolenceMobileDied(CString MobileBeenWhacked,
   string   MobileLoot;
   string   TmpStr;
 
-  MobileExpPointsLevel = GetMobileExpPointsLevel(MobileId);
+  MobileExpPointsLevel = GetMobileExpPointsLevel(ConvertStringToCString(MobileId));
   MobileExpPoints      = stoi(StrGetWord(MobileExpPointsLevel, 1));
   MobileLevel          = stoi(StrGetWord(MobileExpPointsLevel, 2));
-  MobileLoot           = GetMobileLoot(MobileId);
+  MobileLoot           = GetMobileLoot(ConvertStringToCString(MobileId));
   // Send dead mob message to player
   pDnodeActor->PlayerOut += "\r\n";
-  pDnodeActor->PlayerOut += MobileBeenWhacked;
+  pDnodeActor->PlayerOut += ConvertStringToCString(MobileBeenWhacked);
   // Let others in room know that the mobile is DEAD!
   DeadMsg =  "&R";
   DeadMsg += pDnodeActor->PlayerName;
@@ -7279,10 +7279,10 @@ void Communication::ViolenceMobileDied(CString MobileBeenWhacked,
   }
   // Fight done, clean up
   DeletePlayerMob(pDnodeActor->PlayerName);
-  DeleteMobPlayer(pDnodeActor->PlayerName, MobileId);
-  DeleteMobStats(MobileId);
+  DeleteMobPlayer(pDnodeActor->PlayerName, ConvertStringToCString(MobileId));
+  DeleteMobStats(ConvertStringToCString(MobileId));
   pDnodeActor->PlayerStateFighting = false;
-  UpdateMobInWorld(MobileId, "remove");
+  UpdateMobInWorld(ConvertStringToCString(MobileId), "remove");
   //***************************************************
   //* Stop other players who are whacking this mobile *
   //***************************************************
@@ -7293,10 +7293,10 @@ void Communication::ViolenceMobileDied(CString MobileBeenWhacked,
     if (pDnodeOthers->PlayerStateFighting)
     { // Players who are fighting
       MobileIdCheck = GetPlayerMobMobileId(pDnodeOthers->PlayerName);
-      if (ConvertCStringToString(MobileId) == MobileIdCheck)
+      if (MobileId == MobileIdCheck)
       { // The same mobile
         DeletePlayerMob(pDnodeOthers->PlayerName);
-        DeleteMobPlayer(pDnodeOthers->PlayerName, MobileId);
+        DeleteMobPlayer(pDnodeOthers->PlayerName, ConvertStringToCString(MobileId));
         pDnodeOthers->PlayerStateFighting = false;
       }
     }
@@ -7519,7 +7519,7 @@ void Communication::ViolencePlayer()
   }
   else
   { // Mobile is dead
-    ViolenceMobileDied(ConvertStringToCString(MobileBeenWhacked), ConvertStringToCString(MobileDesc1), ConvertStringToCString(MobileId));
+    ViolenceMobileDied(MobileBeenWhacked, MobileDesc1, MobileId);
   }
 }
 
