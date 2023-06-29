@@ -159,23 +159,6 @@ vector<string> MyStringVector;
 void AppTestCode()
 {
   // Put test code here. It will be executed first, even before dialogs are presented.
-  string MotdFileName;
-  string     Stuff;
-
-  MotdFileName = MOTD_DIR;
-  MotdFileName += "Motd";
-  MotdFileName += ".txt";
-
-  ifstream MotdFile(MotdFileName);
-  if (!MotdFile.is_open())
-  {
-    AfxMessageBox("Communication::DoMotd - Open Motd file failed (read)", MB_ICONSTOP);
-    _endthread();
-  }
-  getline(MotdFile, Stuff);
-  getline(MotdFile, Stuff);
-  getline(MotdFile, Stuff);
-  MotdFile.close();
 }
 
 //
@@ -678,7 +661,7 @@ bool AddObjToPlayerEqu(CString WearPosition, CString ObjectId)
   return Object::AddObjToPlayerEqu(WearPosition, ObjectId);
 }
 
-void AddObjToPlayerInv(Dnode* pDnodeTgt1, CString ObjectId)
+void AddObjToPlayerInv(Dnode* pDnodeTgt1, string ObjectId)
 {
   Object::AddObjToPlayerInv(pDnodeTgt1, ObjectId);
 }

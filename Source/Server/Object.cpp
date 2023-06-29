@@ -183,12 +183,12 @@ bool Object::AddObjToPlayerEqu(CString WearPosition, CString ObjectId)
 * Add an object to player's inventory                      *
 ************************************************************/
 
-void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, CString ObjectId)
+void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId)
 {
   int        BytesInFile;
   bool       NewPlayerObjFile;
   bool       ObjectIdAdded;
-  CString    ObjectIdCheck;
+  string     ObjectIdCheck;
   int        ObjCount;
   CString    PlayerObjFileName;
   CString    PlayerObjFileNameTmp;
@@ -196,7 +196,7 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, CString ObjectId)
   CStdioFile PlayerObjFileTmp;
   CString    Stuff;
   int        Success;
-  CString    TmpStr;
+  string     TmpStr;
 
   pDnodeTgt = pDnodeTgt1;
   ObjectId = StrMakeLower(ObjectId);
@@ -229,7 +229,7 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, CString ObjectId)
   { // New player inventory file, write the object and return
     ObjectId = "1 " + ObjectId;
     ObjectId += "\n";
-    PlayerObjFileTmp.WriteString(ObjectId);
+    PlayerObjFileTmp.WriteString(ConvertStringToCString(ObjectId));
     PlayerObjFileTmp.Close();
     CFile::Rename(PlayerObjFileNameTmp, PlayerObjFileName);
     return;
@@ -251,7 +251,7 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, CString ObjectId)
     { // Add new object in alphabetical order
       ObjectId = "1 " + ObjectId;
       ObjectId += "\n";
-      PlayerObjFileTmp.WriteString(ObjectId);
+      PlayerObjFileTmp.WriteString(ConvertStringToCString(ObjectId));
       ObjectIdAdded = true;
       Stuff += "\n";
       PlayerObjFileTmp.WriteString(Stuff);
@@ -263,10 +263,10 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, CString ObjectId)
       ObjCount = atoi(StrGetWord(Stuff, 1));
       ObjCount++;
       sprintf(Buf, "%d", ObjCount);
-      TmpStr = ConvertStringToCString(Buf);
+      TmpStr = (string)Buf;
       ObjectId = TmpStr + " " + ObjectId;
       ObjectId += "\n";
-      PlayerObjFileTmp.WriteString(ObjectId);
+      PlayerObjFileTmp.WriteString(ConvertStringToCString(ObjectId));
       ObjectIdAdded = true;
       PlayerObjFile.ReadString(Stuff);
       continue;
@@ -280,7 +280,7 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, CString ObjectId)
   { // New object is alphabetically last
     ObjectId = "1 " + ObjectId;
     ObjectId += "\n";
-    PlayerObjFileTmp.WriteString(ObjectId);
+    PlayerObjFileTmp.WriteString(ConvertStringToCString(ObjectId));
     ObjectIdAdded = true;
   }
   BytesInFile = StrGetLength(PlayerObjFileNameTmp);

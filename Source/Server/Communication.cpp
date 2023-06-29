@@ -28,7 +28,7 @@ int              ListenSocket;
 fd_set           OutSet;
 vector<string>   ValidCmds;
 
-void    AddObjToPlayerInv(Dnode *pDnodeTgt1, CString ObjectId); // Object
+void    AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId);  // Object
 Dnode  *GetDnode();                                             // Descriptor
 Mobile *IsMobInRoom(CString MobileName);                        // Mobile
 Mobile *IsMobValid(CString MobileId);                           // Mobile
@@ -1855,7 +1855,7 @@ void Communication::DoBuy()
   //* Buy the object *
   //*******************
   // Add object to player's inventory
-  AddObjToPlayerInv(pDnodeActor, ConvertStringToCString(ObjectId));
+  AddObjToPlayerInv(pDnodeActor, ObjectId);
   // Player receives some money
   pDnodeActor->pPlayer->SetMoney('-', Cost, "Silver");
   // Send messages
@@ -3176,7 +3176,7 @@ void Communication::DoGet()
   pDnodeTgt = pDnodeActor;
   SendToRoom(pDnodeActor->pPlayer->RoomId, GetMsg);
   // Add object to player's inventory
-  AddObjToPlayerInv(pDnodeTgt, pObject->ObjectId);
+  AddObjToPlayerInv(pDnodeTgt, ConvertCStringToString(pObject->ObjectId));
   delete pObject;
   pObject = NULL;
 }
@@ -3315,7 +3315,7 @@ void Communication::DoGive()
   //* Transfer object ownership *
   //*****************************
   RemoveObjFromPlayerInv(pObject->ObjectId, 1);
-  AddObjToPlayerInv(pDnodeTgt, pObject->ObjectId);
+  AddObjToPlayerInv(pDnodeTgt, ConvertCStringToString(pObject->ObjectId));
   delete pObject;
   pObject = NULL;
 }
@@ -4317,7 +4317,7 @@ void Communication::DoLoad()
     }
     delete pObject;
     pObject = NULL;
-    AddObjToPlayerInv(pDnodeActor, ConvertStringToCString(ObjectId));
+    AddObjToPlayerInv(pDnodeActor, ObjectId);
     pDnodeActor->PlayerOut += "Load successful\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -4838,7 +4838,7 @@ void Communication::DoRemove()
   pDnodeTgt = pDnodeActor;
   SendToRoom(pDnodeActor->pPlayer->RoomId, RemoveMsg);
   // Add object to player's inventory
-  AddObjToPlayerInv(pDnodeTgt, pObject->ObjectId);
+  AddObjToPlayerInv(pDnodeTgt, ConvertCStringToString(pObject->ObjectId));
   TmpStr = pObject->Type;
   TmpStr = StrMakeLower(TmpStr);
   if (TmpStr == "weapon")
@@ -7429,7 +7429,7 @@ bool Communication::ViolenceMobileLootHandOut(string Loot)
       }
       delete pObject;
       pObject = NULL;
-      AddObjToPlayerInv(pDnodeActor, ConvertStringToCString(ObjectId));
+      AddObjToPlayerInv(pDnodeActor, ObjectId);
       GotLoot = true;
     }
   }
