@@ -1346,7 +1346,7 @@ void Communication::CommandParse()
   /* RESTORE command */
   if (MudCmd == "restore")
   {
-    DoRestore(CmdStr);
+    DoRestore(ConvertCStringToString(CmdStr));
     return;
   }
 
@@ -1607,7 +1607,7 @@ void Communication::DoAdvance()
   pDnodeTgt->pPlayer->CreatePrompt();
   pDnodeTgt->PlayerOut += pDnodeTgt->pPlayer->GetOutput();
   // Restore the player as a bonus to being advanced
-  DoRestore("restore " + pDnodeTgt->pPlayer->Name);
+  DoRestore("restore " + ConvertCStringToString(pDnodeTgt->pPlayer->Name));
 }
 
 /***********************************************************
@@ -4862,7 +4862,7 @@ void Communication::DoRemove()
  * Restore command                                         *
  ***********************************************************/
 
-void Communication::DoRestore(CString CmdStr1)
+void Communication::DoRestore(string CmdStr)
 {
   string   LookupName;
   string   PlayerName;

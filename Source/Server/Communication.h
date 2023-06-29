@@ -109,7 +109,7 @@ class Communication
     void    static  DoQuit();
     void    static  DoRefresh();
     void    static  DoRemove();
-    void    static  DoRestore(CString CmdStr);
+    void    static  DoRestore(string CmdStr);
     void    static  DoRoomInfo();
     void    static  DoSave();
     void    static  DoSay();
