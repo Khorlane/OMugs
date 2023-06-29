@@ -150,7 +150,7 @@ class Communication
     bool    static  ViolenceMobileLootHandOut(string Loot);
     void    static  ViolenceMobileMore();
     void    static  ViolencePlayer();
-    void    static  ViolencePlayerDied(CString MobileDesc1);
+    void    static  ViolencePlayerDied(string MobileDesc1);
 };
 
 #endif

@@ -7163,7 +7163,7 @@ void Communication::ViolenceMobile()
     pDnodeActor->PlayerOut += "\r\n";
     if (HitPoints <= 0)
     { // Player is dead, how sad
-      ViolencePlayerDied(ConvertStringToCString(MobileDesc1));
+      ViolencePlayerDied(MobileDesc1);
       return;
     }
     i++;
@@ -7497,7 +7497,7 @@ void Communication::ViolencePlayer()
 * Player has died, sad but true                            *
 ************************************************************/
 
-void Communication::ViolencePlayerDied(CString MobileDesc1)
+void Communication::ViolencePlayerDied(string MobileDesc1)
 {
   int      CandidateCount;
   string   CandidateList;
@@ -7514,7 +7514,7 @@ void Communication::ViolencePlayerDied(CString MobileDesc1)
   pDnodeActor->PlayerOut += "&R";
   pDnodeActor->PlayerOut += "You have been vanquished by";
   pDnodeActor->PlayerOut += " ";
-  pDnodeActor->PlayerOut += MobileDesc1;
+  pDnodeActor->PlayerOut += ConvertStringToCString(MobileDesc1);
   pDnodeActor->PlayerOut += "!!!";
   pDnodeActor->PlayerOut += "\r\n";
   // Loose experience?
