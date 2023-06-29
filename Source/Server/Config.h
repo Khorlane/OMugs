@@ -19,7 +19,6 @@
 
 #include <direct.h>         // _chdir()
 #include <process.h>        // _endthread()
-#include <afxcoll.h>        // CStringArray
 #include <bitset>           // Allows bit manipulation
 #include <math.h>           // Math functions like pow, ceil, floor
 #include <afxdao.h>         // Allows access to ACCESS databases
@@ -329,6 +328,7 @@ void    RemoveObjFromPlayerInv(CString ObjectId, int Count);
 void    RemoveObjFromRoom(CString ObjectId);
 int     Rename(string File1, string File2);
 void    SendToRoom(CString TargetRoomId, CString MsgText);
+void    SendToRoom(string TargetRoomId, string MsgText);
 void    SetpDnodeCursorFirst();
 void    SetpDnodeCursorNext();
 void    ShowPlayerInv();

@@ -32,8 +32,8 @@ void    AddObjToPlayerInv(Dnode *pDnodeTgt1, CString ObjectId); // Object
 Dnode  *GetDnode();                                             // Descriptor
 Mobile *IsMobInRoom(CString MobileName);                        // Mobile
 Mobile *IsMobValid(CString MobileId);                           // Mobile
-void    ShowRoom(Dnode* pDnode);                                // Room
-void    ShowPlayerEqu(Dnode* pDnodeTgt1);                       // Object
+void    ShowRoom(Dnode *pDnode);                                // Room
+void    ShowPlayerEqu(Dnode *pDnodeTgt1);                       // Object
 
 /***********************************************************
  * Communication class constructor                         *
@@ -63,7 +63,7 @@ Dnode *Communication::GetTargetDnode(CString TargetName)
 {
   Dnode   *pDnodeLookup;
   bool     TargetFound;
-  CString  LookupName;
+  string   LookupName;
 
   TargetFound = false;
   TargetName = StrMakeLower(TargetName);
@@ -76,7 +76,7 @@ Dnode *Communication::GetTargetDnode(CString TargetName)
     pDnodeLookup = GetDnode();
     LookupName = pDnodeLookup->PlayerName;
     LookupName = StrMakeLower(LookupName);
-    if (TargetName == LookupName)
+    if (ConvertCStringToString(TargetName) == LookupName)
     { // Target found
       if (pDnodeLookup->PlayerStatePlaying)
       { // Target is valid
@@ -105,7 +105,7 @@ Dnode *Communication::GetTargetDnode(CString TargetName)
 bool Communication::IsFighting()
 {
   int     RandomNumber;
-  CString FightingMsg;
+  string  FightingMsg;
 
   if (!pDnodeActor->PlayerStateFighting)
   {
@@ -133,7 +133,7 @@ bool Communication::IsFighting()
     default :
       FightingMsg = "You are fighting.";
   }
-  pDnodeActor->PlayerOut += FightingMsg;
+  pDnodeActor->PlayerOut += ConvertStringToCString(FightingMsg);
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -147,7 +147,7 @@ bool Communication::IsFighting()
 bool Communication::IsSleeping()
 {
   int     RandomNumber;
-  CString SleepingMsg;
+  string  SleepingMsg;
 
   if (pDnodeActor->pPlayer->Position != "sleep")
   {
@@ -175,7 +175,7 @@ bool Communication::IsSleeping()
     default :
       SleepingMsg = "You must be dreaming.";
   }
-  pDnodeActor->PlayerOut += SleepingMsg;
+  pDnodeActor->PlayerOut += ConvertStringToCString(SleepingMsg);
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -185,7 +185,14 @@ bool Communication::IsSleeping()
 /***********************************************************
 * Send output to all players                               *
 ************************************************************/
-
+void Communication::SendToAll(string PlayerMsg, string AllMsg)
+{
+  SendToAll(ConvertStringToCString(PlayerMsg), ConvertStringToCString(AllMsg));
+}
+void Communication::SendToAll(CString PlayerMsg, string AllMsg)
+{
+  SendToAll(PlayerMsg, ConvertStringToCString(AllMsg));
+}
 void Communication::SendToAll(CString PlayerMsg, CString AllMsg)
 {
   SetpDnodeCursorFirst();
@@ -219,10 +226,17 @@ void Communication::SendToAll(CString PlayerMsg, CString AllMsg)
 /***********************************************************
 * Send output to other players in the same room as player  *
 ************************************************************/
-
+void Communication::SendToRoom(string TargetRoomId, string MsgText)
+{
+  SendToRoom(ConvertStringToCString(TargetRoomId), ConvertStringToCString(MsgText));
+}
+void Communication::SendToRoom(CString TargetRoomId, string MsgText)
+{
+  SendToRoom(TargetRoomId, ConvertStringToCString(MsgText));
+}
 void Communication::SendToRoom(CString TargetRoomId, CString MsgText)
 {
-  CString  LookupRoomId;
+  string   LookupRoomId;
 
   // Send output to all players in the room
   SetpDnodeCursorFirst();
@@ -236,7 +250,7 @@ void Communication::SendToRoom(CString TargetRoomId, CString MsgText)
       { // It's not the originating player
         if (pDnodeTgt != pDnodeOthers)
         { // It's not the target player
-          if (TargetRoomId == LookupRoomId)
+          if (ConvertCStringToString(TargetRoomId) == LookupRoomId)
           { // Others who are in the same room
             if (pDnodeOthers->pPlayer->Position != "sleep")
             { // and are not sleeping
@@ -276,8 +290,8 @@ void Communication::SendToRoom(CString TargetRoomId, CString MsgText)
 
 void Communication::ShowPlayersInRoom(Dnode *pDnode)
 {
-  CString  LookupRoomId;
-  CString  TargetRoomId;
+  string   LookupRoomId;
+  string   TargetRoomId;
 
   TargetRoomId = pDnode->pPlayer->RoomId;
   // Show players in same room as player
@@ -335,7 +349,7 @@ void Communication::ShowPlayersInRoom(Dnode *pDnode)
 
 void Communication::SockCheckForNewConnections()
 {
-  CString               LogBuf;
+  string                LogBuf;
   int                   SocketCount;
   static struct timeval TimeOut{};
 
@@ -361,7 +375,7 @@ void Communication::SockCheckForNewConnections()
   if (SocketCount == -1)
   { // Something is wrong
     sprintf(Buf,"%s", strerror(errno));
-    LogBuf = "Communication::SockCheckForNewConnections: select: " + ConvertStringToCString(Buf);
+    LogBuf = "Communication::SockCheckForNewConnections: select: " + (string)Buf;
     LogIt(LogBuf);
     AfxMessageBox("Communication::SockCheckForNewConnections - Error: select", MB_ICONSTOP);
     _endthread();
@@ -378,7 +392,7 @@ void Communication::SockCheckForNewConnections()
 
 void Communication::SockClosePort(int Port)
 { 
-  CString LogBuf;
+  string  LogBuf;
   int     Result;
 
   DEBUGIT(1);
@@ -390,7 +404,7 @@ void Communication::SockClosePort(int Port)
     _endthread();
   }
   sprintf(Buf, "%d", Port);
-  LogBuf = "Closed port " + ConvertStringToCString(Buf);;
+  LogBuf = "Closed port " + (string)Buf;;
   LogIt(LogBuf);
 }
 
@@ -402,7 +416,7 @@ void Communication::SockOpenPort(int Port)
 {
   unsigned long FionbioParm;
   struct        linger      ld{};
-  CString       LogBuf;
+  string        LogBuf;
   int           OptionValue;
   int           Result;
   struct        sockaddr_in sa{};
@@ -420,7 +434,7 @@ void Communication::SockOpenPort(int Port)
   if (Result != 0)
   {
     sprintf(Buf, "%s", strerror(errno));
-    LogBuf = "WinSock not available!: " + ConvertStringToCString(Buf);
+    LogBuf = "WinSock not available!: " + (string)Buf;
     LogIt(LogBuf);
     PrintIt("Communication::SockOpenPort - WinSock not available");
     exit(1);
@@ -430,7 +444,7 @@ void Communication::SockOpenPort(int Port)
   if (ListenSocket == SOCKET_ERROR)
   {
     sprintf(Buf, "%s", strerror(errno));
-    LogBuf = "Communication:SockOpenPort - Error: initializing socket: " + ConvertStringToCString(Buf);
+    LogBuf = "Communication:SockOpenPort - Error: initializing socket: " + (string)Buf;
     LogIt(LogBuf);
     PrintIt("Communication::SockOpenPort - Error: initializing socket");
     exit(1);
@@ -440,7 +454,7 @@ void Communication::SockOpenPort(int Port)
   if (Result != 0)
   {
     sprintf(Buf, "%s", strerror(errno));
-    LogBuf = "Communication:SockOpenPort - Error: setsockopt: SO_REUSEADDR: " + ConvertStringToCString(Buf);
+    LogBuf = "Communication:SockOpenPort - Error: setsockopt: SO_REUSEADDR: " + (string)Buf;
     LogIt(LogBuf);
     PrintIt("Communication::SockOpenPort - Error: setsockopt: SO_REUSEADDR");
     exit(1);
@@ -450,7 +464,7 @@ void Communication::SockOpenPort(int Port)
   if (Result != 0)
   {
     sprintf(Buf, "%s", strerror(errno));
-    LogBuf = "Communication:SockOpenPort - Error: setsockopt: SO_SNDBUF: " + ConvertStringToCString(Buf);
+    LogBuf = "Communication:SockOpenPort - Error: setsockopt: SO_SNDBUF: " + (string)Buf;
     LogIt(LogBuf);
     PrintIt("Communication::SockOpenPort - Error: setsockopt: SO_SNDBUF");
     exit(1);
@@ -460,7 +474,7 @@ void Communication::SockOpenPort(int Port)
   if (Result != 0)
   {
     sprintf(Buf, "%s", strerror(errno));
-    LogBuf = "Communication:SockOpenPort - Error: setsockopt: SO_LINGER: " + ConvertStringToCString(Buf);
+    LogBuf = "Communication:SockOpenPort - Error: setsockopt: SO_LINGER: " + (string)Buf;
     LogIt(LogBuf);
     PrintIt("Communication::SockOpenPort - Error: setsockopt: SO_LINGER");
     exit(1);
@@ -475,7 +489,7 @@ void Communication::SockOpenPort(int Port)
   if (Result != 0)
   {
     sprintf(Buf, "%s", strerror(errno));
-    LogBuf = "Communication:SockOpenPort - Error: bind: " + ConvertStringToCString(Buf);
+    LogBuf = "Communication:SockOpenPort - Error: bind: " + (string)Buf;
     LogIt(LogBuf);
     PrintIt("Communication::SockOpenPort - Error: bind");
     exit(1);
@@ -485,7 +499,7 @@ void Communication::SockOpenPort(int Port)
   if (Result != 0)
   {
     sprintf(Buf, "%s", strerror(errno));
-    LogBuf = "Communication:SockOpenPort - Error: ioctlsocket: " + ConvertStringToCString(Buf);
+    LogBuf = "Communication:SockOpenPort - Error: ioctlsocket: " + (string)Buf;
     LogIt(LogBuf);
     PrintIt("Communication::SockOpenPort - Error: ioctlsocket");
     exit(1);
@@ -495,14 +509,14 @@ void Communication::SockOpenPort(int Port)
   if (Result != 0)
   {
     sprintf(Buf, "%s", strerror(errno));
-    LogBuf = "Communication:SockOpenPort - Error: listen: " + ConvertStringToCString(Buf);
+    LogBuf = "Communication:SockOpenPort - Error: listen: " + (string)Buf;
     LogIt(LogBuf);
     ::closesocket(ListenSocket);
     PrintIt("Communication::SockOpenPort - Error: listen");
     exit(1);
   }
   sprintf(Buf, "%d", Port);
-  LogBuf = "Listening on port " + ConvertStringToCString(Buf);
+  LogBuf = "Listening on port " + (string)Buf;
   LogIt(LogBuf);
   // Load command array
   CommandArrayLoad();
@@ -518,7 +532,7 @@ void Communication::SockRecv()
   int      DnodeFdSave;
   char     InpStr[MAX_INPUT_LENGTH];
   int      LineFeedPosition;
-  CString  LogBuf;
+  string   LogBuf;
   int      RecvByteCount;
 
   DEBUGIT(5);
@@ -539,7 +553,7 @@ void Communication::SockRecv()
       { // No input, kick 'em out
         pDnodeActor->PlayerStateBye = true;
         sprintf(Buf, "%d", pDnodeActor->DnodeFd);
-        LogBuf = "Time out during logon on descriptor " + ConvertStringToCString(Buf);;
+        LogBuf = "Time out during logon on descriptor " + (string)Buf;;
         LogIt(LogBuf);
         pDnodeActor->PlayerOut += "\r\n";
         pDnodeActor->PlayerOut += "No input ... closing connection";
@@ -734,14 +748,14 @@ void Communication::SockRecv()
       { // Found a newline, parse the command
         if (pDnodeActor->PlayerName != "Ixaka" && pDnodeActor->PlayerName != "Kwam")
         { // Log the player's input
-          LogBuf  = ConvertStringToCString(pDnodeActor->PlayerIpAddress);
+          LogBuf = pDnodeActor->PlayerIpAddress;
           LogBuf += " ";
           if (pDnodeActor->pPlayer)
           {
             LogBuf += pDnodeActor->pPlayer->RoomId;
             LogBuf += " ";
           }
-          LogBuf += ConvertStringToCString(pDnodeActor->PlayerInp);
+          LogBuf += pDnodeActor->PlayerInp;
           StrReplace(LogBuf, "\r", " ");
           StrReplace(LogBuf, "\n", " ");
           LogIt(LogBuf);
@@ -770,7 +784,7 @@ void Communication::Color()
   { // Player's color variable is not available
     return;
   }
-  sPlayerOut = ConvertCStringToString(pDnodeActor->PlayerOut);
+  sPlayerOut = pDnodeActor->PlayerOut;
   if (pDnodeActor->pPlayer->Color)
   { // Player has turned color on
     StrReplace(sPlayerOut, "&N", Normal);
@@ -804,7 +818,7 @@ void Communication::Color()
 
 void Communication::CommandArrayLoad()
 {
-  CString    LogBuf;
+  string     LogBuf;
   string     Stuff;
   ifstream   ValidCmdsFile;
   string     ValidCmdsFileName;
@@ -834,18 +848,18 @@ void Communication::CommandArrayLoad()
 
 CString Communication::CommandCheck(CString MudCmdChk)
 {
-  CString CommandCheckResult;
-  CString ValCmd;
-  CString ValCmdInfo;
-  CString WhoCanDo;
+  string  CommandCheckResult;
+  string  ValCmd;
+  string  ValCmdInfo;
+  string  WhoCanDo;
 
   CommandCheckResult = "Not Found";
   for (auto& ValidCmd : ValidCmds)
   { // For each string in the ValidCmds vector
-    ValCmdInfo = ConvertStringToCString(ValidCmd);
+    ValCmdInfo = ValidCmd;
     ValCmd     = StrGetWord(ValCmdInfo, 1);
     WhoCanDo   = StrGetWord(ValCmdInfo, 2);
-    if (MudCmdChk == ValCmd)
+    if (ConvertCStringToString(MudCmdChk) == ValCmd)
     { // Found the command
       if (WhoCanDo == "all")
       { // Anyone can do this command
@@ -866,7 +880,7 @@ CString Communication::CommandCheck(CString MudCmdChk)
         }
       }
       else
-      if (atoi(WhoCanDo) > pDnodeActor->pPlayer->Level)
+      if (stoi(WhoCanDo) > pDnodeActor->pPlayer->Level)
       { // Failed level check
         CommandCheckResult = "Level " + WhoCanDo;
         break;
@@ -883,7 +897,7 @@ CString Communication::CommandCheck(CString MudCmdChk)
     AfxMessageBox("Communication::CommandCheck - Broke!", MB_ICONSTOP);
     _endthread();
   }
-  return CommandCheckResult;
+  return ConvertStringToCString(CommandCheckResult);
 }
 
 /***********************************************************
@@ -892,11 +906,11 @@ CString Communication::CommandCheck(CString MudCmdChk)
 
 void Communication::CommandParse()
 {
-  CString  BadCommandMsg;
+  string   BadCommandMsg;
   int      CmdStrLength;
-  CString  CommandCheckResult;
-  CString  LogBuf;
-  CString  MudCmdChk;
+  string   CommandCheckResult;
+  string   LogBuf;
+  string   MudCmdChk;
   bool     MudCmdOk;
   int      PositionOfNewline;
   int      RandomNumber;
@@ -976,7 +990,7 @@ void Communication::CommandParse()
   //****************
   MudCmdOk = false;
   MudCmdChk = MudCmd;
-  CommandCheckResult = CommandCheck(MudCmdChk);
+  CommandCheckResult = CommandCheck(ConvertStringToCString(MudCmdChk));
   if (CommandCheckResult == "Ok")
   { // Mud command is Ok for this player
     MudCmdOk = true;
@@ -985,7 +999,7 @@ void Communication::CommandParse()
   if (StrGetWord(CommandCheckResult, 1) == "Level")
   { // Level restriction on command
     pDnodeActor->PlayerOut += "You must attain level ";
-    pDnodeActor->PlayerOut += StrGetWord(CommandCheckResult, 2);
+    pDnodeActor->PlayerOut += ConvertStringToCString(StrGetWord(CommandCheckResult, 2));
     pDnodeActor->PlayerOut += " before you can use that command.";
     pDnodeActor->PlayerOut += "\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -1028,7 +1042,7 @@ void Communication::CommandParse()
       default :
         BadCommandMsg = "Your command is not clear.";
     }
-    pDnodeActor->PlayerOut += BadCommandMsg;
+    pDnodeActor->PlayerOut += ConvertStringToCString(BadCommandMsg);
     pDnodeActor->PlayerOut += "\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -1485,13 +1499,13 @@ void Communication::CommandParse()
 void Communication::DoAdvance()
 {
   int      Level;
-  CString  LevelString;
-  CString  LogBuf;
-  CString  PlayerName;
-  CString  PlayerNameSave;
-  CString  TargetName;
-  CString  TargetNameSave;
-  CString  TmpStr;
+  string   LevelString;
+  string   LogBuf;
+  string   PlayerName;
+  string   PlayerNameSave;
+  string   TargetName;
+  string   TargetNameSave;
+  string   TmpStr;
 
   DEBUGIT(1);
   PlayerName      = pDnodeActor->PlayerName;
@@ -1502,7 +1516,7 @@ void Communication::DoAdvance()
   TargetName = StrMakeLower(TargetName);
   Level = atoi(StrGetWord(CmdStr, 3));
   sprintf(Buf, "%d", Level);
-  LevelString = ConvertStringToCString(Buf);
+  LevelString = (string)Buf;
   if (TargetName == "")
   { // No name given
     pDnodeActor->PlayerOut += "Advance who?";
@@ -1512,10 +1526,10 @@ void Communication::DoAdvance()
     return;
   }
   // Get target Dnode pointer
-  pDnodeTgt = GetTargetDnode(TargetName);
+  pDnodeTgt = GetTargetDnode(ConvertStringToCString(TargetName));
   if (!pDnodeTgt)
   { // Target player not found
-    pDnodeActor->PlayerOut += TargetNameSave;
+    pDnodeActor->PlayerOut += ConvertStringToCString(TargetNameSave);
     pDnodeActor->PlayerOut += " is not online.\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -1523,9 +1537,9 @@ void Communication::DoAdvance()
   }
   if (Level == pDnodeTgt->pPlayer->Level)
   { // Advance to same level ... that's just plain silly
-    pDnodeActor->PlayerOut += TargetNameSave;
+    pDnodeActor->PlayerOut += ConvertStringToCString(TargetNameSave);
     pDnodeActor->PlayerOut += " is already at level ";
-    pDnodeActor->PlayerOut += LevelString;
+    pDnodeActor->PlayerOut += ConvertStringToCString(LevelString);
     pDnodeActor->PlayerOut += ".";
     pDnodeActor->PlayerOut += "\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -1534,9 +1548,9 @@ void Communication::DoAdvance()
   }
   if (Level == 0)
   { // Advance to level 0 ... not valid
-    pDnodeActor->PlayerOut += TargetNameSave;
+    pDnodeActor->PlayerOut += ConvertStringToCString(TargetNameSave);
     pDnodeActor->PlayerOut += " cannot be advanced to level ";
-    pDnodeActor->PlayerOut += LevelString;
+    pDnodeActor->PlayerOut += ConvertStringToCString(LevelString);
     pDnodeActor->PlayerOut += ".";
     pDnodeActor->PlayerOut += "\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -1559,9 +1573,9 @@ void Communication::DoAdvance()
   LogBuf += pDnodeActor->PlayerName;
   LogIt(LogBuf);
   // Send message to player
-  pDnodeActor->PlayerOut += TargetNameSave;
+  pDnodeActor->PlayerOut += ConvertStringToCString(TargetNameSave);
   pDnodeActor->PlayerOut += " is now level ";
-  pDnodeActor->PlayerOut += LevelString;
+  pDnodeActor->PlayerOut += ConvertStringToCString(LevelString);
   pDnodeActor->PlayerOut += ".";
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
@@ -1569,7 +1583,7 @@ void Communication::DoAdvance()
   // Send message to target
   pDnodeTgt->PlayerOut += "\r\n";
   pDnodeTgt->PlayerOut += "&Y";
-  pDnodeTgt->PlayerOut += PlayerNameSave;
+  pDnodeTgt->PlayerOut += ConvertStringToCString(PlayerNameSave);
   if (Level > pDnodeTgt->pPlayer->Level)
   { // Level up!
     pDnodeTgt->PlayerOut += " has advanced you to level ";
@@ -1578,7 +1592,7 @@ void Communication::DoAdvance()
   { // Level down :(
     pDnodeTgt->PlayerOut += " has DEMOTED you to level ";
   }
-  pDnodeTgt->PlayerOut += LevelString;
+  pDnodeTgt->PlayerOut += ConvertStringToCString(LevelString);
   pDnodeTgt->PlayerOut += "!";
   pDnodeTgt->PlayerOut += "&N";
   pDnodeTgt->PlayerOut += "\r\n";
@@ -1624,11 +1638,11 @@ void Communication::DoAfk()
 
 void Communication::DoAssist()
 {
-  CString  AssistMsg;
-  CString  MobileId;
-  CString  PlayerNameCheck;
-  CString  TargetNameCheck;
-  CString  TargetNameSave;
+  string   AssistMsg;
+  string   MobileId;
+  string   PlayerNameCheck;
+  string   TargetNameCheck;
+  string   TargetNameSave;
   bool     TargetNotHere;
 
   DEBUGIT(1);
@@ -1689,7 +1703,7 @@ void Communication::DoAssist()
   //* Is target OK ? *
   //******************
   TargetNotHere = false;
-  pDnodeTgt = GetTargetDnode(TargetNameCheck);
+  pDnodeTgt = GetTargetDnode(ConvertStringToCString(TargetNameCheck));
   if (!pDnodeTgt)
   { // Target is not online and/or not in 'playing' state
     TargetNotHere = true;
@@ -1703,7 +1717,7 @@ void Communication::DoAssist()
   }
   if (TargetNotHere)
   { // Tell player that target is not here
-    pDnodeActor->PlayerOut += TargetNameSave;
+    pDnodeActor->PlayerOut += ConvertStringToCString(TargetNameSave);
     pDnodeActor->PlayerOut += " is not here.\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();      
@@ -1756,7 +1770,7 @@ void Communication::DoAssist()
   //* Make the assist happen *
   //**************************
   MobileId = GetPlayerMobMobileId(pDnodeTgt->PlayerName);
-  CreatePlayerMob(pDnodeActor->PlayerName, MobileId);
+  CreatePlayerMob(pDnodeActor->PlayerName, ConvertStringToCString(MobileId));
   pDnodeActor->PlayerStateFighting = true;
 }
 
@@ -1767,11 +1781,11 @@ void Communication::DoAssist()
 void Communication::DoBuy()
 {
   int      Cost;
-  CString  Desc1;
-  CString  ObjectId;
-  CString  ObjectName;
-  CString  RoomId;
-  CString  TmpStr;
+  string   Desc1;
+  string   ObjectId;
+  string   ObjectName;
+  string   RoomId;
+  string   TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -1786,7 +1800,7 @@ void Communication::DoBuy()
     return;
   }
   RoomId = pDnodeActor->pPlayer->RoomId;
-  if (!IsShop(RoomId))
+  if (!IsShop(ConvertStringToCString(RoomId)))
   { // Room is not a shop
     pDnodeActor->PlayerOut += "Find a shop.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -1812,7 +1826,7 @@ void Communication::DoBuy()
     return;
   }
   pObject = NULL;
-  IsShopObj(RoomId, ObjectName); // Sets pObject
+  IsShopObj(ConvertStringToCString(RoomId), ConvertStringToCString(ObjectName)); // Sets pObject
   if (!pObject)
   { // Object not in shop for player to buy
     pDnodeActor->PlayerOut += "That item cannot be bought here.";
@@ -1838,16 +1852,16 @@ void Communication::DoBuy()
   //* Buy the object *
   //*******************
   // Add object to player's inventory
-  AddObjToPlayerInv(pDnodeActor, ObjectId);
+  AddObjToPlayerInv(pDnodeActor, ConvertStringToCString(ObjectId));
   // Player receives some money
   pDnodeActor->pPlayer->SetMoney('-', Cost, "Silver");
   // Send messages
   sprintf(Buf, "%d", Cost);
   TmpStr = ConvertStringToCString(Buf);
   pDnodeActor->PlayerOut += "You buy ";
-  pDnodeActor->PlayerOut += Desc1;
+  pDnodeActor->PlayerOut += ConvertStringToCString(Desc1);
   pDnodeActor->PlayerOut += " for ";
-  pDnodeActor->PlayerOut += TmpStr;
+  pDnodeActor->PlayerOut += ConvertStringToCString(TmpStr);
   pDnodeActor->PlayerOut += " piece(s) of silver.";
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
@@ -1860,9 +1874,9 @@ void Communication::DoBuy()
 
 void Communication::DoChat()
 {
-  CString AllMsg;
-  CString ChatMsg;
-  CString PlayerMsg;
+  string  AllMsg;
+  string  ChatMsg;
+  string  PlayerMsg;
 
   DEBUGIT(1);
   //********************
@@ -1892,7 +1906,7 @@ void Communication::DoChat()
   AllMsg += ChatMsg;
   AllMsg += "&N";
   AllMsg += "\r\n";
-  SendToAll(PlayerMsg, AllMsg);
+  SendToAll(ConvertStringToCString(PlayerMsg), ConvertStringToCString(AllMsg));
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
 }
@@ -1903,7 +1917,7 @@ void Communication::DoChat()
 
 void Communication::DoColor()
 {
-  CString TmpStr;
+  string TmpStr;
 
   DEBUGIT(1);
   TmpStr = StrGetWord(CmdStr, 2);
@@ -1947,13 +1961,13 @@ void Communication::DoColor()
 void Communication::DoConsider()
 {
   Mobile  *pMobile;
-  CString  HintMsg;
+  string   HintMsg;
   int      LevelDiff;
-  CString  MobileName;
-  CString  PlayerName;
-  CString  PlayerNameCheck;
-  CString  RoomId;
-  CString  Target;
+  string   MobileName;
+  string   PlayerName;
+  string   PlayerNameCheck;
+  string   RoomId;
+  string   Target;
 
   DEBUGIT(1);
   //********************
@@ -1994,7 +2008,7 @@ void Communication::DoConsider()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  if (IsPlayer(Target))
+  if (IsPlayer(ConvertStringToCString(Target)))
   { // Trying to kill another player
     pDnodeActor->PlayerOut += "Why consider another player? Player killing is not allowed.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -2002,11 +2016,11 @@ void Communication::DoConsider()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  pMobile = IsMobInRoom(Target);
+  pMobile = IsMobInRoom(ConvertStringToCString(Target));
   if (!pMobile)
   { // Target mobile is not here
     pDnodeActor->PlayerOut += "There doesn't seem to be a(n) ";
-    pDnodeActor->PlayerOut += MobileName;
+    pDnodeActor->PlayerOut += ConvertStringToCString(MobileName);
     pDnodeActor->PlayerOut += " here.\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();      
@@ -2077,7 +2091,7 @@ void Communication::DoConsider()
   pDnodeActor->PlayerOut += pMobile->Desc1;
   pDnodeActor->PlayerOut += ".";
   pDnodeActor->PlayerOut += "\r\n";
-  pDnodeActor->PlayerOut += HintMsg;;
+  pDnodeActor->PlayerOut += ConvertStringToCString(HintMsg);
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -2090,13 +2104,13 @@ void Communication::DoConsider()
 
 void Communication::DoDelete()
 {
-  CString  AllMsg;
-  CString  LogBuf;
-  CString  Name;
-  CString  Password;
-  CString  Phrase;
-  CString  PlayerFileName;
-  CString  PlayerMsg;
+  string   AllMsg;
+  string   LogBuf;
+  string   Name;
+  string   Password;
+  string   Phrase;
+  string   PlayerFileName;
+  string   PlayerMsg;
 
   DEBUGIT(1);
   //********************
@@ -2121,7 +2135,7 @@ void Communication::DoDelete()
   Name     = StrGetWord(CmdStr, 2);
   Password = StrGetWord(CmdStr, 3);
   Phrase   = GetWords(CmdStr, 4);
-  if (Name != pDnodeActor->PlayerName)
+  if (Name != ConvertCStringToString(pDnodeActor->PlayerName))
   {
     pDnodeActor->PlayerOut += "Your name was not entered correctly.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -2131,7 +2145,7 @@ void Communication::DoDelete()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  if (Password != ConvertStringToCString(pDnodeActor->pPlayer->Password))
+  if (Password != pDnodeActor->pPlayer->Password)
   {
     pDnodeActor->PlayerOut += "Your password was not entered correctly.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -2184,7 +2198,7 @@ void Communication::DoDelete()
   PlayerFileName += ".txt";
   TRY
   {
-    CFile::Remove(PlayerFileName);
+    CFile::Remove(ConvertStringToCString(PlayerFileName));
   }
   CATCH (CFileException, e)
   { // It should be impossible for this delete to fail
@@ -2198,7 +2212,7 @@ void Communication::DoDelete()
   PlayerFileName += ".txt";
   TRY
   {
-    CFile::Remove(PlayerFileName);
+    CFile::Remove(ConvertStringToCString(PlayerFileName));
   }
   CATCH (CFileException, e)
   { // Don't care if delete fails
@@ -2210,7 +2224,7 @@ void Communication::DoDelete()
   PlayerFileName += ".txt";
   TRY
   {
-    CFile::Remove(PlayerFileName);
+    CFile::Remove(ConvertStringToCString(PlayerFileName));
   }
   CATCH (CFileException, e)
   { // Don't care if delete fails
@@ -2222,7 +2236,7 @@ void Communication::DoDelete()
   PlayerFileName += ".txt";
   TRY
   {
-    CFile::Remove(PlayerFileName);
+    CFile::Remove(ConvertStringToCString(PlayerFileName));
   }
   CATCH (CFileException, e)
   { // Don't care if delete fails
@@ -2239,10 +2253,10 @@ void Communication::DoDelete()
   AllMsg += "\r\n";
   pDnodeSrc = pDnodeActor;
   pDnodeTgt = NULL;
-  AllMsg    = ConvertStringToCString(PronounSubstitute(ConvertCStringToString(AllMsg)));
+  AllMsg    = PronounSubstitute(AllMsg);
   pDnodeSrc = NULL;
   pDnodeTgt = NULL;
-  SendToAll(PlayerMsg, AllMsg);
+  SendToAll(ConvertStringToCString(PlayerMsg), ConvertStringToCString(AllMsg));
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
 }
@@ -2253,8 +2267,8 @@ void Communication::DoDelete()
 
 void Communication::DoDestroy()
 {
-  CString  ObjectName;
-  CString  TmpStr;
+  string   ObjectName;
+  string   TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -2279,11 +2293,11 @@ void Communication::DoDestroy()
   ObjectName = TmpStr;
   TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
-  IsObjInPlayerInv(TmpStr); // Sets pObject
+  IsObjInPlayerInv(ConvertStringToCString(TmpStr)); // Sets pObject
   if (!pObject)
   {
     pDnodeActor->PlayerOut += "You don't have a(n) ";
-    pDnodeActor->PlayerOut += ObjectName;
+    pDnodeActor->PlayerOut += ConvertStringToCString(ObjectName);
     pDnodeActor->PlayerOut += ".\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();      
@@ -2310,13 +2324,12 @@ void Communication::DoDestroy()
 
 void Communication::DoDrink()
 {
-  CString  DrinkMsg;
-  CString  ObjectName;
-  CString  RoomId;
-  string   sRoomId;
-  CString  RoomName;
-  CString  RoomType;
-  CString  TmpStr;
+  string   DrinkMsg;
+  string   ObjectName;
+  string   RoomId;
+  string   RoomName;
+  string   RoomType;
+  string   TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -2342,16 +2355,13 @@ void Communication::DoDrink()
   //* Is this a drink room? *
   //*************************
   RoomId   = pDnodeActor->pPlayer->RoomId;
-  sRoomId = ConvertCStringToString(RoomId);
-  if (IsRoomType(sRoomId, "Drink"))
+  if (IsRoomType(RoomId, "Drink"))
   { // Room contains something to drink
-// TODO - steve - Is sRoomName used? Maybe it should be in the 'if' below
-    string sRoomName;
-    sRoomName = GetRoomName(sRoomId);
-    TmpStr = StrGetWord(CmdStr, 2);
-    TmpStr = StrMakeLower(TmpStr);
+    RoomName = GetRoomName(RoomId);
+    TmpStr   = StrGetWord(CmdStr, 2);
+    TmpStr   = StrMakeLower(TmpStr);
     RoomName = StrMakeLower(RoomName);
-    if (IsWord(TmpStr, RoomName))
+    if (IsWord(ConvertStringToCString(TmpStr), ConvertStringToCString(RoomName)))
     { //*****************
       //* Player drinks *
       //*****************
@@ -2380,11 +2390,11 @@ void Communication::DoDrink()
   ObjectName = TmpStr;
   TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
-  IsObjInPlayerInv(TmpStr); // Sets pObject
+  IsObjInPlayerInv(ConvertStringToCString(TmpStr)); // Sets pObject
   if (!pObject)
   { // Object not found in player's inventory
     pDnodeActor->PlayerOut += "You don't have a(n) ";
-    pDnodeActor->PlayerOut += ObjectName;
+    pDnodeActor->PlayerOut += ConvertStringToCString(ObjectName);
     pDnodeActor->PlayerOut += " in your inventory.\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();      
@@ -2437,9 +2447,9 @@ void Communication::DoDrink()
 
 void Communication::DoDrop()
 {
-  CString  DropMsg;
-  CString  ObjectName;
-  CString  TmpStr;
+  string   DropMsg;
+  string   ObjectName;
+  string   TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -2464,11 +2474,11 @@ void Communication::DoDrop()
   ObjectName = TmpStr;
   TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
-  IsObjInPlayerInv(TmpStr); // Sets pObject
+  IsObjInPlayerInv(ConvertStringToCString(TmpStr)); // Sets pObject
   if (!pObject)
   {
     pDnodeActor->PlayerOut += "You don't have a(n) ";
-    pDnodeActor->PlayerOut += ObjectName;
+    pDnodeActor->PlayerOut += ConvertStringToCString(ObjectName);
     pDnodeActor->PlayerOut += " in your inventory.\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();      
@@ -2505,9 +2515,9 @@ void Communication::DoDrop()
 
 void Communication::DoEat()
 {
-  CString  EatMsg;
-  CString  ObjectName;
-  CString  TmpStr;
+  string   EatMsg;
+  string   ObjectName;
+  string   TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -2532,11 +2542,11 @@ void Communication::DoEat()
   ObjectName = TmpStr;
   TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
-  IsObjInPlayerInv(TmpStr); // Sets pObject
+  IsObjInPlayerInv(ConvertStringToCString(TmpStr)); // Sets pObject
   if (!pObject)
   {
     pDnodeActor->PlayerOut += "You don't have a(n) ";
-    pDnodeActor->PlayerOut += ObjectName;
+    pDnodeActor->PlayerOut += ConvertStringToCString(ObjectName);
     pDnodeActor->PlayerOut += " in your inventory.\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();      
@@ -2589,8 +2599,8 @@ void Communication::DoEat()
 
 void Communication::DoEmote()
 {
-  CString EmoteMsg;
-  CString TmpStr;
+  string  EmoteMsg;
+  string  TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -2616,7 +2626,7 @@ void Communication::DoEmote()
   pDnodeActor->PlayerOut += "&C";
   pDnodeActor->PlayerOut += pDnodeActor->PlayerName;
   pDnodeActor->PlayerOut += " ";
-  pDnodeActor->PlayerOut += EmoteMsg;
+  pDnodeActor->PlayerOut += ConvertStringToCString(EmoteMsg);
   pDnodeActor->PlayerOut += "&N";
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
@@ -2652,9 +2662,9 @@ void Communication::DoEquipment()
 void Communication::DoExamine()
 {
   bool     ObjectFound;
-  CString  ObjectName;
-  CString  ObjectType;
-  CString  TmpStr;
+  string   ObjectName;
+  string   ObjectType;
+  string   TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -2685,7 +2695,7 @@ void Communication::DoExamine()
   TmpStr = StrMakeLower(TmpStr);
   // Check room
   pObject = NULL;
-  IsObjInRoom(TmpStr); // Sets pObject
+  IsObjInRoom(ConvertStringToCString(TmpStr)); // Sets pObject
   if (pObject)
   { // Object is in the room
     ObjectFound = true;
@@ -2693,7 +2703,7 @@ void Communication::DoExamine()
   else
   { // Check player inventory
     pObject = NULL;
-    IsObjInPlayerInv(TmpStr); // Sets pObject
+    IsObjInPlayerInv(ConvertStringToCString(TmpStr)); // Sets pObject
     if (pObject)
     { // Object is in player's inventory
       ObjectFound = true;
@@ -2701,7 +2711,7 @@ void Communication::DoExamine()
     else
     { // Check player equipment
       pObject = NULL;
-      IsObjInPlayerEqu(TmpStr); // Sets pObject
+      IsObjInPlayerEqu(ConvertStringToCString(TmpStr)); // Sets pObject
       if (pObject)
       { // Object is in player's equipment
         ObjectFound = true;
@@ -2711,7 +2721,7 @@ void Communication::DoExamine()
   if (!ObjectFound)
   { // Object can't be found
     pDnodeActor->PlayerOut += "There doesn't seem to be a(n) ";
-    pDnodeActor->PlayerOut += ObjectName;
+    pDnodeActor->PlayerOut += ConvertStringToCString(ObjectName);
     pDnodeActor->PlayerOut += " here.\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -2751,19 +2761,19 @@ void Communication::DoExamine()
 void Communication::DoFlee()
 {
   int         CandidateCount;
-  CString     CandidateList;
+  string      CandidateList;
   int         CandidateTarget;
   CFileStatus FileStatus;
-  CString     FleeMsg;
-  CString     MobileId;
-  CString     MobileIdSave;
-  CString     MobPlayerFileName;
-  CString     MudCmdIsExit;
-  CString     PlayerName1;
-  CString     PlayerName2;
-  CString     RoomIdBeforeFleeing;
-  CString     Target;
-  CString     TmpStr;
+  string      FleeMsg;
+  string      MobileId;
+  string      MobileIdSave;
+  string      MobPlayerFileName;
+  string      MudCmdIsExit;
+  string      PlayerName1;
+  string      PlayerName2;
+  string      RoomIdBeforeFleeing;
+  string      Target;
+  string      TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -2787,7 +2797,7 @@ void Communication::DoFlee()
   RoomIdBeforeFleeing = pDnodeActor->pPlayer->RoomId;
   MudCmdIsExit = "go";
   string sMudCmdIsExit;
-  sMudCmdIsExit = ConvertCStringToString(MudCmdIsExit);
+  sMudCmdIsExit = MudCmdIsExit;
   if (!IsExit(sMudCmdIsExit))
   { // Direction given is not valid
     pDnodeActor->PlayerOut += "Flee where?\r\n";
@@ -2803,7 +2813,7 @@ void Communication::DoFlee()
   FleeMsg += pDnodeActor->PlayerName;
   FleeMsg += " has fled for $pHisHers life!!";
   FleeMsg += "&N";
-  FleeMsg = ConvertStringToCString(PronounSubstitute(ConvertCStringToString(FleeMsg)));
+  FleeMsg = PronounSubstitute(FleeMsg);
   pDnodeSrc = pDnodeActor;
   pDnodeTgt = pDnodeActor;
   SendToRoom(RoomIdBeforeFleeing, FleeMsg);
@@ -2825,14 +2835,14 @@ void Communication::DoFlee()
   }
   PlayerName1 = pDnodeActor->PlayerName;
   // Get mobile id for mob that fleeing player was fighting
-  MobileIdSave = GetPlayerMobMobileId(PlayerName1);
+  MobileIdSave = GetPlayerMobMobileId(ConvertStringToCString(PlayerName1));
   // Delete PlayerMob file -- player is no longer attacking mob
-  DeletePlayerMob(PlayerName1);
+  DeletePlayerMob(ConvertStringToCString(PlayerName1));
   // See if a mob is whacking player
   MobPlayerFileName =  MOB_PLAYER_DIR;
   MobPlayerFileName += PlayerName1;
   MobPlayerFileName += ".txt";
-  if (!CFile::GetStatus(MobPlayerFileName, FileStatus))
+  if (!CFile::GetStatus(ConvertStringToCString(MobPlayerFileName), FileStatus))
   { // If MobPlayer does not exist, then no mob is fighting player
     return;
   }
@@ -2846,11 +2856,11 @@ void Communication::DoFlee()
     pDnodeOthers = GetDnode();
     if (pDnodeOthers->PlayerStateFighting)
     { // Players who are fighting
-      if (RoomIdBeforeFleeing == pDnodeOthers->pPlayer->RoomId)
+      if (RoomIdBeforeFleeing == ConvertCStringToString(pDnodeOthers->pPlayer->RoomId))
       { // In the same room
         PlayerName2 = pDnodeOthers->PlayerName;
-        MobileId = GetPlayerMobMobileId(PlayerName2);
-        DeleteMobPlayer(PlayerName1, MobileId);
+        MobileId = GetPlayerMobMobileId(ConvertStringToCString(PlayerName2));
+        DeleteMobPlayer(ConvertStringToCString(PlayerName1), ConvertStringToCString(MobileId));
         if (MobileId == MobileIdSave)
         { // Add player to candidate list for MobileIdSave
           CandidateList += PlayerName2;
@@ -2863,9 +2873,9 @@ void Communication::DoFlee()
   // Re-position pDnodeCursor
   RepositionDnodeCursor();
   // Put mobiles that are not fighting back in room
-  PutMobBackInRoom(PlayerName1, RoomIdBeforeFleeing);
+  PutMobBackInRoom(ConvertStringToCString(PlayerName1), ConvertStringToCString(RoomIdBeforeFleeing));
   // Player is gone, so delete MobPlayer completely
-  DeleteMobPlayer(PlayerName1, "file");
+  DeleteMobPlayer(ConvertStringToCString(PlayerName1), "file");
   // Select a new target for MobileIdSave
   if (StrGetLength(CandidateList) == 0)
   { // No available target for MobileIdSave
@@ -2874,7 +2884,7 @@ void Communication::DoFlee()
   CandidateCount  = StrCountWords(CandidateList);
   CandidateTarget = GetRandomNumber(CandidateCount);
   Target          = StrGetWord(CandidateList, CandidateTarget);
-  CreateMobPlayer(Target, MobileIdSave);
+  CreateMobPlayer(ConvertStringToCString(Target), ConvertStringToCString(MobileIdSave));
 }
 
 /***********************************************************
@@ -2887,9 +2897,9 @@ void Communication::DoFollow(Dnode *pDnode, CString CmdStr1)
   Dnode   *pDnodeGrpMem; // Group member
   int      i;
   int      j;
-  CString  Target;
+  string   Target;
   bool     TargetInGroup;
-  CString  TmpStr;
+  string   TmpStr;
 
   DEBUGIT(1);
   CmdStr = CmdStr1;
@@ -2995,10 +3005,10 @@ void Communication::DoFollow(Dnode *pDnode, CString CmdStr1)
   //******************
   //* Target online? *
   //******************
-  pDnodeTgt = GetTargetDnode(Target);
+  pDnodeTgt = GetTargetDnode(ConvertStringToCString(Target));
   if (!pDnodeTgt)
   { // Target not online
-    pDnode->PlayerOut += Target;
+    pDnode->PlayerOut += ConvertStringToCString(Target);
     pDnode->PlayerOut += " is not online.\r\n";
     pDnode->pPlayer->CreatePrompt();
     pDnode->PlayerOut += pDnode->pPlayer->GetOutput();
@@ -3042,7 +3052,7 @@ void Communication::DoFollow(Dnode *pDnode, CString CmdStr1)
   }
   if (!TargetInGroup)
   { // Target is not grouped with player
-    pDnode->PlayerOut += Target;
+    pDnode->PlayerOut += ConvertStringToCString(Target);
     pDnode->PlayerOut += " is not in the group.\r\n";
     pDnode->pPlayer->CreatePrompt();
     pDnode->PlayerOut += pDnode->pPlayer->GetOutput();
@@ -3097,9 +3107,9 @@ void Communication::DoFollow(Dnode *pDnode, CString CmdStr1)
 
 void Communication::DoGet()
 {
-  CString  GetMsg;
-  CString  ObjectName;
-  CString  TmpStr;
+  string   GetMsg;
+  string   ObjectName;
+  string   TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -3124,11 +3134,11 @@ void Communication::DoGet()
   ObjectName = TmpStr;
   TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
-  IsObjInRoom(TmpStr); // Sets pObject
+  IsObjInRoom(ConvertStringToCString(TmpStr)); // Sets pObject
   if (!pObject)
   {
     pDnodeActor->PlayerOut += "There doesn't seem to be a(n) ";
-    pDnodeActor->PlayerOut += ObjectName;
+    pDnodeActor->PlayerOut += ConvertStringToCString(ObjectName);
     pDnodeActor->PlayerOut += " here.\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();      
@@ -3174,12 +3184,12 @@ void Communication::DoGet()
 
 void Communication::DoGive()
 {
-  CString  GiveMsg;
-  CString  ObjectName;
-  CString  PlayerName;
-  CString  TargetName;
+  string   GiveMsg;
+  string   ObjectName;
+  string   PlayerName;
+  string   TargetName;
   bool     TargetNotHere;
-  CString  TmpStr;
+  string   TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -3212,11 +3222,11 @@ void Communication::DoGive()
   ObjectName = TmpStr;
   TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
-  IsObjInPlayerInv(TmpStr); // Sets pObject
+  IsObjInPlayerInv(ConvertStringToCString(TmpStr)); // Sets pObject
   if (!pObject)
   { // Player does not have object
     pDnodeActor->PlayerOut += "You don't have a(n) ";
-    pDnodeActor->PlayerOut += ObjectName;
+    pDnodeActor->PlayerOut += ConvertStringToCString(ObjectName);
     pDnodeActor->PlayerOut += " in your inventory.\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();      
@@ -3238,7 +3248,7 @@ void Communication::DoGive()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();      
     return;
   }
-  pDnodeTgt = GetTargetDnode(TmpStr);
+  pDnodeTgt = GetTargetDnode(ConvertStringToCString(TmpStr));
   if (!pDnodeTgt)
   { // Target is not online and/or not in 'playing' state
     TargetNotHere = true;
@@ -3252,7 +3262,7 @@ void Communication::DoGive()
   }
   if (TargetNotHere)
   { // Tell player that target is not here
-    pDnodeActor->PlayerOut += TargetName;
+    pDnodeActor->PlayerOut += ConvertStringToCString(TargetName);
     pDnodeActor->PlayerOut += " is not here.\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();      
@@ -3313,8 +3323,8 @@ void Communication::DoGive()
 
 void Communication::DoGo()
 {
-  CString MudCmdIsExit;
-  CString TmpStr;
+  string  MudCmdIsExit;
+  string  TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -3349,7 +3359,7 @@ void Communication::DoGo()
   //***************
   MudCmdIsExit = "go";
   string sMudCmdIsExit;
-  sMudCmdIsExit = ConvertCStringToString(MudCmdIsExit);
+  sMudCmdIsExit = MudCmdIsExit;
   if (IsExit(sMudCmdIsExit))
   { // Player has been moved
     return;
@@ -3368,10 +3378,8 @@ void Communication::DoGo()
 
 void Communication::DoGoTo()
 {
-  CString GoToMsg;
-  CString RoomId;
-  string  sRoomId;
-  CString csRoomId;
+  string  GoToMsg;
+  string  RoomId;
 
   DEBUGIT(1);
   //********************
@@ -3385,8 +3393,7 @@ void Communication::DoGoTo()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  sRoomId = ConvertCStringToString(RoomId);
-  if (!IsRoom(sRoomId))
+  if (!IsRoom(RoomId))
   {
     pDnodeActor->PlayerOut += "Go to where?\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -3403,10 +3410,7 @@ void Communication::DoGoTo()
   SendToRoom(pDnodeActor->pPlayer->RoomId, GoToMsg);
   // GoTo room
   // TODO - steve - This seems like double talk with the RoomId, even after CString is completely removed
-  sRoomId = ConvertCStringToString(RoomId);
-  sRoomId = GetRoomId(sRoomId);
-  csRoomId = ConvertStringToCString(sRoomId);
-  pDnodeActor->pPlayer->RoomId = csRoomId;
+  pDnodeActor->pPlayer->RoomId = ConvertStringToCString(RoomId);
   DoLook("");
   // Send GoTo arrival message
   GoToMsg = pDnodeActor->pPlayer->GoToArrive;
@@ -3421,8 +3425,8 @@ void Communication::DoGoTo()
 
 void Communication::DoGoToArrive()
 {
-  CString GoToArrive;
-  CString TmpStr;
+  string  GoToArrive;
+  string  TmpStr;
 
   DEBUGIT(1);
   TmpStr = StrGetWord(CmdStr, 2);
@@ -3486,7 +3490,7 @@ void Communication::DoGoToArrive()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  pDnodeActor->pPlayer->GoToArrive = GoToArrive;
+  pDnodeActor->pPlayer->GoToArrive = ConvertStringToCString(GoToArrive);
   pDnodeActor->PlayerOut += "Your arrival message has been set.\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -3498,8 +3502,8 @@ void Communication::DoGoToArrive()
 
 void Communication::DoGoToDepart()
 {
-  CString GoToDepart;
-  CString TmpStr;
+  string  GoToDepart;
+  string  TmpStr;
 
   DEBUGIT(1);
   TmpStr = StrGetWord(CmdStr, 2);
@@ -3563,7 +3567,7 @@ void Communication::DoGoToDepart()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  pDnodeActor->pPlayer->GoToDepart = GoToDepart;
+  pDnodeActor->pPlayer->GoToDepart = ConvertStringToCString(GoToDepart);
   pDnodeActor->PlayerOut += "Your departure message has been set.\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -3579,10 +3583,10 @@ void Communication::DoGroup()
   int      i;
   int      j;
   bool     GrpFull;
-  CString  PlayerNameCheck;
-  CString  TargetNameCheck;
-  CString  TargetNameSave;
-  CString  TmpStr;
+  string   PlayerNameCheck;
+  string   TargetNameCheck;
+  string   TargetNameSave;
+  string   TmpStr;
 
   DEBUGIT(1);
   if (IsSleeping())
@@ -3696,10 +3700,10 @@ void Communication::DoGroup()
       return;
     }
   }
-  pDnodeGrpLdr = GetTargetDnode(TargetNameCheck);
+  pDnodeGrpLdr = GetTargetDnode(ConvertStringToCString(TargetNameCheck));
   if (!pDnodeGrpLdr)
   { // New group member ... not online
-    pDnodeActor->PlayerOut += TargetNameSave;
+    pDnodeActor->PlayerOut += ConvertStringToCString(TargetNameSave);
     pDnodeActor->PlayerOut += " is not online.\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -3757,7 +3761,7 @@ void Communication::DoGroup()
     TmpStr = ConvertStringToCString(Buf);
     TmpStr = StrTrimLeft(TmpStr);
     TmpStr = StrTrimRight(TmpStr);
-    pDnodeActor->PlayerOut+= TmpStr;
+    pDnodeActor->PlayerOut+= ConvertStringToCString(TmpStr);
     pDnodeActor->PlayerOut += " members allowed.\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -3810,7 +3814,7 @@ void Communication::DoGsay()
 {
   Dnode   *pDnodeGrpLdr; // Group leader
   Dnode   *pDnodeGrpMem; // Group members
-  CString  GsayMsg;
+  string   GsayMsg;
   int      i;
 
   DEBUGIT(1);
@@ -3837,7 +3841,7 @@ void Communication::DoGsay()
   //*****************
   pDnodeActor->PlayerOut += "&C";
   pDnodeActor->PlayerOut += "You say to the group: ";
-  pDnodeActor->PlayerOut += GsayMsg;
+  pDnodeActor->PlayerOut += ConvertStringToCString(GsayMsg);
   pDnodeActor->PlayerOut += "&N";
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
@@ -3860,7 +3864,7 @@ void Communication::DoGsay()
     pDnodeGrpMem->PlayerOut += "&C";
     pDnodeGrpMem->PlayerOut += pDnodeActor->PlayerName;
     pDnodeGrpMem->PlayerOut += " says to the group: ";
-    pDnodeGrpMem->PlayerOut += GsayMsg;
+    pDnodeGrpMem->PlayerOut += ConvertStringToCString(GsayMsg);
     pDnodeGrpMem->PlayerOut += "&N";
     pDnodeGrpMem->PlayerOut += "\r\n";
     pDnodeGrpMem->pPlayer->CreatePrompt();
@@ -3875,14 +3879,14 @@ void Communication::DoGsay()
 void Communication::DoHail()
 {
   Mobile  *pMobile;
-  CString  HailMsg;
-  CString  MobileId;
-  CString  MobileName;
-  CString  MobileMsg;
-  CString  PlayerName;
-  CString  PlayerNameCheck;
-  CString  RoomId;
-  CString  Target;
+  string   HailMsg;
+  string   MobileId;
+  string   MobileName;
+  string   MobileMsg;
+  string   PlayerName;
+  string   PlayerNameCheck;
+  string   RoomId;
+  string   Target;
 
   DEBUGIT(1);
   //********************
@@ -3927,7 +3931,7 @@ void Communication::DoHail()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  pMobile = IsMobInRoom(Target);
+  pMobile = IsMobInRoom(ConvertStringToCString(Target));
   if (!pMobile)
   { // Target mobile is not here
     pDnodeActor->PlayerOut += "Try hailing an NPC that is in this room.";
@@ -4010,7 +4014,7 @@ void Communication::DoInventory()
 
 void Communication::DoInvisible()
 {
-  CString TmpStr;
+  string  TmpStr;
 
   DEBUGIT(1);
   TmpStr = StrGetWord(CmdStr, 2);
@@ -4056,15 +4060,15 @@ void Communication::DoInvisible()
 void Communication::DoKill()
 {
   Mobile  *pMobile;
-  CString  KillMsg;
-  CString  MobileId;
-  CString  MobileName;
-  CString  PlayerName;
-  CString  PlayerNameCheck;
-  CString  RoomId;
+  string   KillMsg;
+  string   MobileId;
+  string   MobileName;
+  string   PlayerName;
+  string   PlayerNameCheck;
+  string   RoomId;
   string   sRoomId;
-  CString  RoomType;
-  CString  Target;
+  string   RoomType;
+  string   Target;
 
   DEBUGIT(1);
   //********************
@@ -4083,8 +4087,7 @@ void Communication::DoKill()
     return;
   }
   RoomId = pDnodeActor->pPlayer->RoomId;
-  sRoomId = ConvertCStringToString(RoomId);
-  if (IsRoomType(sRoomId, "NoFight"))
+  if (IsRoomType(RoomId, "NoFight"))
   { // No fighting is allowed in this room
     pDnodeActor->PlayerOut += "You are not allowed to fight here.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4130,7 +4133,7 @@ void Communication::DoKill()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  if (IsPlayer(Target))
+  if (IsPlayer(ConvertStringToCString(Target)))
   { // Trying to kill another player
     pDnodeActor->PlayerOut += "Don't even think about it, player killing is not allowed.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4138,11 +4141,11 @@ void Communication::DoKill()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  pMobile = IsMobInRoom(Target);
+  pMobile = IsMobInRoom(ConvertStringToCString(Target));
   if (!pMobile)
   { // Target mobile is not here
     pDnodeActor->PlayerOut += "There doesn't seem to be a(n) ";
-    pDnodeActor->PlayerOut += MobileName;
+    pDnodeActor->PlayerOut += ConvertStringToCString(MobileName);
     pDnodeActor->PlayerOut += " here.\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();      
@@ -4172,7 +4175,7 @@ void Communication::DoKill()
     pDnodeTgt = pDnodeActor;
     SendToRoom(RoomId, KillMsg);
     // Remove mobile from room
-    RemoveMobFromRoom(RoomId, pMobile->MobileId);
+    RemoveMobFromRoom(ConvertStringToCString(RoomId), pMobile->MobileId);
     delete pMobile;
     return;
   }
@@ -4204,20 +4207,20 @@ void Communication::DoKill()
   if (!pMobile->Hurt)
   { //  Mobile not hurt
     pMobile->GetNextMobNbr();
-    pMobile->CreateMobStatsFile(RoomId);
+    pMobile->CreateMobStatsFile(ConvertStringToCString(RoomId));
     MobileId = pMobile->MobileId;
-    RemoveMobFromRoom(RoomId, MobileId);
+    RemoveMobFromRoom(ConvertStringToCString(RoomId), ConvertStringToCString(MobileId));
     MobileId = pMobile->MobileId + "." + pMobile->MobNbr;
   }
   else
   { // Mobile is hurt
     MobileId = pMobile->MobileId + "." + pMobile->MobNbr;
-    RemoveMobFromRoom(RoomId, MobileId);
+    RemoveMobFromRoom(ConvertStringToCString(RoomId), ConvertStringToCString(MobileId));
   }
-  UpdateMobInWorld(MobileId, "add"); // Keep Mob InWorld count correct
+  UpdateMobInWorld(ConvertStringToCString(MobileId), "add"); // Keep Mob InWorld count correct
   // Set player and mobile to fight
-  CreatePlayerMob(PlayerName, MobileId);
-  CreateMobPlayer(PlayerName, MobileId);
+  CreatePlayerMob(ConvertStringToCString(PlayerName), ConvertStringToCString(MobileId));
+  CreateMobPlayer(ConvertStringToCString(PlayerName), ConvertStringToCString(MobileId));
   delete pMobile;
   pDnodeActor->PlayerStateFighting = true;
 }
@@ -4260,10 +4263,10 @@ void Communication::DoList()
 void Communication::DoLoad()
 {
   Mobile  *pMobile;
-  CString  LoadMsg;
-  CString  MobileId;
-  CString  ObjectId;
-  CString  TmpStr;
+  string   LoadMsg;
+  string   MobileId;
+  string   ObjectId;
+  string   TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -4287,8 +4290,8 @@ void Communication::DoLoad()
   }
   TmpStr = StrGetWord(CmdStr, 2);
   TmpStr = StrMakeLower(TmpStr);
-  TmpStr = TranslateWord(TmpStr);
-  if (IsNotWord(TmpStr,"object mobile"))
+  TmpStr = TranslateWord(ConvertStringToCString(TmpStr));
+  if (IsNotWord(ConvertStringToCString(TmpStr),"object mobile"))
   { // obj or mob must be specified
     pDnodeActor->PlayerOut += "2nd parm must be obj{ect}|mob{ile}\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -4302,7 +4305,7 @@ void Communication::DoLoad()
   { // Loading an object
     ObjectId = StrGetWord(CmdStr, 3);
     pObject = NULL;
-    IsObject(ObjectId); // Sets pObject
+    IsObject(ConvertStringToCString(ObjectId)); // Sets pObject
     if (!pObject)
     { // Object does not exist
       pDnodeActor->PlayerOut += "Object not found.\r\n";
@@ -4312,7 +4315,7 @@ void Communication::DoLoad()
     }
     delete pObject;
     pObject = NULL;
-    AddObjToPlayerInv(pDnodeActor, ObjectId);
+    AddObjToPlayerInv(pDnodeActor, ConvertStringToCString(ObjectId));
     pDnodeActor->PlayerOut += "Load successful\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -4325,7 +4328,7 @@ void Communication::DoLoad()
   { // Loading an mobile
     MobileId = StrGetWord(CmdStr, 3);
     MobileId = StrMakeLower(MobileId);
-    pMobile = IsMobValid(MobileId);
+    pMobile = IsMobValid(ConvertStringToCString(MobileId));
     if (!pMobile)
     { // Mobile does not exist
       pDnodeActor->PlayerOut += "Mobile not found.\r\n";
@@ -4333,8 +4336,8 @@ void Communication::DoLoad()
       pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
       return;
     }
-    AddMobToRoom(pDnodeActor->pPlayer->RoomId, MobileId);
-    SpawnMobileNoMove(MobileId);
+    AddMobToRoom(pDnodeActor->pPlayer->RoomId, ConvertStringToCString(MobileId));
+    SpawnMobileNoMove(ConvertStringToCString(MobileId));
     pDnodeActor->PlayerOut += "Load successful\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -4394,13 +4397,12 @@ void Communication::DoLogon()
 void Communication::DoLook(CString CmdStr1)
 {
   Mobile  *pMobile;
-  CString  Desc1FirstLetter;
-  CString  Desc1TheRest;
+  string   Desc1FirstLetter;
+  string   Desc1TheRest;
   bool     IsPlayer;
-  CString  MudCmdIsExit;
-  string   sMudCmdIsExit;
-  CString  TargetName;
-  CString  TmpStr;
+  string   MudCmdIsExit;
+  string   TargetName;
+  string   TmpStr;
 
   DEBUGIT(1);
   CmdStr = CmdStr1;
@@ -4421,8 +4423,7 @@ void Communication::DoLook(CString CmdStr1)
   //* Is it a room exit? *
   //**********************
   MudCmdIsExit = "look";
-  sMudCmdIsExit = ConvertCStringToString(MudCmdIsExit);
-  if (IsExit(sMudCmdIsExit))
+  if (IsExit(MudCmdIsExit))
   { // Look room exit
     return;
   }
@@ -4432,7 +4433,7 @@ void Communication::DoLook(CString CmdStr1)
   IsPlayer = true;
   TargetName = TmpStr;
   TargetName = StrMakeLower(TargetName);
-  pDnodeTgt = GetTargetDnode(TargetName);
+  pDnodeTgt = GetTargetDnode(ConvertStringToCString(TargetName));
   if (!pDnodeTgt)
   { // Target is not online and/or not in 'playing' state
     IsPlayer = false;
@@ -4452,12 +4453,12 @@ void Communication::DoLook(CString CmdStr1)
   //*******************
   //* Is it a mobile? *
   //*******************
-  pMobile = IsMobInRoom(TargetName);
+  pMobile = IsMobInRoom(ConvertStringToCString(TargetName));
   if (pMobile)
   { // Player is looking at a mob
     TmpStr = StrMakeFirstLower(pMobile->Desc1);
     pDnodeActor->PlayerOut += "You look at ";
-    pDnodeActor->PlayerOut += TmpStr;
+    pDnodeActor->PlayerOut += ConvertStringToCString(TmpStr);
     pDnodeActor->PlayerOut += ".";
     pDnodeActor->PlayerOut += "\r\n";
     pMobile->ExamineMob(pMobile->MobileId);
@@ -4497,8 +4498,8 @@ void Communication::DoMoney()
 void Communication::DoMotd()
 {
   CStdioFile MotdFile;
-  CString    MotdFileName;
-  CString    Stuff;
+  string     MotdFileName;
+  string     Stuff;
   int        Success;
 
   DEBUGIT(1);
@@ -4506,7 +4507,7 @@ void Communication::DoMotd()
   MotdFileName = MOTD_DIR;
   MotdFileName += "Motd";
   MotdFileName += ".txt";
-  Success = MotdFile.Open(MotdFileName,
+  Success = MotdFile.Open(ConvertStringToCString(MotdFileName),
                    CFile::modeRead |
                    CFile::typeText);
   if(!Success)
@@ -4514,12 +4515,15 @@ void Communication::DoMotd()
     AfxMessageBox("Communication::DoMotd - Open Motd file failed (read)", MB_ICONSTOP);
     _endthread();
   }
-  MotdFile.ReadString(Stuff);
+  CString Stuff1;
+  MotdFile.ReadString(Stuff1);
+  Stuff = ConvertCStringToString(Stuff1);
   while (Stuff != "End of Motd")
   {
     Stuff += "\r\n";
-    pDnodeActor->PlayerOut += Stuff;
-    MotdFile.ReadString(Stuff);
+    pDnodeActor->PlayerOut += ConvertStringToCString(Stuff);
+    MotdFile.ReadString(Stuff1);
+    Stuff = ConvertCStringToString(Stuff1);
   }
   MotdFile.Close();
   if (pDnodeActor->PlayerStatePlaying)
@@ -4535,7 +4539,7 @@ void Communication::DoMotd()
 
 void Communication::DoOneWhack()
 {
-  CString TmpStr;
+  string  TmpStr;
 
   DEBUGIT(1);
   TmpStr = StrGetWord(CmdStr, 2);
@@ -4578,9 +4582,9 @@ void Communication::DoOneWhack()
 
 void Communication::DoPassword()
 {
-  CString Password;
-  CString NewPassword1;
-  CString NewPassword2;
+  string  Password;
+  string  NewPassword1;
+  string  NewPassword2;
 
   DEBUGIT(1);
   //********************
@@ -4602,7 +4606,7 @@ void Communication::DoPassword()
   Password     = StrGetWord(CmdStr, 2);
   NewPassword1 = StrGetWord(CmdStr, 3);
   NewPassword2 = StrGetWord(CmdStr, 4);
-  if (Password != ConvertStringToCString(pDnodeActor->pPlayer->Password))
+  if (Password != pDnodeActor->pPlayer->Password)
   {
     pDnodeActor->PlayerOut += "Password does not match current password.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4697,9 +4701,9 @@ void Communication::DoPlayed()
 
 void Communication::DoQuit()
 {
-  CString AllMsg;
-  CString LogBuf;
-  CString PlayerMsg;
+  string  AllMsg;
+  string  LogBuf;
+  string  PlayerMsg;
 
   DEBUGIT(1);
   if (IsSleeping())
@@ -4733,7 +4737,7 @@ void Communication::DoQuit()
 
 void Communication::DoRefresh()
 {
-  CString TmpStr;
+  string  TmpStr;
 
   DEBUGIT(1);
   if (StrCountWords(CmdStr) > 2)
@@ -4776,9 +4780,9 @@ void Communication::DoRefresh()
 
 void Communication::DoRemove()
 {
-  CString  ObjectName;
-  CString  RemoveMsg;
-  CString  TmpStr;
+  string   ObjectName;
+  string   RemoveMsg;
+  string   TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -4809,11 +4813,11 @@ void Communication::DoRemove()
   ObjectName = TmpStr;
   TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
-  IsObjInPlayerEqu(TmpStr); // Sets pObject
+  IsObjInPlayerEqu(ConvertStringToCString(TmpStr)); // Sets pObject
   if (!pObject)
   { // Object not in equipment
     pDnodeActor->PlayerOut += "You don't have a(n) ";
-    pDnodeActor->PlayerOut += ObjectName;
+    pDnodeActor->PlayerOut += ConvertStringToCString(ObjectName);
     pDnodeActor->PlayerOut += " equipped.\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();      
@@ -4857,11 +4861,11 @@ void Communication::DoRemove()
 
 void Communication::DoRestore(CString CmdStr1)
 {
-  CString  LookupName;
-  CString  PlayerName;
+  string   LookupName;
+  string   PlayerName;
   bool     TargetFound;
-  CString  TargetName;
-  CString  TargetNameSave;
+  string   TargetName;
+  string   TargetNameSave;
 
   DEBUGIT(1);
   //********************
@@ -4888,10 +4892,10 @@ void Communication::DoRestore(CString CmdStr1)
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  pDnodeTgt = GetTargetDnode(TargetName);
+  pDnodeTgt = GetTargetDnode(ConvertStringToCString(TargetName));
   if (!pDnodeTgt)
   { // Tell player ... not found
-    pDnodeActor->PlayerOut += TargetNameSave;
+    pDnodeActor->PlayerOut += ConvertStringToCString(TargetNameSave);
     pDnodeActor->PlayerOut += " is not online.\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -4909,7 +4913,7 @@ void Communication::DoRestore(CString CmdStr1)
   TargetName = pDnodeTgt->PlayerName;
   // Send restore message to player
   pDnodeActor->PlayerOut += "You have restored ";
-  pDnodeActor->PlayerOut += TargetName;
+  pDnodeActor->PlayerOut += ConvertStringToCString(TargetName);
   pDnodeActor->PlayerOut += ".";
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
@@ -4917,7 +4921,7 @@ void Communication::DoRestore(CString CmdStr1)
   // Send restore message to target
   pDnodeTgt->PlayerOut += "\r\n";  
   pDnodeTgt->PlayerOut += "&Y";
-  pDnodeTgt->PlayerOut += PlayerName;
+  pDnodeTgt->PlayerOut += ConvertStringToCString(PlayerName);
   pDnodeTgt->PlayerOut += " has restored you!";
   pDnodeTgt->PlayerOut += "&N";
   pDnodeTgt->PlayerOut += "\r\n";
@@ -4931,7 +4935,7 @@ void Communication::DoRestore(CString CmdStr1)
 
 void Communication::DoRoomInfo()
 {
-  CString TmpStr;
+  string  TmpStr;
 
   DEBUGIT(1);
   TmpStr = StrGetWord(CmdStr, 2);
@@ -4977,8 +4981,8 @@ void Communication::DoSave()
 
 void Communication::DoSay()
 {
-  CString SayMsg;
-  CString TmpStr;
+  string  SayMsg;
+  string  TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -5010,7 +5014,7 @@ void Communication::DoSay()
   //*****************
   pDnodeActor->PlayerOut += "&W";
   pDnodeActor->PlayerOut += "You say: ";
-  pDnodeActor->PlayerOut += SayMsg;
+  pDnodeActor->PlayerOut += ConvertStringToCString(SayMsg);
   pDnodeActor->PlayerOut += "&N";
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
@@ -5032,15 +5036,15 @@ void Communication::DoSay()
 void Communication::DoSell()
 {
   int      Cost;
-  CString  Desc1;
+  string   Desc1;
   int      InvCountInt;
-  CString  InvCountStr;
-  CString  ObjectId;
-  CString  ObjectName;
-  CString  RoomId;
+  string   InvCountStr;
+  string   ObjectId;
+  string   ObjectName;
+  string   RoomId;
   int      SellCountInt;
-  CString  SellCountStr;
-  CString  TmpStr;
+  string   SellCountStr;
+  string   TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -5055,7 +5059,7 @@ void Communication::DoSell()
     return;
   }
   RoomId = pDnodeActor->pPlayer->RoomId;
-  if (!IsShop(RoomId))
+  if (!IsShop(ConvertStringToCString(RoomId)))
   { // Room is not a shop
     pDnodeActor->PlayerOut += "Find a shop.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -5073,11 +5077,11 @@ void Communication::DoSell()
     return;
   }
   pObject = NULL;
-  IsObjInPlayerInv(ObjectName); // Sets pObject
+  IsObjInPlayerInv(ConvertStringToCString(ObjectName)); // Sets pObject
   if (!pObject)
   { // Player doesn't have object
     pDnodeActor->PlayerOut += "You don't have a(n) ";
-    pDnodeActor->PlayerOut += ObjectName;
+    pDnodeActor->PlayerOut += ConvertStringToCString(ObjectName);
     pDnodeActor->PlayerOut += " in your inventory.";
     pDnodeActor->PlayerOut +="\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -5089,7 +5093,7 @@ void Communication::DoSell()
   Cost        = pObject->Cost;
   InvCountStr = pObject->Count;
   pObject     = NULL;
-  IsShopObj(RoomId, ObjectName); // Sets pObject
+  IsShopObj(ConvertStringToCString(RoomId), ConvertStringToCString(ObjectName)); // Sets pObject
   if (!pObject)
   { // Player cannot sell object to this shop
     pDnodeActor->PlayerOut += "That item cannot be sold here.";
@@ -5103,7 +5107,7 @@ void Communication::DoSell()
   //********************
   //* Check sell count *
   //********************
-  InvCountInt = atoi(InvCountStr);
+  InvCountInt = stoi(InvCountStr);
   SellCountStr = StrGetWord(CmdStr, 3);
   SellCountStr = StrMakeLower(SellCountStr); // In case player typed 'all'
   if (SellCountStr == "")
@@ -5118,7 +5122,7 @@ void Communication::DoSell()
     }
     else
     { // Compare player InvCount against SellCountInt
-      SellCountInt = atoi(SellCountStr);
+      SellCountInt = stoi(SellCountStr);
       if (SellCountInt <= 0)
       { // Player entered a negative or zero amount to sell
         pDnodeActor->PlayerOut += "You cannot sell less that 1 item";
@@ -5131,7 +5135,7 @@ void Communication::DoSell()
       if (SellCountInt > InvCountInt)
       { // Player is trying sell more than they have
         pDnodeActor->PlayerOut += "You don't have that many ";
-        pDnodeActor->PlayerOut += ObjectName;
+        pDnodeActor->PlayerOut += ConvertStringToCString(ObjectName);
         pDnodeActor->PlayerOut += "s";
         pDnodeActor->PlayerOut += "\r\n";
         pDnodeActor->pPlayer->CreatePrompt();
@@ -5144,7 +5148,7 @@ void Communication::DoSell()
   //* Sell the object *
   //*******************
   // Remove object from player's inventory
-  RemoveObjFromPlayerInv(ObjectId, SellCountInt);
+  RemoveObjFromPlayerInv(ConvertStringToCString(ObjectId), SellCountInt);
   // Player receives some money
   Cost = Cost * SellCountInt;
   pDnodeActor->pPlayer->SetMoney('+', Cost, "Silver");
@@ -5152,13 +5156,13 @@ void Communication::DoSell()
   sprintf(Buf, "%d", SellCountInt);
   TmpStr = ConvertStringToCString(Buf);
   TmpStr = "(" + TmpStr + ") ";
-  pDnodeActor->PlayerOut += TmpStr;
+  pDnodeActor->PlayerOut += ConvertStringToCString(TmpStr);
   pDnodeActor->PlayerOut += "You sell ";
-  pDnodeActor->PlayerOut += Desc1;
+  pDnodeActor->PlayerOut += ConvertStringToCString(Desc1);
   pDnodeActor->PlayerOut += " for ";
   sprintf(Buf, "%d", Cost);
   TmpStr = ConvertStringToCString(Buf);
-  pDnodeActor->PlayerOut += TmpStr;
+  pDnodeActor->PlayerOut += ConvertStringToCString(TmpStr);
   pDnodeActor->PlayerOut += " piece(s) of silver.";
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
@@ -5171,17 +5175,17 @@ void Communication::DoSell()
 
 void Communication::DoShow()
 {
-  CString    CommandCheckResult;
+  string     CommandCheckResult;
   CStdioFile HelpFile;
-  CString    HelpFileName;
-  CString    HelpText;
+  string     HelpFileName;
+  string     HelpText;
   CStdioFile SocialFile;
-  CString    SocialFileName;
-  CString    SocialText;
+  string     SocialFileName;
+  string     SocialText;
   int        Success;
-  CString    TmpStr;
-  CString    MudCmdChk;
-  CString    ValCmdInfo;
+  string     TmpStr;
+  string     MudCmdChk;
+  string     ValCmdInfo;
 
   DEBUGIT(1);
   //********************
@@ -5205,7 +5209,7 @@ void Communication::DoShow()
     return;
   }
   TmpStr = StrMakeLower(TmpStr);
-  if (IsNotWord(TmpStr, "commands socials help"))
+  if (IsNotWord(ConvertStringToCString(TmpStr), "commands socials help"))
   { // Show target not valid
     pDnodeActor->PlayerOut += "Show what??";
     pDnodeActor->PlayerOut += "\r\n";
@@ -5226,18 +5230,18 @@ void Communication::DoShow()
     { // For each string in the ValidCmds vector
       ValCmdInfo = ConvertStringToCString(ValidCmd);
       MudCmdChk  = StrGetWord(ValCmdInfo, 1);
-      CommandCheckResult = CommandCheck(MudCmdChk);
+      CommandCheckResult = CommandCheck(ConvertStringToCString(MudCmdChk));
       if (CommandCheckResult == "Ok")
       { // Mud command is Ok for this player
-        pDnodeActor->PlayerOut += MudCmdChk;
+        pDnodeActor->PlayerOut += ConvertStringToCString(MudCmdChk);
         pDnodeActor->PlayerOut += "\r\n";
       }
       else
       if (StrGetWord(CommandCheckResult, 1) == "Level")
       { // Mud command is Ok for this player, but level restricted
-        pDnodeActor->PlayerOut += MudCmdChk;
+        pDnodeActor->PlayerOut += ConvertStringToCString(MudCmdChk);
         pDnodeActor->PlayerOut += " acquired at level(";
-        pDnodeActor->PlayerOut += StrGetWord(CommandCheckResult, 2);
+        pDnodeActor->PlayerOut += ConvertStringToCString(StrGetWord(CommandCheckResult, 2));
         pDnodeActor->PlayerOut += ")";
         pDnodeActor->PlayerOut += "\r\n";
       }
@@ -5254,7 +5258,7 @@ void Communication::DoShow()
     pDnodeActor->PlayerOut += "\r\n";
     HelpFileName =  HELP_DIR;
     HelpFileName += "Help.txt";
-    Success = HelpFile.Open(HelpFileName,
+    Success = HelpFile.Open(ConvertStringToCString(HelpFileName),
                  CFile::modeRead |
                  CFile::typeText);
     if(!Success)
@@ -5264,16 +5268,19 @@ void Communication::DoShow()
     }
     else
     { // Help file is open
-      HelpFile.ReadString(HelpText); // Skip first line
-      HelpFile.ReadString(HelpText);
+      CString HelpText1;
+      HelpFile.ReadString(HelpText1); // Skip first line
+      HelpFile.ReadString(HelpText1);
+      HelpText = ConvertCStringToString(HelpText1);
       while (HelpText != "End of Help")
       { // Read the whole file
         if (StrLeft(HelpText, 5) == "Help:")
         { // Found a help topic
-          pDnodeActor->PlayerOut += StrRight(HelpText, StrGetLength(HelpText) - 5);
+          pDnodeActor->PlayerOut += ConvertStringToCString(StrRight(HelpText, StrGetLength(HelpText) - 5));
           pDnodeActor->PlayerOut += "\r\n";
         }
-        HelpFile.ReadString(HelpText);
+        HelpFile.ReadString(HelpText1);
+        HelpText = ConvertCStringToString(HelpText1);
       }
       HelpFile.Close();
     }
@@ -5289,7 +5296,7 @@ void Communication::DoShow()
     pDnodeActor->PlayerOut += "\r\n";
     SocialFileName =  SOCIAL_DIR;
     SocialFileName += "Social.txt";
-    Success = SocialFile.Open(SocialFileName,
+    Success = SocialFile.Open(ConvertStringToCString(SocialFileName),
                    CFile::modeRead |
                    CFile::typeText);
     if(!Success)
@@ -5299,15 +5306,18 @@ void Communication::DoShow()
     }
     else
     { // Social file is open
-      SocialFile.ReadString(SocialText);
+      CString SocialText1;
+      SocialFile.ReadString(SocialText1);
+      SocialText = ConvertCStringToString(SocialText1);
       while (SocialText != "End of Socials")
       { // Read the whole file
         if (StrLeft(SocialText, 9) == "Social : ")
         { // Found a help topic
-          pDnodeActor->PlayerOut += StrRight(SocialText, StrGetLength(SocialText) - 9);
+          pDnodeActor->PlayerOut += ConvertStringToCString(StrRight(SocialText, StrGetLength(SocialText) - 9));
           pDnodeActor->PlayerOut += "\r\n";
         }
-        SocialFile.ReadString(SocialText);
+        SocialFile.ReadString(SocialText1);
+        SocialText = ConvertCStringToString(SocialText1);
       }
       SocialFile.Close();
     }
@@ -5323,7 +5333,7 @@ void Communication::DoShow()
 
 void Communication::DoSit()
 {
-  CString SitMsg;
+  string  SitMsg;
 
   DEBUGIT(1);
   //********************
@@ -5366,7 +5376,7 @@ void Communication::DoSit()
 
 void Communication::DoSleep()
 {
-  CString SleepMsg;
+  string  SleepMsg;
 
   DEBUGIT(1);
   //********************
@@ -5409,7 +5419,7 @@ void Communication::DoSleep()
 
 void Communication::DoStand()
 {
-  CString StandMsg;
+  string  StandMsg;
 
   DEBUGIT(1);
   //********************
@@ -5465,9 +5475,9 @@ void Communication::DoStatus()
 
 void Communication::DoStop()
 {
-  CString LogBuf;
-  CString GoGoGoFileName;
-  CString StopItFileName;
+  string  LogBuf;
+  string  GoGoGoFileName;
+  string  StopItFileName;
 
   DEBUGIT(1);
   StateStopping = true;
@@ -5479,7 +5489,7 @@ void Communication::DoStop()
   GoGoGoFileName += "GoGoGo";
   StopItFileName  = CONTROL_DIR;
   StopItFileName += "StopIt";
-  CFile::Rename(GoGoGoFileName, StopItFileName);
+  CFile::Rename(ConvertStringToCString(GoGoGoFileName), ConvertStringToCString(StopItFileName));
 }
 
 /***********************************************************
@@ -5488,11 +5498,11 @@ void Communication::DoStop()
 
 void Communication::DoTell()
 {
-  CString  PlayerName;
+  string   PlayerName;
   bool     TargetFound;
-  CString  TargetName;
-  CString  TargetNameSave;
-  CString  TellMsg;
+  string   TargetName;
+  string   TargetNameSave;
+  string   TellMsg;
 
   DEBUGIT(1);
   //********************
@@ -5522,16 +5532,16 @@ void Communication::DoTell()
   if (StrGetLength(TellMsg) < 1)
   {
     pDnodeActor->PlayerOut += "Um, tell ";
-    pDnodeActor->PlayerOut += TargetNameSave;
+    pDnodeActor->PlayerOut += ConvertStringToCString(TargetNameSave);
     pDnodeActor->PlayerOut += " what?";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  pDnodeTgt = GetTargetDnode(TargetName);
+  pDnodeTgt = GetTargetDnode(ConvertStringToCString(TargetName));
   if (!pDnodeTgt)
   { // Tell player ... not found
-    pDnodeActor->PlayerOut += TargetNameSave;
+    pDnodeActor->PlayerOut += ConvertStringToCString(TargetNameSave);
     pDnodeActor->PlayerOut += " is not online.\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -5545,9 +5555,9 @@ void Communication::DoTell()
   // Send tell message to player
   pDnodeActor->PlayerOut += "&M";
   pDnodeActor->PlayerOut += "You tell ";
-  pDnodeActor->PlayerOut += TargetName;
+  pDnodeActor->PlayerOut += ConvertStringToCString(TargetName);
   pDnodeActor->PlayerOut += ": ";
-  pDnodeActor->PlayerOut += TellMsg;
+  pDnodeActor->PlayerOut += ConvertStringToCString(TellMsg);
   pDnodeActor->PlayerOut += "&N";
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
@@ -5555,9 +5565,9 @@ void Communication::DoTell()
   // Send tell message to target
   pDnodeTgt->PlayerOut += "&M";
   pDnodeTgt->PlayerOut += "\r\n";  
-  pDnodeTgt->PlayerOut += PlayerName;
+  pDnodeTgt->PlayerOut += ConvertStringToCString(PlayerName);
   pDnodeTgt->PlayerOut += " tells you: ";
-  pDnodeTgt->PlayerOut += TellMsg;
+  pDnodeTgt->PlayerOut += ConvertStringToCString(TellMsg);
   pDnodeTgt->PlayerOut += "&N";
   pDnodeTgt->PlayerOut += "\r\n";
   pDnodeTgt->pPlayer->CreatePrompt();
@@ -5570,7 +5580,7 @@ void Communication::DoTell()
 
 void Communication::DoTime()
 {
-  CString DisplayCurrentTime;
+  string  DisplayCurrentTime;
 
   DEBUGIT(1);
   // Server time
@@ -5579,7 +5589,7 @@ void Communication::DoTime()
   strftime(&s[0], s.size(), "%Y-%m-%d %H:%M:%S", localtime(&now));
   DisplayCurrentTime = ConvertStringToCString(s);
   pDnodeActor->PlayerOut += "Current server time is: ";
-  pDnodeActor->PlayerOut += DisplayCurrentTime;
+  pDnodeActor->PlayerOut += ConvertStringToCString(DisplayCurrentTime);
   pDnodeActor->PlayerOut += "\r\n";
   // Game time
   pDnodeActor->PlayerOut += "Current game time is: ";
@@ -5596,8 +5606,8 @@ void Communication::DoTime()
 
 void Communication::DoTitle()
 {
-  CString Title;
-  CString TmpStr;
+  string  Title;
+  string  TmpStr;
 
   DEBUGIT(1);
   TmpStr = StrGetWord(CmdStr, 2);
@@ -5661,7 +5671,7 @@ void Communication::DoTitle()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  pDnodeActor->pPlayer->Title = Title;
+  pDnodeActor->pPlayer->Title = ConvertStringToCString(Title);
   pDnodeActor->pPlayer->Save();
   pDnodeActor->PlayerOut += "Your title has been set.\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
@@ -5675,12 +5685,12 @@ void Communication::DoTitle()
 void Communication::DoTrain()
 {
   int     IncreaseDecrease;
-  CString MinusSign;
+  string  MinusSign;
   int     SkillPointsUsed;
   int     SkillPointsRemaining;
-  CString TmpStr;
-  CString UnTrainCost;
-  CString WeaponType;
+  string  TmpStr;
+  string  UnTrainCost;
+  string  WeaponType;
 
   DEBUGIT(1);
   //********************
@@ -5720,7 +5730,7 @@ void Communication::DoTrain()
   }
   if (WeaponType != "")
   { // WeaponType specified
-    if (IsNotWord(WeaponType, "axe club dagger hammer spear staff sword"))
+    if (IsNotWord(ConvertStringToCString(WeaponType), "axe club dagger hammer spear staff sword"))
     { // But it was the invalid
       pDnodeActor->PlayerOut += "Please specify a valid weapon type.";
       pDnodeActor->PlayerOut += "\r\n";
@@ -5791,7 +5801,7 @@ void Communication::DoTrain()
         if (WeaponType == "axe" && pDnodeActor->pPlayer->SkillAxe == 0)
         { // No axe skill
           pDnodeActor->PlayerOut += "You have no ";
-          pDnodeActor->PlayerOut += WeaponType;
+          pDnodeActor->PlayerOut += ConvertStringToCString(WeaponType);
           pDnodeActor->PlayerOut += " skill!";
           pDnodeActor->PlayerOut += "\r\n";
           pDnodeActor->pPlayer->CreatePrompt();
@@ -5801,7 +5811,7 @@ void Communication::DoTrain()
         if (WeaponType == "club" && pDnodeActor->pPlayer->SkillClub == 0)
         { // No club skill
           pDnodeActor->PlayerOut += "You have no ";
-          pDnodeActor->PlayerOut += WeaponType;
+          pDnodeActor->PlayerOut += ConvertStringToCString(WeaponType);
           pDnodeActor->PlayerOut += " skill!";
           pDnodeActor->PlayerOut += "\r\n";
           pDnodeActor->pPlayer->CreatePrompt();
@@ -5811,7 +5821,7 @@ void Communication::DoTrain()
         if (WeaponType == "dagger" && pDnodeActor->pPlayer->SkillDagger == 0)
         { // No dagger skill
           pDnodeActor->PlayerOut += "You have no ";
-          pDnodeActor->PlayerOut += WeaponType;
+          pDnodeActor->PlayerOut += ConvertStringToCString(WeaponType);
           pDnodeActor->PlayerOut += " skill!";
           pDnodeActor->PlayerOut += "\r\n";
           pDnodeActor->pPlayer->CreatePrompt();
@@ -5821,7 +5831,7 @@ void Communication::DoTrain()
         if (WeaponType == "hammer" && pDnodeActor->pPlayer->SkillHammer == 0)
         { // No hammer skill
           pDnodeActor->PlayerOut += "You have no ";
-          pDnodeActor->PlayerOut += WeaponType;
+          pDnodeActor->PlayerOut += ConvertStringToCString(WeaponType);
           pDnodeActor->PlayerOut += " skill!";
           pDnodeActor->PlayerOut += "\r\n";
           pDnodeActor->pPlayer->CreatePrompt();
@@ -5831,7 +5841,7 @@ void Communication::DoTrain()
         if (WeaponType == "spear" && pDnodeActor->pPlayer->SkillSpear == 0)
         { // No spear skill
           pDnodeActor->PlayerOut += "You have no ";
-          pDnodeActor->PlayerOut += WeaponType;
+          pDnodeActor->PlayerOut += ConvertStringToCString(WeaponType);
           pDnodeActor->PlayerOut += " skill!";
           pDnodeActor->PlayerOut += "\r\n";
           pDnodeActor->pPlayer->CreatePrompt();
@@ -5841,7 +5851,7 @@ void Communication::DoTrain()
         if (WeaponType == "staff" && pDnodeActor->pPlayer->SkillStaff == 0)
         { // No staff skill
           pDnodeActor->PlayerOut += "You have no ";
-          pDnodeActor->PlayerOut += WeaponType;
+          pDnodeActor->PlayerOut += ConvertStringToCString(WeaponType);
           pDnodeActor->PlayerOut += " skill!";
           pDnodeActor->PlayerOut += "\r\n";
           pDnodeActor->pPlayer->CreatePrompt();
@@ -5851,7 +5861,7 @@ void Communication::DoTrain()
         if (WeaponType == "sword" && pDnodeActor->pPlayer->SkillSword == 0)
         { // No sword skill
           pDnodeActor->PlayerOut += "You have no ";
-          pDnodeActor->PlayerOut += WeaponType;
+          pDnodeActor->PlayerOut += ConvertStringToCString(WeaponType);
           pDnodeActor->PlayerOut += " skill!";
           pDnodeActor->PlayerOut += "\r\n";
           pDnodeActor->pPlayer->CreatePrompt();
@@ -5870,55 +5880,55 @@ void Communication::DoTrain()
     pDnodeActor->PlayerOut += "Axe:    ";
     sprintf(Buf, "%3d", pDnodeActor->pPlayer->SkillAxe);
     TmpStr = ConvertStringToCString(Buf);
-    pDnodeActor->PlayerOut += TmpStr;
+    pDnodeActor->PlayerOut += ConvertStringToCString(TmpStr);
     pDnodeActor->PlayerOut += "\r\n";
     // Club
     pDnodeActor->PlayerOut += "Club:   ";
     sprintf(Buf, "%3d", pDnodeActor->pPlayer->SkillClub);
     TmpStr = ConvertStringToCString(Buf);
-    pDnodeActor->PlayerOut += TmpStr;
+    pDnodeActor->PlayerOut += ConvertStringToCString(TmpStr);
     pDnodeActor->PlayerOut += "\r\n";
     // Dagger
     pDnodeActor->PlayerOut += "Dagger: ";
     sprintf(Buf, "%3d", pDnodeActor->pPlayer->SkillDagger);
     TmpStr = ConvertStringToCString(Buf);
-    pDnodeActor->PlayerOut += TmpStr;
+    pDnodeActor->PlayerOut += ConvertStringToCString(TmpStr);
     pDnodeActor->PlayerOut += "\r\n";
     // Hammer
     pDnodeActor->PlayerOut += "Hammer: ";
     sprintf(Buf, "%3d", pDnodeActor->pPlayer->SkillHammer);
     TmpStr = ConvertStringToCString(Buf);
-    pDnodeActor->PlayerOut += TmpStr;
+    pDnodeActor->PlayerOut += ConvertStringToCString(TmpStr);
     pDnodeActor->PlayerOut += "\r\n";
     // Spear
     pDnodeActor->PlayerOut += "Spear:  ";
     sprintf(Buf, "%3d", pDnodeActor->pPlayer->SkillSpear);
     TmpStr = ConvertStringToCString(Buf);
-    pDnodeActor->PlayerOut += TmpStr;
+    pDnodeActor->PlayerOut += ConvertStringToCString(TmpStr);
     pDnodeActor->PlayerOut += "\r\n";
     // Staff
     pDnodeActor->PlayerOut += "Staff:  ";
     sprintf(Buf, "%3d", pDnodeActor->pPlayer->SkillStaff);
     TmpStr = ConvertStringToCString(Buf);
-    pDnodeActor->PlayerOut += TmpStr;
+    pDnodeActor->PlayerOut += ConvertStringToCString(TmpStr);
     pDnodeActor->PlayerOut += "\r\n";
     // Sword
     pDnodeActor->PlayerOut += "Sword:  ";
     sprintf(Buf, "%3d", pDnodeActor->pPlayer->SkillSword);
     TmpStr = ConvertStringToCString(Buf);
-    pDnodeActor->PlayerOut += TmpStr;
+    pDnodeActor->PlayerOut += ConvertStringToCString(TmpStr);
     pDnodeActor->PlayerOut += "\r\n";
     // Skill points used
     pDnodeActor->PlayerOut += "Skill points used:      ";
     sprintf(Buf, "%4d", SkillPointsUsed);
     TmpStr = ConvertStringToCString(Buf);
-    pDnodeActor->PlayerOut += TmpStr;
+    pDnodeActor->PlayerOut += ConvertStringToCString(TmpStr);
     pDnodeActor->PlayerOut += "\r\n";
     // Skill points remaining
     pDnodeActor->PlayerOut += "Skill points remaining: ";
     sprintf(Buf, "%4d", SkillPointsRemaining);
     TmpStr = ConvertStringToCString(Buf);
-    pDnodeActor->PlayerOut += TmpStr;
+    pDnodeActor->PlayerOut += ConvertStringToCString(TmpStr);
     pDnodeActor->PlayerOut += "\r\n";
     // Prompt
     pDnodeActor->pPlayer->CreatePrompt();
@@ -5971,7 +5981,7 @@ void Communication::DoTrain()
   if (MinusSign != "-")
   { // Training
     pDnodeActor->PlayerOut += "You have improved your ";
-    pDnodeActor->PlayerOut += WeaponType;
+    pDnodeActor->PlayerOut += ConvertStringToCString(WeaponType);
     pDnodeActor->PlayerOut += " skill!";
     pDnodeActor->PlayerOut += "\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -5980,7 +5990,7 @@ void Communication::DoTrain()
   else
   { // UnTraining
     pDnodeActor->PlayerOut += "Your ";
-    pDnodeActor->PlayerOut += WeaponType;
+    pDnodeActor->PlayerOut += ConvertStringToCString(WeaponType);
     pDnodeActor->PlayerOut += " skill has decreased at a cost of ";
     pDnodeActor->PlayerOut += UNTRAIN_COST;
     pDnodeActor->PlayerOut += " silver.";
@@ -5998,7 +6008,7 @@ void Communication::DoTrain()
 
 void Communication::DoWake()
 {
-  CString WakeMsg;
+  string  WakeMsg;
 
   DEBUGIT(1);
   //********************
@@ -6033,11 +6043,11 @@ void Communication::DoWake()
 
 void Communication::DoWear()
 {
-  CString  ObjectName;
-  CString  TmpStr;
+  string   ObjectName;
+  string   TmpStr;
   bool     WearFailed;
-  CString  WearMsg;
-  CString  WearPosition;
+  string   WearMsg;
+  string   WearPosition;
 
   DEBUGIT(1);
   //********************
@@ -6060,11 +6070,11 @@ void Communication::DoWear()
   ObjectName = TmpStr;
   TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
-  IsObjInPlayerInv(TmpStr); // Sets pObject
+  IsObjInPlayerInv(ConvertStringToCString(TmpStr)); // Sets pObject
   if (!pObject)
   { // Player does not have object in inventory
     pDnodeActor->PlayerOut += "You don't have a(n) ";
-    pDnodeActor->PlayerOut += ObjectName;
+    pDnodeActor->PlayerOut += ConvertStringToCString(ObjectName);
     pDnodeActor->PlayerOut += ".\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -6087,7 +6097,7 @@ void Communication::DoWear()
   { // Object must be worn using left and right
     TmpStr = StrGetWord(CmdStr, 3);
     TmpStr = StrMakeLower(TmpStr);
-    if (IsNotWord(TmpStr,"left right"))
+    if (IsNotWord(ConvertStringToCString(TmpStr),"left right"))
     { // Player did not specify left or right
       pDnodeActor->PlayerOut += "You must specify left or right";
       pDnodeActor->PlayerOut += ".\r\n";
@@ -6097,7 +6107,7 @@ void Communication::DoWear()
       pObject = NULL;
       return;
     }
-    pObject->WearPosition += TmpStr;
+    pObject->WearPosition += ConvertStringToCString(TmpStr);
   }
   //***************
   //* Wear object *
@@ -6141,7 +6151,7 @@ void Communication::DoWear()
 
 void Communication::DoWhere()
 {
-  CString  SearchId;
+  string   SearchId;
 
   DEBUGIT(1);
   if (StrCountWords(CmdStr) != 2)
@@ -6155,7 +6165,7 @@ void Communication::DoWhere()
   SearchId = StrGetWord(CmdStr, 2);
   SearchId = StrMakeLower(SearchId);
   // Find Players
-  pDnodeTgt = GetTargetDnode(SearchId);
+  pDnodeTgt = GetTargetDnode(ConvertStringToCString(SearchId));
   if (pDnodeTgt)
   { // Target is online and in 'playing' state
     pDnodeActor->PlayerOut += "\r\n";
@@ -6165,23 +6175,23 @@ void Communication::DoWhere()
     pDnodeActor->PlayerOut += "\r\n";
   }
   else
-  if (IsMobValid(SearchId))
+  if (IsMobValid(ConvertStringToCString(SearchId)))
   { // Find Mobiles
-    WhereMob(SearchId);
+    WhereMob(ConvertStringToCString(SearchId));
   }
   else
   {
     pObject = NULL;
-    IsObject(SearchId); // Sets pObject
+    IsObject(ConvertStringToCString(SearchId)); // Sets pObject
     if (pObject)
     { // Find Objects
-      WhereObj(SearchId);
+      WhereObj(ConvertStringToCString(SearchId));
     }
     else
     { // Could not find it
       pDnodeActor->PlayerOut += "\r\n";
       pDnodeActor->PlayerOut += "No ";
-      pDnodeActor->PlayerOut += SearchId;
+      pDnodeActor->PlayerOut += ConvertStringToCString(SearchId);
       pDnodeActor->PlayerOut += " found.";
       pDnodeActor->PlayerOut += "\r\n";
     }
@@ -6197,8 +6207,8 @@ void Communication::DoWhere()
 
 void Communication::DoWho()
 {
-  CString  DisplayName;
-  CString  DisplayLevel;
+  string   DisplayName;
+  string   DisplayLevel;
 
   DEBUGIT(1);
   pDnodeActor->PlayerOut += "\r\n";
@@ -6224,9 +6234,9 @@ void Communication::DoWho()
       DisplayName = ConvertStringToCString(Buf);
       sprintf(Buf, "%3d", pDnodeOthers->pPlayer->Level);
       DisplayLevel = ConvertStringToCString(Buf);
-      pDnodeActor->PlayerOut += DisplayName;
+      pDnodeActor->PlayerOut += ConvertStringToCString(DisplayName);
       pDnodeActor->PlayerOut += " ";
-      pDnodeActor->PlayerOut += DisplayLevel;
+      pDnodeActor->PlayerOut += ConvertStringToCString(DisplayLevel);
       pDnodeActor->PlayerOut += " ";
       if (pDnodeOthers->PlayerStateAfk)
       { // Player is AFK
@@ -6257,11 +6267,11 @@ void Communication::DoWho()
 
 void Communication::DoWield()
 {
-  CString  ObjectName;
-  CString  TmpStr;
-  CString  WearPosition;
+  string   ObjectName;
+  string   TmpStr;
+  string   WearPosition;
   bool     WieldFailed;
-  CString  WieldMsg;
+  string   WieldMsg;
 
   DEBUGIT(1);
   //********************
@@ -6286,11 +6296,11 @@ void Communication::DoWield()
   ObjectName = TmpStr;
   TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
-  IsObjInPlayerInv(TmpStr); // Sets pObject
+  IsObjInPlayerInv(ConvertStringToCString(TmpStr)); // Sets pObject
   if (!pObject)
   { // Player does not have object in inventory
     pDnodeActor->PlayerOut += "You don't have a(n) ";
-    pDnodeActor->PlayerOut += ObjectName;
+    pDnodeActor->PlayerOut += ConvertStringToCString(ObjectName);
     pDnodeActor->PlayerOut += ".\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();      
@@ -6363,12 +6373,12 @@ void Communication::GrpExperience(int MobileExpPoints, int MobileLevel)
   int      ExpPoints;
   float    fGrpLimit;
   float    fGrpMemberCount;
-  CString  GainLoose;
+  string   GainLoose;
   int      GrpMemberCount;
   int      i;
   double   LevelTotal;
   int      PlayerExpPct;
-  CString  TmpStr;
+  string   TmpStr;
 
   // Count group members
   GrpMemberCount = 0;
@@ -6427,9 +6437,9 @@ void Communication::GrpExperience(int MobileExpPoints, int MobileLevel)
     pDnodeGrpMem->PlayerOut += "\r\n";
     pDnodeGrpMem->PlayerOut += "&Y";
     pDnodeGrpMem->PlayerOut += "You ";
-    pDnodeGrpMem->PlayerOut += GainLoose;
+    pDnodeGrpMem->PlayerOut += ConvertStringToCString(GainLoose);
     pDnodeGrpMem->PlayerOut += " ";
-    pDnodeGrpMem->PlayerOut += TmpStr;
+    pDnodeGrpMem->PlayerOut += ConvertStringToCString(TmpStr);
     pDnodeGrpMem->PlayerOut += " points of Group Experience!";
     pDnodeGrpMem->PlayerOut += "&N";
     pDnodeGrpMem->PlayerOut += "\r\n";
@@ -6594,15 +6604,15 @@ void Communication::GrpLeaveMember()
 void Communication::LogonGreeting()
 {
   CStdioFile GreetingFile;
-  CString    GreetingFileName;
-  CString    Stuff;
+  string     GreetingFileName;
+  string     Stuff;
   int        Success;
 
   // Read greeting file
   GreetingFileName = GREETING_DIR;
   GreetingFileName += "Greeting";
   GreetingFileName += ".txt";
-  Success = GreetingFile.Open(GreetingFileName,
+  Success = GreetingFile.Open(ConvertStringToCString(GreetingFileName),
                    CFile::modeRead |
                    CFile::typeText);
   if(!Success)
@@ -6613,12 +6623,15 @@ void Communication::LogonGreeting()
   pDnodeActor->PlayerOut += "Version ";
   pDnodeActor->PlayerOut += VERSION;
   pDnodeActor->PlayerOut += "\r\n";
-  GreetingFile.ReadString(Stuff);
+  CString Stuff1;
+  GreetingFile.ReadString(Stuff1);
+  Stuff = Stuff1;
   while (Stuff != "End of Greeting")
   {
     Stuff += "\r\n";
-    pDnodeActor->PlayerOut += Stuff;
-    GreetingFile.ReadString(Stuff);
+    pDnodeActor->PlayerOut += ConvertStringToCString(Stuff);
+    GreetingFile.ReadString(Stuff1);
+    Stuff = Stuff1;
   }
   GreetingFile.Close();
 }
@@ -6629,9 +6642,9 @@ void Communication::LogonGreeting()
 
 void Communication::LogonWaitMaleFemale()
 {
-  CString  AllMsg;
-  CString  LogBuf;
-  CString  PlayerMsg;
+  string   AllMsg;
+  string   LogBuf;
+  string   PlayerMsg;
 
   CmdStr = StrMakeUpper(CmdStr);
   if (!(StrFindOneOf(CmdStr, "MF") == 0 && StrGetLength(CmdStr) == 1))
@@ -6665,7 +6678,7 @@ void Communication::LogonWaitMaleFemale()
     AllMsg += pDnodeActor->PlayerName;
     AllMsg += ".";
     AllMsg += "\r\n";
-    SendToAll(PlayerMsg, AllMsg);
+    SendToAll(ConvertStringToCString(PlayerMsg), ConvertStringToCString(AllMsg));
     ShowRoom(pDnodeActor);
     LogBuf  = "New player ";
     LogBuf += pDnodeActor->PlayerName;
@@ -6819,9 +6832,9 @@ void Communication::LogonWaitNewCharacter()
 
 void Communication::LogonWaitPassword()
 {
-  CString  AllMsg;
-  CString  LogBuf;
-  CString  PlayerMsg;
+  string   AllMsg;
+  string   LogBuf;
+  string   PlayerMsg;
 
   if (pDnodeActor->PlayerPassword == ConvertCStringToString(CmdStr))
   { // Password matches
@@ -6894,7 +6907,7 @@ void Communication::LogonWaitPassword()
         AllMsg += pDnodeActor->PlayerName;
         AllMsg += " has entered the game.";
         AllMsg += "\r\n";
-        SendToAll(PlayerMsg, AllMsg);
+        SendToAll(ConvertStringToCString(PlayerMsg), ConvertStringToCString(AllMsg));
         ShowRoom(pDnodeActor);
         LogBuf  = "Returning player ";
         LogBuf += pDnodeActor->PlayerName;
@@ -6997,13 +7010,13 @@ void Communication::RepositionDnodeCursor()
 void Communication::SockNewConnection()
 {
   unsigned long       FionbioParm;
-  CString             LogBuf;
+  string              LogBuf;
   int                 Result;
   struct sockaddr_in  Sock{};
   int                 SocketHandle;
   int                 SocketSize;
   string              IpAddress;
-  CString             TmpStr;
+  string              TmpStr;
     
   FionbioParm = 1;
   SocketSize  = sizeof(Sock);
@@ -7012,7 +7025,7 @@ void Communication::SockNewConnection()
   if (!SocketHandle)
   {
     sprintf(Buf, "%s", strerror(errno));
-    LogBuf = "Communication::SockNewConnection - Error: accept: " + ConvertStringToCString(Buf);
+    LogBuf = "Communication::SockNewConnection - Error: accept: " + (string)Buf;
     LogIt(LogBuf);
     AfxMessageBox("Communication::SockNewConnection - Error: accept", MB_ICONSTOP);
     _endthread();
@@ -7023,17 +7036,17 @@ void Communication::SockNewConnection()
   if (Result != 0)
   {
     sprintf(Buf, "%s", strerror(errno));
-    LogBuf = "Communication::SockNewConnection - Error: ioctlsocket " + ConvertStringToCString(Buf);
+    LogBuf = "Communication::SockNewConnection - Error: ioctlsocket " + (string)Buf;
     LogIt(LogBuf);
     AfxMessageBox("Communication::NewConection - Error: ioctlsocket", MB_ICONSTOP);
     _endthread();
   }
   sprintf(Buf, "%d", SocketHandle);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = (string)Buf;
   LogBuf  = "New connection with socket handle ";
   LogBuf += TmpStr;
   LogBuf += " and address ";
-  LogBuf += ConvertStringToCString(IpAddress);
+  LogBuf += IpAddress;
   LogIt(LogBuf);
   pDnodeActor = new Dnode(SocketHandle, IpAddress);
   AppendIt();
@@ -7077,7 +7090,7 @@ void Communication::UpdatePlayerStats()
   int     HitPointsMax;
   int     HungerPct;
   int     Level;
-  CString Position;
+  string  Position;
   int     ThirstPct;
 
   HitPointsGain = 0;
@@ -7134,19 +7147,19 @@ void Communication::Violence()
 void Communication::ViolenceMobile()
 {
   int     DamageToPlayer;
-  CString HealthPct;
+  string  HealthPct;
   int     HitPoints;
   int     HitPointsMax;
   int     i;
-  CString MobileAttack;
-  CString MobileBeenWhacked;
+  string  MobileAttack;
+  string  MobileBeenWhacked;
   int     MobileDamage;
-  CString MobileDesc1;
-  CString MobileId;
-  CString MobileIdCheck;
+  string  MobileDesc1;
+  string  MobileId;
+  string  MobileIdCheck;
   int     PAC;
-  CString PlayerBeenWhacked;
-  CString TmpStr;
+  string  PlayerBeenWhacked;
+  string  TmpStr;
 
   i = 0;
   i++;
@@ -7154,11 +7167,11 @@ void Communication::ViolenceMobile()
   while (MobileId != "No more mobiles")
   { // For each mob whacking the player
     PAC               = pDnodeActor->pPlayer->ArmorClass;
-    MobileAttack      = GetMobileAttack(MobileId);
-    MobileDamage      = GetMobileDamage(MobileId);
-    MobileDesc1       = GetMobileDesc1(MobileId);
+    MobileAttack      = ConvertCStringToString(GetMobileAttack(ConvertStringToCString(MobileId)));
+    MobileDamage      = GetMobileDamage(ConvertStringToCString(MobileId));
+    MobileDesc1       = ConvertCStringToString(GetMobileDesc1(ConvertStringToCString(MobileId)));
     DamageToPlayer    = CalcDamageToPlayer(MobileDamage, PAC);
-    PlayerBeenWhacked = WhackPlayer(MobileDesc1, MobileAttack, DamageToPlayer);
+    PlayerBeenWhacked = ConvertCStringToString(WhackPlayer(ConvertStringToCString(MobileDesc1), ConvertStringToCString(MobileAttack), DamageToPlayer));
     pDnodeActor->pPlayer->HitPoints -= DamageToPlayer;
     HitPoints = pDnodeActor->pPlayer->HitPoints;
     // Calculate health percentage
@@ -7167,11 +7180,11 @@ void Communication::ViolenceMobile()
     // Add heath pct to PlayerBeenWhacked
     PlayerBeenWhacked = StrInsert(PlayerBeenWhacked, 0, " ");
     PlayerBeenWhacked = StrInsert(PlayerBeenWhacked, 0, HealthPct);
-    pDnodeActor->PlayerOut += PlayerBeenWhacked;
+    pDnodeActor->PlayerOut += ConvertStringToCString(PlayerBeenWhacked);
     pDnodeActor->PlayerOut += "\r\n";
     if (HitPoints <= 0)
     { // Player is dead, how sad
-      ViolencePlayerDied(MobileDesc1);
+      ViolencePlayerDied(ConvertStringToCString(MobileDesc1));
       return;
     }
     i++;
@@ -7190,19 +7203,19 @@ void Communication::ViolenceMobileDied(CString MobileBeenWhacked,
                                        CString MobileDesc1,
                                        CString MobileId)
 {
-  CString  DeadMsg;
+  string   DeadMsg;
   int      ExpPoints;
-  CString  GainLoose;
+  string   GainLoose;
   int      MobileExpPoints;
-  CString  MobileExpPointsLevel;
-  CString  MobileIdCheck;
+  string   MobileExpPointsLevel;
+  string   MobileIdCheck;
   int      MobileLevel;
-  CString  MobileLoot;
-  CString  TmpStr;
+  string   MobileLoot;
+  string   TmpStr;
 
   MobileExpPointsLevel = GetMobileExpPointsLevel(MobileId);
-  MobileExpPoints      = atoi(StrGetWord(MobileExpPointsLevel, 1));
-  MobileLevel          = atoi(StrGetWord(MobileExpPointsLevel, 2));
+  MobileExpPoints      = stoi(StrGetWord(MobileExpPointsLevel, 1));
+  MobileLevel          = stoi(StrGetWord(MobileExpPointsLevel, 2));
   MobileLoot           = GetMobileLoot(MobileId);
   // Send dead mob message to player
   pDnodeActor->PlayerOut += "\r\n";
@@ -7215,7 +7228,7 @@ void Communication::ViolenceMobileDied(CString MobileBeenWhacked,
   DeadMsg += "!";
   pDnodeSrc = pDnodeActor;
   pDnodeTgt = pDnodeActor;
-  SendToRoom(pDnodeActor->pPlayer->RoomId, DeadMsg);
+  SendToRoom(pDnodeActor->pPlayer->RoomId, ConvertStringToCString(DeadMsg));
   // Calculate experience distribution
   if (pDnodeActor->pPlayer->pPlayerGrpMember[0] != NULL)
   { // Player is in a group, award group experience
@@ -7247,9 +7260,9 @@ void Communication::ViolenceMobileDied(CString MobileBeenWhacked,
     pDnodeActor->PlayerOut += "\r\n";
     pDnodeActor->PlayerOut += "&Y";
     pDnodeActor->PlayerOut += "You ";
-    pDnodeActor->PlayerOut += GainLoose;
+    pDnodeActor->PlayerOut += ConvertStringToCString(GainLoose);
     pDnodeActor->PlayerOut += " ";
-    pDnodeActor->PlayerOut += TmpStr;
+    pDnodeActor->PlayerOut += ConvertStringToCString(TmpStr);
     pDnodeActor->PlayerOut += " points of Experience!";
     pDnodeActor->PlayerOut += "&N";
     pDnodeActor->PlayerOut += "\r\n";
@@ -7277,7 +7290,7 @@ void Communication::ViolenceMobileDied(CString MobileBeenWhacked,
     if (pDnodeOthers->PlayerStateFighting)
     { // Players who are fighting
       MobileIdCheck = GetPlayerMobMobileId(pDnodeOthers->PlayerName);
-      if (MobileId == MobileIdCheck)
+      if (ConvertCStringToString(MobileId) == MobileIdCheck)
       { // The same mobile
         DeletePlayerMob(pDnodeOthers->PlayerName);
         DeleteMobPlayer(pDnodeOthers->PlayerName, MobileId);
@@ -7291,7 +7304,7 @@ void Communication::ViolenceMobileDied(CString MobileBeenWhacked,
   //********************
   // Hand out the loot *
   //********************
-  ViolenceMobileLoot(MobileLoot);
+  ViolenceMobileLoot(ConvertStringToCString(MobileLoot));
   ViolenceMobileMore();
 }
 
@@ -7306,16 +7319,16 @@ void Communication::ViolenceMobileLoot(CString Loot)
   int         i;
   bool        LootFlag;
   CStdioFile  MobileLootFile;
-  CString     MobileLootFileName;
+  string      MobileLootFileName;
   bool        NoLoot;
-  CString     Stuff;
+  string      Stuff;
   int         Success;
 
   MobileLootFileName  = LOOT_DIR;
   MobileLootFileName += Loot;
   MobileLootFileName += ".txt";
 
-  Success = MobileLootFile.Open(MobileLootFileName,
+  Success = MobileLootFile.Open(ConvertStringToCString(MobileLootFileName),
                      CFile::modeRead |
                      CFile::typeText);
   if(!Success)
@@ -7324,15 +7337,18 @@ void Communication::ViolenceMobileLoot(CString Loot)
     _endthread();
   }
   NoLoot = true;
-  MobileLootFile.ReadString(Stuff);
+  CString Stuff1;
+  MobileLootFile.ReadString(Stuff1);
+  Stuff = ConvertCStringToString(Stuff1);
   while (Stuff != "")
   {
-    LootFlag = ViolenceMobileLootHandOut(Stuff);
+    LootFlag = ViolenceMobileLootHandOut(ConvertStringToCString(Stuff));
     if (LootFlag)
     { // Ok, player got some loot, so set NoLoot to false
       NoLoot = false;
     }
-    MobileLootFile.ReadString(Stuff);
+    MobileLootFile.ReadString(Stuff1);
+    Stuff = ConvertCStringToString(Stuff1);
   }
   MobileLootFile.Close();
   if (NoLoot)
@@ -7387,8 +7403,8 @@ bool Communication::ViolenceMobileLootHandOut(CString Loot)
   int      Count;
   bool     GotLoot;
   int      i;
-  CString  LogBuf;
-  CString  ObjectId;
+  string   LogBuf;
+  string   ObjectId;
   int      Percent;
 
   GotLoot  = false;
@@ -7401,7 +7417,7 @@ bool Communication::ViolenceMobileLootHandOut(CString Loot)
     if (Chance < Percent)
     { // Random number came up less than 'percent chance of getting loot'
       pObject = NULL;
-      IsObject(ObjectId); // Sets pObject
+      IsObject(ConvertStringToCString(ObjectId)); // Sets pObject
       if (!pObject)
       { // Object does not exist, Log it
         LogBuf += "Loot object not found";
@@ -7440,7 +7456,7 @@ bool Communication::ViolenceMobileLootHandOut(CString Loot)
       }
       delete pObject;
       pObject = NULL;
-      AddObjToPlayerInv(pDnodeActor, ObjectId);
+      AddObjToPlayerInv(pDnodeActor, ConvertStringToCString(ObjectId));
       GotLoot = true;
     }
   }
@@ -7453,14 +7469,14 @@ bool Communication::ViolenceMobileLootHandOut(CString Loot)
 
 void Communication::ViolenceMobileMore()
 {
-  CString MobileId;
+  string MobileId;
 
   MobileId = GetMobPlayerMobileId(pDnodeActor->PlayerName, 1);
   if (MobileId == "No more mobiles")
   {
     return;
   }
-  CreatePlayerMob(pDnodeActor->pPlayer->Name, MobileId);
+  CreatePlayerMob(pDnodeActor->pPlayer->Name, ConvertStringToCString(MobileId));
   pDnodeActor->PlayerStateFighting = true;
 }
 
@@ -7471,23 +7487,23 @@ void Communication::ViolenceMobileMore()
 void Communication::ViolencePlayer()
 {
   int     DamageToMobile;
-  CString DeadOrAlive;
+  string  DeadOrAlive;
   int     MaxDamageToMobile;
   int     MobileArmor;
-  CString MobileBeenWhacked;
-  CString MobileDesc1;
-  CString MobileId;
+  string  MobileBeenWhacked;
+  string  MobileDesc1;
+  string  MobileId;
   int     WeaponSkill;
-  CString WeaponType;
+  string  WeaponType;
 
   WeaponSkill       = pDnodeActor->pPlayer->GetWeaponSkill();
   WeaponType        = pDnodeActor->pPlayer->WeaponType;
   MaxDamageToMobile = pDnodeActor->pPlayer->WeaponDamage;
   MobileId          = GetPlayerMobMobileId(pDnodeActor->PlayerName);
-  MobileArmor       = GetMobileArmor(MobileId);
-  MobileDesc1       = GetMobileDesc1(MobileId);
+  MobileArmor       = GetMobileArmor(ConvertStringToCString(MobileId));
+  MobileDesc1       = ConvertCStringToString(GetMobileDesc1(ConvertStringToCString(MobileId)));
   DamageToMobile    = CalcDamageToMobile(MaxDamageToMobile, WeaponSkill);
-  MobileBeenWhacked = WhackMobile(MobileId, DamageToMobile, MobileDesc1, WeaponType);
+  MobileBeenWhacked = ConvertCStringToString(WhackMobile(ConvertStringToCString(MobileId), DamageToMobile, ConvertStringToCString(MobileDesc1), ConvertStringToCString(WeaponType)));
   // Player has whacked the mobile
   DeadOrAlive = StrGetWord(MobileBeenWhacked, 1);
   MobileBeenWhacked = StrDeleteWord(MobileBeenWhacked, 1);
@@ -7495,12 +7511,12 @@ void Communication::ViolencePlayer()
   if (DeadOrAlive == "alive")
   { // Mobile is not dead, Send fight messages to player
     pDnodeActor->PlayerOut += "\r\n";
-    pDnodeActor->PlayerOut += MobileBeenWhacked;
+    pDnodeActor->PlayerOut += ConvertStringToCString(MobileBeenWhacked);
     pDnodeActor->PlayerOut += "\r\n";
   }
   else
   { // Mobile is dead
-    ViolenceMobileDied(MobileBeenWhacked, MobileDesc1, MobileId);
+    ViolenceMobileDied(ConvertStringToCString(MobileBeenWhacked), ConvertStringToCString(MobileDesc1), ConvertStringToCString(MobileId));
   }
 }
 
@@ -7511,14 +7527,14 @@ void Communication::ViolencePlayer()
 void Communication::ViolencePlayerDied(CString MobileDesc1)
 {
   int      CandidateCount;
-  CString  CandidateList;
+  string   CandidateList;
   int      CandidateTarget;
-  CString  DeadMsg;
-  CString  MobileId;
-  CString  MobileIdSave;
-  CString  RoomIdBeforeDying;
-  CString  Target;
-  CString  TmpStr;
+  string   DeadMsg;
+  string   MobileId;
+  string   MobileIdSave;
+  string   RoomIdBeforeDying;
+  string   Target;
+  string   TmpStr;
 
   pDnodeActor->pPlayer->HitPoints = 0;
   // Tell player of their demise
@@ -7548,7 +7564,7 @@ void Communication::ViolencePlayerDied(CString MobileDesc1)
     TmpStr = ConvertStringToCString(Buf);
     pDnodeActor->PlayerOut += "&Y";
     pDnodeActor->PlayerOut += "After level ";
-    pDnodeActor->PlayerOut += TmpStr;
+    pDnodeActor->PlayerOut += ConvertStringToCString(TmpStr);
     pDnodeActor->PlayerOut += ", you will lose experience.";
     pDnodeActor->PlayerOut += "&N";
     pDnodeActor->PlayerOut += "\r\n";
@@ -7566,7 +7582,7 @@ void Communication::ViolencePlayerDied(CString MobileDesc1)
   DeadMsg += "&N";
   pDnodeSrc = pDnodeActor;
   pDnodeTgt = pDnodeActor;
-  SendToRoom(pDnodeActor->pPlayer->RoomId, DeadMsg);
+  SendToRoom(pDnodeActor->pPlayer->RoomId, ConvertStringToCString(DeadMsg));
   RoomIdBeforeDying = pDnodeActor->pPlayer->RoomId;
   // Move player to a safe room, stop the fight
   pDnodeActor->pPlayer->RoomId = SAFE_ROOM;
@@ -7585,10 +7601,10 @@ void Communication::ViolencePlayerDied(CString MobileDesc1)
     pDnodeOthers = GetDnode();
     if (pDnodeOthers->PlayerStateFighting)
     { // Players who are fighting
-      if (RoomIdBeforeDying == pDnodeOthers->pPlayer->RoomId)
+      if (RoomIdBeforeDying == ConvertCStringToString(pDnodeOthers->pPlayer->RoomId))
       { // In the same room
         MobileId = GetPlayerMobMobileId(pDnodeOthers->PlayerName);
-        DeleteMobPlayer(pDnodeActor->PlayerName, MobileId);
+        DeleteMobPlayer(pDnodeActor->PlayerName, ConvertStringToCString(MobileId));
         if (MobileId == MobileIdSave)
         { // Add player to candidate list for MobileIdSave
           CandidateList += pDnodeOthers->PlayerName;
@@ -7601,7 +7617,7 @@ void Communication::ViolencePlayerDied(CString MobileDesc1)
   // Re-position pDnodeCursor
   RepositionDnodeCursor();
   // Put mobiles that are not fighting back in room
-  PutMobBackInRoom(pDnodeActor->PlayerName, RoomIdBeforeDying);
+  PutMobBackInRoom(pDnodeActor->PlayerName, ConvertStringToCString(RoomIdBeforeDying));
   // Player is gone, so delete MobPlayer completely
   DeleteMobPlayer(pDnodeActor->PlayerName, "file");
   // Select a new target for MobileIdSave
@@ -7612,5 +7628,5 @@ void Communication::ViolencePlayerDied(CString MobileDesc1)
   CandidateCount  = StrCountWords(CandidateList);
   CandidateTarget = GetRandomNumber(CandidateCount);
   Target          = StrGetWord(CandidateList, CandidateTarget);
-  CreateMobPlayer(Target, MobileIdSave);
+  CreateMobPlayer(ConvertStringToCString(Target), ConvertStringToCString(MobileIdSave));
 }

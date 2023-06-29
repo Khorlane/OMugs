@@ -276,6 +276,7 @@ bool Room::IsExit(string MudCmdIsExit)
 bool Room::IsRoom(string RoomId)
 {
   string     RoomFileName;
+  string     Stuff;
 
   RoomFileName =  ROOMS_DIR;
   RoomFileName += RoomId;
@@ -283,7 +284,18 @@ bool Room::IsRoom(string RoomId)
   RoomFile.open(RoomFileName);
   if (RoomFile.is_open())
   {
+    getline(RoomFile, Stuff);
     RoomFile.close();
+    if (StrLeft(Stuff, 7) != "RoomId:")
+    {
+      AfxMessageBox("Room::IsRoom - RoomId: not found", MB_ICONSTOP);
+      _endthread();
+    }
+    Stuff = StrGetWord(Stuff, 2);
+    if (Stuff != RoomId)
+    {
+      return false;
+    }
     return true;
   }
   else
@@ -319,7 +331,7 @@ bool Room::IsRoomType(string RoomId, string RoomType)
   StrTrimLeft(Stuff);
   StrTrimRight(Stuff);
   RoomFile.close();
-  if (Stuff != RoomType)
+  if (IsNotWord(ConvertStringToCString(RoomType), ConvertStringToCString(Stuff)))
   { // No matching RoomType found
     return false;
   }

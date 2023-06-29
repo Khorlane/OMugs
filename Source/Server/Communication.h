@@ -49,7 +49,11 @@ class Communication
     bool    static  IsFighting();
     bool    static  IsSleeping();
     void    static  SendToAll(CString PlayerMsg, CString AllMsg);
+    void    static  SendToAll(CString PlayerMsg,  string AllMsg);
+    void    static  SendToAll( string PlayerMsg,  string AllMsg);
     void    static  SendToRoom(CString TargetRoomId, CString MsgText);
+    void    static  SendToRoom(CString TargetRoomId,  string MsgText);
+    void    static  SendToRoom( string TargetRoomId,  string MsgText);
     void    static  ShowPlayersInRoom(Dnode *pDnode);
     void    static  SockCheckForNewConnections();
     void    static  SockClosePort(int Port);

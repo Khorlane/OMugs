@@ -1056,6 +1056,11 @@ void SendToRoom(CString TargetRoomId, CString MsgText)
   Communication::SendToRoom(TargetRoomId, MsgText);
 }
 
+void SendToRoom(string TargetRoomId, string MsgText)
+{
+  Communication::SendToRoom(ConvertStringToCString(TargetRoomId), ConvertStringToCString(MsgText));
+}
+
 void SetpDnodeCursorFirst()
 {
   Descriptor::SetpDnodeCursorFirst();
