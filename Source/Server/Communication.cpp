@@ -5172,13 +5172,12 @@ void Communication::DoSell()
 void Communication::DoShow()
 {
   string     CommandCheckResult;
-  CStdioFile HelpFile;
+  ifstream   HelpFile;
   string     HelpFileName;
   string     HelpText;
-  CStdioFile SocialFile;
+  ifstream   SocialFile;
   string     SocialFileName;
   string     SocialText;
-  int        Success;
   string     TmpStr;
   string     MudCmdChk;
   string     ValCmdInfo;
@@ -5254,20 +5253,16 @@ void Communication::DoShow()
     pDnodeActor->PlayerOut += "\r\n";
     HelpFileName =  HELP_DIR;
     HelpFileName += "Help.txt";
-    Success = HelpFile.Open(ConvertStringToCString(HelpFileName),
-                 CFile::modeRead |
-                 CFile::typeText);
-    if(!Success)
+    HelpFile.open(HelpFileName);
+    if (!HelpFile.is_open())
     { // Help file open failed
       pDnodeActor->PlayerOut += "No help is available, you are on your own!";
       pDnodeActor->PlayerOut += "\r\n";
     }
     else
     { // Help file is open
-      CString HelpText1;
-      HelpFile.ReadString(HelpText1); // Skip first line
-      HelpFile.ReadString(HelpText1);
-      HelpText = ConvertCStringToString(HelpText1);
+      getline(HelpFile, HelpText);    // Skip first line
+      getline(HelpFile, HelpText);
       while (HelpText != "End of Help")
       { // Read the whole file
         if (StrLeft(HelpText, 5) == "Help:")
@@ -5275,10 +5270,9 @@ void Communication::DoShow()
           pDnodeActor->PlayerOut += ConvertStringToCString(StrRight(HelpText, StrGetLength(HelpText) - 5));
           pDnodeActor->PlayerOut += "\r\n";
         }
-        HelpFile.ReadString(HelpText1);
-        HelpText = ConvertCStringToString(HelpText1);
+        getline(HelpFile, HelpText);
       }
-      HelpFile.Close();
+      HelpFile.close();
     }
   }
   //****************
@@ -5292,19 +5286,15 @@ void Communication::DoShow()
     pDnodeActor->PlayerOut += "\r\n";
     SocialFileName =  SOCIAL_DIR;
     SocialFileName += "Social.txt";
-    Success = SocialFile.Open(ConvertStringToCString(SocialFileName),
-                   CFile::modeRead |
-                   CFile::typeText);
-    if(!Success)
+    SocialFile.open(SocialFileName);
+    if (!SocialFile.is_open())
     { // Social file open failed
       pDnodeActor->PlayerOut += "No socials are available, how boring!";
       pDnodeActor->PlayerOut += "\r\n";
     }
     else
     { // Social file is open
-      CString SocialText1;
-      SocialFile.ReadString(SocialText1);
-      SocialText = ConvertCStringToString(SocialText1);
+      getline(SocialFile, SocialText);
       while (SocialText != "End of Socials")
       { // Read the whole file
         if (StrLeft(SocialText, 9) == "Social : ")
@@ -5312,10 +5302,9 @@ void Communication::DoShow()
           pDnodeActor->PlayerOut += ConvertStringToCString(StrRight(SocialText, StrGetLength(SocialText) - 9));
           pDnodeActor->PlayerOut += "\r\n";
         }
-        SocialFile.ReadString(SocialText1);
-        SocialText = ConvertCStringToString(SocialText1);
+        getline(SocialFile, SocialText);
       }
-      SocialFile.Close();
+      SocialFile.close();
     }
   }
   // Prompt
