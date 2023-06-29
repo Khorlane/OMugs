@@ -7297,28 +7297,23 @@ void Communication::ViolenceMobileLoot(string Loot)
   Player     *pPlayerGrpLdr;
   int         i;
   bool        LootFlag;
-  CStdioFile  MobileLootFile;
+  ifstream    MobileLootFile;
   string      MobileLootFileName;
   bool        NoLoot;
   string      Stuff;
-  int         Success;
 
   MobileLootFileName  = LOOT_DIR;
   MobileLootFileName += Loot;
   MobileLootFileName += ".txt";
 
-  Success = MobileLootFile.Open(ConvertStringToCString(MobileLootFileName),
-                     CFile::modeRead |
-                     CFile::typeText);
-  if(!Success)
+  MobileLootFile.open(MobileLootFileName);
+  if(!MobileLootFile.is_open())
   {
     AfxMessageBox("Communication::ViolenceMobileLoot - Error opening mobile loot file, it may not exist", MB_ICONSTOP);
     _endthread();
   }
   NoLoot = true;
-  CString Stuff1;
-  MobileLootFile.ReadString(Stuff1);
-  Stuff = ConvertCStringToString(Stuff1);
+  getline(MobileLootFile, Stuff);
   while (Stuff != "")
   {
     LootFlag = ViolenceMobileLootHandOut(Stuff);
@@ -7326,10 +7321,9 @@ void Communication::ViolenceMobileLoot(string Loot)
     { // Ok, player got some loot, so set NoLoot to false
       NoLoot = false;
     }
-    MobileLootFile.ReadString(Stuff1);
-    Stuff = ConvertCStringToString(Stuff1);
+    getline(MobileLootFile, Stuff);
   }
-  MobileLootFile.Close();
+  MobileLootFile.close();
   if (NoLoot)
   { // Player got no loot
     pDnodeActor->PlayerOut += "\r\n";
