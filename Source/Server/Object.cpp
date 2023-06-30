@@ -857,29 +857,26 @@ void Object::RemoveObjFromPlayerEqu(CString ObjectId)
 * Remove an object from player's inventory                 *
 ************************************************************/
 
-void Object::RemoveObjFromPlayerInv(CString ObjectId, int Count)
+void Object::RemoveObjFromPlayerInv(string ObjectId, int Count)
 {
   int        BytesInFile;
   bool       ObjectIdRemoved;
-  CString    ObjectIdCheck;
+  string     ObjectIdCheck;
   int        ObjCount;
-  CString    PlayerObjFileName;
-  CString    PlayerObjFileNameTmp;
-  CStdioFile PlayerObjFile;
-  CStdioFile PlayerObjFileTmp;
-  CString    Stuff;
-  int        Success;
-  CString    TmpStr;
+  string     PlayerObjFileName;
+  string     PlayerObjFileNameTmp;
+  ifstream   PlayerObjFile;
+  ofstream   PlayerObjFileTmp;
+  string     Stuff;
+  string     TmpStr;
 
   ObjectId = StrMakeLower(ObjectId);
   // Open PlayerObj file
   PlayerObjFileName =  PLAYER_OBJ_DIR;
   PlayerObjFileName += pDnodeActor->PlayerName;
   PlayerObjFileName += ".txt";
-  Success = PlayerObjFile.Open(PlayerObjFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-  if(!Success)
+  PlayerObjFile.open(PlayerObjFileName);
+  if(!PlayerObjFile.is_open())
   {
     AfxMessageBox("Object::RemoveObjFromPlayerInv - Open PlayerObj file failed", MB_ICONSTOP);
     _endthread();
@@ -888,31 +885,27 @@ void Object::RemoveObjFromPlayerInv(CString ObjectId, int Count)
   PlayerObjFileNameTmp =  PLAYER_OBJ_DIR;
   PlayerObjFileNameTmp += pDnodeActor->PlayerName;
   PlayerObjFileNameTmp += ".tmp.txt";
-  Success = PlayerObjFileTmp.Open(PlayerObjFileNameTmp,
-                    CFile::modeCreate |
-                    CFile::modeWrite  |
-                    CFile::typeText);
-  if(!Success)
+  PlayerObjFileTmp.open(PlayerObjFileNameTmp);
+  if(!PlayerObjFileTmp.is_open())
   {
     AfxMessageBox("Object::RemoveObjFromPlayerInv - Open PlayerObj temp file failed", MB_ICONSTOP);
     _endthread();
   }
   // Write temp PlayerObj file
   ObjectIdRemoved = false;
-  PlayerObjFile.ReadString(Stuff);
+  getline(PlayerObjFile, Stuff);
   while (Stuff != "")
   {
     if (ObjectIdRemoved)
     { // Object has been removed, just write the rest of the objects
-      Stuff += "\n";
-      PlayerObjFileTmp.WriteString(Stuff);
-      PlayerObjFile.ReadString(Stuff);
+      PlayerObjFileTmp << Stuff << endl;
+      getline(PlayerObjFile, Stuff);
       continue;
     }
     ObjectIdCheck = StrGetWord(Stuff, 2);
     if (ObjectId == ObjectIdCheck)
     { // Found it, subtract 'count' from ObjCount
-      ObjCount = atoi(StrGetWord(Stuff, 1));
+      ObjCount = stoi(StrGetWord(Stuff, 1));
       ObjCount -= Count;
       ObjectIdRemoved = true;
       if (ObjCount > 0)
@@ -920,33 +913,31 @@ void Object::RemoveObjFromPlayerInv(CString ObjectId, int Count)
         sprintf(Buf, "%d", ObjCount);
         TmpStr = ConvertStringToCString(Buf);
         ObjectId = TmpStr + " " + ObjectId;
-        ObjectId += "\n";
-        PlayerObjFileTmp.WriteString(ObjectId);
+        PlayerObjFileTmp << ObjectId << endl;
       }
-      PlayerObjFile.ReadString(Stuff);
+      getline(PlayerObjFile, Stuff);
       continue;
     }
     // None of the above conditions satisfied, just write it
-    Stuff += "\n";
-    PlayerObjFileTmp.WriteString(Stuff);
-    PlayerObjFile.ReadString(Stuff);
+    PlayerObjFileTmp << Stuff << endl;
+    getline(PlayerObjFile, Stuff);
   }
   if (!ObjectIdRemoved)
   { // Object not removed, this is definitely BAD!
     AfxMessageBox("Object::RemoveObjFromPlayerInv - Object not removed", MB_ICONSTOP);
     _endthread();
   }
-  BytesInFile = StrGetLength(PlayerObjFileNameTmp); // TODO - steve - What is this doing?
-  PlayerObjFile.Close();
-  PlayerObjFileTmp.Close();
-  CFile::Remove(PlayerObjFileName);
+  BytesInFile = (int) PlayerObjFileTmp.tellp();
+  PlayerObjFile.close();
+  PlayerObjFileTmp.close();
+  CFile::Remove(ConvertStringToCString(PlayerObjFileName));
   if (BytesInFile > 0)
   { // If the file is not empty, rename it
-    CFile::Rename(PlayerObjFileNameTmp, PlayerObjFileName);
+    CFile::Rename(ConvertStringToCString(PlayerObjFileNameTmp), ConvertStringToCString(PlayerObjFileName));
   }
   else
   { // If the file is empty, delete it
-    CFile::Remove(PlayerObjFileNameTmp);
+    CFile::Remove(ConvertStringToCString(PlayerObjFileNameTmp));
   }
 }
 

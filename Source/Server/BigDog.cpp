@@ -1041,7 +1041,7 @@ void RemoveObjFromPlayerEqu(CString ObjectId)
   Object::RemoveObjFromPlayerEqu(ObjectId);
 }
 
-void RemoveObjFromPlayerInv(CString ObjectId, int Count)
+void RemoveObjFromPlayerInv(string ObjectId, int Count)
 {
   Object::RemoveObjFromPlayerInv(ObjectId, Count);
 }

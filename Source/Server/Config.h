@@ -324,7 +324,7 @@ string  PronounSubstitute(string MsgText);
 void    PutMobBackInRoom(CString PlayerName, CString RoomId);
 void    RemoveMobFromRoom(CString RoomId, CString MobileId);
 void    RemoveObjFromPlayerEqu(CString ObjectId);
-void    RemoveObjFromPlayerInv(CString ObjectId, int Count);
+void    RemoveObjFromPlayerInv(string ObjectId, int Count);
 void    RemoveObjFromRoom(CString ObjectId);
 int     Rename(string File1, string File2);
 void    SendToRoom(CString TargetRoomId, CString MsgText);

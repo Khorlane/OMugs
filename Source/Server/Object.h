@@ -38,7 +38,7 @@ class Object
     static  void    IsObjInRoom(CString ObjectName);
     static  void    IsObject(CString ObjectId);
     static  void    RemoveObjFromPlayerEqu(CString ObjectId);
-    static  void    RemoveObjFromPlayerInv(CString ObjectId, int Count);
+    static  void    RemoveObjFromPlayerInv(string ObjectId, int Count);
     static  void    RemoveObjFromRoom(CString ObjectId);
     static  void    ShowPlayerEqu(Dnode *pDnodeTgt);
     static  void    ShowPlayerInv();

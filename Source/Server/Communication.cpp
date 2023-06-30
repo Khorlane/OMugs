@@ -2310,7 +2310,7 @@ void Communication::DoDestroy()
   //* Destroy object *
   //******************
   // Remove object from player's inventory
-  RemoveObjFromPlayerInv(pObject->ObjectId, 1);
+  RemoveObjFromPlayerInv(ConvertCStringToString(pObject->ObjectId), 1);
   // Send messages
   pDnodeActor->PlayerOut += "You help make the world cleaner by destroying ";
   pDnodeActor->PlayerOut += pObject->Desc1;
@@ -2436,7 +2436,7 @@ void Communication::DoDrink()
   pDnodeActor->pPlayer->Drink(pObject->DrinkPct);
   pDnodeActor->pPlayer->Save();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
-  RemoveObjFromPlayerInv(pObject->ObjectId, 1);
+  RemoveObjFromPlayerInv(ConvertCStringToString(pObject->ObjectId), 1);
   // Clean up and give prompt
   delete pObject;
   pObject = NULL;
@@ -2491,7 +2491,7 @@ void Communication::DoDrop()
   //* Drop object *
   //***************
   // Remove object from player's inventory
-  RemoveObjFromPlayerInv(pObject->ObjectId, 1);
+  RemoveObjFromPlayerInv(ConvertCStringToString(pObject->ObjectId), 1);
   // Send messages
   pDnodeActor->PlayerOut += "You drop ";
   pDnodeActor->PlayerOut += pObject->Desc1;
@@ -2588,7 +2588,7 @@ void Communication::DoEat()
   pDnodeActor->pPlayer->Eat(pObject->FoodPct);
   pDnodeActor->pPlayer->Save();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
-  RemoveObjFromPlayerInv(pObject->ObjectId, 1);
+  RemoveObjFromPlayerInv(ConvertCStringToString(pObject->ObjectId), 1);
   // Clean up and give prompt
   delete pObject;
   pObject = NULL;
@@ -3314,7 +3314,7 @@ void Communication::DoGive()
   //*****************************
   //* Transfer object ownership *
   //*****************************
-  RemoveObjFromPlayerInv(pObject->ObjectId, 1);
+  RemoveObjFromPlayerInv(ConvertCStringToString(pObject->ObjectId), 1);
   AddObjToPlayerInv(pDnodeTgt, ConvertCStringToString(pObject->ObjectId));
   delete pObject;
   pObject = NULL;
@@ -5144,7 +5144,7 @@ void Communication::DoSell()
   //* Sell the object *
   //*******************
   // Remove object from player's inventory
-  RemoveObjFromPlayerInv(ConvertStringToCString(ObjectId), SellCountInt);
+  RemoveObjFromPlayerInv(ObjectId, SellCountInt);
   // Player receives some money
   Cost = Cost * SellCountInt;
   pDnodeActor->pPlayer->SetMoney('+', Cost, "Silver");
@@ -6114,7 +6114,7 @@ void Communication::DoWear()
   // Increase player's ArmorClass
   pDnodeActor->pPlayer->ArmorClass += pObject->ArmorValue;
   // Remove object from player's inventory
-  RemoveObjFromPlayerInv(pObject->ObjectId, 1);
+  RemoveObjFromPlayerInv(ConvertCStringToString(pObject->ObjectId), 1);
   // Send messages
   pDnodeActor->PlayerOut += "You wear ";
   pDnodeActor->PlayerOut += pObject->Desc1;
@@ -6320,7 +6320,7 @@ void Communication::DoWield()
     return;
   }
   // Remove object from player's inventory
-  RemoveObjFromPlayerInv(pObject->ObjectId, 1);
+  RemoveObjFromPlayerInv(ConvertCStringToString(pObject->ObjectId), 1);
   // Send messages
   pDnodeActor->PlayerOut += "You wield ";
   pDnodeActor->PlayerOut += pObject->Desc1;
