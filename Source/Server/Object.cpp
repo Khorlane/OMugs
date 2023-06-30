@@ -185,42 +185,35 @@ bool Object::AddObjToPlayerEqu(CString WearPosition, CString ObjectId)
 
 void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId)
 {
-  int        BytesInFile;
   bool       NewPlayerObjFile;
   bool       ObjectIdAdded;
   string     ObjectIdCheck;
   int        ObjCount;
-  CString    PlayerObjFileName;
-  CString    PlayerObjFileNameTmp;
-  CStdioFile PlayerObjFile;
-  CStdioFile PlayerObjFileTmp;
-  CString    Stuff;
-  int        Success;
+  string     PlayerObjFileName;
+  string     PlayerObjFileNameTmp;
+  ifstream   PlayerObjFile;
+  ofstream   PlayerObjFileTmp;
+  string     Stuff;
   string     TmpStr;
 
   pDnodeTgt = pDnodeTgt1;
   ObjectId = StrMakeLower(ObjectId);
   // Open PlayerObj file
   PlayerObjFileName =  PLAYER_OBJ_DIR;
-  PlayerObjFileName += pDnodeTgt->PlayerName;
+  PlayerObjFileName += ConvertCStringToString(pDnodeTgt->PlayerName);
   PlayerObjFileName += ".txt";
   NewPlayerObjFile = false;
-  Success = PlayerObjFile.Open(PlayerObjFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-  if(!Success)
+  PlayerObjFile.open(PlayerObjFileName);
+  if(!PlayerObjFile.is_open())
   {
     NewPlayerObjFile = true;
   }
   // Open temp PlayerObj file
   PlayerObjFileNameTmp =  PLAYER_OBJ_DIR;
-  PlayerObjFileNameTmp += pDnodeTgt->PlayerName;
+  PlayerObjFileNameTmp += ConvertCStringToString(pDnodeTgt->PlayerName);
   PlayerObjFileNameTmp += ".tmp.txt";
-  Success = PlayerObjFileTmp.Open(PlayerObjFileNameTmp,
-                    CFile::modeCreate |
-                    CFile::modeWrite  |
-                    CFile::typeText);
-  if(!Success)
+  PlayerObjFileTmp.open(PlayerObjFileNameTmp);
+  if(!PlayerObjFileTmp.is_open())
   {
     AfxMessageBox("Object::AddObjToPlayerInv - Open PlayerObj temp file failed", MB_ICONSTOP);
     _endthread();
@@ -228,73 +221,58 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId)
   if (NewPlayerObjFile)
   { // New player inventory file, write the object and return
     ObjectId = "1 " + ObjectId;
-    ObjectId += "\n";
-    PlayerObjFileTmp.WriteString(ConvertStringToCString(ObjectId));
-    PlayerObjFileTmp.Close();
-    CFile::Rename(PlayerObjFileNameTmp, PlayerObjFileName);
+    PlayerObjFileTmp << ObjectId << endl;
+    PlayerObjFileTmp.close();
+    CFile::Rename(ConvertStringToCString(PlayerObjFileNameTmp), ConvertStringToCString(PlayerObjFileName));
     return;
   }
   // Write temp PlayerObj file
   ObjectIdAdded = false;
-  PlayerObjFile.ReadString(Stuff);
+  getline(PlayerObjFile, Stuff);
   while (Stuff != "")
   {
     if (ObjectIdAdded)
     { // New object has been written, just write the rest of the objects
-      Stuff += "\n";
-      PlayerObjFileTmp.WriteString(Stuff);
-      PlayerObjFile.ReadString(Stuff);
+      PlayerObjFileTmp << Stuff << endl;
+      getline(PlayerObjFile, Stuff);
       continue;
     }
     ObjectIdCheck = StrGetWord(Stuff, 2);
     if (ObjectId < ObjectIdCheck)
     { // Add new object in alphabetical order
       ObjectId = "1 " + ObjectId;
-      ObjectId += "\n";
-      PlayerObjFileTmp.WriteString(ConvertStringToCString(ObjectId));
+      PlayerObjFileTmp << ObjectId << endl;
       ObjectIdAdded = true;
-      Stuff += "\n";
-      PlayerObjFileTmp.WriteString(Stuff);
-      PlayerObjFile.ReadString(Stuff);
+      PlayerObjFileTmp << Stuff << endl;
+      getline(PlayerObjFile, Stuff);
       continue;
     }
     if (ObjectId == ObjectIdCheck)
     { // Existing object same as new object, add 1 to count
-      ObjCount = atoi(StrGetWord(Stuff, 1));
+      ObjCount = stoi(StrGetWord(Stuff, 1));
       ObjCount++;
       sprintf(Buf, "%d", ObjCount);
       TmpStr = (string)Buf;
       ObjectId = TmpStr + " " + ObjectId;
-      ObjectId += "\n";
-      PlayerObjFileTmp.WriteString(ConvertStringToCString(ObjectId));
+      PlayerObjFileTmp << ObjectId << endl;
       ObjectIdAdded = true;
-      PlayerObjFile.ReadString(Stuff);
+      getline(PlayerObjFile, Stuff);
       continue;
     }
     // None of the above conditions satisfied, just write it
-    Stuff += "\n";
-    PlayerObjFileTmp.WriteString(Stuff);
-    PlayerObjFile.ReadString(Stuff);
+    PlayerObjFileTmp << Stuff << endl;
+    getline(PlayerObjFile, Stuff);
   }
   if (!ObjectIdAdded)
   { // New object is alphabetically last
     ObjectId = "1 " + ObjectId;
-    ObjectId += "\n";
-    PlayerObjFileTmp.WriteString(ConvertStringToCString(ObjectId));
+    PlayerObjFileTmp << ObjectId << endl;
     ObjectIdAdded = true;
   }
-  BytesInFile = StrGetLength(PlayerObjFileNameTmp);
-  PlayerObjFile.Close();
-  PlayerObjFileTmp.Close();
-  CFile::Remove(PlayerObjFileName);
-  if (BytesInFile > 0)
-  { // If the file is not empty, rename it
-    CFile::Rename(PlayerObjFileNameTmp, PlayerObjFileName);
-  }
-  else
-  { // If the file is empty, remove it
-    CFile::Remove(PlayerObjFileNameTmp);
-  }
+  PlayerObjFile.close();
+  PlayerObjFileTmp.close();
+  CFile::Remove(ConvertStringToCString(PlayerObjFileName));
+  CFile::Rename(ConvertStringToCString(PlayerObjFileNameTmp), ConvertStringToCString(PlayerObjFileName));
 }
 
 /***********************************************************
