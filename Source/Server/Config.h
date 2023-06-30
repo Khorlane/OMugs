@@ -245,7 +245,7 @@ struct ResWordStruct
 
 // Functions
 void    AddMobToRoom(CString RoomId, CString MobileId);
-bool    AddObjToPlayerEqu(CString WearPosition, CString ObjectId);
+bool    AddObjToPlayerEqu(string WearPosition, string ObjectId);
 void    AddObjToRoom(CString RoomId, CString ObjectId);
 void    AdvanceTime();
 void    AppendIt();
@@ -323,7 +323,7 @@ void    PrintIt(string Message);
 string  PronounSubstitute(string MsgText);
 void    PutMobBackInRoom(CString PlayerName, CString RoomId);
 void    RemoveMobFromRoom(CString RoomId, CString MobileId);
-void    RemoveObjFromPlayerEqu(CString ObjectId);
+void    RemoveObjFromPlayerEqu(string ObjectId);
 void    RemoveObjFromPlayerInv(string ObjectId, int Count);
 void    RemoveObjFromRoom(CString ObjectId);
 int     Rename(string File1, string File2);

@@ -29,7 +29,7 @@ class Object
 
 // Public functions static
   public:
-    static  bool    AddObjToPlayerEqu(CString WearPosition, CString ObjectId);
+    static  bool    AddObjToPlayerEqu(string WearPosition, string ObjectId);
     static  void    AddObjToPlayerInv(Dnode *pDnodeTgt, string ObjectId);
     static  void    AddObjToRoom(CString RoomId, CString ObjectId);
     static  int     CalcPlayerArmorClass();
@@ -37,7 +37,7 @@ class Object
     static  void    IsObjInPlayerInv(CString ObjectName);
     static  void    IsObjInRoom(CString ObjectName);
     static  void    IsObject(CString ObjectId);
-    static  void    RemoveObjFromPlayerEqu(CString ObjectId);
+    static  void    RemoveObjFromPlayerEqu(string ObjectId);
     static  void    RemoveObjFromPlayerInv(string ObjectId, int Count);
     static  void    RemoveObjFromRoom(CString ObjectId);
     static  void    ShowPlayerEqu(Dnode *pDnodeTgt);

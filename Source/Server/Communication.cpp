@@ -4822,7 +4822,7 @@ void Communication::DoRemove()
   // Decrease player's ArmorClass
   pDnodeActor->pPlayer->ArmorClass -= pObject->ArmorValue;
   // Remove object from player's equipment
-  RemoveObjFromPlayerEqu(pObject->ObjectId);
+  RemoveObjFromPlayerEqu(ConvertCStringToString(pObject->ObjectId));
   // Send remove message to player
   pDnodeActor->PlayerOut += "You remove ";
   pDnodeActor->PlayerOut += pObject->Desc1;
@@ -6098,7 +6098,7 @@ void Communication::DoWear()
   //* Wear object *
   //***************
   // Add object to player's equipment
-  WearFailed = AddObjToPlayerEqu(pObject->WearPosition, pObject->ObjectId);
+  WearFailed = AddObjToPlayerEqu(ConvertCStringToString(pObject->WearPosition), ConvertCStringToString(pObject->ObjectId));
   if (WearFailed)
   { // Already wearing an object in that wear position
     pDnodeActor->PlayerOut += "You fail to wear ";
@@ -6308,7 +6308,7 @@ void Communication::DoWield()
   //* Wield the weapon *
   //********************
   // Add object to player's equipment
-  WieldFailed = AddObjToPlayerEqu(pObject->WearPosition, pObject->ObjectId);
+  WieldFailed = AddObjToPlayerEqu(ConvertCStringToString(pObject->WearPosition), ConvertCStringToString(pObject->ObjectId));
   if (WieldFailed)
   { // Already wielding a weapon
     pDnodeActor->PlayerOut += "You are already wielding a weapon";

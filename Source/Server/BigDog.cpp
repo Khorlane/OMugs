@@ -656,7 +656,7 @@ void AddMobToRoom(CString RoomId, CString MobileId)
   Mobile::AddMobToRoom(RoomId, MobileId);
 }
 
-bool AddObjToPlayerEqu(CString WearPosition, CString ObjectId)
+bool AddObjToPlayerEqu(string WearPosition, string ObjectId)
 {
   return Object::AddObjToPlayerEqu(WearPosition, ObjectId);
 }
@@ -1036,7 +1036,7 @@ void RemoveMobFromRoom(CString RoomId, CString MobileId)
   Mobile::RemoveMobFromRoom(RoomId, MobileId);
 }
 
-void RemoveObjFromPlayerEqu(CString ObjectId)
+void RemoveObjFromPlayerEqu(string ObjectId)
 {
   Object::RemoveObjFromPlayerEqu(ObjectId);
 }

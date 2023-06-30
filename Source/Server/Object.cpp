@@ -67,19 +67,17 @@ Object::~Object()
 * Add an object to player's equipment                      *
 ************************************************************/
 
-bool Object::AddObjToPlayerEqu(CString WearPosition, CString ObjectId)
+bool Object::AddObjToPlayerEqu(string WearPosition, string ObjectId)
 {
-  int        BytesInFile;
   bool       NewPlayerEquFile;
   bool       ObjectIdAdded;
-  CString    PlayerEquFileName;
-  CString    PlayerEquFileNameTmp;
-  CStdioFile PlayerEquFile;
-  CStdioFile PlayerEquFileTmp;
-  CString    Stuff;
-  int        Success;
-  CString    TmpStr;
-  CString    WearPositionCheck;
+  string     PlayerEquFileName;
+  string     PlayerEquFileNameTmp;
+  ifstream   PlayerEquFile;
+  ofstream   PlayerEquFileTmp;
+  string     Stuff;
+  string     TmpStr;
+  string     WearPositionCheck;
   bool       WearWieldFailed;
 
   WearWieldFailed = false;
@@ -89,10 +87,8 @@ bool Object::AddObjToPlayerEqu(CString WearPosition, CString ObjectId)
   PlayerEquFileName += pDnodeActor->PlayerName;
   PlayerEquFileName += ".txt";
   NewPlayerEquFile = false;
-  Success = PlayerEquFile.Open(PlayerEquFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-  if(!Success)
+  PlayerEquFile.open(PlayerEquFileName);
+  if(!PlayerEquFile.is_open())
   {
     NewPlayerEquFile = true;
   }
@@ -100,82 +96,64 @@ bool Object::AddObjToPlayerEqu(CString WearPosition, CString ObjectId)
   PlayerEquFileNameTmp =  PLAYER_EQU_DIR;
   PlayerEquFileNameTmp += pDnodeActor->PlayerName;
   PlayerEquFileNameTmp += ".tmp.txt";
-  Success = PlayerEquFileTmp.Open(PlayerEquFileNameTmp,
-                    CFile::modeCreate |
-                    CFile::modeWrite  |
-                    CFile::typeText);
-  if(!Success)
+  PlayerEquFileTmp.open(PlayerEquFileNameTmp);
+  if(!PlayerEquFileTmp.is_open())
   {
     AfxMessageBox("Object::AddObjToPlayerEqu - Open PlayerEqu temp file failed", MB_ICONSTOP);
     _endthread();
   }
-  WearPosition = TranslateWord(WearPosition);
+  WearPosition = TranslateWord(ConvertStringToCString(WearPosition));
   if (NewPlayerEquFile)
   { // New player equipment file, write the object and return
     ObjectId = WearPosition + " " + ObjectId;
-    ObjectId += "\n";
-    PlayerEquFileTmp.WriteString(ObjectId);
-    PlayerEquFileTmp.Close();
-    CFile::Rename(PlayerEquFileNameTmp, PlayerEquFileName);
+    PlayerEquFileTmp << ObjectId << endl;
+    PlayerEquFileTmp.close();
+    CFile::Rename(ConvertStringToCString(PlayerEquFileNameTmp), ConvertStringToCString(PlayerEquFileName));
     return WearWieldFailed;
   }
   // Write temp PlayerEqu file
   ObjectIdAdded = false;
-  PlayerEquFile.ReadString(Stuff);
+  getline(PlayerEquFile, Stuff);
   while (Stuff != "")
   {
     if (ObjectIdAdded)
     { // New object has been written, just write the rest of the objects
-      Stuff += "\n";
-      PlayerEquFileTmp.WriteString(Stuff);
-      PlayerEquFile.ReadString(Stuff);
+      PlayerEquFileTmp << Stuff << endl;
+      getline(PlayerEquFile, Stuff);
       continue;
     }
     WearPositionCheck = StrGetWord(Stuff, 1);
     if (WearPosition < WearPositionCheck)
     { // Add new object in alphabetical order by translated WearPosition
       ObjectId = WearPosition + " " + ObjectId;
-      ObjectId += "\n";
-      PlayerEquFileTmp.WriteString(ObjectId);
+      PlayerEquFileTmp << ObjectId << endl;
       ObjectIdAdded = true;
-      Stuff += "\n";
-      PlayerEquFileTmp.WriteString(Stuff);
-      PlayerEquFile.ReadString(Stuff);
+      PlayerEquFileTmp << Stuff << endl;
+      getline(PlayerEquFile, Stuff);
       continue;
     }
     if (WearPosition == WearPositionCheck)
     { // Already wearing an object in that position
       WearWieldFailed = true;
       ObjectIdAdded = true; // Not really added
-      Stuff += "\n";
-      PlayerEquFileTmp.WriteString(Stuff);
-      PlayerEquFile.ReadString(Stuff);
+      PlayerEquFileTmp << Stuff << endl;
+      getline(PlayerEquFile, Stuff);
       continue;
     }
     // None of the above conditions satisfied, just write it
-    Stuff += "\n";
-    PlayerEquFileTmp.WriteString(Stuff);
-    PlayerEquFile.ReadString(Stuff);
+    PlayerEquFileTmp << Stuff << endl;
+    getline(PlayerEquFile, Stuff);
   }
   if (!ObjectIdAdded)
   { // New object is alphabetically last
     ObjectId = WearPosition + " " + ObjectId;
-    ObjectId += "\n";
-    PlayerEquFileTmp.WriteString(ObjectId);
+    PlayerEquFileTmp << ObjectId << endl;
     ObjectIdAdded = true;
   }
-  BytesInFile = StrGetLength(PlayerEquFileNameTmp); // TODO - steve - What is this doing?
-  PlayerEquFile.Close();
-  PlayerEquFileTmp.Close();
-  CFile::Remove(PlayerEquFileName);
-  if (BytesInFile > 0)
-  { // If the file is not empty, rename it
-    CFile::Rename(PlayerEquFileNameTmp, PlayerEquFileName);
-  }
-  else
-  {
-    CFile::Remove(PlayerEquFileNameTmp);
-  }
+  PlayerEquFile.close();
+  PlayerEquFileTmp.close();
+  CFile::Remove(ConvertStringToCString(PlayerEquFileName));
+  CFile::Rename(ConvertStringToCString(PlayerEquFileNameTmp), ConvertStringToCString(PlayerEquFileName));
   return WearWieldFailed;
 }
 
@@ -771,28 +749,25 @@ void Object::IsObject(CString ObjectId)
 * Remove an object from player's equipment                 *
 ************************************************************/
 
-void Object::RemoveObjFromPlayerEqu(CString ObjectId)
+void Object::RemoveObjFromPlayerEqu(string ObjectId)
 {
   int        BytesInFile;
   bool       ObjectIdRemoved;
-  CString    ObjectIdCheck;
-  CString    PlayerEquFileName;
-  CString    PlayerEquFileNameTmp;
-  CStdioFile PlayerEquFile;
-  CStdioFile PlayerEquFileTmp;
-  CString    Stuff;
-  int        Success;
-  CString    TmpStr;
+  string     ObjectIdCheck;
+  string     PlayerEquFileName;
+  string     PlayerEquFileNameTmp;
+  ifstream   PlayerEquFile;
+  ofstream   PlayerEquFileTmp;
+  string     Stuff;
+  string     TmpStr;
 
   ObjectId = StrMakeLower(ObjectId);
   // Open PlayerEqu file
   PlayerEquFileName =  PLAYER_EQU_DIR;
   PlayerEquFileName += pDnodeActor->PlayerName;
   PlayerEquFileName += ".txt";
-  Success = PlayerEquFile.Open(PlayerEquFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-  if(!Success)
+  PlayerEquFile.open(PlayerEquFileName);
+  if(!PlayerEquFile.is_open())
   {
     AfxMessageBox("Object::RemoveObjFromPlayerEqu - Open PlayerEqu file failed", MB_ICONSTOP);
     _endthread();
@@ -801,55 +776,50 @@ void Object::RemoveObjFromPlayerEqu(CString ObjectId)
   PlayerEquFileNameTmp =  PLAYER_EQU_DIR;
   PlayerEquFileNameTmp += pDnodeActor->PlayerName;
   PlayerEquFileNameTmp += ".tmp.txt";
-  Success = PlayerEquFileTmp.Open(PlayerEquFileNameTmp,
-                    CFile::modeCreate |
-                    CFile::modeWrite  |
-                    CFile::typeText);
-  if(!Success)
+  PlayerEquFileTmp.open(PlayerEquFileNameTmp);
+  if(!PlayerEquFileTmp.is_open())
   {
     AfxMessageBox("Object::RemoveObjFromPlayerEqu - Open PlayerEqu temp file failed", MB_ICONSTOP);
     _endthread();
   }
   // Write temp PlayerEqu file
   ObjectIdRemoved = false;
-  PlayerEquFile.ReadString(Stuff);
+  getline(PlayerEquFile, Stuff);
   while (Stuff != "")
   {
     if (ObjectIdRemoved)
     { // Object has been removed, just write the rest of the objects
-      Stuff += "\n";
-      PlayerEquFileTmp.WriteString(Stuff);
-      PlayerEquFile.ReadString(Stuff);
+      PlayerEquFileTmp << Stuff << endl;
+      getline(PlayerEquFile, Stuff);
       continue;
     }
     ObjectIdCheck = StrGetWord(Stuff, 2);
     if (ObjectId == ObjectIdCheck)
     { // Found it, skipping it will remove it from the file
       ObjectIdRemoved = true;
-      PlayerEquFile.ReadString(Stuff);
+      getline(PlayerEquFile, Stuff);
       continue;
     }
     // None of the above conditions satisfied, just write it
-    Stuff += "\n";
-    PlayerEquFileTmp.WriteString(Stuff);
-    PlayerEquFile.ReadString(Stuff);
+    PlayerEquFileTmp << Stuff << endl;
+    getline(PlayerEquFile, Stuff);
   }
   if (!ObjectIdRemoved)
   { // Object not removed, this is definitely BAD!
     AfxMessageBox("Object::RemoveObjFromPlayerEqu - Object not removed", MB_ICONSTOP);
     _endthread();
   }
-  BytesInFile = StrGetLength(PlayerEquFileNameTmp);
-  PlayerEquFile.Close();
-  PlayerEquFileTmp.Close();
-  CFile::Remove(PlayerEquFileName);
+  BytesInFile = (int)PlayerEquFileTmp.tellp();
+  PlayerEquFile.close();
+  PlayerEquFileTmp.close();
+  CFile::Remove(ConvertStringToCString(PlayerEquFileName));
   if (BytesInFile > 0)
   { // If the file is not empty, rename it
-    CFile::Rename(PlayerEquFileNameTmp, PlayerEquFileName);
+    CFile::Rename(ConvertStringToCString(PlayerEquFileNameTmp), ConvertStringToCString(PlayerEquFileName));
   }
   else
   { // If the file is empty, delete it
-    CFile::Remove(PlayerEquFileNameTmp);
+    CFile::Remove(ConvertStringToCString(PlayerEquFileNameTmp));
   }
 }
 
