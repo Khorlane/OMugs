@@ -108,7 +108,7 @@ bool Object::AddObjToPlayerEqu(string WearPosition, string ObjectId)
     ObjectId = WearPosition + " " + ObjectId;
     PlayerEquFileTmp << ObjectId << endl;
     PlayerEquFileTmp.close();
-    CFile::Rename(ConvertStringToCString(PlayerEquFileNameTmp), ConvertStringToCString(PlayerEquFileName));
+    Rename(PlayerEquFileNameTmp, PlayerEquFileName);
     return WearWieldFailed;
   }
   // Write temp PlayerEqu file
@@ -152,8 +152,8 @@ bool Object::AddObjToPlayerEqu(string WearPosition, string ObjectId)
   }
   PlayerEquFile.close();
   PlayerEquFileTmp.close();
-  CFile::Remove(ConvertStringToCString(PlayerEquFileName));
-  CFile::Rename(ConvertStringToCString(PlayerEquFileNameTmp), ConvertStringToCString(PlayerEquFileName));
+  Remove(PlayerEquFileName);
+  Rename(PlayerEquFileNameTmp, PlayerEquFileName);
   return WearWieldFailed;
 }
 
