@@ -201,7 +201,7 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId)
     ObjectId = "1 " + ObjectId;
     PlayerObjFileTmp << ObjectId << endl;
     PlayerObjFileTmp.close();
-    CFile::Rename(ConvertStringToCString(PlayerObjFileNameTmp), ConvertStringToCString(PlayerObjFileName));
+    Rename(PlayerObjFileNameTmp, PlayerObjFileName);
     return;
   }
   // Write temp PlayerObj file
@@ -249,8 +249,8 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId)
   }
   PlayerObjFile.close();
   PlayerObjFileTmp.close();
-  CFile::Remove(ConvertStringToCString(PlayerObjFileName));
-  CFile::Rename(ConvertStringToCString(PlayerObjFileNameTmp), ConvertStringToCString(PlayerObjFileName));
+  Remove(PlayerObjFileName);
+  Rename(PlayerObjFileNameTmp, PlayerObjFileName);
 }
 
 /***********************************************************
@@ -812,14 +812,14 @@ void Object::RemoveObjFromPlayerEqu(string ObjectId)
   BytesInFile = (int)PlayerEquFileTmp.tellp();
   PlayerEquFile.close();
   PlayerEquFileTmp.close();
-  CFile::Remove(ConvertStringToCString(PlayerEquFileName));
+  Remove(PlayerEquFileName);
   if (BytesInFile > 0)
   { // If the file is not empty, rename it
-    CFile::Rename(ConvertStringToCString(PlayerEquFileNameTmp), ConvertStringToCString(PlayerEquFileName));
+    Rename(PlayerEquFileNameTmp, PlayerEquFileName);
   }
   else
   { // If the file is empty, delete it
-    CFile::Remove(ConvertStringToCString(PlayerEquFileNameTmp));
+    Remove(PlayerEquFileNameTmp);
   }
 }
 
@@ -900,14 +900,14 @@ void Object::RemoveObjFromPlayerInv(string ObjectId, int Count)
   BytesInFile = (int) PlayerObjFileTmp.tellp();
   PlayerObjFile.close();
   PlayerObjFileTmp.close();
-  CFile::Remove(ConvertStringToCString(PlayerObjFileName));
+  Remove(PlayerObjFileName);
   if (BytesInFile > 0)
   { // If the file is not empty, rename it
-    CFile::Rename(ConvertStringToCString(PlayerObjFileNameTmp), ConvertStringToCString(PlayerObjFileName));
+    Rename(PlayerObjFileNameTmp, PlayerObjFileName);
   }
   else
   { // If the file is empty, delete it
-    CFile::Remove(ConvertStringToCString(PlayerObjFileNameTmp));
+    Remove(PlayerObjFileNameTmp);
   }
 }
 

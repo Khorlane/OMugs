@@ -129,7 +129,7 @@ string Utility::GetHomeDir()
   getline(HomeDirFile, Buffer);
   HomeDir = Buffer;
   HomeDirFile.close();
-  return HomeDir.c_str();
+  return HomeDir;
 }
 
 /***********************************************************

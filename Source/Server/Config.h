@@ -17,6 +17,7 @@
 * Includes                                                 *
 ************************************************************/
 
+#include <chrono>           // clocks, time points, durations (see GetTimeSeconds)
 #include <direct.h>         // _chdir()
 #include <process.h>        // _endthread()
 #include <bitset>           // Allows bit manipulation
@@ -30,9 +31,10 @@
 #include <sstream>          // String 'stream' functions (see StrGetWord)
 #include <time.h>           // Time functions
 #include <vector>           // Vector stuff
-#include <filesystem>       // Needed to get file system info, like all files in a directory
+#include <filesystem>       // Reanme/delete files, get all files in a directory
 
 using namespace std;
+namespace fs = filesystem;
 
 /***********************************************************
 * Macros                                                   *
@@ -257,7 +259,7 @@ CString CalcHealthPct(int HitPoints, int HitPointsMax);
 float   CalcLevelExperience(int Level);
 int     CalcPct(int Dividend, int Divisor);
 int     CalcPlayerArmorClass();
-bool    ChgDir(string Dir);
+error_code ChgDir(string Dir);
 void    ClearDescriptor();
 void    CloseLogFile();
 string  ConvertCStringToString(CString Str1);
@@ -322,11 +324,12 @@ void    Osi(CString ScriptType, CString ScriptId);
 void    PrintIt(string Message);
 string  PronounSubstitute(string MsgText);
 void    PutMobBackInRoom(CString PlayerName, CString RoomId);
+error_code Remove(string File1);
 void    RemoveMobFromRoom(CString RoomId, CString MobileId);
 void    RemoveObjFromPlayerEqu(string ObjectId);
 void    RemoveObjFromPlayerInv(string ObjectId, int Count);
 void    RemoveObjFromRoom(CString ObjectId);
-int     Rename(string File1, string File2);
+error_code Rename(string File1, string File2);
 void    SendToRoom(CString TargetRoomId, CString MsgText);
 void    SendToRoom(string TargetRoomId, string MsgText);
 void    SetpDnodeCursorFirst();
@@ -403,6 +406,7 @@ inline char           Buf[256];
 inline EnumCharCode   CharCodeMap[128];
 inline CString        CmdStr;
 inline unsigned char  CurrentLineNumber;
+inline error_code     ErrorCode;
 inline string         HomeDir;
 inline CString        MudCmd;
 inline float          PACMN;                // Percent Armor Class Magic Number

@@ -28,13 +28,12 @@ void BigDog()
   string       GoGoGoFileName;
   string       LogBuf;
   int          MobHealTick;
-  int          ReturnCode;
   string       StopItFileName;
   int          WhoIsOnlineTick;
 
   PrintIt("OMugs Starting");
-  PrintIt("BigDog()");
-  if (ChgDir(HomeDir))
+  ErrorCode = ChgDir(HomeDir);
+  if (ErrorCode.value() != 0)
   { // Change directory failed
     PrintIt("BigDog() - Change directory to HomeDir failed");
     exit(1);
@@ -46,10 +45,10 @@ void BigDog()
   GoGoGoFileName += "GoGoGo";
   if (FileExist(StopItFileName))
   { // If StopIt file exists, Rename it to GoGoGo
-    ReturnCode = Rename(StopItFileName, GoGoGoFileName);
-    if (ReturnCode != 0)
+    ErrorCode = Rename(StopItFileName, GoGoGoFileName);
+    if (ErrorCode.value() != 0)
     {
-      PrintIt("Rename of 'StopIt' to 'GoGoGo' failed!");
+      PrintIt("BigDog() - Rename of 'StopIt' to 'GoGoGo' failed!");
       exit(1);
     }
   }
@@ -165,16 +164,19 @@ void AppTestCode()
 // File Functions
 //
 
-bool ChgDir(string Dir)
+error_code ChgDir(string Dir)
 {
-  return _chdir(Dir.c_str());
+  error_code ErrorCode;
+  
+  fs::current_path(Dir, ErrorCode);
+  return ErrorCode;
 }
 
 bool FileExist(string Name)
 {
   bool Exist;
 
-  ifstream f(Name.c_str());
+  ifstream f(Name);
   if (f.is_open())
   {
     Exist = true;
@@ -187,9 +189,20 @@ bool FileExist(string Name)
   return Exist;
 }
 
-int Rename(string File1, string File2)
+error_code Rename(string File1, string File2)
 {
-  return rename(File1.c_str(), File2.c_str());
+  error_code ErrorCode;
+
+  fs::rename(File1, File2, ErrorCode);
+  return ErrorCode;
+}
+
+error_code Remove(string File1)
+{
+  error_code ErrorCode;
+
+  fs::remove(File1, ErrorCode);
+  return ErrorCode;
 }
 
 //
@@ -222,8 +235,7 @@ int GetTimeSeconds()
 void PrintIt(string Message)
 {
   Message = "\r\n" + Message + "\r\n";
-  TRACE(Message.c_str());
-  printf(Message.c_str());
+  cout << Message;
 }
 
 //
