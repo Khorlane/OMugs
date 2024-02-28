@@ -25,7 +25,7 @@
 * Object constructor                                       *
 ************************************************************/
 
-Object::Object(CString ObjectId)
+Object::Object(string ObjectId)
 {
   // Init variables
   ArmorValue        = 0;
@@ -257,20 +257,18 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId)
 * Add an object to room                                    *
 ************************************************************/
 
-void Object::AddObjToRoom(CString RoomId, CString ObjectId)
+void Object::AddObjToRoom(string RoomId, string ObjectId)
 {
-  int        BytesInFile;
   bool       NewRoomObjFile;
   bool       ObjectIdAdded;
-  CString    ObjectIdCheck;
+  string     ObjectIdCheck;
   int        ObjCount;
-  CString    RoomObjFileName;
-  CString    RoomObjFileNameTmp;
-  CStdioFile RoomObjFile;
-  CStdioFile RoomObjFileTmp;
-  CString    Stuff;
-  int        Success;
-  CString    TmpStr;
+  string     RoomObjFileName;
+  string     RoomObjFileNameTmp;
+  ifstream   RoomObjFile;
+  ofstream   RoomObjFileTmp;
+  string     Stuff;
+  string     TmpStr;
 
   ObjectId = StrMakeLower(ObjectId);
   // Open RoomObj file
@@ -278,10 +276,8 @@ void Object::AddObjToRoom(CString RoomId, CString ObjectId)
   RoomObjFileName += RoomId;
   RoomObjFileName += ".txt";
   NewRoomObjFile = false;
-  Success = RoomObjFile.Open(RoomObjFileName,
-                  CFile::modeRead |
-                  CFile::typeText);
-  if(!Success)
+  RoomObjFile.open(RoomObjFileName);
+  if(!RoomObjFile.is_open())
   {
     NewRoomObjFile = true;
   }
@@ -289,11 +285,8 @@ void Object::AddObjToRoom(CString RoomId, CString ObjectId)
   RoomObjFileNameTmp =  ROOM_OBJ_DIR;
   RoomObjFileNameTmp += RoomId;
   RoomObjFileNameTmp += ".tmp.txt";
-  Success = RoomObjFileTmp.Open(RoomObjFileNameTmp,
-                  CFile::modeCreate |
-                  CFile::modeWrite  |
-                  CFile::typeText);
-  if(!Success)
+  RoomObjFileTmp.open(RoomObjFileNameTmp);
+  if(!RoomObjFileTmp.is_open())
   {
     AfxMessageBox("Object::AddObjToRoom - Open RoomObj temp file failed", MB_ICONSTOP);
     _endthread();
@@ -301,73 +294,66 @@ void Object::AddObjToRoom(CString RoomId, CString ObjectId)
   if (NewRoomObjFile)
   { // New room object file, write the object and return
     ObjectId = "1 " + ObjectId;
-    ObjectId += "\n";
-    RoomObjFileTmp.WriteString(ObjectId);
-    RoomObjFileTmp.Close();
-    CFile::Rename(RoomObjFileNameTmp, RoomObjFileName);
+    RoomObjFileTmp << ObjectId << endl;
+    RoomObjFileTmp.close();
+    ErrorCode = Rename(RoomObjFileNameTmp, RoomObjFileName);
+    if (ErrorCode.value() != 0)
+    {
+      LogBuf = "Object::AddObjToRoom - Rename RoomObj temp file failed";
+      LogIt(LogBuf);
+      exit(1);
+    }
     return;
   }
   // Write temp RoomObj file
   ObjectIdAdded = false;
-  RoomObjFile.ReadString(Stuff);
+  getline(RoomObjFile, Stuff);
   while (Stuff != "")
   {
     if (ObjectIdAdded)
     { // New object has been written, just write the rest of the objects
       Stuff += "\n";
-      RoomObjFileTmp.WriteString(Stuff);
-      RoomObjFile.ReadString(Stuff);
+      RoomObjFileTmp << Stuff << endl;
+      getline(RoomObjFile, Stuff);
       continue;
     }
     ObjectIdCheck = StrGetWord(Stuff, 2);
     if (ObjectId < ObjectIdCheck)
     { // Add new object in alphabetical order
       ObjectId = "1 " + ObjectId;
-      ObjectId += "\n";
-      RoomObjFileTmp.WriteString(ObjectId);
+      RoomObjFileTmp << ObjectId << endl;
       ObjectIdAdded = true;
-      Stuff += "\n";
-      RoomObjFileTmp.WriteString(Stuff);
-      RoomObjFile.ReadString(Stuff);
+      RoomObjFileTmp << Stuff << endl;
+      getline(RoomObjFile, Stuff);
       continue;
     }
     if (ObjectId == ObjectIdCheck)
     { // Existing object same as new object, add 1 to count
-      ObjCount = atoi(StrGetWord(Stuff, 1));
+      ObjCount = stoi(StrGetWord(Stuff, 1));
       ObjCount++;
       sprintf(Buf, "%d", ObjCount);
-      TmpStr = ConvertStringToCString(Buf);
+      TmpStr = Buf;
       ObjectId = TmpStr + " " + ObjectId;
       ObjectId += "\n";
-      RoomObjFileTmp.WriteString(ObjectId);
+      RoomObjFileTmp << ObjectId << endl;
       ObjectIdAdded = true;
-      RoomObjFile.ReadString(Stuff);
+      getline(RoomObjFile, Stuff);
       continue;
     }
     // None of the above conditions satisfied, just write it
-    Stuff += "\n";
-    RoomObjFileTmp.WriteString(Stuff);
-    RoomObjFile.ReadString(Stuff);
+    RoomObjFileTmp << Stuff << endl;
+    getline(RoomObjFile, Stuff);
   }
   if (!ObjectIdAdded)
   { // New object is alphabetically last
     ObjectId = "1 " + ObjectId;
-    ObjectId += "\n";
-    RoomObjFileTmp.WriteString(ObjectId);
+    RoomObjFileTmp << ObjectId << endl;
     ObjectIdAdded = true;
   }
-  BytesInFile = StrGetLength(RoomObjFileNameTmp);
-  RoomObjFile.Close();
-  RoomObjFileTmp.Close();
-  CFile::Remove(RoomObjFileName);
-  if (BytesInFile > 0)
-  { // If the file is not empty, rename it
-    CFile::Rename(RoomObjFileNameTmp, RoomObjFileName);
-  }
-  else
-  { // If the file is empty, delete it
-    CFile::Remove(RoomObjFileNameTmp);
-  }
+  RoomObjFile.close();
+  RoomObjFileTmp.close();
+  Remove(RoomObjFileName);
+  Rename(RoomObjFileNameTmp, RoomObjFileName);
 }
 
 /***********************************************************
@@ -377,26 +363,23 @@ void Object::AddObjToRoom(CString RoomId, CString ObjectId)
 int Object::CalcPlayerArmorClass()
 {
   int         ArmorClass;
-  CString     ObjectId;
-  CStdioFile  PlayerEquFile;
-  CString     PlayerEquFileName;
-  CString     Stuff;
-  int         Success;
-  CString     WearPosition;
+  string      ObjectId;
+  ifstream    PlayerEquFile;
+  string      PlayerEquFileName;
+  string      Stuff;
+  string      WearPosition;
 
   ArmorClass = 0;
   // Open PlayerObj file
   PlayerEquFileName =  PLAYER_EQU_DIR;
   PlayerEquFileName += pDnodeActor->PlayerName;
   PlayerEquFileName += ".txt";
-  Success = PlayerEquFile.Open(PlayerEquFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-  if(!Success)
+  PlayerEquFile.open(PlayerEquFileName);
+  if(!PlayerEquFile.is_open())
   { // No player equipment
     return ArmorClass;
   }
-  PlayerEquFile.ReadString(Stuff);
+  getline(PlayerEquFile, Stuff);
   while (Stuff != "")
   {
     ObjectId = StrGetWord(Stuff, 2);
@@ -404,9 +387,9 @@ int Object::CalcPlayerArmorClass()
     ArmorClass += pObject->ArmorValue;
     delete pObject;
     pObject = NULL;
-    PlayerEquFile.ReadString(Stuff);
+    getline(PlayerEquFile, Stuff);
   }
-  PlayerEquFile.Close();
+  PlayerEquFile.close();
   return ArmorClass;
 }
 
@@ -414,17 +397,16 @@ int Object::CalcPlayerArmorClass()
 * Is object in player's equipment?                         *
 ************************************************************/
 
-void Object::IsObjInPlayerEqu(CString ObjectName)
+void Object::IsObjInPlayerEqu(string ObjectName)
 {
-  CString     LogBuf;
-  CString     NamesCheck;
-  CString     ObjectId;
-  CString     ObjectIdCheck;
-  CString     ObjectNameCheck;
-  CString     PlayerEquFileName;
-  CStdioFile  PlayerEquFile;
-  CString     Stuff;
-  int         Success;
+  string      LogBuf;
+  string      NamesCheck;
+  string      ObjectId;
+  string      ObjectIdCheck;
+  string      ObjectNameCheck;
+  string      PlayerEquFileName;
+  ifstream    PlayerEquFile;
+  string      Stuff;
 
   // Open PlayerEqu file
   PlayerEquFileName =  PLAYER_EQU_DIR;
@@ -433,15 +415,13 @@ void Object::IsObjInPlayerEqu(CString ObjectName)
   //*******************************
   //* Try matching using ObjectId *
   //*******************************
-  Success = PlayerEquFile.Open(PlayerEquFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-  if(!Success)
+  PlayerEquFile.open(PlayerEquFileName);
+  if(!PlayerEquFile.is_open())
   { // Player has no objects
     pObject = NULL;
     return;
   }
-  PlayerEquFile.ReadString(Stuff);
+  getline(PlayerEquFile, Stuff);
   while (Stuff != "")
   { // For each player equipment object 
     ObjectId = StrGetWord(Stuff, 2);
@@ -464,21 +444,19 @@ void Object::IsObjInPlayerEqu(CString ObjectName)
         return;
       }
     }
-    PlayerEquFile.ReadString(Stuff);
+    getline(PlayerEquFile, Stuff);
   }
-  PlayerEquFile.Close();
+  PlayerEquFile.close();
   //***************************************************
   //* No match found, try getting match using 'names' *
   //***************************************************
-  Success = PlayerEquFile.Open(PlayerEquFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-  if(!Success)
+  PlayerEquFile.open(PlayerEquFileName);
+  if(!PlayerEquFile.is_open())
   { // Player has no objects
     pObject = NULL;
     return;
   }
-  PlayerEquFile.ReadString(Stuff);
+  getline(PlayerEquFile, Stuff);
   while (Stuff != "")
   { // For each player equipment object 
     ObjectId = StrGetWord(Stuff, 2);
@@ -495,7 +473,7 @@ void Object::IsObjInPlayerEqu(CString ObjectName)
     }
     NamesCheck = pObject->Names;
     NamesCheck = StrMakeLower(NamesCheck);
-    if (IsWord(ObjectName, NamesCheck))
+    if (IsWord(ConvertStringToCString(ObjectName), ConvertStringToCString(NamesCheck)))
     { // Match
       return;
     }
@@ -504,9 +482,9 @@ void Object::IsObjInPlayerEqu(CString ObjectName)
       delete pObject;
       pObject = NULL;
     }
-    PlayerEquFile.ReadString(Stuff);
+    getline(PlayerEquFile, Stuff);
   }
-  PlayerEquFile.Close();
+  PlayerEquFile.close();
   // Object not found in player's inventory
   pObject = NULL;
   return;
@@ -516,17 +494,16 @@ void Object::IsObjInPlayerEqu(CString ObjectName)
 * Is object in player's inventory?                         *
 ************************************************************/
 
-void Object::IsObjInPlayerInv(CString ObjectName)
+void Object::IsObjInPlayerInv(string ObjectName)
 {
-  CString     LogBuf;
-  CString     NamesCheck;
-  CString     ObjectId;
-  CString     ObjectIdCheck;
-  CString     ObjectNameCheck;
-  CString     PlayerObjFileName;
-  CStdioFile  PlayerObjFile;
-  CString     Stuff;
-  int         Success;
+  string      LogBuf;
+  string      NamesCheck;
+  string      ObjectId;
+  string      ObjectIdCheck;
+  string      ObjectNameCheck;
+  string      PlayerObjFileName;
+  ifstream    PlayerObjFile;
+  string      Stuff;
 
   // Open PlayerObj file
   PlayerObjFileName =  PLAYER_OBJ_DIR;
@@ -535,15 +512,13 @@ void Object::IsObjInPlayerInv(CString ObjectName)
   //*******************************
   //* Try matching using ObjectId *
   //*******************************
-  Success = PlayerObjFile.Open(PlayerObjFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-  if(!Success)
+  PlayerObjFile.open(PlayerObjFileName);
+  if(!PlayerObjFile.is_open())
   { // Player has no objects
     pObject = NULL;
     return;
   }
-  PlayerObjFile.ReadString(Stuff);
+  getline(PlayerObjFile, Stuff);
   while (Stuff != "")
   { // For all items in player inventory
     ObjectId = StrGetWord(Stuff, 2);
@@ -553,7 +528,7 @@ void Object::IsObjInPlayerInv(CString ObjectName)
       pObject = new Object(ObjectId);
       if (pObject)
       { // Object exists
-        pObject->Count = StrGetWord(Stuff, 1);
+        pObject->Count = ConvertStringToCString(StrGetWord(Stuff, 1));
         return;
       }
       else
@@ -567,21 +542,19 @@ void Object::IsObjInPlayerInv(CString ObjectName)
         return;
       }
     }
-    PlayerObjFile.ReadString(Stuff);
+    getline(PlayerObjFile, Stuff);
   }
-  PlayerObjFile.Close();
+  PlayerObjFile.close();
   //***************************************************
   //* No match found, try getting match using 'names' *
   //***************************************************
-  Success = PlayerObjFile.Open(PlayerObjFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-  if(!Success)
+  PlayerObjFile.open(PlayerObjFileName);
+  if(!PlayerObjFile.is_open())
   { // Player has no objects
     pObject = NULL;
     return;
   }
-  PlayerObjFile.ReadString(Stuff);
+  getline(PlayerObjFile, Stuff);
   while (Stuff != "")
   { // For all items in player inventory
     ObjectId = StrGetWord(Stuff, 2);
@@ -596,10 +569,10 @@ void Object::IsObjInPlayerInv(CString ObjectName)
       pObject = NULL;
       return;
     }
-    pObject->Count = StrGetWord(Stuff, 1);
+    pObject->Count = ConvertStringToCString(StrGetWord(Stuff, 1));
     NamesCheck     = pObject->Names;
     NamesCheck = StrMakeLower(NamesCheck);
-    if (IsWord(ObjectName, NamesCheck))
+    if (IsWord(ConvertStringToCString(ObjectName), ConvertStringToCString(NamesCheck)))
     { // Match
       return;
     }
@@ -608,9 +581,9 @@ void Object::IsObjInPlayerInv(CString ObjectName)
       delete pObject;
       pObject = NULL;
     }
-    PlayerObjFile.ReadString(Stuff);
+    getline(PlayerObjFile, Stuff);
   }
-  PlayerObjFile.Close();
+  PlayerObjFile.close();
   // Object not found in player's inventory
   return;
 }
@@ -619,17 +592,16 @@ void Object::IsObjInPlayerInv(CString ObjectName)
 * Is object in room                                        *
 ************************************************************/
 
-void Object::IsObjInRoom(CString ObjectName)
+void Object::IsObjInRoom(string ObjectName)
 {
-  CString     LogBuf;
-  CString     NamesCheck;
-  CString     ObjectId;
-  CString     ObjectIdCheck;
-  CString     ObjectNameCheck;
-  CString     RoomObjFileName;
-  CStdioFile  RoomObjFile;
-  CString     Stuff;
-  int         Success;
+  string      LogBuf;
+  string      NamesCheck;
+  string      ObjectId;
+  string      ObjectIdCheck;
+  string      ObjectNameCheck;
+  string      RoomObjFileName;
+  ifstream    RoomObjFile;
+  string      Stuff;
 
   // Open RoomObj file
   RoomObjFileName =  ROOM_OBJ_DIR;
@@ -638,15 +610,13 @@ void Object::IsObjInRoom(CString ObjectName)
   //*******************************
   //* Try matching using ObjectId *
   //*******************************
-  Success = RoomObjFile.Open(RoomObjFileName,
-                  CFile::modeRead |
-                  CFile::typeText);
-  if(!Success)
+  RoomObjFile.open(RoomObjFileName);
+  if(!RoomObjFile.is_open())
   { // Room has no objects
     pObject = NULL;
     return;
   }
-  RoomObjFile.ReadString(Stuff);
+  getline(RoomObjFile, Stuff);
   while (Stuff != "")
   { // For each item in room
     ObjectId = StrGetWord(Stuff, 2);
@@ -669,21 +639,19 @@ void Object::IsObjInRoom(CString ObjectName)
         return;
       }
     }
-    RoomObjFile.ReadString(Stuff);
+    getline(RoomObjFile, Stuff);
   }
-  RoomObjFile.Close();
+  RoomObjFile.close();
   //***************************************************
   //* No match found, try getting match using 'names' *
   //***************************************************
-  Success = RoomObjFile.Open(RoomObjFileName,
-                  CFile::modeRead |
-                  CFile::typeText);
-  if(!Success)
+  RoomObjFile.open(RoomObjFileName);
+  if(!RoomObjFile.is_open())
   { // Room has no objects
     pObject = NULL;
     return;
   }
-  RoomObjFile.ReadString(Stuff);
+  getline(RoomObjFile, Stuff);
   while (Stuff != "")
   { // For each item in room
     ObjectId = StrGetWord(Stuff, 2);
@@ -700,7 +668,7 @@ void Object::IsObjInRoom(CString ObjectName)
     }
     NamesCheck = pObject->Names;
     NamesCheck = StrMakeLower(NamesCheck);
-    if (IsWord(ObjectName, NamesCheck))
+    if (IsWord(ConvertStringToCString(ObjectName), ConvertStringToCString(NamesCheck)))
     { // Match
       return;
     }
@@ -709,9 +677,9 @@ void Object::IsObjInRoom(CString ObjectName)
       delete pObject;
       pObject = NULL;
     }
-    RoomObjFile.ReadString(Stuff);
+    getline(RoomObjFile, Stuff);
   }
-  RoomObjFile.Close();
+  RoomObjFile.close();
   // Object not found in room
   return;
 }
@@ -720,21 +688,18 @@ void Object::IsObjInRoom(CString ObjectName)
 * Is this a valid object?                                  *
 ************************************************************/
 
-void Object::IsObject(CString ObjectId)
+void Object::IsObject(string ObjectId)
 {
-  CString     ObjectFileName;
-  CStdioFile  ObjectFile;
-  int         Success;
+  string      ObjectFileName;
+  ifstream    ObjectFile;
 
   ObjectFileName =  OBJECTS_DIR;
   ObjectFileName += ObjectId;
   ObjectFileName += ".txt";
-  Success = ObjectFile.Open(ObjectFileName,
-                 CFile::modeRead |
-                 CFile::typeText);
-  if(Success)
+  ObjectFile.open(ObjectFileName);
+  if(ObjectFile.is_open())
   {
-    ObjectFile.Close();
+    ObjectFile.close();
     pObject = new Object(ObjectId);
     return;
   }
@@ -915,29 +880,26 @@ void Object::RemoveObjFromPlayerInv(string ObjectId, int Count)
 * Remove an object from room                               *
 ************************************************************/
 
-void Object::RemoveObjFromRoom(CString ObjectId)
+void Object::RemoveObjFromRoom(string ObjectId)
 {
   int        BytesInFile;
   bool       ObjectIdRemoved;
-  CString    ObjectIdCheck;
+  string     ObjectIdCheck;
   int        ObjCount;
-  CString    RoomObjFileName;
-  CString    RoomObjFileNameTmp;
-  CStdioFile RoomObjFile;
-  CStdioFile RoomObjFileTmp;
-  CString    Stuff;
-  int        Success;
-  CString    TmpStr;
+  string     RoomObjFileName;
+  string     RoomObjFileNameTmp;
+  ifstream   RoomObjFile;
+  ofstream   RoomObjFileTmp;
+  string     Stuff;
+  string     TmpStr;
 
   ObjectId = StrMakeLower(ObjectId);
   // Open RoomObj file
   RoomObjFileName =  ROOM_OBJ_DIR;
   RoomObjFileName += pDnodeActor->pPlayer->RoomId;
   RoomObjFileName += ".txt";
-  Success = RoomObjFile.Open(RoomObjFileName,
-                  CFile::modeRead |
-                  CFile::typeText);
-  if(!Success)
+  RoomObjFile.open(RoomObjFileName);
+  if(!RoomObjFile.is_open())
   {
     AfxMessageBox("Object::RemoveObjFromRoom - Open RoomObj file failed", MB_ICONSTOP);
     _endthread();
@@ -946,65 +908,59 @@ void Object::RemoveObjFromRoom(CString ObjectId)
   RoomObjFileNameTmp =  ROOM_OBJ_DIR;
   RoomObjFileNameTmp += pDnodeActor->pPlayer->RoomId;
   RoomObjFileNameTmp += ".tmp.txt";
-  Success = RoomObjFileTmp.Open(RoomObjFileNameTmp,
-                  CFile::modeCreate |
-                  CFile::modeWrite  |
-                  CFile::typeText);
-  if(!Success)
+  RoomObjFileTmp.open(RoomObjFileNameTmp);
+  if(!RoomObjFileTmp.is_open())
   {
     AfxMessageBox("Object::RemoveObjFromRoom - Open RoomObj temp file failed", MB_ICONSTOP);
     _endthread();
   }
   // Write temp RoomObj file
   ObjectIdRemoved = false;
-  RoomObjFile.ReadString(Stuff);
+  getline(RoomObjFile, Stuff);
   while (Stuff != "")
   {
     if (ObjectIdRemoved)
     { // Object has been removed, just write the rest of the objects
-      Stuff += "\n";
-      RoomObjFileTmp.WriteString(Stuff);
-      RoomObjFile.ReadString(Stuff);
+      RoomObjFileTmp << Stuff << endl;
+      getline(RoomObjFile, Stuff);
       continue;
     }
     ObjectIdCheck = StrGetWord(Stuff, 2);
     if (ObjectId == ObjectIdCheck)
     { // Found it, subtract 1 from count
-      ObjCount = atoi(StrGetWord(Stuff, 1));
+      ObjCount = stoi(StrGetWord(Stuff, 1));
       ObjCount--;
       ObjectIdRemoved = true;
       if (ObjCount > 0)
       {
         sprintf(Buf, "%d", ObjCount);
-        TmpStr = ConvertStringToCString(Buf);
+        TmpStr = Buf;
         ObjectId = TmpStr + " " + ObjectId;
-        ObjectId += "\n";
-        RoomObjFileTmp.WriteString(ObjectId);
+        RoomObjFileTmp << ObjectId << endl;
       }
-      RoomObjFile.ReadString(Stuff);
+      getline(RoomObjFile, Stuff);
       continue;
     }
     // None of the above conditions satisfied, just write it
-    Stuff += "\n";
-    RoomObjFileTmp.WriteString(Stuff);
-    RoomObjFile.ReadString(Stuff);
+    RoomObjFileTmp << Stuff << endl;
+    getline(RoomObjFile, Stuff);
   }
   if (!ObjectIdRemoved)
   { // Object not removed, this is definitely BAD!
     AfxMessageBox("Object::RemoveObjFromRoom - Object not removed", MB_ICONSTOP);
     _endthread();
   }
-  BytesInFile = (int) RoomObjFileTmp.GetLength();
-  RoomObjFile.Close();
-  RoomObjFileTmp.Close();
-  CFile::Remove(RoomObjFileName);
+  BytesInFile = (int) RoomObjFileTmp.tellp();
+  RoomObjFile.close();
+  RoomObjFileTmp.close();
+  Remove(RoomObjFileName);
   if (BytesInFile > 0)
   { // If the file is not empty, rename it
-    CFile::Rename(RoomObjFileNameTmp, RoomObjFileName);
+    Rename(RoomObjFileNameTmp, RoomObjFileName);
   }
   else
   { // If the file is empty, delete it
-    CFile::Remove(RoomObjFileNameTmp);
+    Remove(RoomObjFileNameTmp);
   }
 }
 
@@ -1014,22 +970,19 @@ void Object::RemoveObjFromRoom(CString ObjectId)
 
 void Object::ShowPlayerEqu(Dnode *pDnodeTgt1)
 {
-  CString     ObjectId;
-  CStdioFile  PlayerEquFile;
-  CString     PlayerEquFileName;
-  CString     Stuff;
-  int         Success;
-  CString     WearPosition;
+  string     ObjectId;
+  ifstream   PlayerEquFile;
+  string     PlayerEquFileName;
+  string     Stuff;
+  string     WearPosition;
 
   pDnodeTgt = pDnodeTgt1;
   // Open PlayerEqu file
   PlayerEquFileName =  PLAYER_EQU_DIR;
   PlayerEquFileName += pDnodeTgt->PlayerName;
   PlayerEquFileName += ".txt";
-  Success = PlayerEquFile.Open(PlayerEquFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-  if(!Success)
+  PlayerEquFile.open(PlayerEquFileName);
+  if (!PlayerEquFile.is_open())
   { // No player equipment
     if (pDnodeActor == pDnodeTgt)
     { // Player is checking their own equipment
@@ -1053,24 +1006,24 @@ void Object::ShowPlayerEqu(Dnode *pDnodeTgt1)
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += "Equipment\r\n";
   pDnodeActor->PlayerOut += "---------\r\n";
-  PlayerEquFile.ReadString(Stuff);
+  getline(PlayerEquFile, Stuff);
   while (Stuff != "")
   {
     WearPosition = StrGetWord(Stuff, 1);
-    WearPosition = TranslateWord(WearPosition);
+    WearPosition = TranslateWord(ConvertStringToCString(WearPosition));
     ObjectId = StrGetWord(Stuff, 2);
     pObject = new Object(ObjectId);
-    pDnodeActor->PlayerOut += WearPosition;
-    pDnodeActor->PlayerOut += pObject->Desc1;
+    pDnodeActor->PlayerOut += ConvertStringToCString(WearPosition);
+    pDnodeActor->PlayerOut += ConvertStringToCString(pObject->Desc1);
     pDnodeActor->PlayerOut += "\r\n";
     delete pObject;
     pObject = NULL;
-    PlayerEquFile.ReadString(Stuff);
+    getline(PlayerEquFile, Stuff);
   }
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();      
-  PlayerEquFile.Close();
+  PlayerEquFile.close();
 }
 
 /***********************************************************
@@ -1079,21 +1032,18 @@ void Object::ShowPlayerEqu(Dnode *pDnodeTgt1)
 
 void Object::ShowPlayerInv()
 {
-  CString     ObjectCount;
-  CString     ObjectId;
-  CStdioFile  PlayerObjFile;
-  CString     PlayerObjFileName;
-  CString     Stuff;
-  int         Success;
+  string      ObjectCount;
+  string      ObjectId;
+  ifstream    PlayerObjFile;
+  string      PlayerObjFileName;
+  string      Stuff;
 
   // Open PlayerObj file
   PlayerObjFileName =  PLAYER_OBJ_DIR;
   PlayerObjFileName += pDnodeActor->PlayerName;
   PlayerObjFileName += ".txt";
-  Success = PlayerObjFile.Open(PlayerObjFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-  if(!Success)
+  PlayerObjFile.open(PlayerObjFileName);
+  if (!PlayerObjFile.is_open())
   {
     pDnodeActor->PlayerOut += "\r\n";
     pDnodeActor->PlayerOut += "It is sad, but you have nothing in your inventory.\r\n";
@@ -1104,23 +1054,23 @@ void Object::ShowPlayerInv()
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += "Inventory\r\n";
   pDnodeActor->PlayerOut += "---------\r\n";
-  PlayerObjFile.ReadString(Stuff);
+  getline(PlayerObjFile, Stuff);
   while (Stuff != "")
   {
     ObjectCount = StrGetWord(Stuff, 1);
     ObjectId = StrGetWord(Stuff, 2);
     pObject = new Object(ObjectId);
-    pDnodeActor->PlayerOut += "(" + ObjectCount + ") ";
-    pDnodeActor->PlayerOut += pObject->Desc1;
+    pDnodeActor->PlayerOut += "(" + ConvertStringToCString(ObjectCount) + ") ";
+    pDnodeActor->PlayerOut += ConvertStringToCString(pObject->Desc1);
     pDnodeActor->PlayerOut += "\r\n";
     delete pObject;
     pObject = NULL;
-    PlayerObjFile.ReadString(Stuff);
+    getline(PlayerObjFile, Stuff);
   }
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();      
-  PlayerObjFile.Close();
+  PlayerObjFile.close();
 }
 
 /***********************************************************
@@ -1129,25 +1079,22 @@ void Object::ShowPlayerInv()
 
 void Object::ShowObjsInRoom(Dnode *pDnode)
 {
-  CString     ObjectCount;
-  CString     ObjectId;
-  CStdioFile  RoomObjFile;
-  CString     RoomObjFileName;
-  CString     Stuff;
-  int         Success;
+  string      ObjectCount;
+  string      ObjectId;
+  ifstream    RoomObjFile;
+  string      RoomObjFileName;
+  string      Stuff;
 
   // Open RoomObj file
   RoomObjFileName =  ROOM_OBJ_DIR;
   RoomObjFileName += pDnode->pPlayer->RoomId;
   RoomObjFileName += ".txt";
-  Success = RoomObjFile.Open(RoomObjFileName,
-                  CFile::modeRead |
-                  CFile::typeText);
-  if(!Success)
+  RoomObjFile.open(RoomObjFileName);
+  if (!RoomObjFile.is_open())
   { // No objects in room to display
     return;
   }
-  RoomObjFile.ReadString(Stuff);
+  getline(RoomObjFile, Stuff);
   while (Stuff != "")
   { // For each object in the room
     ObjectCount = StrGetWord(Stuff, 1);
@@ -1157,21 +1104,21 @@ void Object::ShowObjsInRoom(Dnode *pDnode)
     pDnode->PlayerOut += "\r\n";
     if (pObject->Type != "notake")
     { // Should be only 1 NoTake type object in a room, like signs or statues
-      pDnode->PlayerOut += "(" + ObjectCount + ") ";
+      pDnode->PlayerOut += "(" + ConvertStringToCString(ObjectCount) + ") ";
     }
-    pDnode->PlayerOut += pObject->Desc2;
+    pDnode->PlayerOut += ConvertStringToCString(pObject->Desc2);
     delete pObject;
     pObject = NULL;
-    RoomObjFile.ReadString(Stuff);
+    getline(RoomObjFile, Stuff);
   }
-  RoomObjFile.Close();
+  RoomObjFile.close();
 }
 
 /***********************************************************
 * Find an object where ever it is                          *
 ************************************************************/
 
-void Object::WhereObj(CString ObjectIdSearch)
+void Object::WhereObj(string ObjectIdSearch)
 {
   WhereObjPlayerEqu(ObjectIdSearch);
   WhereObjPlayerObj(ObjectIdSearch);
@@ -1182,17 +1129,14 @@ void Object::WhereObj(CString ObjectIdSearch)
 * Where is object in PlayerEqu                               *
 ************************************************************/
 
-void Object::WhereObjPlayerEqu(CString ObjectIdSearch)
+void Object::WhereObjPlayerEqu(string ObjectIdSearch)
 {
-  CFileFind   FileList;
-  CString     FileName;
-  CString     ObjectId;
-  BOOL        MoreFiles;
-  CString     PlayerEquFileName;
-  CStdioFile  PlayerEquFile;
-  CString     PlayerName;
-  CString     Stuff;
-  int         Success;
+  string      FileName;
+  string      ObjectId;
+  string      PlayerEquFileName;
+  ifstream    PlayerEquFile;
+  string      PlayerName;
+  string      Stuff;
 
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += "Objects in player equipment";
@@ -1204,41 +1148,37 @@ void Object::WhereObjPlayerEqu(CString ObjectIdSearch)
     AfxMessageBox("Object::WhereObjPlayerEqu - Change directory to PLAYER_EQU_DIR failed", MB_ICONSTOP);
     _endthread();
   }
-  MoreFiles = FileList.FindFile("*.*");
-  while (MoreFiles)
+  for (const auto &entry : fs::directory_iterator("./"))
   {
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
+    if (entry.is_directory())
     {
       continue;
     }
-    FileName = FileList.GetFileName();
+    FileName = entry.path().filename().string();
     // Open PlayerEqu file
     PlayerEquFileName = FileName;
-    Success = PlayerEquFile.Open(PlayerEquFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-    if(!Success)
+    PlayerEquFile.open(PlayerEquFileName);
+    if (!PlayerEquFile.is_open())
     { // File does not exist - Very bad!
       AfxMessageBox("Object::WhereObjPlayerEqu - Open PlayerEqu file failed", MB_ICONSTOP);
       _endthread();
     }
     PlayerName = StrLeft(FileName, StrGetLength(FileName) - 4);
-    PlayerEquFile.ReadString(Stuff);
+    getline(PlayerEquFile, Stuff);
     while (Stuff != "")
     {
       ObjectId      = StrGetWord(Stuff, 2);
       if (ObjectId == ObjectIdSearch)
       {
-        pDnodeActor->PlayerOut += PlayerName;
+        pDnodeActor->PlayerOut += ConvertStringToCString(PlayerName);
         pDnodeActor->PlayerOut += " ";
-        pDnodeActor->PlayerOut += Stuff;
+        pDnodeActor->PlayerOut += ConvertStringToCString(Stuff);
         pDnodeActor->PlayerOut += "&N";
         pDnodeActor->PlayerOut += "\r\n";
       }
-      PlayerEquFile.ReadString(Stuff);
+      getline(PlayerEquFile, Stuff);
     }
-    PlayerEquFile.Close();
+    PlayerEquFile.close();
   }
   if (ChgDir(HomeDir))
   { // Change directory failed
@@ -1251,17 +1191,14 @@ void Object::WhereObjPlayerEqu(CString ObjectIdSearch)
 * Where is object in PlayerObj                               *
 ************************************************************/
 
-void Object::WhereObjPlayerObj(CString ObjectIdSearch)
+void Object::WhereObjPlayerObj(string ObjectIdSearch)
 {
-  CFileFind  FileList;
-  CString    FileName;
-  CString    ObjectId;
-  BOOL       MoreFiles;
-  CString    PlayerObjFileName;
-  CStdioFile PlayerObjFile;
-  CString    PlayerName;
-  CString    Stuff;
-  int        Success;
+  string     FileName;
+  string     ObjectId;
+  string     PlayerObjFileName;
+  ifstream   PlayerObjFile;
+  string     PlayerName;
+  string     Stuff;
 
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += "Objects in player inventory";
@@ -1273,41 +1210,37 @@ void Object::WhereObjPlayerObj(CString ObjectIdSearch)
     AfxMessageBox("Object::WhereObjPlayerObj - Change directory to PLAYER_OBJ_DIR failed", MB_ICONSTOP);
     _endthread();
   }
-  MoreFiles = FileList.FindFile("*.*");
-  while (MoreFiles)
+  for (const auto &entry : fs::directory_iterator("./"))
   {
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
+    if (entry.is_directory())
     {
       continue;
     }
-    FileName = FileList.GetFileName();
+    FileName = entry.path().filename().string();
     // Open PlayerObj file
     PlayerObjFileName = FileName;
-    Success = PlayerObjFile.Open(PlayerObjFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-    if(!Success)
+    PlayerObjFile.open(PlayerObjFileName);
+    if (!PlayerObjFile.is_open())
     { // File does not exist - Very bad!
       AfxMessageBox("Object::WhereObjPlayerObj - Open PlayerObj file failed", MB_ICONSTOP);
       _endthread();
     }
     PlayerName = StrLeft(FileName, StrGetLength(FileName) - 4);
-    PlayerObjFile.ReadString(Stuff);
+    getline(PlayerObjFile, Stuff);
     while (Stuff != "")
     {
       ObjectId      = StrGetWord(Stuff, 2);
       if (ObjectId == ObjectIdSearch)
       {
-        pDnodeActor->PlayerOut += PlayerName;
+        pDnodeActor->PlayerOut += ConvertStringToCString(PlayerName);
         pDnodeActor->PlayerOut += " ";
-        pDnodeActor->PlayerOut += Stuff;
+        pDnodeActor->PlayerOut += ConvertStringToCString(Stuff);
         pDnodeActor->PlayerOut += "&N";
         pDnodeActor->PlayerOut += "\r\n";
       }
-      PlayerObjFile.ReadString(Stuff);
+      getline(PlayerObjFile, Stuff);
     }
-    PlayerObjFile.Close();
+    PlayerObjFile.close();
   }
   if (ChgDir(HomeDir))
   { // Change directory failed
@@ -1320,18 +1253,14 @@ void Object::WhereObjPlayerObj(CString ObjectIdSearch)
 * Where is object in RoomObj                               *
 ************************************************************/
 
-void Object::WhereObjRoomObj(CString ObjectIdSearch)
+void Object::WhereObjRoomObj(string ObjectIdSearch)
 {
-
-  CFileFind  FileList;
-  CString    FileName;
-  CString    ObjectId;
-  BOOL       MoreFiles;
-  CString    RoomName;
-  CString    RoomObjFileName;
-  CStdioFile RoomObjFile;
-  CString    Stuff;
-  int        Success;
+  string     FileName;
+  string     ObjectId;
+  string     RoomName;
+  string     RoomObjFileName;
+  ifstream   RoomObjFile;
+  string     Stuff;
 
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += "Objects in rooms";
@@ -1343,41 +1272,37 @@ void Object::WhereObjRoomObj(CString ObjectIdSearch)
     AfxMessageBox("Object::WhereObjRoomObj - Change directory to ROOM_OBJ_DIR failed", MB_ICONSTOP);
     _endthread();
   }
-  MoreFiles = FileList.FindFile("*.*");
-  while (MoreFiles)
+  for (const auto &entry : fs::directory_iterator("./"))
   {
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
+    if (entry.is_directory())
     {
       continue;
     }
-    FileName = FileList.GetFileName();
+    FileName = entry.path().filename().string();
     // Open RoomObj file
     RoomObjFileName = FileName;
-    Success = RoomObjFile.Open(RoomObjFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-    if(!Success)
+    RoomObjFile.open(RoomObjFileName);
+    if (!RoomObjFile.is_open())
     { // File does not exist - Very bad!
       AfxMessageBox("Object::WhereObj - Open RoomObj file failed", MB_ICONSTOP);
       _endthread();
     }
     RoomName = StrLeft(FileName, StrGetLength(FileName) - 4);
-    RoomObjFile.ReadString(Stuff);
+    getline(RoomObjFile, Stuff);
     while (Stuff != "")
     { // For each room object
       ObjectId = StrGetWord(Stuff, 2);
       if (ObjectId == ObjectIdSearch)
       { // Match
-        pDnodeActor->PlayerOut += RoomName;
+        pDnodeActor->PlayerOut += ConvertStringToCString(RoomName);
         pDnodeActor->PlayerOut += " ";
-        pDnodeActor->PlayerOut += Stuff;
+        pDnodeActor->PlayerOut += ConvertStringToCString(Stuff);
         pDnodeActor->PlayerOut += "&N";
         pDnodeActor->PlayerOut += "\r\n";
       }
-      RoomObjFile.ReadString(Stuff);
+      getline(RoomObjFile, Stuff);
     }
-    RoomObjFile.Close();
+    RoomObjFile.close();
   }
   if (ChgDir(HomeDir))
   { // Change directory failed
@@ -1394,20 +1319,20 @@ void Object::WhereObjRoomObj(CString ObjectIdSearch)
 * Examine object                                           *
 ************************************************************/
 
-void Object::ExamineObj(CString ObjectId)
+void Object::ExamineObj(string ObjectId)
 {
   OpenFile(ObjectId);
   while (Stuff != "Desc3:")
   {
-    ObjectFile.ReadString(Stuff); // Do not use ReadLine() here
+    getline(ObjectFile, Stuff); // Do not use ReadLine() here
   }
   // Object Description 3
-  ObjectFile.ReadString(Stuff); // Do not use ReadLine() here
+  getline(ObjectFile, Stuff); // Do not use ReadLine() here
   while (Stuff != "End Desc3")
   {
-    pDnodeActor->PlayerOut += Stuff;
+    pDnodeActor->PlayerOut += ConvertStringToCString(Stuff);
     pDnodeActor->PlayerOut += "\r\n";
-    ObjectFile.ReadString(Stuff); // Do not use ReadLine() here
+    getline(ObjectFile, Stuff); // Do not use ReadLine() here
   }
   pDnodeActor->PlayerOut += "&N";
   CloseFile();
@@ -1423,25 +1348,22 @@ void Object::ExamineObj(CString ObjectId)
 
 void Object::CloseFile()
 {
-  ObjectFile.Close();
+  ObjectFile.close();
 }
 
 /***********************************************************
 * Open Object file                                         *
 ************************************************************/
 
-void Object::OpenFile(CString ObjectId)
+void Object::OpenFile(string ObjectId)
 {
-  CString ObjectFileName;
-  int     Success;
+  string  ObjectFileName;
 
   ObjectFileName =  OBJECTS_DIR;
   ObjectFileName += ObjectId;
   ObjectFileName += ".txt";
-  Success = ObjectFile.Open(ObjectFileName,
-                 CFile::modeRead |
-                 CFile::typeText);
-  if(!Success)
+  ObjectFile.open(ObjectFileName);
+  if (ObjectFile.is_open())
   {
     AfxMessageBox("Object::OpenFile - Object does not exist!", MB_ICONSTOP);
     _endthread();
@@ -1488,12 +1410,12 @@ void Object::ParseStuff()
     else
     if (StrLeft(Stuff, 7) == "Weight:")
     {
-      Weight = atoi(StrRight(Stuff, StrGetLength(Stuff) - 7));
+      Weight = stoi(StrRight(Stuff, StrGetLength(Stuff) - 7));
     }
     else
     if (StrLeft(Stuff, 5) == "Cost:")
     {
-      Cost = atoi(StrRight(Stuff, StrGetLength(Stuff) - 5));
+      Cost = stoi(StrRight(Stuff, StrGetLength(Stuff) - 5));
     }
     else
     if (StrLeft(Stuff, 5) == "Type:")
@@ -1504,7 +1426,7 @@ void Object::ParseStuff()
     else
     if (StrLeft(Stuff, 11) == "ArmorValue:")
     {
-      ArmorValue = atoi(StrRight(Stuff, StrGetLength(Stuff) - 11));
+      ArmorValue = stoi(StrRight(Stuff, StrGetLength(Stuff) - 11));
     }
     else
     if (StrLeft(Stuff, 10) == "ArmorWear:")
@@ -1525,17 +1447,17 @@ void Object::ParseStuff()
     else
     if (StrLeft(Stuff, 13) == "WeaponDamage:")
     {
-      WeaponDamage = atoi(StrRight(Stuff, StrGetLength(Stuff) - 13));
+      WeaponDamage = stoi(StrRight(Stuff, StrGetLength(Stuff) - 13));
     }
     else
     if (StrLeft(Stuff, 8) == "FoodPct:")
     {
-      FoodPct = atoi(StrRight(Stuff, StrGetLength(Stuff) - 8));
+      FoodPct = stoi(StrRight(Stuff, StrGetLength(Stuff) - 8));
     }
     else
     if (StrLeft(Stuff, 9) == "DrinkPct:")
     {
-      DrinkPct = atoi(StrRight(Stuff, StrGetLength(Stuff) - 9));
+      DrinkPct = stoi(StrRight(Stuff, StrGetLength(Stuff) - 9));
     }
     ReadLine();
   }
@@ -1547,7 +1469,7 @@ void Object::ParseStuff()
 
 void Object::ReadLine()
 {
-  ObjectFile.ReadString(Stuff);
+  getline(ObjectFile, Stuff);
   Stuff = StrTrimLeft(Stuff);
   Stuff = StrTrimRight(Stuff);
 }

@@ -88,7 +88,7 @@ void Shop::IsShopObj(CString RoomId, CString ObjectName)
       ObjectName = StrMakeLower(ObjectName);
       if (ObjectName == ObjectId)
       { // Found a match
-        pObject = new Object(ObjectId);
+        pObject = new Object(ConvertCStringToString(ObjectId));
         if (pObject)
         { // Object exists
           return;
@@ -129,10 +129,10 @@ void Shop::IsShopObj(CString RoomId, CString ObjectName)
     if (StrGetWord(Stuff, 1) == "item:")
     { // Found an item
       ObjectId = StrGetWord(Stuff, 2);
-      pObject = new Object(ObjectId);
+      pObject = new Object(ConvertCStringToString(ObjectId));
       if (pObject)
       { // Check for a match
-        NamesCheck = pObject->Names;
+        NamesCheck = ConvertStringToCString(pObject->Names);
         NamesCheck = StrMakeLower(NamesCheck);
         Success = StrFind(NamesCheck, ObjectName);
         if (Success != -1)
@@ -230,10 +230,10 @@ void Shop::ListObjects()
     { // Found an item
       ObjectId = StrGetWord(Stuff, 2);
       pObject = NULL;
-      IsObject(ObjectId); // Sets pObject
+      IsObject(ConvertCStringToString(ObjectId)); // Sets pObject
       if (pObject)
       { // Format shop item text
-        sprintf(Buf, "%-45s", (LPCSTR) pObject->Desc1);
+        sprintf(Buf, "%-45s", pObject->Desc1.c_str());
         ShopText = ConvertStringToCString(Buf);
         TmpStr = ShopText;
         i = StrCountChar(TmpStr, '&');

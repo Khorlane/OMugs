@@ -2296,7 +2296,7 @@ void Communication::DoDestroy()
   ObjectName = TmpStr;
   TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
-  IsObjInPlayerInv(ConvertStringToCString(TmpStr)); // Sets pObject
+  IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
   {
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -2310,10 +2310,10 @@ void Communication::DoDestroy()
   //* Destroy object *
   //******************
   // Remove object from player's inventory
-  RemoveObjFromPlayerInv(ConvertCStringToString(pObject->ObjectId), 1);
+  RemoveObjFromPlayerInv(pObject->ObjectId, 1);
   // Send messages
   pDnodeActor->PlayerOut += "You help make the world cleaner by destroying ";
-  pDnodeActor->PlayerOut += pObject->Desc1;
+  pDnodeActor->PlayerOut += ConvertStringToCString(pObject->Desc1);
   pDnodeActor->PlayerOut += ".\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();        
@@ -2393,7 +2393,7 @@ void Communication::DoDrink()
   ObjectName = TmpStr;
   TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
-  IsObjInPlayerInv(ConvertStringToCString(TmpStr)); // Sets pObject
+  IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
   { // Object not found in player's inventory
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -2410,7 +2410,7 @@ void Communication::DoDrink()
   if (pObject->Type != "drink")
   { // Object is not a drink
     pDnodeActor->PlayerOut += "You can't drink ";
-    pDnodeActor->PlayerOut += pObject->Desc1;
+    pDnodeActor->PlayerOut += ConvertStringToCString(pObject->Desc1);
     pDnodeActor->PlayerOut += ".";
     pDnodeActor->PlayerOut += "\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -2422,12 +2422,12 @@ void Communication::DoDrink()
   //****************
   // Send messages
   pDnodeActor->PlayerOut += "You drink from ";
-  pDnodeActor->PlayerOut += pObject->Desc1;
+  pDnodeActor->PlayerOut += ConvertStringToCString(pObject->Desc1);
   pDnodeActor->PlayerOut += ".";
   pDnodeActor->PlayerOut += "\r\n";
   DrinkMsg  = pDnodeActor->PlayerName;
   DrinkMsg += " drinks from ";
-  DrinkMsg += pObject->Desc1;
+  DrinkMsg += ConvertStringToCString(pObject->Desc1);
   DrinkMsg += ".";
   pDnodeSrc = pDnodeActor;
   pDnodeTgt = pDnodeActor;
@@ -2436,7 +2436,7 @@ void Communication::DoDrink()
   pDnodeActor->pPlayer->Drink(pObject->DrinkPct);
   pDnodeActor->pPlayer->Save();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
-  RemoveObjFromPlayerInv(ConvertCStringToString(pObject->ObjectId), 1);
+  RemoveObjFromPlayerInv(pObject->ObjectId, 1);
   // Clean up and give prompt
   delete pObject;
   pObject = NULL;
@@ -2477,7 +2477,7 @@ void Communication::DoDrop()
   ObjectName = TmpStr;
   TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
-  IsObjInPlayerInv(ConvertStringToCString(TmpStr)); // Sets pObject
+  IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
   {
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -2491,10 +2491,10 @@ void Communication::DoDrop()
   //* Drop object *
   //***************
   // Remove object from player's inventory
-  RemoveObjFromPlayerInv(ConvertCStringToString(pObject->ObjectId), 1);
+  RemoveObjFromPlayerInv(pObject->ObjectId, 1);
   // Send messages
   pDnodeActor->PlayerOut += "You drop ";
-  pDnodeActor->PlayerOut += pObject->Desc1;
+  pDnodeActor->PlayerOut += ConvertStringToCString(pObject->Desc1);
   pDnodeActor->PlayerOut += ".";
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
@@ -2507,7 +2507,7 @@ void Communication::DoDrop()
   pDnodeTgt = pDnodeActor;
   SendToRoom(pDnodeActor->pPlayer->RoomId, DropMsg);
   // Add object to room
-  AddObjToRoom(pDnodeActor->pPlayer->RoomId, pObject->ObjectId);
+  AddObjToRoom(ConvertCStringToString(pDnodeActor->pPlayer->RoomId), pObject->ObjectId);
   delete pObject;
   pObject = NULL;
 }
@@ -2545,7 +2545,7 @@ void Communication::DoEat()
   ObjectName = TmpStr;
   TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
-  IsObjInPlayerInv(ConvertStringToCString(TmpStr)); // Sets pObject
+  IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
   {
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -2562,7 +2562,7 @@ void Communication::DoEat()
   if (pObject->Type != "food")
   {
     pDnodeActor->PlayerOut += "You can't eat ";
-    pDnodeActor->PlayerOut += pObject->Desc1;
+    pDnodeActor->PlayerOut += ConvertStringToCString(pObject->Desc1);
     pDnodeActor->PlayerOut += ".";
     pDnodeActor->PlayerOut += "\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -2574,7 +2574,7 @@ void Communication::DoEat()
   //**************
   // Send messages
   pDnodeActor->PlayerOut += "You eat ";
-  pDnodeActor->PlayerOut += pObject->Desc1;
+  pDnodeActor->PlayerOut += ConvertStringToCString(pObject->Desc1);
   pDnodeActor->PlayerOut += ".";
   pDnodeActor->PlayerOut += "\r\n";
   EatMsg  = pDnodeActor->PlayerName;
@@ -2588,7 +2588,7 @@ void Communication::DoEat()
   pDnodeActor->pPlayer->Eat(pObject->FoodPct);
   pDnodeActor->pPlayer->Save();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
-  RemoveObjFromPlayerInv(ConvertCStringToString(pObject->ObjectId), 1);
+  RemoveObjFromPlayerInv(pObject->ObjectId, 1);
   // Clean up and give prompt
   delete pObject;
   pObject = NULL;
@@ -2698,7 +2698,7 @@ void Communication::DoExamine()
   TmpStr = StrMakeLower(TmpStr);
   // Check room
   pObject = NULL;
-  IsObjInRoom(ConvertStringToCString(TmpStr)); // Sets pObject
+  IsObjInRoom(TmpStr); // Sets pObject
   if (pObject)
   { // Object is in the room
     ObjectFound = true;
@@ -2706,7 +2706,7 @@ void Communication::DoExamine()
   else
   { // Check player inventory
     pObject = NULL;
-    IsObjInPlayerInv(ConvertStringToCString(TmpStr)); // Sets pObject
+    IsObjInPlayerInv(TmpStr); // Sets pObject
     if (pObject)
     { // Object is in player's inventory
       ObjectFound = true;
@@ -2714,7 +2714,7 @@ void Communication::DoExamine()
     else
     { // Check player equipment
       pObject = NULL;
-      IsObjInPlayerEqu(ConvertStringToCString(TmpStr)); // Sets pObject
+      IsObjInPlayerEqu(TmpStr); // Sets pObject
       if (pObject)
       { // Object is in player's equipment
         ObjectFound = true;
@@ -2735,19 +2735,19 @@ void Communication::DoExamine()
   //************************************
   // Send messages
   pDnodeActor->PlayerOut += "You examine ";
-  pDnodeActor->PlayerOut += pObject->Desc1;
+  pDnodeActor->PlayerOut += ConvertStringToCString(pObject->Desc1);
   pDnodeActor->PlayerOut += ".";
   pDnodeActor->PlayerOut += "\r\n";
   // Examine object
   pDnodeActor->PlayerOut += "Object type: ";
-  pDnodeActor->PlayerOut += pObject->Type;
+  pDnodeActor->PlayerOut += ConvertStringToCString(pObject->Type);
   pDnodeActor->PlayerOut += "\r\n";
   ObjectType = pObject->Type;
   ObjectType = StrMakeLower(ObjectType);
   if (ObjectType == "weapon")
   { // Object is a weapon
     pDnodeActor->PlayerOut += "Weapon type: ";
-    pDnodeActor->PlayerOut += pObject->WeaponType;
+    pDnodeActor->PlayerOut += ConvertStringToCString(pObject->WeaponType);
     pDnodeActor->PlayerOut += "\r\n";
   }
   pObject->ExamineObj(pObject->ObjectId);
@@ -3137,7 +3137,7 @@ void Communication::DoGet()
   ObjectName = TmpStr;
   TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
-  IsObjInRoom(ConvertStringToCString(TmpStr)); // Sets pObject
+  IsObjInRoom(TmpStr); // Sets pObject
   if (!pObject)
   {
     pDnodeActor->PlayerOut += "There doesn't seem to be a(n) ";
@@ -3164,7 +3164,7 @@ void Communication::DoGet()
   RemoveObjFromRoom(pObject->ObjectId);
   // Send messages
   pDnodeActor->PlayerOut += "You get ";
-  pDnodeActor->PlayerOut += pObject->Desc1;
+  pDnodeActor->PlayerOut += ConvertStringToCString(pObject->Desc1);
   pDnodeActor->PlayerOut += ".\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -3176,7 +3176,7 @@ void Communication::DoGet()
   pDnodeTgt = pDnodeActor;
   SendToRoom(pDnodeActor->pPlayer->RoomId, GetMsg);
   // Add object to player's inventory
-  AddObjToPlayerInv(pDnodeTgt, ConvertCStringToString(pObject->ObjectId));
+  AddObjToPlayerInv(pDnodeTgt, pObject->ObjectId);
   delete pObject;
   pObject = NULL;
 }
@@ -3225,7 +3225,7 @@ void Communication::DoGive()
   ObjectName = TmpStr;
   TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
-  IsObjInPlayerInv(ConvertStringToCString(TmpStr)); // Sets pObject
+  IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
   { // Player does not have object
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -3284,7 +3284,7 @@ void Communication::DoGive()
   //* Send to player *
   //******************
   pDnodeActor->PlayerOut += "You give ";
-  pDnodeActor->PlayerOut += pObject->Desc1;
+  pDnodeActor->PlayerOut += ConvertStringToCString(pObject->Desc1);
   pDnodeActor->PlayerOut += " to ";
   pDnodeActor->PlayerOut += pDnodeTgt->pPlayer->Name;
   pDnodeActor->PlayerOut += ".\r\n";
@@ -3296,7 +3296,7 @@ void Communication::DoGive()
   pDnodeTgt->PlayerOut += "\r\n";
   pDnodeTgt->PlayerOut += pDnodeActor->pPlayer->Name;
   pDnodeTgt->PlayerOut += " gives you ";
-  pDnodeTgt->PlayerOut += pObject->Desc1;
+  pDnodeTgt->PlayerOut += ConvertStringToCString(pObject->Desc1);
   pDnodeTgt->PlayerOut += ".\r\n";
   pDnodeTgt->pPlayer->CreatePrompt();
   pDnodeTgt->PlayerOut += pDnodeTgt->pPlayer->GetOutput();  
@@ -3314,8 +3314,8 @@ void Communication::DoGive()
   //*****************************
   //* Transfer object ownership *
   //*****************************
-  RemoveObjFromPlayerInv(ConvertCStringToString(pObject->ObjectId), 1);
-  AddObjToPlayerInv(pDnodeTgt, ConvertCStringToString(pObject->ObjectId));
+  RemoveObjFromPlayerInv(pObject->ObjectId, 1);
+  AddObjToPlayerInv(pDnodeTgt, pObject->ObjectId);
   delete pObject;
   pObject = NULL;
 }
@@ -4307,7 +4307,7 @@ void Communication::DoLoad()
   { // Loading an object
     ObjectId = StrGetWord(CmdStr, 3);
     pObject = NULL;
-    IsObject(ConvertStringToCString(ObjectId)); // Sets pObject
+    IsObject(ObjectId); // Sets pObject
     if (!pObject)
     { // Object does not exist
       pDnodeActor->PlayerOut += "Object not found.\r\n";
@@ -4809,7 +4809,7 @@ void Communication::DoRemove()
   ObjectName = TmpStr;
   TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
-  IsObjInPlayerEqu(ConvertStringToCString(TmpStr)); // Sets pObject
+  IsObjInPlayerEqu(TmpStr); // Sets pObject
   if (!pObject)
   { // Object not in equipment
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -4822,10 +4822,10 @@ void Communication::DoRemove()
   // Decrease player's ArmorClass
   pDnodeActor->pPlayer->ArmorClass -= pObject->ArmorValue;
   // Remove object from player's equipment
-  RemoveObjFromPlayerEqu(ConvertCStringToString(pObject->ObjectId));
+  RemoveObjFromPlayerEqu(pObject->ObjectId);
   // Send remove message to player
   pDnodeActor->PlayerOut += "You remove ";
-  pDnodeActor->PlayerOut += pObject->Desc1;
+  pDnodeActor->PlayerOut += ConvertStringToCString(pObject->Desc1);
   pDnodeActor->PlayerOut += ".\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -4838,7 +4838,7 @@ void Communication::DoRemove()
   pDnodeTgt = pDnodeActor;
   SendToRoom(pDnodeActor->pPlayer->RoomId, RemoveMsg);
   // Add object to player's inventory
-  AddObjToPlayerInv(pDnodeTgt, ConvertCStringToString(pObject->ObjectId));
+  AddObjToPlayerInv(pDnodeTgt, pObject->ObjectId);
   TmpStr = pObject->Type;
   TmpStr = StrMakeLower(TmpStr);
   if (TmpStr == "weapon")
@@ -5073,7 +5073,7 @@ void Communication::DoSell()
     return;
   }
   pObject = NULL;
-  IsObjInPlayerInv(ConvertStringToCString(ObjectName)); // Sets pObject
+  IsObjInPlayerInv(ObjectName); // Sets pObject
   if (!pObject)
   { // Player doesn't have object
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -6055,7 +6055,7 @@ void Communication::DoWear()
   ObjectName = TmpStr;
   TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
-  IsObjInPlayerInv(ConvertStringToCString(TmpStr)); // Sets pObject
+  IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
   { // Player does not have object in inventory
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -6069,7 +6069,7 @@ void Communication::DoWear()
   if (pObject->Type != "armor")
   { // Player can't wear stuff that is NOT armor
     pDnodeActor->PlayerOut += "You can't wear ";
-    pDnodeActor->PlayerOut += pObject->Desc1;
+    pDnodeActor->PlayerOut += ConvertStringToCString(pObject->Desc1);
     pDnodeActor->PlayerOut += ".\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -6078,7 +6078,7 @@ void Communication::DoWear()
     return;
   }
   // Handle wear positions that require left or right
-  if (IsWord(pObject->WearPosition,"ear wrist finger ankle"))
+  if (IsWord(ConvertStringToCString(pObject->WearPosition), ConvertStringToCString("ear wrist finger ankle")))
   { // Object must be worn using left and right
     TmpStr = StrGetWord(CmdStr, 3);
     TmpStr = StrMakeLower(TmpStr);
@@ -6098,11 +6098,11 @@ void Communication::DoWear()
   //* Wear object *
   //***************
   // Add object to player's equipment
-  WearFailed = AddObjToPlayerEqu(ConvertCStringToString(pObject->WearPosition), ConvertCStringToString(pObject->ObjectId));
+  WearFailed = AddObjToPlayerEqu(pObject->WearPosition, pObject->ObjectId);
   if (WearFailed)
   { // Already wearing an object in that wear position
     pDnodeActor->PlayerOut += "You fail to wear ";
-    pDnodeActor->PlayerOut += pObject->Desc1;
+    pDnodeActor->PlayerOut += ConvertStringToCString(pObject->Desc1);
     pDnodeActor->PlayerOut += ".";
     pDnodeActor->PlayerOut += "\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -6114,15 +6114,15 @@ void Communication::DoWear()
   // Increase player's ArmorClass
   pDnodeActor->pPlayer->ArmorClass += pObject->ArmorValue;
   // Remove object from player's inventory
-  RemoveObjFromPlayerInv(ConvertCStringToString(pObject->ObjectId), 1);
+  RemoveObjFromPlayerInv(pObject->ObjectId, 1);
   // Send messages
   pDnodeActor->PlayerOut += "You wear ";
-  pDnodeActor->PlayerOut += pObject->Desc1;
+  pDnodeActor->PlayerOut += ConvertStringToCString(pObject->Desc1);
   pDnodeActor->PlayerOut += ".";
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
-  WearMsg = pDnodeActor->PlayerName + " wears " + pObject->Desc1 + ".";
+  WearMsg = pDnodeActor->PlayerName + " wears " + ConvertStringToCString(pObject->Desc1) + ".";
   pDnodeSrc = pDnodeActor;
   pDnodeTgt = pDnodeActor;
   SendToRoom(pDnodeActor->pPlayer->RoomId, WearMsg);
@@ -6167,10 +6167,10 @@ void Communication::DoWhere()
   else
   {
     pObject = NULL;
-    IsObject(ConvertStringToCString(SearchId)); // Sets pObject
+    IsObject(SearchId); // Sets pObject
     if (pObject)
     { // Find Objects
-      WhereObj(ConvertStringToCString(SearchId));
+      WhereObj(SearchId);
     }
     else
     { // Could not find it
@@ -6281,7 +6281,7 @@ void Communication::DoWield()
   ObjectName = TmpStr;
   TmpStr = StrMakeLower(TmpStr);
   pObject = NULL;
-  IsObjInPlayerInv(ConvertStringToCString(TmpStr)); // Sets pObject
+  IsObjInPlayerInv(TmpStr); // Sets pObject
   if (!pObject)
   { // Player does not have object in inventory
     pDnodeActor->PlayerOut += "You don't have a(n) ";
@@ -6308,7 +6308,7 @@ void Communication::DoWield()
   //* Wield the weapon *
   //********************
   // Add object to player's equipment
-  WieldFailed = AddObjToPlayerEqu(ConvertCStringToString(pObject->WearPosition), ConvertCStringToString(pObject->ObjectId));
+  WieldFailed = AddObjToPlayerEqu(pObject->WearPosition, pObject->ObjectId);
   if (WieldFailed)
   { // Already wielding a weapon
     pDnodeActor->PlayerOut += "You are already wielding a weapon";
@@ -6320,10 +6320,10 @@ void Communication::DoWield()
     return;
   }
   // Remove object from player's inventory
-  RemoveObjFromPlayerInv(ConvertCStringToString(pObject->ObjectId), 1);
+  RemoveObjFromPlayerInv(pObject->ObjectId, 1);
   // Send messages
   pDnodeActor->PlayerOut += "You wield ";
-  pDnodeActor->PlayerOut += pObject->Desc1;
+  pDnodeActor->PlayerOut += ConvertStringToCString(pObject->Desc1);
   pDnodeActor->PlayerOut += ".";
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
@@ -6338,8 +6338,8 @@ void Communication::DoWield()
   SendToRoom(pDnodeActor->pPlayer->RoomId, WieldMsg);
   // Set player's weapon info
   pDnodeActor->pPlayer->WeaponDamage = pObject->WeaponDamage;
-  pDnodeActor->pPlayer->WeaponDesc1  = pObject->Desc1;
-  pDnodeActor->pPlayer->WeaponType   = pObject->WeaponType;
+  pDnodeActor->pPlayer->WeaponDesc1  = ConvertStringToCString(pObject->Desc1);
+  pDnodeActor->pPlayer->WeaponType   = ConvertStringToCString(pObject->WeaponType);
   pDnodeActor->pPlayer->Save();
   delete pObject;
   pObject = NULL;
@@ -7390,7 +7390,7 @@ bool Communication::ViolenceMobileLootHandOut(string Loot)
     if (Chance < Percent)
     { // Random number came up less than 'percent chance of getting loot'
       pObject = NULL;
-      IsObject(ConvertStringToCString(ObjectId)); // Sets pObject
+      IsObject(ObjectId); // Sets pObject
       if (!pObject)
       { // Object does not exist, Log it
         LogBuf += "Loot object not found";
@@ -7401,7 +7401,7 @@ bool Communication::ViolenceMobileLootHandOut(string Loot)
       // Tell player what they got
       pDnodeActor->PlayerOut += "\r\n";
       pDnodeActor->PlayerOut += "You loot ";
-      pDnodeActor->PlayerOut += pObject->Desc1;
+      pDnodeActor->PlayerOut += ConvertStringToCString(pObject->Desc1);
       pDnodeActor->PlayerOut += ".";
       // If player is in a group, let other group members know what they looted
       pPlayerGrpLdr = pDnodeActor->pPlayer->pPlayerGrpMember[0];
@@ -7417,7 +7417,7 @@ bool Communication::ViolenceMobileLootHandOut(string Loot)
               pDnodeGrpMem->PlayerOut += "\r\n";
               pDnodeGrpMem->PlayerOut += pDnodeActor->PlayerName;
               pDnodeGrpMem->PlayerOut += " looted ";
-              pDnodeGrpMem->PlayerOut += pObject->Desc1;
+              pDnodeGrpMem->PlayerOut += ConvertStringToCString(pObject->Desc1);
               pDnodeGrpMem->PlayerOut += ".";
             }
           }

@@ -153,8 +153,6 @@ void BigDog()
 * Globals                                                  *
 ************************************************************/
 
-vector<string> MyStringVector;
-
 void AppTestCode()
 {
   // Put test code here. It will be executed first, even before dialogs are presented.
@@ -678,7 +676,7 @@ void AddObjToPlayerInv(Dnode* pDnodeTgt1, string ObjectId)
   Object::AddObjToPlayerInv(pDnodeTgt1, ObjectId);
 }
 
-void AddObjToRoom(CString RoomId, CString ObjectId)
+void AddObjToRoom(string RoomId, string ObjectId)
 {
   Object::AddObjToRoom(RoomId, ObjectId);
 }
@@ -948,22 +946,22 @@ bool IsNotWord(CString Word, CString WordList)
   return Utility::IsNotWord(Word, WordList);
 }
 
-void IsObjInPlayerEqu(CString ObjectName)
+void IsObjInPlayerEqu(string ObjectName)
 {
   Object::IsObjInPlayerEqu(ObjectName);
 }
 
-void IsObjInPlayerInv(CString ObjectName)
+void IsObjInPlayerInv(string ObjectName)
 {
   Object::IsObjInPlayerInv(ObjectName);
 }
 
-void IsObjInRoom(CString ObjectName)
+void IsObjInRoom(string ObjectName)
 {
   Object::IsObjInRoom(ObjectName);
 }
 
-void IsObject(CString ObjectId)
+void IsObject(string ObjectId)
 {
   Object::IsObject(ObjectId);
 }
@@ -1058,7 +1056,7 @@ void RemoveObjFromPlayerInv(string ObjectId, int Count)
   Object::RemoveObjFromPlayerInv(ObjectId, Count);
 }
 
-void RemoveObjFromRoom(CString ObjectId)
+void RemoveObjFromRoom(string ObjectId)
 {
   Object::RemoveObjFromRoom(ObjectId);
 }
@@ -1168,7 +1166,7 @@ void WhereMob(CString MobileIdSearch)
   Mobile::WhereMob(MobileIdSearch);
 }
 
-void WhereObj(CString ObjectIdSearch)
+void WhereObj(string ObjectIdSearch)
 {
   Object::WhereObj(ObjectIdSearch);
 }

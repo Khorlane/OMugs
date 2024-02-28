@@ -31,57 +31,57 @@ class Object
   public:
     static  bool    AddObjToPlayerEqu(string WearPosition, string ObjectId);
     static  void    AddObjToPlayerInv(Dnode *pDnodeTgt, string ObjectId);
-    static  void    AddObjToRoom(CString RoomId, CString ObjectId);
+    static  void    AddObjToRoom(string RoomId, string ObjectId);
     static  int     CalcPlayerArmorClass();
-    static  void    IsObjInPlayerEqu(CString ObjectName);
-    static  void    IsObjInPlayerInv(CString ObjectName);
-    static  void    IsObjInRoom(CString ObjectName);
-    static  void    IsObject(CString ObjectId);
+    static  void    IsObjInPlayerEqu(string ObjectName);
+    static  void    IsObjInPlayerInv(string ObjectName);
+    static  void    IsObjInRoom(string ObjectName);
+    static  void    IsObject(string ObjectId);
     static  void    RemoveObjFromPlayerEqu(string ObjectId);
     static  void    RemoveObjFromPlayerInv(string ObjectId, int Count);
-    static  void    RemoveObjFromRoom(CString ObjectId);
+    static  void    RemoveObjFromRoom(string ObjectId);
     static  void    ShowPlayerEqu(Dnode *pDnodeTgt);
     static  void    ShowPlayerInv();
     static  void    ShowObjsInRoom(Dnode *pDnode);
-    static  void    WhereObj(CString ObjectIdSearch);
-    static  void    WhereObjPlayerEqu(CString ObjectIdSearch);
-    static  void    WhereObjPlayerObj(CString ObjectIdSearch);
-    static  void    WhereObjRoomObj(CString ObjectIdSearch);
+    static  void    WhereObj(string ObjectIdSearch);
+    static  void    WhereObjPlayerEqu(string ObjectIdSearch);
+    static  void    WhereObjPlayerObj(string ObjectIdSearch);
+    static  void    WhereObjRoomObj(string ObjectIdSearch);
 
 // Public functions
   public:
-    Object(CString ObjectId);
+    Object(string ObjectId);
     ~Object();
-    void            ExamineObj(CString ObjectId);
+    void            ExamineObj(string ObjectId);
 
 // Private functions
   private:
     void            CloseFile();
-    void            OpenFile(CString ObjectId);
+    void            OpenFile(string ObjectId);
     void            ParseStuff();
     void            ReadLine();
 
 // Public variables
   public:
     int             ArmorValue;
-    CString         ArmorWear;
+    string          ArmorWear;
     int             ContainerCapacity;
     int             Cost;
-    CString         Count;
-    CString         Desc1;
-    CString         Desc2;
-    CString         Desc3;
+    string          Count;
+    string          Desc1;
+    string          Desc2;
+    string          Desc3;
     int             DrinkPct;
     int             FoodPct;
     int             LightHours;
-    CStdioFile      ObjectFile;
-    CString         ObjectId;
-    CString         Names;
-    CString         Stuff;
-    CString         Type;
-    CString         WeaponType;
+    ifstream        ObjectFile;
+    string          ObjectId;
+    string          Names;
+    string          Stuff;
+    string          Type;
+    string          WeaponType;
     int             WeaponDamage;
-    CString         WearPosition;
+    string          WearPosition;
     int             Weight;
 };
 

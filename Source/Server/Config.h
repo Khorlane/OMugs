@@ -248,7 +248,7 @@ struct ResWordStruct
 // Functions
 void    AddMobToRoom(CString RoomId, CString MobileId);
 bool    AddObjToPlayerEqu(string WearPosition, string ObjectId);
-void    AddObjToRoom(CString RoomId, CString ObjectId);
+void    AddObjToRoom(string RoomId, string ObjectId);
 void    AdvanceTime();
 void    AppendIt();
 void    AppTestCode();
@@ -304,10 +304,10 @@ bool    IsHelp();
 bool    IsMobileIdInRoom(CString RoomId, CString MobileId);
 bool    IsNameValid(CString Name);
 bool    IsNotWord(CString Word, CString WordList);
-void    IsObjInPlayerEqu(CString ObjectName);
-void    IsObjInPlayerInv(CString ObjectName);
-void    IsObjInRoom(CString ObjectName);
-void    IsObject(CString ObjectId);
+void    IsObjInPlayerEqu(string ObjectName);
+void    IsObjInPlayerInv(string ObjectName);
+void    IsObjInRoom(string ObjectName);
+void    IsObject(string ObjectId);
 bool    IsPlayer(CString PlayerName);
 bool    IsRoom(string RoomId);
 bool    IsRoomType(string RoomId, string RoomType);
@@ -328,7 +328,7 @@ error_code Remove(string File1);
 void    RemoveMobFromRoom(CString RoomId, CString MobileId);
 void    RemoveObjFromPlayerEqu(string ObjectId);
 void    RemoveObjFromPlayerInv(string ObjectId, int Count);
-void    RemoveObjFromRoom(CString ObjectId);
+void    RemoveObjFromRoom(string ObjectId);
 error_code Rename(string File1, string File2);
 void    SendToRoom(CString TargetRoomId, CString MsgText);
 void    SendToRoom(string TargetRoomId, string MsgText);
@@ -398,7 +398,7 @@ bool    ValidateIt(CString ValidationType);
 CString WhackMobile(CString PlayerName, int DamageToMobile, CString MobileDesc1, CString WeaponType);
 CString WhackPlayer(CString MobileDesc1, CString MobileAttack, int DamageToPlayer);
 void    WhereMob(CString MobileIdSearch);
-void    WhereObj(CString ObjectIdSearch);
+void    WhereObj(string ObjectIdSearch);
 int     WordCount(CString String);
 
 // Variables
@@ -408,6 +408,7 @@ inline CString        CmdStr;
 inline unsigned char  CurrentLineNumber;
 inline error_code     ErrorCode;
 inline string         HomeDir;
+inline string         LogBuf;
 inline CString        MudCmd;
 inline float          PACMN;                // Percent Armor Class Magic Number
 inline string         ScriptFileName;
