@@ -1802,8 +1802,8 @@ void Communication::DoBuy()
   { // Player is fighting, send msg, command is not done
     return;
   }
-  RoomId = pDnodeActor->pPlayer->RoomId;
-  if (!IsShop(ConvertStringToCString(RoomId)))
+  RoomId = ConvertCStringToString(pDnodeActor->pPlayer->RoomId);
+  if (!IsShop(RoomId))
   { // Room is not a shop
     pDnodeActor->PlayerOut += "Find a shop.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -1829,7 +1829,7 @@ void Communication::DoBuy()
     return;
   }
   pObject = NULL;
-  IsShopObj(ConvertStringToCString(RoomId), ConvertStringToCString(ObjectName)); // Sets pObject
+  IsShopObj(RoomId, ObjectName); // Sets pObject
   if (!pObject)
   { // Object not in shop for player to buy
     pDnodeActor->PlayerOut += "That item cannot be bought here.";
@@ -4245,7 +4245,7 @@ void Communication::DoList()
   { // Player is fighting, send msg, command is not done
     return;
   }
-  if (!IsShop(pDnodeActor->pPlayer->RoomId))
+  if (!IsShop(ConvertCStringToString(pDnodeActor->pPlayer->RoomId)))
   { // Room is not a shop
     pDnodeActor->PlayerOut += "Find a shop.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -5054,8 +5054,8 @@ void Communication::DoSell()
   { // Player is fighting, send msg, command is not done
     return;
   }
-  RoomId = pDnodeActor->pPlayer->RoomId;
-  if (!IsShop(ConvertStringToCString(RoomId)))
+  RoomId = ConvertCStringToString(pDnodeActor->pPlayer->RoomId);
+  if (!IsShop(RoomId))
   { // Room is not a shop
     pDnodeActor->PlayerOut += "Find a shop.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -5089,7 +5089,7 @@ void Communication::DoSell()
   Cost        = pObject->Cost;
   InvCountStr = pObject->Count;
   pObject     = NULL;
-  IsShopObj(ConvertStringToCString(RoomId), ConvertStringToCString(ObjectName)); // Sets pObject
+  IsShopObj(RoomId, ObjectName); // Sets pObject
   if (!pObject)
   { // Player cannot sell object to this shop
     pDnodeActor->PlayerOut += "That item cannot be sold here.";

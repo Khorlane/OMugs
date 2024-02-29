@@ -981,12 +981,12 @@ bool IsRoomType(string RoomId, string RoomType)
   return Room::IsRoomType(RoomId, RoomType);
 }
 
-bool IsShop(CString RoomId)
+bool IsShop(string RoomId)
 {
   return Shop::IsShop(RoomId);
 }
 
-void IsShopObj(CString RoomId, CString ObjectName)
+void IsShopObj(string RoomId, string ObjectName)
 {
   Shop::IsShopObj(RoomId, ObjectName);
 }

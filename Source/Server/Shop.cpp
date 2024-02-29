@@ -29,21 +29,18 @@
  * Is a valid shop?                                        *
  ***********************************************************/
 
-bool Shop::IsShop(CString RoomId)
+bool Shop::IsShop(string RoomId)
 {
-  CString    ShopFileName;
-  CStdioFile ShopFile;
-  int        Success;
+  string    ShopFileName;
+  ifstream   ShopFile;
   
   ShopFileName = SHOPS_DIR;
   ShopFileName += RoomId + ".txt";
-  Success = ShopFile.Open(ShopFileName,
-            CFile::modeRead |
-            CFile::typeText);
-  if(Success)
+  ShopFile.open(ShopFileName);
+  if (!ShopFile.is_open())
   {
     return true;
-    ShopFile.Close();
+    ShopFile.close();
   }
   else
   {
@@ -55,28 +52,26 @@ bool Shop::IsShop(CString RoomId)
  * Is this shop buying and selling this object?            *
  ***********************************************************/
 
-void Shop::IsShopObj(CString RoomId, CString ObjectName)
+void Shop::IsShopObj(string RoomId, string ObjectName)
 {
-  CString     LogBuf;
-  CString     NamesCheck;
-  CString     ObjectId;
-  CString     ShopFileName;
-  CStdioFile  ShopFile;
-  CString     ShopText;
-  CString     Stuff;
-  int         Success;
+  string      LogBuf;
+  string      NamesCheck;
+  string      ObjectId;
+  int         Result;
+  string      ShopFileName;
+  ifstream    ShopFile;
+  string      ShopText;
+  string      Stuff;
 
   ShopFileName = SHOPS_DIR;
   ShopFileName += RoomId + ".txt";
-  Success = ShopFile.Open(ShopFileName,
-               CFile::modeRead |
-               CFile::typeText);
-  if(!Success)
+  ShopFile.open(ShopFileName);
+  if (!ShopFile.is_open())
   { // No such file???, But there should be, This is bad!
     AfxMessageBox("Shop::IsShopObj - Shop does not exist", MB_ICONSTOP);
     _endthread();
   }
-  ShopFile.ReadString(Stuff);
+  getline(ShopFile, Stuff);
   while (Stuff != "End of Items")
   { // Read 'item' lines in ShopFile
     Stuff = StrTrimLeft(Stuff);
@@ -88,7 +83,7 @@ void Shop::IsShopObj(CString RoomId, CString ObjectName)
       ObjectName = StrMakeLower(ObjectName);
       if (ObjectName == ObjectId)
       { // Found a match
-        pObject = new Object(ConvertCStringToString(ObjectId));
+        pObject = new Object(ObjectId);
         if (pObject)
         { // Object exists
           return;
@@ -105,22 +100,20 @@ void Shop::IsShopObj(CString RoomId, CString ObjectName)
         }
       }
     }
-    ShopFile.ReadString(Stuff);
+    getline(ShopFile, Stuff);;
   }
   // Object not found in shop item list
-  ShopFile.Close();
+  ShopFile.close();
   //***************************************************
   //* No match found, try getting match using 'names' *
   //***************************************************
-  Success = ShopFile.Open(ShopFileName,
-               CFile::modeRead |
-               CFile::typeText);
-  if(!Success)
+  ShopFile.open(ShopFileName);
+  if (!ShopFile.is_open())
   { // No such file???, But there should be, This is bad!
     AfxMessageBox("Shop::IsShopObj - Shop does not exist", MB_ICONSTOP);
     _endthread();
   }
-  ShopFile.ReadString(Stuff);
+  getline(ShopFile, Stuff);
   while (Stuff != "End of Items")
   { // Read 'item' lines in ShopFile
     Stuff = StrTrimLeft(Stuff);
@@ -129,15 +122,15 @@ void Shop::IsShopObj(CString RoomId, CString ObjectName)
     if (StrGetWord(Stuff, 1) == "item:")
     { // Found an item
       ObjectId = StrGetWord(Stuff, 2);
-      pObject = new Object(ConvertCStringToString(ObjectId));
+      pObject = new Object(ObjectId);
       if (pObject)
       { // Check for a match
         NamesCheck = ConvertStringToCString(pObject->Names);
         NamesCheck = StrMakeLower(NamesCheck);
-        Success = StrFind(NamesCheck, ObjectName);
-        if (Success != -1)
+        Result = StrFind(NamesCheck, ObjectName);
+        if (Result != -1)
         { // Match, Object found in this shop
-          ShopFile.Close();
+          ShopFile.close();
           return;
         }
         else
@@ -156,9 +149,9 @@ void Shop::IsShopObj(CString RoomId, CString ObjectName)
         pObject = NULL;
       }
     }
-    ShopFile.ReadString(Stuff);
+    getline(ShopFile, Stuff);
   }
-  ShopFile.Close();
+  ShopFile.close();
   // No match found, Object is not buyable from this shop
   return;
 }

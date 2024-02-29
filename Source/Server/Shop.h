@@ -31,8 +31,8 @@ class Shop
 
 // Public functions static
   public:
-    static  bool    IsShop(CString RoomId);
-    static  void    IsShopObj(CString RoomId, CString ObjectName);
+    static  bool    IsShop(string RoomId);
+    static  void    IsShopObj(string RoomId, string ObjectName);
     static  void    ListObjects();
 };
 
