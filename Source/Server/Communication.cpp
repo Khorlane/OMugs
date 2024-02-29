@@ -1772,7 +1772,7 @@ void Communication::DoAssist()
   //**************************
   //* Make the assist happen *
   //**************************
-  MobileId = GetPlayerMobMobileId(pDnodeTgt->PlayerName);
+  MobileId = GetPlayerMobMobileId(ConvertCStringToString(pDnodeTgt->PlayerName));
   CreatePlayerMob(pDnodeActor->PlayerName, ConvertStringToCString(MobileId));
   pDnodeActor->PlayerStateFighting = true;
 }
@@ -2838,7 +2838,7 @@ void Communication::DoFlee()
   }
   PlayerName1 = pDnodeActor->PlayerName;
   // Get mobile id for mob that fleeing player was fighting
-  MobileIdSave = GetPlayerMobMobileId(ConvertStringToCString(PlayerName1));
+  MobileIdSave = GetPlayerMobMobileId(PlayerName1);
   // Delete PlayerMob file -- player is no longer attacking mob
   DeletePlayerMob(ConvertStringToCString(PlayerName1));
   // See if a mob is whacking player
@@ -2862,7 +2862,7 @@ void Communication::DoFlee()
       if (RoomIdBeforeFleeing == ConvertCStringToString(pDnodeOthers->pPlayer->RoomId))
       { // In the same room
         PlayerName2 = pDnodeOthers->PlayerName;
-        MobileId = GetPlayerMobMobileId(ConvertStringToCString(PlayerName2));
+        MobileId = GetPlayerMobMobileId(PlayerName2);
         DeleteMobPlayer(ConvertStringToCString(PlayerName1), ConvertStringToCString(MobileId));
         if (MobileId == MobileIdSave)
         { // Add player to candidate list for MobileIdSave
@@ -7142,15 +7142,15 @@ void Communication::ViolenceMobile()
 
   i = 0;
   i++;
-  MobileId = GetMobPlayerMobileId(pDnodeActor->PlayerName, i);
+  MobileId = GetMobPlayerMobileId(ConvertCStringToString(pDnodeActor->PlayerName), i);
   while (MobileId != "No more mobiles")
   { // For each mob whacking the player
     PAC               = pDnodeActor->pPlayer->ArmorClass;
-    MobileAttack      = ConvertCStringToString(GetMobileAttack(ConvertStringToCString(MobileId)));
-    MobileDamage      = GetMobileDamage(ConvertStringToCString(MobileId));
-    MobileDesc1       = ConvertCStringToString(GetMobileDesc1(ConvertStringToCString(MobileId)));
+    MobileAttack      = GetMobileAttack(MobileId);
+    MobileDamage      = GetMobileDamage(MobileId);
+    MobileDesc1       = GetMobileDesc1(MobileId);
     DamageToPlayer    = CalcDamageToPlayer(MobileDamage, PAC);
-    PlayerBeenWhacked = ConvertCStringToString(WhackPlayer(ConvertStringToCString(MobileDesc1), ConvertStringToCString(MobileAttack), DamageToPlayer));
+    PlayerBeenWhacked = WhackPlayer(MobileDesc1, MobileAttack, DamageToPlayer);
     pDnodeActor->pPlayer->HitPoints -= DamageToPlayer;
     HitPoints = pDnodeActor->pPlayer->HitPoints;
     // Calculate health percentage
@@ -7167,7 +7167,7 @@ void Communication::ViolenceMobile()
       return;
     }
     i++;
-    MobileId = GetMobPlayerMobileId(pDnodeActor->PlayerName, i);
+    MobileId = GetMobPlayerMobileId(ConvertCStringToString(pDnodeActor->PlayerName), i);
   }
   // Player is still alive!
   pDnodeActor->pPlayer->CreatePrompt();
@@ -7192,10 +7192,10 @@ void Communication::ViolenceMobileDied(string MobileBeenWhacked,
   string   MobileLoot;
   string   TmpStr;
 
-  MobileExpPointsLevel = GetMobileExpPointsLevel(ConvertStringToCString(MobileId));
+  MobileExpPointsLevel = (MobileId);
   MobileExpPoints      = stoi(StrGetWord(MobileExpPointsLevel, 1));
   MobileLevel          = stoi(StrGetWord(MobileExpPointsLevel, 2));
-  MobileLoot           = GetMobileLoot(ConvertStringToCString(MobileId));
+  MobileLoot           = GetMobileLoot(MobileId);
   // Send dead mob message to player
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += ConvertStringToCString(MobileBeenWhacked);
@@ -7268,7 +7268,7 @@ void Communication::ViolenceMobileDied(string MobileBeenWhacked,
     pDnodeOthers = GetDnode();
     if (pDnodeOthers->PlayerStateFighting)
     { // Players who are fighting
-      MobileIdCheck = GetPlayerMobMobileId(pDnodeOthers->PlayerName);
+      MobileIdCheck = GetPlayerMobMobileId(ConvertCStringToString(pDnodeOthers->PlayerName));
       if (MobileId == MobileIdCheck)
       { // The same mobile
         DeletePlayerMob(pDnodeOthers->PlayerName);
@@ -7444,7 +7444,7 @@ void Communication::ViolenceMobileMore()
 {
   string MobileId;
 
-  MobileId = GetMobPlayerMobileId(pDnodeActor->PlayerName, 1);
+  MobileId = GetMobPlayerMobileId(ConvertCStringToString(pDnodeActor->PlayerName), 1);
   if (MobileId == "No more mobiles")
   {
     return;
@@ -7470,13 +7470,13 @@ void Communication::ViolencePlayer()
   string  WeaponType;
 
   WeaponSkill       = pDnodeActor->pPlayer->GetWeaponSkill();
-  WeaponType        = pDnodeActor->pPlayer->WeaponType;
+  WeaponType        = ConvertCStringToString(pDnodeActor->pPlayer->WeaponType);
   MaxDamageToMobile = pDnodeActor->pPlayer->WeaponDamage;
-  MobileId          = GetPlayerMobMobileId(pDnodeActor->PlayerName);
-  MobileArmor       = GetMobileArmor(ConvertStringToCString(MobileId));
-  MobileDesc1       = ConvertCStringToString(GetMobileDesc1(ConvertStringToCString(MobileId)));
+  MobileId          = GetPlayerMobMobileId(ConvertCStringToString(pDnodeActor->PlayerName));
+  MobileArmor       = GetMobileArmor(MobileId);
+  MobileDesc1       = GetMobileDesc1(MobileId);
   DamageToMobile    = CalcDamageToMobile(MaxDamageToMobile, WeaponSkill);
-  MobileBeenWhacked = ConvertCStringToString(WhackMobile(ConvertStringToCString(MobileId), DamageToMobile, ConvertStringToCString(MobileDesc1), ConvertStringToCString(WeaponType)));
+  MobileBeenWhacked = WhackMobile(MobileId, DamageToMobile, MobileDesc1, WeaponType);
   // Player has whacked the mobile
   DeadOrAlive = StrGetWord(MobileBeenWhacked, 1);
   MobileBeenWhacked = StrDeleteWord(MobileBeenWhacked, 1);
@@ -7562,7 +7562,7 @@ void Communication::ViolencePlayerDied(string MobileDesc1)
   ShowRoom(pDnodeActor);
   pDnodeActor->PlayerStateFighting = false;
   // Get mobile id for mob that dead player was fighting
-  MobileIdSave = GetPlayerMobMobileId(pDnodeActor->PlayerName);
+  MobileIdSave = GetPlayerMobMobileId(ConvertCStringToString(pDnodeActor->PlayerName));
   // Delete PlayerMob file
   DeletePlayerMob(pDnodeActor->PlayerName);
   //********************************************************
@@ -7576,7 +7576,7 @@ void Communication::ViolencePlayerDied(string MobileDesc1)
     { // Players who are fighting
       if (RoomIdBeforeDying == ConvertCStringToString(pDnodeOthers->pPlayer->RoomId))
       { // In the same room
-        MobileId = GetPlayerMobMobileId(pDnodeOthers->PlayerName);
+        MobileId = GetPlayerMobMobileId(ConvertCStringToString(pDnodeOthers->PlayerName));
         DeleteMobPlayer(pDnodeActor->PlayerName, ConvertStringToCString(MobileId));
         if (MobileId == MobileIdSave)
         { // Add player to candidate list for MobileIdSave

@@ -32,18 +32,18 @@ class Violence
     static  int     CalcDamageToMobile(int Damage, int WeaponSkill);
     static  int     CalcDamageToPlayer(int Damage, int PAC);
     static  CString CalcHealthPct(int HitPoints, int HitPointsMax);
-    static  int     GetMobileArmor(CString MobileId);
-    static  CString GetMobileAttack(CString MobileId);
-    static  int     GetMobileDamage(CString MobileId);
-    static  CString GetMobileDesc1(CString MobileId);
-    static  CString GetMobileExpPointsLevel(CString MobileId);
-    static  CString GetMobileHitPoints(CString MobileId);
-    static  CString GetMobileLoot(CString MobileId);
-    static  CString GetMobileRoom(CString MobileId);
-    static  CString GetMobPlayerMobileId(CString PlayerName, int i);
-    static  CString GetPlayerMobMobileId(CString PlayerName);
-    static  CString WhackMobile(CString PlayerName, int DamageToMobile, CString MobileDesc1, CString WeaponType);
-    static  CString WhackPlayer(CString MobileDesc1, CString MobileAttack, int DamageToPlayer);
+    static  int     GetMobileArmor(string MobileId);
+    static  string  GetMobileAttack(string MobileId);
+    static  int     GetMobileDamage(string MobileId);
+    static  string  GetMobileDesc1(string MobileId);
+    static  string  GetMobileExpPointsLevel(string MobileId);
+    static  string  GetMobileHitPoints(string MobileId);
+    static  string  GetMobileLoot(string MobileId);
+    static  string  GetMobileRoom(string MobileId);
+    static  string  GetMobPlayerMobileId(string PlayerName, int i);
+    static  string  GetPlayerMobMobileId(string PlayerName);
+    static  string  WhackMobile(string PlayerName, int DamageToMobile, string MobileDesc1, string WeaponType);
+    static  string  WhackPlayer(string MobileDesc1, string MobileAttack, int DamageToPlayer);
 };
 
 #endif

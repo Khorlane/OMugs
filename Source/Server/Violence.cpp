@@ -108,22 +108,19 @@ CString Violence::CalcHealthPct(int HitPoints, int HitPointsMax)
  * Get mobile Armor                                        *
  ***********************************************************/
 
-int Violence::GetMobileArmor(CString MobileId)
+int Violence::GetMobileArmor(string MobileId)
 {
   int        MobileArmor;
-  CStdioFile MobStatsArmorFile;
-  CString    MobStatsArmorFileName;
-  CString    Stuff;
-  int        Success;
+  ifstream   MobStatsArmorFile;
+  string     MobStatsArmorFileName;
+  string     Stuff;
 
   // Read mobile stats Armor file
   MobStatsArmorFileName = MOB_STATS_ARM_DIR;
   MobStatsArmorFileName += MobileId;
   MobStatsArmorFileName += ".txt";
-  Success = MobStatsArmorFile.Open(MobStatsArmorFileName,
-                        CFile::modeRead |
-                        CFile::typeText);
-  if(!Success)
+  MobStatsArmorFile.open(MobStatsArmorFileName);
+  if (!MobStatsArmorFile.is_open())
   {
     // Mobile Armor is not implemented, so for now, we just return zero
     MobileArmor = 0;
@@ -132,12 +129,12 @@ int Violence::GetMobileArmor(CString MobileId)
     AfxMessageBox("Violence::GetArmor - Open MobStatsArmorFile file failed (read)", MB_ICONSTOP);
     _endthread();
   }
-  MobStatsArmorFile.ReadString(Stuff);
-  MobStatsArmorFile.Close();
+  getline(MobStatsArmorFile, Stuff);;
+  MobStatsArmorFile.close();
   // Return mobile's Armor
   Stuff = StrTrimLeft(Stuff);
   Stuff = StrTrimRight(Stuff);
-  MobileArmor = atoi(Stuff);
+  MobileArmor = stoi(Stuff);
   return MobileArmor;
 }
 
@@ -145,28 +142,25 @@ int Violence::GetMobileArmor(CString MobileId)
  * Get mobile Attack                                       *
  ***********************************************************/
 
-CString Violence::GetMobileAttack(CString MobileId)
+string Violence::GetMobileAttack(string MobileId)
 {
-  CString    MobileAttack;
-  CStdioFile MobStatsAttackFile;
-  CString    MobStatsAttackFileName;
-  CString    Stuff;
-  int        Success;
+  string     MobileAttack;
+  ifstream   MobStatsAttackFile;
+  string     MobStatsAttackFileName;
+  string     Stuff;
 
   // Read mobile stats Attack file
   MobStatsAttackFileName = MOB_STATS_ATK_DIR;
   MobStatsAttackFileName += MobileId;
   MobStatsAttackFileName += ".txt";
-  Success = MobStatsAttackFile.Open(MobStatsAttackFileName,
-                        CFile::modeRead |
-                        CFile::typeText);
-  if(!Success)
+  MobStatsAttackFile.open(MobStatsAttackFileName);
+  if (!MobStatsAttackFile.is_open())
   {
     AfxMessageBox("Violence::GetMobileAttack - Open MobStatsAttack file failed (read)", MB_ICONSTOP);
     _endthread();
   }
-  MobStatsAttackFile.ReadString(Stuff);
-  MobStatsAttackFile.Close();
+  getline(MobStatsAttackFile, Stuff);
+  MobStatsAttackFile.close();
   // Return mobile's Attack
   Stuff = StrTrimLeft(Stuff);
   Stuff = StrTrimRight(Stuff);
@@ -178,32 +172,29 @@ CString Violence::GetMobileAttack(CString MobileId)
  * Get mobile Damage                                       *
  ***********************************************************/
 
-int Violence::GetMobileDamage(CString MobileId)
+int Violence::GetMobileDamage(string MobileId)
 {
   int        MobileDamage;
-  CStdioFile MobStatsDamageFile;
-  CString    MobStatsDamageFileName;
-  CString    Stuff;
-  int        Success;
+  ifstream   MobStatsDamageFile;
+  string     MobStatsDamageFileName;
+  string     Stuff;
 
   // Read mobile stats Damage file
   MobStatsDamageFileName = MOB_STATS_DMG_DIR;
   MobStatsDamageFileName += MobileId;
   MobStatsDamageFileName += ".txt";
-  Success = MobStatsDamageFile.Open(MobStatsDamageFileName,
-                         CFile::modeRead |
-                         CFile::typeText);
-  if(!Success)
+  MobStatsDamageFile.open(MobStatsDamageFileName);
+  if (!MobStatsDamageFile.is_open())
   {
     AfxMessageBox("Violence::GetMobileDamage - Open MobStatsDamageFile file failed (read)", MB_ICONSTOP);
     _endthread();
   }
-  MobStatsDamageFile.ReadString(Stuff);
-  MobStatsDamageFile.Close();
+  getline(MobStatsDamageFile, Stuff);
+  MobStatsDamageFile.close();
   // Return mobile's Damage
   Stuff = StrTrimLeft(Stuff);
   Stuff = StrTrimRight(Stuff);
-  MobileDamage = atoi(Stuff);
+  MobileDamage = stoi(Stuff);
   return MobileDamage;
 }
 
@@ -211,28 +202,25 @@ int Violence::GetMobileDamage(CString MobileId)
  * Get mobile Desc1                                        *
  ***********************************************************/
 
-CString Violence::GetMobileDesc1(CString MobileId)
+string Violence::GetMobileDesc1(string MobileId)
 {
-  CString    MobileDesc1;
-  CStdioFile MobStatsDesc1File;
-  CString    MobStatsDesc1FileName;
-  CString    Stuff;
-  int        Success;
+  string     MobileDesc1;
+  ifstream   MobStatsDesc1File;
+  string     MobStatsDesc1FileName;
+  string     Stuff;
 
   // Read mobile stats Desc1 file
   MobStatsDesc1FileName = MOB_STATS_DSC_DIR;
   MobStatsDesc1FileName += MobileId;
   MobStatsDesc1FileName += ".txt";
-  Success = MobStatsDesc1File.Open(MobStatsDesc1FileName,
-                        CFile::modeRead |
-                        CFile::typeText);
-  if(!Success)
+  MobStatsDesc1File.open(MobStatsDesc1FileName);
+  if(!MobStatsDesc1File.is_open())
   {
     AfxMessageBox("Violence::GetMobileDesc1 - Open MobStatsDesc1 file failed (read)", MB_ICONSTOP);
     _endthread();
   }
-  MobStatsDesc1File.ReadString(Stuff);
-  MobStatsDesc1File.Close();
+  getline(MobStatsDesc1File, Stuff);
+  MobStatsDesc1File.close();
   // Return mobile's Desc1
   Stuff = StrTrimLeft(Stuff);
   Stuff = StrTrimRight(Stuff);
@@ -244,27 +232,24 @@ CString Violence::GetMobileDesc1(CString MobileId)
  * Get mobile Experience Points                            *
  ***********************************************************/
 
-CString Violence::GetMobileExpPointsLevel(CString MobileId)
+string Violence::GetMobileExpPointsLevel(string MobileId)
 {
-  CStdioFile MobStatsExpPointsFile;
-  CString    MobStatsExpPointsFileName;
-  CString    Stuff;
-  int        Success;
+  ifstream   MobStatsExpPointsFile;
+  string     MobStatsExpPointsFileName;
+  string     Stuff;
 
   // Read mobile stats ExpPoints and Level file
   MobStatsExpPointsFileName = MOB_STATS_EXP_DIR;
   MobStatsExpPointsFileName += MobileId;
   MobStatsExpPointsFileName += ".txt";
-  Success = MobStatsExpPointsFile.Open(MobStatsExpPointsFileName,
-                        CFile::modeRead |
-                        CFile::typeText);
-  if(!Success)
+  MobStatsExpPointsFile.open(MobStatsExpPointsFileName);
+  if(!MobStatsExpPointsFile.is_open())
   {
     AfxMessageBox("Violence::GetMobileExpPointsLevel - Open MobStatsExpPointsFile file failed (read)", MB_ICONSTOP);
     _endthread();
   }
-  MobStatsExpPointsFile.ReadString(Stuff);
-  MobStatsExpPointsFile.Close();
+  getline(MobStatsExpPointsFile, Stuff);
+  MobStatsExpPointsFile.close();
   // Return mobile's ExpPoints
   Stuff = StrTrimLeft(Stuff);
   Stuff = StrTrimRight(Stuff);
@@ -275,28 +260,25 @@ CString Violence::GetMobileExpPointsLevel(CString MobileId)
  * Get mobile Hit Points                                   *
  ***********************************************************/
 
-CString Violence::GetMobileHitPoints(CString MobileId)
+string Violence::GetMobileHitPoints(string MobileId)
 {
-  CStdioFile MobStatsHitPointsFile;
-  CString    MobStatsHitPointsFileName;
-  CString    MobHitPoints;
-  CString    Stuff;
-  int        Success;
+  ifstream   MobStatsHitPointsFile;
+  string     MobStatsHitPointsFileName;
+  string     MobHitPoints;
+  string     Stuff;
 
   // Read mobile stats hit points file
   MobStatsHitPointsFileName = MOB_STATS_HPT_DIR;
   MobStatsHitPointsFileName += MobileId;
   MobStatsHitPointsFileName += ".txt";
-  Success = MobStatsHitPointsFile.Open(MobStatsHitPointsFileName,
-                            CFile::modeRead |
-                            CFile::typeText);
-  if(!Success)
+  MobStatsHitPointsFile.open(MobStatsHitPointsFileName);
+  if(!MobStatsHitPointsFile.is_open())
   {
     AfxMessageBox("Violence::WhackMobile - Open MobStatsHitPointsFile file failed (read)", MB_ICONSTOP);
     _endthread();
   }
-  MobStatsHitPointsFile.ReadString(Stuff);
-  MobStatsHitPointsFile.Close();
+  getline(MobStatsHitPointsFile, Stuff);
+  MobStatsHitPointsFile.close();
   MobHitPoints = Stuff;
   return Stuff;
 }
@@ -305,28 +287,25 @@ CString Violence::GetMobileHitPoints(CString MobileId)
  * Get mobile Loot                                         *
  ***********************************************************/
 
-CString Violence::GetMobileLoot(CString MobileId)
+string Violence::GetMobileLoot(string MobileId)
 {
-  CString    MobileLoot;
-  CStdioFile MobStatsLootFile;
-  CString    MobStatsLootFileName;
-  CString    Stuff;
-  int        Success;
+  string     MobileLoot;
+  ifstream   MobStatsLootFile;
+  string     MobStatsLootFileName;
+  string     Stuff;
 
   // Read mobile stats Loot file
   MobStatsLootFileName = MOB_STATS_LOOT_DIR;
   MobStatsLootFileName += MobileId;
   MobStatsLootFileName += ".txt";
-  Success = MobStatsLootFile.Open(MobStatsLootFileName,
-                        CFile::modeRead |
-                        CFile::typeText);
-  if(!Success)
+  MobStatsLootFile.open(MobStatsLootFileName);
+  if(!MobStatsLootFile.is_open())
   {
     AfxMessageBox("Violence::GetMobileLoot - Open MobStatsLoot file failed (read)", MB_ICONSTOP);
     _endthread();
   }
-  MobStatsLootFile.ReadString(Stuff);
-  MobStatsLootFile.Close();
+  getline(MobStatsLootFile, Stuff);
+  MobStatsLootFile.close();
   // Return mobile's Loot
   Stuff = StrTrimLeft(Stuff);
   Stuff = StrTrimRight(Stuff);
@@ -338,28 +317,25 @@ CString Violence::GetMobileLoot(CString MobileId)
  * Get mobile Room                                         *
  ***********************************************************/
 
-CString Violence::GetMobileRoom(CString MobileId)
+string Violence::GetMobileRoom(string MobileId)
 {
-  CString    MobileRoom;
-  CStdioFile MobStatsRoomFile;
-  CString    MobStatsRoomFileName;
-  CString    Stuff;
-  int        Success;
+  string     MobileRoom;
+  ifstream   MobStatsRoomFile;
+  string     MobStatsRoomFileName;
+  string     Stuff;
 
   // Read mobile stats Loot file
   MobStatsRoomFileName = MOB_STATS_ROOM_DIR;
   MobStatsRoomFileName += MobileId;
   MobStatsRoomFileName += ".txt";
-  Success = MobStatsRoomFile.Open(MobStatsRoomFileName,
-                        CFile::modeRead |
-                        CFile::typeText);
-  if(!Success)
+  MobStatsRoomFile.open(MobStatsRoomFileName);
+  if(!MobStatsRoomFile.is_open())
   {
     AfxMessageBox("Violence::GetMobileRoom - Open MobStatsRoom file failed (read)", MB_ICONSTOP);
     _endthread();
   }
-  MobStatsRoomFile.ReadString(Stuff);
-  MobStatsRoomFile.Close();
+  getline(MobStatsRoomFile, Stuff);
+  MobStatsRoomFile.close();
   // Return mobile's Room
   Stuff = StrTrimLeft(Stuff);
   Stuff = StrTrimRight(Stuff);
@@ -371,30 +347,27 @@ CString Violence::GetMobileRoom(CString MobileId)
  * Get MobPlayer MobileId                                  *
  ***********************************************************/
 
-CString Violence::GetMobPlayerMobileId(CString PlayerName, int i)
+string Violence::GetMobPlayerMobileId(string PlayerName, int i)
 {
   int        j;
-  CString    MobileId;
-  CStdioFile MobPlayerFile;
-  CString    MobPlayerFileName;
-  int        Success;
+  string     MobileId;
+  ifstream   MobPlayerFile;
+  string     MobPlayerFileName;
 
   MobPlayerFileName =  MOB_PLAYER_DIR;
   MobPlayerFileName += PlayerName;
   MobPlayerFileName += ".txt";
-  Success = MobPlayerFile.Open(MobPlayerFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-  if(!Success)
+  MobPlayerFile.open(MobPlayerFileName);
+  if(!MobPlayerFile.is_open())
   {
     MobileId = "No more mobiles";
     return MobileId;
   }
   for (j = 1; j <= i; j++)
   {
-    MobPlayerFile.ReadString(MobileId);
+    getline(MobPlayerFile, MobileId);
   }
-  MobPlayerFile.Close();
+  MobPlayerFile.close();
   MobileId = StrTrimLeft(MobileId);
   MobileId = StrTrimRight(MobileId);
   if (MobileId == "")
@@ -408,26 +381,23 @@ CString Violence::GetMobPlayerMobileId(CString PlayerName, int i)
  * Get PlayerMob MobileId                                  *
  ***********************************************************/
 
-CString Violence::GetPlayerMobMobileId(CString PlayerName)
+string Violence::GetPlayerMobMobileId(string PlayerName)
 {
-  CString    MobileId;
-  CStdioFile PlayerMobFile;
-  CString    PlayerMobFileName;
-  int        Success;
+  string     MobileId;
+  ifstream   PlayerMobFile;
+  string     PlayerMobFileName;
 
   PlayerMobFileName =  PLAYER_MOB_DIR;
   PlayerMobFileName += PlayerName;
   PlayerMobFileName += ".txt";
-  Success = PlayerMobFile.Open(PlayerMobFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-  if(!Success)
+  PlayerMobFile.open(PlayerMobFileName);
+  if(!PlayerMobFile.is_open())
   {
     AfxMessageBox("Violence::GetPlayerMobMobileId - Open PlayerMob file failed", MB_ICONSTOP);
     _endthread();
   }
-  PlayerMobFile.ReadString(MobileId);
-  PlayerMobFile.Close();
+  getline(PlayerMobFile, MobileId);
+  PlayerMobFile.close();
   MobileId = StrTrimLeft(MobileId);
   MobileId = StrTrimRight(MobileId);
   return MobileId;
@@ -437,33 +407,32 @@ CString Violence::GetPlayerMobMobileId(CString PlayerName)
  * Whack the mobile - do some damage!                      *
  ***********************************************************/
 
-CString Violence::WhackMobile(CString MobileId,
-                              int     DamageToMobile,
-                              CString MobileDesc1,
-                              CString WeaponType)
+string Violence::WhackMobile(string MobileId,
+                             int    DamageToMobile,
+                             string MobileDesc1,
+                             string WeaponType)
 {
-  CString    DamageAmount;
+  string     DamageAmount;
   int        DamageMagnitude;
-  CString    ExtraDamageMsg;
-  CString    MobileBeenWhacked;
-  CString    MobHealthPct;
+  string     ExtraDamageMsg;
+  string     MobileBeenWhacked;
+  string     MobHealthPct;
   int        MobHealthPctNew;
   int        MobHealthPctOld;
-  CString    MobHitPointsInfo;
+  string     MobHitPointsInfo;
   int        MobHitPointsLeft;
   int        MobHitPointsTotal;
-  CStdioFile MobStatsHitPointsFile;
-  CString    MobStatsHitPointsFileName;
-  CString    Stuff;
-  int        Success;
-  CString    TmpStr;
-  CString    WeaponAction;
+  ofstream   MobStatsHitPointsFile;
+  string     MobStatsHitPointsFileName;
+  string     Stuff;
+  string     TmpStr;
+  string     WeaponAction;
 
   // Get mobile's total hit points and hit points left
   MobHitPointsInfo  = GetMobileHitPoints(MobileId);
-  MobHitPointsTotal = atoi(StrGetWord(MobHitPointsInfo, 1));
-  MobHitPointsLeft  = atoi(StrGetWord(MobHitPointsInfo, 2));
-  MobHealthPctOld = CalcPct(MobHitPointsLeft, MobHitPointsTotal);
+  MobHitPointsTotal = stoi(StrGetWord(MobHitPointsInfo, 1));
+  MobHitPointsLeft  = stoi(StrGetWord(MobHitPointsInfo, 2));
+  MobHealthPctOld   = CalcPct(MobHitPointsLeft, MobHitPointsTotal);
   // Reduce mobile's hit points by damage done and write to file
   MobHitPointsLeft = MobHitPointsLeft - DamageToMobile;
   if (MobHitPointsLeft < 0)
@@ -473,30 +442,27 @@ CString Violence::WhackMobile(CString MobileId,
   MobStatsHitPointsFileName = MOB_STATS_HPT_DIR;
   MobStatsHitPointsFileName += MobileId;
   MobStatsHitPointsFileName += ".txt";
-  Success = MobStatsHitPointsFile.Open(MobStatsHitPointsFileName,
-                            CFile::modeWrite |
-                            CFile::typeText);
-  if(!Success)
+  MobStatsHitPointsFile.open(MobStatsHitPointsFileName);
+  if(!MobStatsHitPointsFile.is_open())
   { // Open failed - very bad
     AfxMessageBox("Violence::WhackMobile - Open MobStatsHitPointsFile file failed (write)", MB_ICONSTOP);
     _endthread();
   }
   sprintf(Buf, "%d", MobHitPointsTotal);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Stuff  = TmpStr;
   Stuff += " ";
   sprintf(Buf, "%d", MobHitPointsLeft);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Stuff += TmpStr;
-  MobStatsHitPointsFile.WriteString(Stuff);
-  MobStatsHitPointsFile.SetLength(StrGetLength(Stuff));
-  MobStatsHitPointsFile.Close();
+  MobStatsHitPointsFile << Stuff << endl;
+  MobStatsHitPointsFile.close();
   // Format whack message
   MobHealthPct = CalcHealthPct(MobHitPointsLeft, MobHitPointsTotal);
   WeaponType = StrMakeLower(WeaponType);
-  WeaponAction = TranslateWord(WeaponType);
+  WeaponAction = TranslateWord(ConvertStringToCString(WeaponType));
   sprintf(Buf, "%d", DamageToMobile);
-  DamageAmount = ConvertStringToCString(Buf);
+  DamageAmount = Buf;
   MobHealthPctNew = CalcPct(MobHitPointsLeft, MobHitPointsTotal);
   DamageMagnitude = MobHealthPctOld - MobHealthPctNew;
   if (DamageMagnitude > 70)
@@ -605,18 +571,18 @@ CString Violence::WhackMobile(CString MobileId,
  * Whack the player - do some damage!                      *
  ***********************************************************/
 
-CString Violence::WhackPlayer(CString MobileDesc1,
-                              CString MobileAttack,
-                              int     DamageToPlayer)
+string Violence::WhackPlayer(string MobileDesc1,
+                             string MobileAttack,
+                             int    DamageToPlayer)
 {
-  CString PlayerBeenWhacked;
-  CString TmpStr;
+  string PlayerBeenWhacked;
+  string TmpStr;
 
   // Capitalize first leter of first word of MobileDesc1
   MobileDesc1 = StrMakeFirstUpper(MobileDesc1);
   // Format damage message
   sprintf(Buf, "%d", DamageToPlayer);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   PlayerBeenWhacked =  MobileDesc1;
   PlayerBeenWhacked += " ";
   PlayerBeenWhacked += MobileAttack;

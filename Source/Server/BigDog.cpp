@@ -816,47 +816,47 @@ CString GetMobDesc1(CString MobileId)
   return Mobile::GetMobDesc1(MobileId);
 }
 
-int GetMobileArmor(CString MobileId)
+int GetMobileArmor(string MobileId)
 {
   return Violence::GetMobileArmor(MobileId);
 }
 
-CString GetMobileAttack(CString MobileId)
+string GetMobileAttack(string MobileId)
 {
   return Violence::GetMobileAttack(MobileId);
 }
 
-int GetMobileDamage(CString MobileId)
+int GetMobileDamage(string MobileId)
 {
   return Violence::GetMobileDamage(MobileId);
 }
 
-CString GetMobileDesc1(CString MobileId)
+string GetMobileDesc1(string MobileId)
 {
   return Violence::GetMobileDesc1(MobileId);
 }
 
-CString GetMobileExpPointsLevel(CString MobileId)
+string GetMobileExpPointsLevel(string MobileId)
 {
   return Violence::GetMobileExpPointsLevel(MobileId);
 }
 
-CString GetMobileLoot(CString MobileId)
+string GetMobileLoot(string MobileId)
 {
   return Violence::GetMobileLoot(MobileId);
 }
 
-CString GetMobileRoom(CString MobileId)
+string GetMobileRoom(string MobileId)
 {
   return Violence::GetMobileRoom(MobileId);
 }
 
-CString GetMobPlayerMobileId(CString PlayerName, int i)
+string GetMobPlayerMobileId(string PlayerName, int i)
 {
   return Violence::GetMobPlayerMobileId(PlayerName, i);
 }
 
-CString GetPlayerMobMobileId(CString PlayerName)
+string GetPlayerMobMobileId(string PlayerName)
 {
   return Violence::GetPlayerMobMobileId(PlayerName);
 }
@@ -1151,12 +1151,12 @@ bool ValidateIt(CString ValidationType)
   return Validate::ValidateIt(ValidationType);
 }
 
-CString WhackMobile(CString PlayerName, int DamageToMobile, CString MobileDesc1, CString WeaponType)
+string WhackMobile(string PlayerName, int DamageToMobile, string MobileDesc1, string WeaponType)
 {
   return Violence::WhackMobile(PlayerName, DamageToMobile, MobileDesc1, WeaponType);
 }
 
-CString WhackPlayer(CString MobileDesc1, CString MobileAttack, int DamageToPlayer)
+string WhackPlayer(string MobileDesc1, string MobileAttack, int DamageToPlayer)
 {
   return Violence::WhackPlayer(MobileDesc1, MobileAttack, DamageToPlayer);
 }

@@ -358,7 +358,7 @@ void World::HealMobiles()
     //*******************
     //* Heal the mobile *
     //*******************
-    RoomId = GetMobileRoom(MobileId);
+    RoomId = ConvertStringToCString(GetMobileRoom(ConvertCStringToString(MobileId)));
     RemoveMobFromRoom(RoomId, MobileId);
     DeleteMobStats(MobileId);
     PositionOfDot = StrFindFirstChar(MobileId, '.');
