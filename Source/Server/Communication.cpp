@@ -4338,7 +4338,7 @@ void Communication::DoLoad()
       pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
       return;
     }
-    AddMobToRoom(pDnodeActor->pPlayer->RoomId, ConvertStringToCString(MobileId));
+    AddMobToRoom(ConvertCStringToString(pDnodeActor->pPlayer->RoomId), MobileId);
     SpawnMobileNoMove(MobileId);
     pDnodeActor->PlayerOut += "Load successful\r\n";
     pDnodeActor->pPlayer->CreatePrompt();

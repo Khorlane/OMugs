@@ -30,7 +30,7 @@ class Mobile
 {
 // Public functions static
   public:
-    static  void    AddMobToRoom(CString RoomId, CString MobileId);
+    static  void    AddMobToRoom(string RoomId, string MobileId);
     static  int     CountMob(CString MobileId);
     static  int     CountMobOldWayNotUsedNow(CString MobileIdSearch);
     static  void    CreateMobPlayer(CString PlayerName, CString MobileId);

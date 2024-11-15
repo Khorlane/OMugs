@@ -305,7 +305,7 @@ void World::HealMobiles()
     DeleteMobStats(ConvertStringToCString(MobileId));
     PositionOfDot = StrFindFirstChar(MobileId, '.');
     MobileId = StrLeft(MobileId, PositionOfDot);
-    AddMobToRoom(ConvertStringToCString(RoomId), ConvertStringToCString(MobileId));
+    AddMobToRoom(RoomId, MobileId);
   }
   if (ChgDir(HomeDir))
   { // Change directory failed
@@ -783,7 +783,7 @@ void World::MakeMobilesMove3()
     ArriveMsg    = MobileDesc1;
     ArriveMsg   += " arrives.";
     RemoveMobFromRoom(ConvertStringToCString(RoomId), ConvertStringToCString(MobileId));
-    AddMobToRoom(ConvertStringToCString(ExitToRoomId), ConvertStringToCString(MobileId));
+    AddMobToRoom(ExitToRoomId, MobileId);
     pDnodeSrc = NULL;
     pDnodeTgt = NULL;
     SendToRoom(RoomId,       LeaveMsg);
@@ -930,7 +930,7 @@ void World::SpawnMobile(string MobileId, string RoomId)
     AfxMessageBox(ConvertStringToCString(AfxMessage), MB_ICONSTOP);
     _endthread();
   }
-  AddMobToRoom(ConvertStringToCString(RoomId), ConvertStringToCString(MobileId));
+  AddMobToRoom(RoomId, MobileId);
   SpawnMsg = ConvertCStringToString(pMobile->Desc1);
   SpawnMsg += " suddenly appears!";
   pDnodeSrc = NULL;

@@ -50,32 +50,29 @@ Mobile::~Mobile()
 * Add a mobile to a room                                   *
 ************************************************************/
 
-void Mobile::AddMobToRoom(CString RoomId, CString MobileId)
+void Mobile::AddMobToRoom(string RoomId, string MobileId)
 {
   int        BytesInFile;
   bool       NewRoomMobFile;
   int        MobCount;
   bool       MobileIdAdded;
-  CString    MobileIdCheck;
-  CStdioFile RoomMobFile;
-  CString    RoomMobFileName;
-  CStdioFile RoomMobTmpFile;
-  CString    RoomMobTmpFileName;
-  CString    Stuff;
-  int        Success;
-  CString    TmpStr;
+  string     MobileIdCheck;
+  ifstream   RoomMobFile;
+  string     RoomMobFileName;
+  ofstream   RoomMobTmpFile;
+  string     RoomMobTmpFileName;
+  string     Stuff;
+  string     TmpStr;
 
-  UpdateMobInWorld(MobileId, "add");
+  UpdateMobInWorld(ConvertStringToCString(MobileId), "add");
   MobileId = StrMakeLower(MobileId);
   // Open RoomMob file
   RoomMobFileName =  ROOM_MOB_DIR;
   RoomMobFileName += RoomId;
   RoomMobFileName += ".txt";
   NewRoomMobFile = false;
-  Success = RoomMobFile.Open(RoomMobFileName,
-                  CFile::modeRead |
-                  CFile::typeText);
-  if(!Success)
+  RoomMobFile.open(RoomMobFileName);
+  if(!RoomMobFile.is_open())
   {
     NewRoomMobFile = true;
   }
@@ -88,11 +85,8 @@ void Mobile::AddMobToRoom(CString RoomId, CString MobileId)
     _endthread();
   }
   RoomMobTmpFileName += ".tmp.txt";
-  Success = RoomMobTmpFile.Open(RoomMobTmpFileName,
-                  CFile::modeCreate |
-                  CFile::modeWrite  |
-                  CFile::typeText);
-  if(!Success)
+  RoomMobTmpFile.open(RoomMobTmpFileName);
+  if(!RoomMobTmpFile.is_open())
   {
     AfxMessageBox("Mobile::AddMobToRoom - Open RoomMob temp file failed", MB_ICONSTOP);
     _endthread();
@@ -102,21 +96,21 @@ void Mobile::AddMobToRoom(CString RoomId, CString MobileId)
     TmpStr  = "1 ";
     TmpStr += MobileId;
     TmpStr += "\n";
-    RoomMobTmpFile.WriteString(TmpStr);
-    RoomMobTmpFile.Close();
-    CFile::Rename(RoomMobTmpFileName, RoomMobFileName);
+    RoomMobTmpFile << TmpStr << endl;
+    RoomMobTmpFile.close();
+    Rename(RoomMobTmpFileName, RoomMobFileName);
     return;
   }
   // Write temp RoomMob file
   MobileIdAdded = false;
-  RoomMobFile.ReadString(Stuff);
+  getline(RoomMobFile, Stuff);
   while (Stuff != "")
   {
     if (MobileIdAdded)
     { // New mobile has been written, just write the rest of the mobiles
       Stuff += "\n";
-      RoomMobTmpFile.WriteString(Stuff);
-      RoomMobFile.ReadString(Stuff);
+      RoomMobTmpFile <<  Stuff << endl;
+      getline(RoomMobFile, Stuff);
       continue;
     }
     MobileIdCheck = StrGetWord(Stuff, 2);
@@ -125,51 +119,51 @@ void Mobile::AddMobToRoom(CString RoomId, CString MobileId)
       TmpStr  = "1 ";
       TmpStr += MobileId;
       TmpStr += "\n";
-      RoomMobTmpFile.WriteString(TmpStr);
+      RoomMobTmpFile << TmpStr << endl;
       MobileIdAdded = true;
       Stuff += "\n";
-      RoomMobTmpFile.WriteString(Stuff);
-      RoomMobFile.ReadString(Stuff);
+      RoomMobTmpFile << Stuff << endl;
+      getline(RoomMobFile, Stuff);
       continue;
     }
     if (MobileId == MobileIdCheck)
     { // Existing mobile same as new mobile, add 1 to count
-      MobCount = atoi(StrGetWord(Stuff, 1));
+      MobCount = stoi(StrGetWord(Stuff, 1));
       MobCount++;
       sprintf(Buf, "%d", MobCount);
-      TmpStr = ConvertStringToCString(Buf);
+      TmpStr = Buf;
       TmpStr += " ";
       TmpStr += MobileId;
       TmpStr += "\n";
-      RoomMobTmpFile.WriteString(TmpStr);
+      RoomMobTmpFile << TmpStr << endl;
       MobileIdAdded = true;
-      RoomMobFile.ReadString(Stuff);
+      getline(RoomMobFile, Stuff);
       continue;
     }
     // None of the above conditions satisfied, just write it
     Stuff += "\n";
-    RoomMobTmpFile.WriteString(Stuff);
-    RoomMobFile.ReadString(Stuff);
+    RoomMobTmpFile << Stuff << endl;
+    getline(RoomMobFile, Stuff);
   }
   if (!MobileIdAdded)
   { // New mobile goes at the end
     TmpStr  = "1 ";
     TmpStr += MobileId;
     TmpStr += "\n";
-    RoomMobTmpFile.WriteString(TmpStr);
+    RoomMobTmpFile << TmpStr << endl;
     MobileIdAdded = true;
   }
   BytesInFile = StrGetLength(RoomMobTmpFileName); // TODO - steve - What is this doing?
-  RoomMobFile.Close();
-  RoomMobTmpFile.Close();
-  CFile::Remove(RoomMobFileName);
+  RoomMobFile.close();
+  RoomMobTmpFile.close();
+  Remove(RoomMobFileName);
   if (BytesInFile > 0)
   { // If the file is not empty, rename it
-    CFile::Rename(RoomMobTmpFileName, RoomMobFileName);
+    Rename(RoomMobTmpFileName, RoomMobFileName);
   }
   else
   { // If the file is empty, delete it for and abort ... it should never be empty
-    CFile::Remove(RoomMobTmpFileName);
+    Remove(RoomMobTmpFileName);
     AfxMessageBox("Mobile::AddMobToRoom RoomMob file size is not > 0!!", MB_ICONSTOP);
     _endthread();
   }
@@ -824,7 +818,7 @@ void Mobile::PutMobBackInRoom(CString PlayerName, CString RoomIdBeforeFleeing)
         MobileId = StrLeft(MobileId, PositionOfDot);
       }
     }
-    AddMobToRoom(RoomIdBeforeFleeing, MobileId);
+    AddMobToRoom(ConvertCStringToString(RoomIdBeforeFleeing), ConvertCStringToString(MobileId));
     UpdateMobInWorld(MobileId, "remove");
     MobPlayerFile.ReadString(Stuff);
   }

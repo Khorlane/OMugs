@@ -246,7 +246,7 @@ struct ResWordStruct
 ************************************************************/
 
 // Functions
-void    AddMobToRoom(CString RoomId, CString MobileId);
+void    AddMobToRoom(string RoomId, string MobileId);
 bool    AddObjToPlayerEqu(string WearPosition, string ObjectId);
 void    AddObjToRoom(string RoomId, string ObjectId);
 void    AdvanceTime();

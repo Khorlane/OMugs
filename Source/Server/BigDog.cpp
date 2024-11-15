@@ -661,7 +661,7 @@ void StrVectorSetAt(vector<string> &StrVector1, int Position, string Str1) // TO
 // Simplify calls to these functions in the rest of the codebase. e.g. SockRecv() vs Communication::SockRecv()
 //
 
-void AddMobToRoom(CString RoomId, CString MobileId)
+void AddMobToRoom(string RoomId, string MobileId)
 {
   Mobile::AddMobToRoom(RoomId, MobileId);
 }
