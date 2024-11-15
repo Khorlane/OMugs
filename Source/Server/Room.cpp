@@ -23,7 +23,6 @@
 
 ifstream      RoomFile;
 
-Dnode *GetTargetDnode(CString TargetName); // Communication
 Dnode *GetTargetDnode( string TargetName); // Communication
 void   ShowMobsInRoom(Dnode *pDnode);      // Mobile
 void   ShowObjsInRoom(Dnode *pDnode);      // Object

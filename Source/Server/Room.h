@@ -37,7 +37,6 @@ class Room
   public:
     Room();
     ~Room();
-    int     static  FetchRows(void *NotUsed, int ColCount, char **ColValue, char **ColName);
     string  static  GetRoomId(string RoomId);
     string  static  GetRoomName(string RoomId);
     string  static  GetValidMobRoomExits(string RoomId);
