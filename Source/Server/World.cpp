@@ -716,21 +716,20 @@ void World::MakeMobilesMove2()
 
 void World::MakeMobilesMove3()
 {
-  CString    ArriveMsg;
-  CString    ExitToRoomId;
-  CString    LeaveMsg;
-  CString    MobileDesc1;
-  CString    MobileId;
+  string     ArriveMsg;
+  string     ExitToRoomId;
+  string     LeaveMsg;
+  string     MobileDesc1;
+  string     MobileId;
   bool       MobMoveNotCompleted;
-  CString    MobStatsFileName;
+  string     MobStatsFileName;
   int        PositionOfDot;
-  CString    RoomId;
-  CStdioFile RoomMobMoveFile;
-  CString    RoomMobMoveFileName;
-  CStdioFile RoomMobMoveTempFile;
-  CString    RoomMobMoveTempFileName;
-  CString    Stuff;
-  int        Success;
+  string     RoomId;
+  ifstream   RoomMobMoveFile;
+  string     RoomMobMoveFileName;
+  ofstream   RoomMobMoveTempFile;
+  string     RoomMobMoveTempFileName;
+  string     Stuff;
   clock_t    TimerStart;
   clock_t    TimerStop;
 
@@ -740,21 +739,16 @@ void World::MakeMobilesMove3()
   MobMoveNotCompleted = false;
   RoomMobMoveFileName =  CONTROL_DIR;
   RoomMobMoveFileName += "RoomMobMove.txt";
-  Success = RoomMobMoveFile.Open(RoomMobMoveFileName,
-                      CFile::modeRead |
-                      CFile::typeText);
-  if(!Success)
+  RoomMobMoveFile.open(RoomMobMoveFileName);
+  if (!RoomMobMoveFile.is_open())
   { // No RoomMobMove file, Ok, who delete the file when I wasn't looking?
     AfxMessageBox("World::MakeMobilesMove3 - Open RoomMobMove failed", MB_ICONSTOP);
     _endthread();
   }
   RoomMobMoveTempFileName =  CONTROL_DIR;
   RoomMobMoveTempFileName += "RoomMobMoveTemp.txt";
-  Success = RoomMobMoveTempFile.Open(RoomMobMoveTempFileName,
-                          CFile::modeCreate |
-                          CFile::modeWrite  |
-                          CFile::typeText);
-  if(!Success)
+  RoomMobMoveTempFile.open(RoomMobMoveTempFileName);
+  if (!RoomMobMoveTempFile.is_open())
   { // RoomMobMoveTemp file failed to open
     AfxMessageBox("World::MakeMobilesMove3 - Open RoomMobMoveTemp failed", MB_ICONSTOP);
     _endthread();
@@ -764,32 +758,32 @@ void World::MakeMobilesMove3()
   //****************************
   TimerStart = clock();
   TimerStop  = TimerStart + 100;
-  RoomMobMoveFile.ReadString(Stuff);
+  getline(RoomMobMoveFile, Stuff);
   while (Stuff != "")
   { // For each mob to be moved
     if (clock() > TimerStop)
     { // Time to stop so cpu is not maxed
       MobMoveNotCompleted = true;
       Stuff += "\n";
-      RoomMobMoveTempFile.WriteString(Stuff);
-      RoomMobMoveFile.ReadString(Stuff);
+      RoomMobMoveTempFile << Stuff << endl;
+      getline(RoomMobMoveFile, Stuff);
       continue;
     }
     MobileId     = StrGetWord(Stuff, 1);
     RoomId       = StrGetWord(Stuff, 2);
     ExitToRoomId = StrGetWord(Stuff, 3);
-    if (!IsMobileIdInRoom(RoomId, MobileId))
+    if (!IsMobileIdInRoom(ConvertStringToCString(RoomId), ConvertStringToCString(MobileId)))
     { // Mob not in room anymore, prolly get itself killed, so can't be moved
-      RoomMobMoveFile.ReadString(Stuff);
+      getline(RoomMobMoveFile, Stuff);
       continue;
     }
-    MobileDesc1  = GetMobDesc1(MobileId);
+    MobileDesc1  = GetMobDesc1(ConvertStringToCString(MobileId));
     LeaveMsg     = MobileDesc1;
     LeaveMsg    += " leaves.";
     ArriveMsg    = MobileDesc1;
     ArriveMsg   += " arrives.";
-    RemoveMobFromRoom(RoomId, MobileId);
-    AddMobToRoom(ExitToRoomId, MobileId);
+    RemoveMobFromRoom(ConvertStringToCString(RoomId), ConvertStringToCString(MobileId));
+    AddMobToRoom(ConvertStringToCString(ExitToRoomId), ConvertStringToCString(MobileId));
     pDnodeSrc = NULL;
     pDnodeTgt = NULL;
     SendToRoom(RoomId,       LeaveMsg);
@@ -802,7 +796,7 @@ void World::MakeMobilesMove3()
       MobStatsFileName += ".txt";
       TRY
       {
-        CFile::Remove(MobStatsFileName);
+        Remove(MobStatsFileName);
       }
       CATCH (CFileException, e)
       { // If file remove fails, something is bad wrong!
@@ -811,18 +805,18 @@ void World::MakeMobilesMove3()
       }
       END_CATCH
       // Write new RoomId into MobStats Room file
-      CreateMobStatsFileWrite(MOB_STATS_ROOM_DIR, MobileId, ExitToRoomId);
+      CreateMobStatsFileWrite(MOB_STATS_ROOM_DIR, ConvertStringToCString(MobileId), ConvertStringToCString(ExitToRoomId));
     }
     // Read next line
-    RoomMobMoveFile.ReadString(Stuff);
+    getline(RoomMobMoveFile, Stuff);
   }
   // Close RoomMobMove files
-  RoomMobMoveFile.Close();
-  RoomMobMoveTempFile.Close();
+  RoomMobMoveFile.close();
+  RoomMobMoveTempFile.close();
   // Done with RoomMobMove file, get rid of it
   TRY
   {
-    CFile::Remove(RoomMobMoveFileName);
+    Remove(RoomMobMoveFileName);
   }
   CATCH (CFileException, e)
   { // If file remove fails, something is bad wrong!
@@ -835,7 +829,7 @@ void World::MakeMobilesMove3()
   { // Time ran out before all the mobs got moved, so moved the rest of them later
     TRY
     {
-      CFile::Rename(RoomMobMoveTempFileName, RoomMobMoveFileName);
+      Rename(RoomMobMoveTempFileName, RoomMobMoveFileName);
     }
     CATCH (CFileException, e)
     { // If file rename fails, something is bad wrong!
@@ -848,7 +842,7 @@ void World::MakeMobilesMove3()
   { // All mobs got moved, delete the temp file
     TRY
     {
-      CFile::Remove(RoomMobMoveTempFileName);
+      Remove(RoomMobMoveTempFileName);
     }
     CATCH (CFileException, e)
     { // If file rename fails, something is bad wrong!
