@@ -21,7 +21,7 @@
 * Globals                                                  *
 ************************************************************/
 
-Mobile *IsMobValid(CString MobileId); // Mobile
+Mobile *IsMobValid(string MobileId); // Mobile
 
 ////////////////////////////////////////////////////////////
 // Public functions static                                //
@@ -920,7 +920,7 @@ void World::SpawnMobile(string MobileId, string RoomId)
   //********************
   //* Spawn the mobile *
   //********************
-  pMobile = IsMobValid(ConvertStringToCString(MobileId));
+  pMobile = IsMobValid(MobileId);
   if (!pMobile)
   { // Very bad, no such mobile
     AfxMessage  = "World::SpawnMobile - Mobile not found.";

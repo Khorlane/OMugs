@@ -926,7 +926,7 @@ Mobile *IsMobInRoom(CString MobileName)
   return Mobile::IsMobInRoom(MobileName);
 }
 
-Mobile *IsMobValid(CString MobileId)
+Mobile *IsMobValid(string MobileId)
 {
   return Mobile::IsMobValid(MobileId);
 }

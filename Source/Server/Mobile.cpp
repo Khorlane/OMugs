@@ -739,7 +739,7 @@ bool Mobile::IsMobileIdInRoom(CString RoomId, CString MobileId)
 * Is this a valid mobile?                                  *
 ************************************************************/
 
-Mobile *Mobile::IsMobValid(CString MobileId)
+Mobile *Mobile::IsMobValid(string MobileId)
 {
   Mobile     *pMobile;
   CString     MobileFileName;
@@ -747,7 +747,7 @@ Mobile *Mobile::IsMobValid(CString MobileId)
   int         Success;
 
   MobileFileName =  MOBILES_DIR;
-  MobileFileName += MobileId;
+  MobileFileName += ConvertStringToCString(MobileId);
   MobileFileName += ".txt";
   Success = MobileFile.Open(MobileFileName,
                  CFile::modeRead |
@@ -755,7 +755,7 @@ Mobile *Mobile::IsMobValid(CString MobileId)
   if(Success)
   {
     MobileFile.Close();
-    pMobile = new Mobile(MobileId);
+    pMobile = new Mobile(ConvertStringToCString(MobileId));
     return pMobile;
   }
   else

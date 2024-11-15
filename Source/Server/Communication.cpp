@@ -31,7 +31,7 @@ vector<string>   ValidCmds;
 void    AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId);  // Object
 Dnode  *GetDnode();                                             // Descriptor
 Mobile *IsMobInRoom(CString MobileName);                        // Mobile
-Mobile *IsMobValid(CString MobileId);                           // Mobile
+Mobile *IsMobValid(string MobileId);                            // Mobile
 void    ShowRoom(Dnode *pDnode);                                // Room
 void    ShowPlayerEqu(Dnode *pDnodeTgt1);                       // Object
 
@@ -4330,7 +4330,7 @@ void Communication::DoLoad()
   { // Loading an mobile
     MobileId = StrGetWord(CmdStr, 3);
     MobileId = StrMakeLower(MobileId);
-    pMobile = IsMobValid(ConvertStringToCString(MobileId));
+    pMobile = IsMobValid(MobileId);
     if (!pMobile)
     { // Mobile does not exist
       pDnodeActor->PlayerOut += "Mobile not found.\r\n";
@@ -6160,7 +6160,7 @@ void Communication::DoWhere()
     pDnodeActor->PlayerOut += "\r\n";
   }
   else
-  if (IsMobValid(ConvertStringToCString(SearchId)))
+  if (IsMobValid(SearchId))
   { // Find Mobiles
     WhereMob(ConvertStringToCString(SearchId));
   }

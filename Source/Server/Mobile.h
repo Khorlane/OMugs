@@ -42,7 +42,7 @@ class Mobile
     static  CString GetMobDesc1(CString MobileId);
     static  bool    IsMobileIdInRoom(CString RoomId, CString MobileId);
     static  Mobile *IsMobInRoom(CString MobileName);
-    static  Mobile *IsMobValid(CString MobileId);
+    static  Mobile *IsMobValid(string MobileId);
     static  CString MobAttacks(Mobile *pMobile);
     static  void    PutMobBackInRoom(CString PlayerName, CString RoomId);
     static  void    RemoveMobFromRoom(CString RoomId, CString MobileId);
