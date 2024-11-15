@@ -25,9 +25,9 @@
 * Mobile constructor                                       *
 ************************************************************/
 
-Mobile::Mobile(CString MobileId)
+Mobile::Mobile(string MobileId)
 {
-  OpenFile(MobileId);
+  OpenFile(ConvertStringToCString(MobileId));
   ParseStuff();
   CloseFile();
   Hurt = false;
@@ -597,7 +597,7 @@ Mobile *Mobile::IsMobInRoom(CString MobileName)
         MobNbr       = StrRight(MobileId, StrGetLength(MobileId) - PositionOfDot - 1);
         MobileId     = StrLeft(MobileId, PositionOfDot);
       }
-      pMobile = new Mobile(MobileId);
+      pMobile = new Mobile(ConvertCStringToString(MobileId));
       pMobile->Hurt   = MobileHurt;
       pMobile->MobNbr = MobNbr;
       return pMobile;
@@ -628,7 +628,7 @@ Mobile *Mobile::IsMobInRoom(CString MobileName)
       MobNbr       = StrRight(MobileId, StrGetLength(MobileId) - PositionOfDot - 1);
       MobileId     = StrLeft(MobileId, PositionOfDot);
     }
-    pMobile = new Mobile(MobileId);
+    pMobile = new Mobile(ConvertCStringToString(MobileId));
     pMobile->Hurt    = MobileHurt;
     pMobile->MobNbr  = MobNbr;
     if (pMobile->Hurt)
@@ -755,7 +755,7 @@ Mobile *Mobile::IsMobValid(string MobileId)
   if(Success)
   {
     MobileFile.Close();
-    pMobile = new Mobile(ConvertStringToCString(MobileId));
+    pMobile = new Mobile(MobileId);
     return pMobile;
   }
   else
@@ -982,7 +982,7 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
       MobNbr = StrRight(MobileId, StrGetLength(MobileId) - PositionOfDot - 1);
       MobileId = StrLeft(MobileId, PositionOfDot);
     }
-    pMobile = new Mobile(MobileId);
+    pMobile = new Mobile(ConvertCStringToString(MobileId));
     pMobile->Hurt = MobileHurt;
     pMobile->MobNbr = MobNbr;
     if (MobileHurt)

@@ -52,7 +52,7 @@ class Mobile
 
 // Public functions
   public:
-    Mobile(CString MobileId);
+    Mobile(string MobileId);
     ~Mobile();
     void            CreateMobStatsFile(CString RoomId);
     void            ExamineMob(CString MobileId);
