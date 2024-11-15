@@ -825,7 +825,7 @@ void Mobile::PutMobBackInRoom(CString PlayerName, CString RoomIdBeforeFleeing)
       }
     }
     AddMobToRoom(RoomIdBeforeFleeing, MobileId);
-    UpdateMobInWorld(MobileId, "remove"); // Keep Mob InWorld count correct
+    UpdateMobInWorld(MobileId, "remove");
     MobPlayerFile.ReadString(Stuff);
   }
   MobPlayerFile.Close();

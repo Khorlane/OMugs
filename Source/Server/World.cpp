@@ -529,44 +529,38 @@ void World::MakeMobilesMove1()
 
 void World::MakeMobilesMove2()
 {
-  CStdioFile ControlMobNoMoveFile;
-  CString    ControlMobNoMoveFileName;
+  ifstream   ControlMobNoMoveFile;
+  string     ControlMobNoMoveFileName;
   int        ExitCount;
   int        ExitNumber;
-  CString    ExitToRoomId;
-  CFileFind  FileList;
+  string     ExitToRoomId;
   int        i;
   int        MobCount;
-  CString    MobileId;
-  CString    MobileIdCheck;
+  string     MobileId;
+  string     MobileIdCheck;
   bool       MobListNotCompleted = false;
   int        PositionOfDot;
   int        RandomPct;
-  CString    RoomId;
-  string     sRoomId;
-  CStdioFile RoomMobFile;
-  CString    RoomMobFileName;
-  CStdioFile RoomMobListFile;
-  CString    RoomMobListFileName;
-  CStdioFile RoomMobListTempFile;
-  CString    RoomMobListTempFileName;
-  CStdioFile RoomMobMoveFile;
-  CString    RoomMobMoveFileName;
-  CString    Stuff;
-  int        Success;
+  string     RoomId;
+  ifstream   RoomMobFile;
+  string     RoomMobFileName;
+  ifstream   RoomMobListFile;
+  string     RoomMobListFileName;
+  ofstream   RoomMobListTempFile;
+  string     RoomMobListTempFileName;
+  ofstream   RoomMobMoveFile;
+  string     RoomMobMoveFileName;
+  string     Stuff;
   clock_t    TimerStart;
   clock_t    TimerStop;
-  CString    TmpStr;
-  CString    ValidMobRoomExits;
-  string     sValidMobRoomExits;
+  string     TmpStr;
+  string     ValidMobRoomExits;
 
   // Open MakeMobList file
   RoomMobListFileName  = CONTROL_DIR;
   RoomMobListFileName += "RoomMobList.txt";
-  Success = RoomMobListFile.Open(RoomMobListFileName,
-                      CFile::modeRead |
-                      CFile::typeText);
-  if(!Success)
+  RoomMobListFile.open(RoomMobListFileName);
+  if (!RoomMobListFile.is_open())
   { // Failed to open RoomMobList file
     AfxMessageBox("World::MakeMobilesMove1 - Create RoomMobList file failed", MB_ICONSTOP);
     _endthread();
@@ -574,11 +568,8 @@ void World::MakeMobilesMove2()
   // Open MakeMobListTemp file
   RoomMobListTempFileName  = CONTROL_DIR;
   RoomMobListTempFileName += "RoomMobListTemp.txt";
-  Success = RoomMobListTempFile.Open(RoomMobListTempFileName,
-                          CFile::modeCreate |
-                          CFile::modeWrite  |
-                          CFile::typeText);
-  if(!Success)
+  RoomMobListTempFile.open(RoomMobListTempFileName);
+  if (!RoomMobListTempFile.is_open())
   { // Failed to open RoomMobListTemp file
     AfxMessageBox("World::MakeMobilesMove2 - Create RoomMobListTemp file failed", MB_ICONSTOP);
     _endthread();
@@ -586,11 +577,8 @@ void World::MakeMobilesMove2()
   // Open RoomMobMove file
   RoomMobMoveFileName  = CONTROL_DIR;
   RoomMobMoveFileName += "RoomMobMove.txt";
-  Success = RoomMobMoveFile.Open(RoomMobMoveFileName,
-                      CFile::modeCreate |
-                      CFile::modeWrite  |
-                      CFile::typeText);
-  if(!Success)
+  RoomMobMoveFile.open(RoomMobMoveFileName);
+  if (!RoomMobMoveFile.is_open())
   { // Failed to open RoomMobMove file
     AfxMessageBox("World::MakeMobilesMove2 - Create RoomMobMove file failed", MB_ICONSTOP);
     _endthread();
@@ -600,7 +588,7 @@ void World::MakeMobilesMove2()
   //***************************
   TimerStart = clock();
   TimerStop  = TimerStart + 100;
-  RoomMobListFile.ReadString(RoomMobFileName);
+  getline(RoomMobListFile, RoomMobFileName);
   while (RoomMobFileName != "")
   { // Process all rooms that have mobiles in them
     if (clock() > TimerStop)
@@ -608,25 +596,23 @@ void World::MakeMobilesMove2()
       MobListNotCompleted = true;
       TmpStr  = RoomMobFileName;
       TmpStr += "\n";
-      RoomMobListTempFile.WriteString(TmpStr);
-      RoomMobListFile.ReadString(RoomMobFileName);
+      RoomMobListTempFile << TmpStr << endl;
+      getline(RoomMobListFile, RoomMobFileName);
       continue;
     }
     RoomId = StrLeft(RoomMobFileName, StrGetLength(RoomMobFileName) - 4);
     // Open RoomMob file
     RoomMobFileName =  ROOM_MOB_DIR + RoomMobFileName;
-    Success = RoomMobFile.Open(RoomMobFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-    if(!Success)
+    RoomMobFile.open(RoomMobFileName);
+    if (!RoomMobFile.is_open())
     { // No RoomMob file? Really, I guess all the mobs got themselves killed
-      RoomMobListFile.ReadString(RoomMobFileName);
+      getline(RoomMobListFile, RoomMobFileName);
       continue;
     }
-    RoomMobFile.ReadString(Stuff);
+    getline(RoomMobFile, Stuff);
     while (Stuff != "")
     { // For each mobile in room
-      MobCount = atoi(StrGetWord(Stuff, 1));
+      MobCount = stoi(StrGetWord(Stuff, 1));
       MobileId = StrGetWord(Stuff, 2);
       MobileIdCheck = MobileId;
       PositionOfDot = StrFindFirstChar(MobileIdCheck, '.');
@@ -637,12 +623,9 @@ void World::MakeMobilesMove2()
       //* Is the MobNoMoveFlag set?
       ControlMobNoMoveFileName =  CONTROL_MOB_NOMOVE_DIR;
       ControlMobNoMoveFileName += MobileIdCheck;
-      Success = ControlMobNoMoveFile.Open(ControlMobNoMoveFileName,
-                               CFile::modeRead |
-                               CFile::typeText);
-      if(Success)
+      if (ControlMobNoMoveFile.is_open())
       { // The MobNoMoveFlag is set for this mobile
-        ControlMobNoMoveFile.Close();
+        ControlMobNoMoveFile.close();
       }
       else
       { // Mobile may move
@@ -658,9 +641,7 @@ void World::MakeMobilesMove2()
           }
           if (RandomPct <= MOB_MOVE_PCT)
           { // Mobile is to be moved
-            sRoomId = ConvertCStringToString(RoomId);
-            sValidMobRoomExits = GetValidMobRoomExits(sRoomId);;
-            ValidMobRoomExits = ConvertStringToCString(sValidMobRoomExits);
+            ValidMobRoomExits = GetValidMobRoomExits(RoomId);;
             ExitCount         = StrCountWords(ValidMobRoomExits);
             if (ExitCount > 0)
             { // Mob has at least one exit available
@@ -677,23 +658,23 @@ void World::MakeMobilesMove2()
               TmpStr += " ";
               TmpStr += ExitToRoomId;
               TmpStr += "\n";
-              RoomMobMoveFile.WriteString(TmpStr);
+              RoomMobMoveFile << TmpStr << endl;
             }
           }
         }
       }
-      RoomMobFile.ReadString(Stuff);
+      getline(RoomMobFile, Stuff);
     }
-    RoomMobFile.Close();
-    RoomMobListFile.ReadString(RoomMobFileName);
+    RoomMobFile.close();
+    getline(RoomMobListFile, RoomMobFileName);
   }
   // Close files
-  RoomMobMoveFile.Close();
-  RoomMobListFile.Close();
-  RoomMobListTempFile.Close();
+  RoomMobMoveFile.close();
+  RoomMobListFile.close();
+  RoomMobListTempFile.close();
   TRY
   { // Done with RoomMobList file, get rid of it
-    CFile::Remove(RoomMobListFileName);
+    Remove(RoomMobListFileName);
   }
   CATCH (CFileException, e)
   { // If file remove fails, something is bad wrong!
@@ -705,7 +686,7 @@ void World::MakeMobilesMove2()
   { // Time ran out before MobList was completely processed
     TRY
     { // Rename temp file
-      CFile::Rename(RoomMobListTempFileName, RoomMobListFileName);
+      Rename(RoomMobListTempFileName, RoomMobListFileName);
     }
     CATCH (CFileException, e)
     { // If rename fails, something is bad wrong!
@@ -718,7 +699,7 @@ void World::MakeMobilesMove2()
   { // MobList was completely processed
     TRY
     { // delete temp file
-      CFile::Remove(RoomMobListTempFileName);
+      Remove(RoomMobListTempFileName);
     }
     CATCH (CFileException, e)
     { // If delete fails, something is bad wrong!
