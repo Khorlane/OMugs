@@ -31,7 +31,7 @@
 #include <sstream>          // String 'stream' functions (see StrGetWord)
 #include <time.h>           // Time functions
 #include <vector>           // Vector stuff
-#include <filesystem>       // Reanme/delete files, get all files in a directory
+#include <filesystem>       // Read/Write files, reanme/delete files, get all files in a directory
 
 using namespace std;
 namespace fs = filesystem;

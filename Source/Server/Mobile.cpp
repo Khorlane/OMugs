@@ -1233,7 +1233,7 @@ void Mobile::UpdateMobInWorld(CString MobileId, CString AddRemove)
                   CFile::typeText);
   if(!Success)
   {
-    AfxMessageBox("Mobile::UpdateMobInWorld - Open Mobiles InWorld file failed", MB_ICONSTOP);
+    AfxMessageBox("Mobile::UpdateMobInWorld - Open Mobiles InWorld file failed for: " + MobInWorldFileName, MB_ICONSTOP);
     _endthread();
   }
   if (AddRemove == "add")

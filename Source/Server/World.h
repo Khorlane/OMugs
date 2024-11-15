@@ -41,7 +41,7 @@ class World
     static  void    CheckSpawnMobileEvents();
     static  void    Events();
     static  void    HealMobiles();
-    static  bool    HealMobilesFightCheck(CString Dir, CString MobileId);
+    static  bool    HealMobilesFightCheck(string Dir, string MobileId);
     static  void    Osi(CString ScriptType, CString ScriptId);
     static  void    SpawnMobile(CString MobileId, CString RoomId);
     static  void    SpawnMobileNoMove(CString MobileId);

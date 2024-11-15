@@ -33,29 +33,26 @@ Mobile *IsMobValid(CString MobileId); // Mobile
 
 void World::CreateSpawnMobileEvents()
 {
-  CStdioFile ControlMobSpawnFile;
-  CString    ControlMobSpawnFileName;
+  ofstream   ControlMobSpawnFile;
+  string     ControlMobSpawnFileName;
   int        Count;
   int        CurrentTime;
   int        Days;
-  CStdioFile EventFile;
-  CString    EventFileName;
-  CString    EventTime;
-  CFileFind  FileList;
+  fstream    EventFile;
+  string     EventFileName;
+  string     EventTime;
   int        Hours;
   int        Limit;
   int        Minutes;
-  CString    MobileId;
+  string     MobileId;
   int        Months;
-  BOOL       MoreFiles;
-  CString    RoomId;
+  string     RoomId;
   int        Seconds;
-  CString    Stuff;
-  int        Success;
-  CString    TmpStr;
+  string     Stuff;
+  string     TmpStr;
   int        Weeks;
-  CStdioFile WorldMobileFile;
-  CString    WorldMobileFileName;
+  ifstream   WorldMobileFile;
+  string     WorldMobileFileName;
   int        Years;
 
   if (ChgDir(WORLD_MOBILES_DIR))
@@ -63,20 +60,13 @@ void World::CreateSpawnMobileEvents()
     AfxMessageBox("World::CreateSpawnMobileEvents - Change directory to WORLD_MOBILES_DIR failed", MB_ICONSTOP);
     _endthread();
   }
-  MoreFiles = FileList.FindFile("*.*");
-  if (ChgDir(HomeDir))
-  { // Change directory failed
-    AfxMessageBox("World::CreateSpawnMobileEvents - Change directory to HomeDir failed", MB_ICONSTOP);
-    _endthread();
-  }
-  while (MoreFiles)
+  for (const auto &entry : fs::directory_iterator("./"))
   {
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
+    if (entry.is_directory())
     { // Skip directories
       continue;
     }
-    WorldMobileFileName = FileList.GetFileName();
+    WorldMobileFileName = entry.path().filename().string();
     MobileId = StrLeft(WorldMobileFileName, StrGetLength(WorldMobileFileName) - 4);
     if (MobileId == "ReadMe")
     {
@@ -85,60 +75,56 @@ void World::CreateSpawnMobileEvents()
     //* Have we already created a spawn event for this MobileId?
     ControlMobSpawnFileName =  CONTROL_MOB_SPAWN_DIR;
     ControlMobSpawnFileName += MobileId;
-    Success = ControlMobSpawnFile.Open(ControlMobSpawnFileName,
-                            CFile::modeRead |
-                            CFile::typeText);
-    if(Success)
+    ControlMobSpawnFile.open(ControlMobSpawnFileName);
+    if(ControlMobSpawnFile.is_open())
     { // The NoMoreSpawnEventsFlag is set for this mobile
-      ControlMobSpawnFile.Close();
+      ControlMobSpawnFile.close();
       continue;
     }
     //* Check MaxInWorld against actual 'in world' count
     WorldMobileFileName = WORLD_MOBILES_DIR + WorldMobileFileName;
-    Success = WorldMobileFile.Open(WorldMobileFileName,
-                        CFile::modeRead |
-                        CFile::typeText);
-    if(!Success)
+    WorldMobileFile.open(WorldMobileFileName);
+    if(!WorldMobileFile.is_open())
     { // File does not exist - Very bad!
       AfxMessageBox("World::CreateSpawnMobileEvents - Open World Mobile file failed", MB_ICONSTOP);
       _endthread();
     }
-    WorldMobileFile.ReadString(Stuff);
+    getline(WorldMobileFile, Stuff);
     if (StrGetWord(Stuff, 1) != "MaxInWorld:")
     { // World mobile file format error MaxInWorld
       AfxMessageBox("World::CreateSpawnMobileEvents - World mobile file format error MaxInWorld", MB_ICONSTOP);
       _endthread();
     }
-    Count    = CountMob(MobileId);
-    Limit    = atoi(StrGetWord(Stuff,2));
+    Count    = CountMob(ConvertStringToCString(MobileId));
+    Limit    = stoi(StrGetWord(Stuff,2));
     if (Count >= Limit)
     { // No spawn event needed
-      WorldMobileFile.Close();
+      WorldMobileFile.close();
       continue;
     }
     //*******************************
     //* Create 'spawn mobile' event *
     //*******************************
-    WorldMobileFile.ReadString(Stuff);
+    getline(WorldMobileFile, Stuff);
     if (StrGetWord(Stuff, 1) != "RoomId:")
     { // World mobile file format error RoomId
       AfxMessageBox("World::CreateSpawnMobileEvents - World mobile file format error RoomId", MB_ICONSTOP);
       _endthread();
     }
     RoomId = StrGetWord(Stuff, 2);
-    WorldMobileFile.ReadString(Stuff);
+    getline(WorldMobileFile, Stuff);
     if (StrGetWord(Stuff, 1) != "Interval:")
     { // World mobile file format error Interval
       AfxMessageBox("World::CreateSpawnMobileEvents - World mobile file format error Interval", MB_ICONSTOP);
       _endthread();
     }
-    Seconds = atoi(StrGetWord(Stuff, 2)) * 1;
-    Minutes = atoi(StrGetWord(Stuff, 3)) * 60;
-    Hours   = atoi(StrGetWord(Stuff, 4)) * 3600;
-    Days    = atoi(StrGetWord(Stuff, 5)) * 86400;
-    Weeks   = atoi(StrGetWord(Stuff, 6)) * 604800;
-    Months  = atoi(StrGetWord(Stuff, 7)) * 2592000;
-    Years   = atoi(StrGetWord(Stuff, 8)) * 31104000;
+    Seconds = stoi(StrGetWord(Stuff, 2)) * 1;
+    Minutes = stoi(StrGetWord(Stuff, 3)) * 60;
+    Hours   = stoi(StrGetWord(Stuff, 4)) * 3600;
+    Days    = stoi(StrGetWord(Stuff, 5)) * 86400;
+    Weeks   = stoi(StrGetWord(Stuff, 6)) * 604800;
+    Months  = stoi(StrGetWord(Stuff, 7)) * 2592000;
+    Years   = stoi(StrGetWord(Stuff, 8)) * 31104000;
     CurrentTime = GetTimeSeconds();
     CurrentTime += Seconds;
     CurrentTime += Minutes;
@@ -148,42 +134,16 @@ void World::CreateSpawnMobileEvents()
     CurrentTime += Months;
     CurrentTime += Years;
     sprintf(Buf, "%d", CurrentTime);
-    EventTime = ConvertStringToCString(Buf);
+    EventTime = Buf;
     EventFileName =  CONTROL_EVENTS_DIR;
     EventFileName += "M";
     EventFileName += EventTime;
     EventFileName += ".txt";
-    Success = EventFile.Open(EventFileName,
-                  CFile::modeRead |
-                  CFile::typeText);
-    if(Success)
-    { // Event file already exists
-      EventFile.Close();
-      Success = EventFile.Open(EventFileName,
-                    CFile::modeReadWrite |
-                    CFile::typeText);
-      if(!Success)
-      { // Open for write failed
-        AfxMessageBox("World::CreateSpawnMobileEvents - Open Events file failed - write", MB_ICONSTOP);
+    EventFile.open(EventFileName, ios_base::app);
+    if (!EventFile.is_open())
+    { // Open for append failed
+        AfxMessageBox("World::CreateSpawnMobileEvents - Open Events file failed - append", MB_ICONSTOP);
         _endthread();
-      }
-      EventFile.ReadString(Stuff);
-      while (Stuff != "")
-      {
-        EventFile.ReadString(Stuff);
-      }
-    }
-    else
-    { // New event file
-      Success = EventFile.Open(EventFileName,
-                    CFile::modeCreate |
-                    CFile::modeWrite  |
-                    CFile::typeText);
-      if(!Success)
-      { // Open for write failed
-        AfxMessageBox("World::CreateSpawnMobileEvents - Open Events file failed - create", MB_ICONSTOP);
-        _endthread();
-      }
     }
     while (Count < Limit)
     {
@@ -191,22 +151,24 @@ void World::CreateSpawnMobileEvents()
       TmpStr += " ";
       TmpStr += RoomId;
       TmpStr += "\r\n";
-      EventFile.WriteString(TmpStr);
+      EventFile << TmpStr << endl;
       Count++;
     }
-    EventFile.Close();
-    WorldMobileFile.Close();
+    EventFile.close();
+    WorldMobileFile.close();
     // Set the NoMoreSpawnEventsFlag for this mobile
-    Success = ControlMobSpawnFile.Open(ControlMobSpawnFileName,
-                            CFile::modeCreate |
-                            CFile::modeWrite  |
-                            CFile::typeText);
-    if(!Success)
+    ControlMobSpawnFile.open(ControlMobSpawnFileName);
+    if(!ControlMobSpawnFile.is_open())
     { // Create file failed
       AfxMessageBox("World::CreateSpawnMobileEvents - Create Control Mobile Spawn file failed", MB_ICONSTOP);
       _endthread();
     }
-    ControlMobSpawnFile.Close();
+    ControlMobSpawnFile.close();
+  }
+  if (ChgDir(HomeDir))
+  { // Change directory failed
+    AfxMessageBox("World::CreateSpawnMobileEvents - Change directory to HomeDir failed", MB_ICONSTOP);
+    _endthread();
   }
 }
 
@@ -216,17 +178,14 @@ void World::CreateSpawnMobileEvents()
 
 void World::CheckSpawnMobileEvents()
 {
-  CString    CheckTime;
-  CString    ControlMobSpawnFileName;
-  CStdioFile EventFile;
-  CString    EventFileName;
-  CString    EventTime;
-  CFileFind  FileList;
-  CString    MobileId;
-  BOOL       MoreFiles;
-  CString    RoomId;
-  CString    Stuff;
-  int        Success;
+  string     CheckTime;
+  string     ControlMobSpawnFileName;
+  ifstream   EventFile;
+  string     EventFileName;
+  string     EventTime;
+  string     MobileId;
+  string     RoomId;
+  string     Stuff;
 
   sprintf(Buf, "%d", GetTimeSeconds());
   CheckTime = ConvertStringToCString(Buf);
@@ -235,22 +194,18 @@ void World::CheckSpawnMobileEvents()
     AfxMessageBox("World::CheckSpawnMobileEvents - Change directory to CONTROL_EVENTS_DIR failed", MB_ICONSTOP);
     _endthread();
   }
-  // Event files starting with 'M' are 'spawn mobile' events
-  MoreFiles = FileList.FindFile("M*.*");
-  if (ChgDir(HomeDir))
-  { // Change directory failed
-    AfxMessageBox("World::CheckSpawnMobileEvents - Change directory to HomeDir failed", MB_ICONSTOP);
-    _endthread();
-  }
-  while (MoreFiles)
+  for (const auto &entry : fs::directory_iterator("./"))
   {
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
+    if (entry.is_directory())
     { // Skip directories
       continue;
     }
+    EventFileName = entry.path().filename().string();
+    if (!EventFileName.starts_with('M'))
+    { // Event files starting with 'M' are 'spawn mobile' events
+      continue;
+    }
     // Is it time for this event
-    EventFileName += FileList.GetFileName();
     EventTime = StrLeft(EventFileName, StrGetLength(EventFileName) - 4);
     EventTime = StrRight(EventTime, StrGetLength(EventTime) - 1);
     if (EventTime > CheckTime)
@@ -259,37 +214,33 @@ void World::CheckSpawnMobileEvents()
     }
     // Event's time has arrived
     EventFileName = CONTROL_EVENTS_DIR + EventFileName;
-    Success = EventFile.Open(EventFileName,
-                  CFile::modeRead |
-                  CFile::typeText);
-    if(!Success)
+    EventFile.open(EventFileName);
+    if(!EventFile.is_open())
     { // File does not exist - Very bad!
       AfxMessageBox("World::CheckSpawnMobileEvents - Open Events file failed", MB_ICONSTOP);
       _endthread();
     }
-    EventFile.ReadString(Stuff);
+    getline(EventFile, Stuff);
     while (Stuff != "")
     { // Get RoomId, MobileId, then spawn the mob
       MobileId = StrGetWord(Stuff, 1);
       RoomId   = StrGetWord(Stuff, 2);
-      SpawnMobile(MobileId, RoomId);
+      SpawnMobile(ConvertStringToCString(MobileId), ConvertStringToCString(RoomId));
       // Remove the NoMoreSpawnEventsFlag for this mobile
       // This is overkill, attempts to remove same flag over and over
       ControlMobSpawnFileName =  CONTROL_MOB_SPAWN_DIR;
       ControlMobSpawnFileName += MobileId;
-      TRY
-      {
-        CFile::Remove(ControlMobSpawnFileName);
-      }
-      CATCH (CFileException, e)
-      { // Don't care if file already removed
-      }
-      END_CATCH
-      EventFile.ReadString(Stuff);
+      Remove(ControlMobSpawnFileName);
+      getline(EventFile, Stuff);
     }
     // Event completed, remove it
-    EventFile.Close();
-    CFile::Remove(EventFileName);
+    EventFile.close();
+    Remove(EventFileName);
+  }
+  if (ChgDir(HomeDir))
+  { // Change directory failed
+    AfxMessageBox("World::CheckSpawnMobileEvents - Change directory to HomeDir failed", MB_ICONSTOP);
+    _endthread();
   }
 }
 
@@ -310,13 +261,11 @@ void World::Events()
 
 void World::HealMobiles()
 {
-  CFileFind  FileList;
   bool       MobFighting;
-  CString    MobileId;
-  CString    MobNbr;
-  CStdioFile MobStatsHitPointsFile;
-  CString    MobStatsHitPointsFileName;
-  BOOL       MoreFiles;
+  string     MobileId;
+  string     MobNbr;
+  ifstream   MobStatsHitPointsFile;
+  string     MobStatsHitPointsFileName;
   int        PositionOfDot;
   CString    RoomId;
   CString    Stuff;
@@ -326,24 +275,17 @@ void World::HealMobiles()
     AfxMessageBox("World::HealMobiles - Change directory to MOB_STATS_HPT_DIR failed", MB_ICONSTOP);
     _endthread();
   }
-  // Get a list of all MobStats\HitPoints files
-  MoreFiles = FileList.FindFile("*.*");
-  if (ChgDir(HomeDir))
-  { // Change directory failed
-    AfxMessageBox("World::HealMobiles - Change directory to HomeDir failed", MB_ICONSTOP);
-    _endthread();
-  }
   //*************************
   //* Heal no-fighting mobs *
   //*************************
-  while (MoreFiles)
-  { // For each MobStats\HitPoints file
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
+  // Get a list of all MobStats\HitPoints files
+  for (const auto &entry : fs::directory_iterator("./"))
+  {
+    if (entry.is_directory())
     { // Skip directories
       continue;
     }
-    MobStatsHitPointsFileName = FileList.GetFileName();
+    MobStatsHitPointsFileName = entry.path().filename().string();
     MobileId = StrLeft(MobStatsHitPointsFileName, StrGetLength(MobStatsHitPointsFileName) - 4);
     MobFighting = HealMobilesFightCheck("MobPlayer", MobileId);
     if (MobFighting)
@@ -358,12 +300,17 @@ void World::HealMobiles()
     //*******************
     //* Heal the mobile *
     //*******************
-    RoomId = ConvertStringToCString(GetMobileRoom(ConvertCStringToString(MobileId)));
-    RemoveMobFromRoom(RoomId, MobileId);
-    DeleteMobStats(MobileId);
+    RoomId = ConvertStringToCString(GetMobileRoom(MobileId));
+    RemoveMobFromRoom(RoomId, ConvertStringToCString(MobileId));
+    DeleteMobStats(ConvertStringToCString(MobileId));
     PositionOfDot = StrFindFirstChar(MobileId, '.');
     MobileId = StrLeft(MobileId, PositionOfDot);
-    AddMobToRoom(RoomId, MobileId);
+    AddMobToRoom(RoomId, ConvertStringToCString(MobileId));
+  }
+  if (ChgDir(HomeDir))
+  { // Change directory failed
+    AfxMessageBox("World::HealMobiles - Change directory to HomeDir failed", MB_ICONSTOP);
+    _endthread();
   }
 }
 
@@ -371,16 +318,13 @@ void World::HealMobiles()
 * See if mobile is fighting                                *
 ************************************************************/
 
-bool World::HealMobilesFightCheck(CString Dir, CString MobileId)
+bool World::HealMobilesFightCheck(string Dir, string MobileId)
 {
-  CFileFind  FileList;
-  CStdioFile MobPlayerFile;
-  CString    MobPlayerFileName;
+  ifstream   MobPlayerFile;
+  string     MobPlayerFileName;
   bool       MobFighting;
-  BOOL       MoreFiles;
-  CString    Stuff;
-  int        Success;
-  CString    TmpStr;
+  string     Stuff;
+  string     TmpStr;
 
   MobFighting = false;
   if (Dir == "MobPlayer")
@@ -400,20 +344,13 @@ bool World::HealMobilesFightCheck(CString Dir, CString MobileId)
     }
   }
   // Get a list of all MobPlayer files
-  MoreFiles = FileList.FindFile("*.*");
-  if (ChgDir(HomeDir))
-  { // Change directory failed
-    AfxMessageBox("World::HealMobilesFightCheck - Change directory to HomeDir failed", MB_ICONSTOP);
-    _endthread();
-  }
-  while (MoreFiles)
-  { // For each MobPlayer or PlayerMob file
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
+  for (const auto &entry : fs::directory_iterator("./"))
+  {
+    if (entry.is_directory())
     { // Skip directories
       continue;
     }
-    MobPlayerFileName = FileList.GetFileName();
+    MobPlayerFileName = entry.path().filename().string();
     // Set file name based on Dir
     if (Dir == "MobPlayer")
     { // Checking MobPlayer
@@ -423,27 +360,30 @@ bool World::HealMobilesFightCheck(CString Dir, CString MobileId)
     { // Checking PlayerMob
       MobPlayerFileName =  PLAYER_MOB_DIR + MobPlayerFileName;
     }
-    Success = MobPlayerFile.Open(MobPlayerFileName,
-                      CFile::modeRead |
-                      CFile::typeText);
-    if(!Success)
+    MobPlayerFile.open(MobPlayerFileName);
+    if(!MobPlayerFile.is_open())
     { // Failed to open MobPlayer or MobPlayer file
       TmpStr  = "World::HealMobilesFightCheck - Open ";
       TmpStr += Dir;
       TmpStr += " file failed";
-      AfxMessageBox(TmpStr, MB_ICONSTOP);
+      AfxMessageBox(ConvertStringToCString(TmpStr), MB_ICONSTOP);
       _endthread();
     }
-    MobPlayerFile.ReadString(Stuff);
+    getline(MobPlayerFile, Stuff);
     while (Stuff != "")
     { // Read all lines
       if (Stuff == MobileId)
       { // A match means the mobile is fighting
         MobFighting = true; 
       }
-      MobPlayerFile.ReadString(Stuff);
+      getline(MobPlayerFile, Stuff);
     }
-    MobPlayerFile.Close();
+    MobPlayerFile.close();
+  }  
+  if (ChgDir(HomeDir))
+  { // Change directory failed
+    AfxMessageBox("World::HealMobilesFightCheck - Change directory to HomeDir failed", MB_ICONSTOP);
+    _endthread();
   }
   return MobFighting;
 }
@@ -454,65 +394,47 @@ bool World::HealMobilesFightCheck(CString Dir, CString MobileId)
 
 void World::MakeMobilesMove()
 {
-  CStdioFile RoomMobListFile;
-  CString    RoomMobListFileName;
-  int        RoomMobListFileSize;
-  CStdioFile RoomMobMoveFile;
-  CString    RoomMobMoveFileName;
-  int        RoomMobMoveFileSize;
-  int        Success1;
-  int        Success2;
+  ifstream   RoomMobListFile;
+  string     RoomMobListFileName;
+  ifstream   RoomMobMoveFile;
+  string     RoomMobMoveFileName;
+  bool       Success1;
+  bool       Success2;
 
   //********************************
   //* Check for existance of files *
   //********************************
+  Success1 = false;
+  Success2 = false;
   RoomMobListFileName  = CONTROL_DIR;
   RoomMobListFileName += "RoomMobList.txt";
-  Success1 = RoomMobListFile.Open(RoomMobListFileName,
-                       CFile::modeRead |
-                       CFile::typeText);
-
+  RoomMobListFile.open(RoomMobListFileName);
+  if (RoomMobListFile.is_open())
+  {
+    Success1 = true;
+  }
   RoomMobMoveFileName  = CONTROL_DIR;
   RoomMobMoveFileName += "RoomMobMove.txt";
-  Success2 = RoomMobMoveFile.Open(RoomMobMoveFileName,
-                       CFile::modeRead |
-                       CFile::typeText);
+  RoomMobMoveFile.open(RoomMobMoveFileName);
+  if (RoomMobMoveFile.is_open())
+  {
+    Success2 = true;
+  }
   if (Success1)
   { // RoomMobList file exists, but is it empty?
-    RoomMobListFileSize = (int) RoomMobListFile.GetLength();
-    RoomMobListFile.Close();
-    if (RoomMobListFileSize == 0)
+    if (RoomMobListFile.peek() == ifstream::traits_type::eof())
     { // Nothing in the MobList file
-      Success1 = 0;
-      TRY
-      { // Delete it
-        CFile::Remove(RoomMobListFileName);
-      }
-      CATCH (CFileException, e)
-      { // If file remove fails, something is bad wrong!
-        AfxMessageBox("World::MakeMobilesMove - Remove RoomMobList file failed", MB_ICONSTOP);
-        _endthread();
-      }
-      END_CATCH
+      Success1 = false;
+      RoomMobListFile.close();
+      Remove(RoomMobListFileName);
     }
   }
   if (Success2)
   { // RoomMobMove file exists, but is it empty?
-    RoomMobMoveFileSize = (int) RoomMobMoveFile.GetLength();
-    RoomMobMoveFile.Close();
-    if (RoomMobMoveFileSize == 0)
+    if (RoomMobMoveFile.peek() == ifstream::traits_type::eof())
     { // Nothing in the MobMove file
-      Success2 = 0;
-      TRY
-      { // Delete it
-        CFile::Remove(RoomMobMoveFileName);
-      }
-      CATCH (CFileException, e)
-      { // If file remove fails, something is bad wrong!
-        AfxMessageBox("World::MakeMobilesMove - Remove RoomMobMove file failed", MB_ICONSTOP);
-        _endthread();
-      }
-      END_CATCH
+      Success2 = false;
+      Remove(RoomMobMoveFileName);
     }
   }
   //***********************************
@@ -538,24 +460,17 @@ void World::MakeMobilesMove()
 
 void World::MakeMobilesMove1()
 {
-  CFileFind    FileList;
-  BOOL         MoreFiles;
   vector<string> RoomMobList;
-  CString      RoomMobFileName;
-  CStdioFile   RoomMobListFile;
-  CString      RoomMobListFileName;
-  int          RoomMobListFileSize;
-  int          Success;
-  CString      TmpStr;
+  string         RoomMobFileName;
+  ofstream       RoomMobListFile;
+  string         RoomMobListFileName;
+  string         TmpStr;
 
   // Open MakeMobList file
   RoomMobListFileName =  CONTROL_DIR;
   RoomMobListFileName += "RoomMobList.txt";
-  Success = RoomMobListFile.Open(RoomMobListFileName,
-                      CFile::modeCreate |
-                      CFile::modeWrite  |
-                      CFile::typeText);
-  if(!Success)
+  RoomMobListFile.open(RoomMobListFileName);
+  if(!RoomMobListFile.is_open())
   { // Failed to open RoomMobMove file
     AfxMessageBox("World::MakeMobilesMove1 - Create RoomMobList file failed", MB_ICONSTOP);
     _endthread();
@@ -566,23 +481,13 @@ void World::MakeMobilesMove1()
     _endthread();
   }
   // Get a list of all RoomMob files
-  MoreFiles = FileList.FindFile("*.*");
-  if (ChgDir(HomeDir))
-  { // Change to home directory failed
-    AfxMessageBox("World::MakeMobilesMove1 - Change directory to HomeDir failed", MB_ICONSTOP);
-    _endthread();
-  }
-  //***************************
-  //* Create RoomMobList file *
-  //***************************
-  while (MoreFiles)
-  { // Process all rooms that have mobiles in them
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
+  for (const auto &entry : fs::directory_iterator("./"))
+  {
+    if (entry.is_directory())
     { // Skip directories
       continue;
     }
-    RoomMobFileName = FileList.GetFileName();
+    RoomMobFileName = entry.path().filename().string();
     if (StrFind(RoomMobFileName, "Spawn") == -1)
     { // Not a spawn room, Random position in list
       sprintf(Buf, "%05d",rand());
@@ -594,7 +499,7 @@ void World::MakeMobilesMove1()
     }
     TmpStr += " ";
     TmpStr += RoomMobFileName;
-    RoomMobList.push_back(ConvertCStringToString(TmpStr));
+    RoomMobList.push_back(TmpStr);
   }
   // sort em
    sort(RoomMobList.begin(), RoomMobList.end());
@@ -604,23 +509,17 @@ void World::MakeMobilesMove1()
     TmpStr = ConvertStringToCString(item);
     TmpStr = StrGetWord(TmpStr, 2);
     TmpStr += "\n";
-    RoomMobListFile.WriteString(TmpStr);
+    RoomMobListFile << TmpStr << endl;
   }
-
-  RoomMobListFileSize = (int) RoomMobListFile.GetLength();
-  RoomMobListFile.Close();
-  if (RoomMobListFileSize == 0)
+  RoomMobListFile.close();
+  if (RoomMobList.empty())
   { // No mobiles are moving, MobMove file is empty
-    TRY
-    { // Delete it
-      CFile::Remove(RoomMobListFileName);
-    }
-    CATCH (CFileException, e)
-    { // If file remove fails, something is bad wrong!
-      AfxMessageBox("World::MakeMobilesMove1 - Remove RoomMobList file failed", MB_ICONSTOP);
-      _endthread();
-    }
-    END_CATCH
+    Remove(RoomMobListFileName);
+  }
+  if (ChgDir(HomeDir))
+  { // Change to home directory failed
+    AfxMessageBox("World::MakeMobilesMove1 - Change directory to HomeDir failed", MB_ICONSTOP);
+    _endthread();
   }
 }
 
