@@ -267,8 +267,8 @@ void World::HealMobiles()
   ifstream   MobStatsHitPointsFile;
   string     MobStatsHitPointsFileName;
   int        PositionOfDot;
-  CString    RoomId;
-  CString    Stuff;
+  string     RoomId;
+  string     Stuff;
 
   if (ChgDir(MOB_STATS_HPT_DIR))
   { // Change directory failed
@@ -300,12 +300,12 @@ void World::HealMobiles()
     //*******************
     //* Heal the mobile *
     //*******************
-    RoomId = ConvertStringToCString(GetMobileRoom(MobileId));
-    RemoveMobFromRoom(RoomId, ConvertStringToCString(MobileId));
+    RoomId = GetMobileRoom(MobileId);
+    RemoveMobFromRoom(ConvertStringToCString(RoomId), ConvertStringToCString(MobileId));
     DeleteMobStats(ConvertStringToCString(MobileId));
     PositionOfDot = StrFindFirstChar(MobileId, '.');
     MobileId = StrLeft(MobileId, PositionOfDot);
-    AddMobToRoom(RoomId, ConvertStringToCString(MobileId));
+    AddMobToRoom(ConvertStringToCString(RoomId), ConvertStringToCString(MobileId));
   }
   if (ChgDir(HomeDir))
   { // Change directory failed
