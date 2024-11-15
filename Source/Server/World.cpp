@@ -940,7 +940,7 @@ void World::SpawnMobile(string MobileId, string RoomId)
   delete pMobile;
   if (IsWord("NoMove", ConvertStringToCString(MobileAction)))
   {
-    SpawnMobileNoMove(ConvertStringToCString(MobileId));
+    SpawnMobileNoMove(MobileId);
   }
 }
 
@@ -948,22 +948,18 @@ void World::SpawnMobile(string MobileId, string RoomId)
 * Make mobile stand still                                  *
 ************************************************************/
 
-void World::SpawnMobileNoMove(CString MobileId)
+void World::SpawnMobileNoMove(string MobileId)
 {
-  CStdioFile ControlMobNoMoveFile;
-  CString    ControlMobNoMoveFileName;
-  int        Success;
+  ofstream   ControlMobNoMoveFile;
+  string     ControlMobNoMoveFileName;
 
   ControlMobNoMoveFileName  = CONTROL_MOB_NOMOVE_DIR;
   ControlMobNoMoveFileName += MobileId;
-  Success = ControlMobNoMoveFile.Open(ControlMobNoMoveFileName,
-                           CFile::modeCreate |
-                           CFile::modeWrite  |
-                           CFile::typeText);
-  if(!Success)
+  ControlMobNoMoveFile.open(ControlMobNoMoveFileName);
+  if(!ControlMobNoMoveFile.is_open())
   { // Create file failed
     AfxMessageBox("World::SpawnMobile - Create Control Mobile NoMove file failed", MB_ICONSTOP);
     _endthread();
   }
-  ControlMobNoMoveFile.Close();
+  ControlMobNoMoveFile.close();
 }

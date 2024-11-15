@@ -339,7 +339,7 @@ void    SockCheckForNewConnections();
 void    SockClosePort(int PortNbr);
 void    SockOpenPort(int PortNbr);
 void    SockRecv();
-void    SpawnMobileNoMove(CString MobileId);
+void    SpawnMobileNoMove(string MobileId);
 int     StrCountChar(CString Str1, char c);
 int     StrCountChar(string Str1, char c);
 int     StrCountWords(CString Str1);

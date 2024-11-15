@@ -1131,7 +1131,7 @@ void SockRecv()
   Communication::SockRecv();
 }
 
-void SpawnMobileNoMove(CString MobileId)
+void SpawnMobileNoMove(string MobileId)
 {
   World::SpawnMobileNoMove(MobileId);
 }

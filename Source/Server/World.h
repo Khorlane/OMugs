@@ -44,7 +44,7 @@ class World
     static  bool    HealMobilesFightCheck(string Dir, string MobileId);
     static  void    Osi(string ScriptType, string ScriptId);
     static  void    SpawnMobile(string MobileId, string RoomId);
-    static  void    SpawnMobileNoMove(CString MobileId);
+    static  void    SpawnMobileNoMove(string MobileId);
 };
 
 #endif
