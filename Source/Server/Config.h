@@ -264,7 +264,7 @@ void    ClearDescriptor();
 void    CloseLogFile();
 string  ConvertCStringToString(CString Str1);
 CString ConvertStringToCString(string  Str1);
-int     CountMob(CString MobileId);
+int     CountMob(string MobileId);
 void    CreateMobPlayer(CString PlayerName, CString MobileId);
 void    CreateMobStatsFileWrite(CString Directory, CString MobileIdForFight, CString Stuff);
 void    CreatePlayerMob(CString PlayerName, CString MobileId);

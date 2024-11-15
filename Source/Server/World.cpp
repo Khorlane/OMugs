@@ -95,7 +95,7 @@ void World::CreateSpawnMobileEvents()
       AfxMessageBox("World::CreateSpawnMobileEvents - World mobile file format error MaxInWorld", MB_ICONSTOP);
       _endthread();
     }
-    Count    = CountMob(ConvertStringToCString(MobileId));
+    Count    = CountMob(MobileId);
     Limit    = stoi(StrGetWord(Stuff,2));
     if (Count >= Limit)
     { // No spawn event needed

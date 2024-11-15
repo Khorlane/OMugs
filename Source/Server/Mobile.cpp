@@ -173,27 +173,24 @@ void Mobile::AddMobToRoom(string RoomId, string MobileId)
 * Look mobiles InWorld count                               *
 ************************************************************/
 
-int Mobile::CountMob(CString MobileId)
+int Mobile::CountMob(string MobileId)
 {
   int        MobInWorldCount;
-  CStdioFile MobInWorldFile;
-  CString    MobInWorldFileName;
-  CString    Stuff;
-  int        Success;
-  CString    TmpStr;
+  ifstream   MobInWorldFile;
+  string     MobInWorldFileName;
+  string     Stuff;
+  string     TmpStr;
   
   // Open Mobile InWorld file
   MobInWorldFileName =  CONTROL_MOB_INWORLD_DIR;
   MobInWorldFileName += MobileId;
   MobInWorldFileName += ".txt";
-  Success = MobInWorldFile.Open(MobInWorldFileName,
-                     CFile::modeRead |
-                     CFile::typeText);
-  if(Success)
+  MobInWorldFile.open(MobInWorldFileName);
+  if(MobInWorldFile.is_open())
   { // Get current count
-    MobInWorldFile.ReadString(Stuff);
-    MobInWorldCount = atoi(Stuff);
-    MobInWorldFile.Close();
+    getline(MobInWorldFile,Stuff);
+    MobInWorldCount = stoi(Stuff);
+    MobInWorldFile.close();
   }
   else
   { // No file, so count is zero

@@ -736,7 +736,7 @@ void CloseLogFile()
   Log::CloseLogFile();
 }
 
-int CountMob(CString MobileId)
+int CountMob(string MobileId)
 {
   return Mobile::CountMob(MobileId);
 }
