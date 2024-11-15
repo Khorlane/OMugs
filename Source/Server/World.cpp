@@ -225,7 +225,7 @@ void World::CheckSpawnMobileEvents()
     { // Get RoomId, MobileId, then spawn the mob
       MobileId = StrGetWord(Stuff, 1);
       RoomId   = StrGetWord(Stuff, 2);
-      SpawnMobile(ConvertStringToCString(MobileId), ConvertStringToCString(RoomId));
+      SpawnMobile(MobileId, RoomId);
       // Remove the NoMoreSpawnEventsFlag for this mobile
       // This is overkill, attempts to remove same flag over and over
       ControlMobSpawnFileName =  CONTROL_MOB_SPAWN_DIR;
@@ -910,37 +910,37 @@ void World::Osi(string ScriptType, string ScriptId)
 * Spawn a mobile so players have something to whack!       *
 ************************************************************/
 
-void World::SpawnMobile(CString MobileId, CString RoomId)
+void World::SpawnMobile(string MobileId, string RoomId)
 {
   Mobile  *pMobile;
-  CString  AfxMessage;
-  CString  MobileAction;
-  CString  SpawnMsg;
+  string   AfxMessage;
+  string   MobileAction;
+  string   SpawnMsg;
 
   //********************
   //* Spawn the mobile *
   //********************
-  pMobile = IsMobValid(MobileId);
+  pMobile = IsMobValid(ConvertStringToCString(MobileId));
   if (!pMobile)
   { // Very bad, no such mobile
     AfxMessage  = "World::SpawnMobile - Mobile not found.";
     AfxMessage += "\n";
     AfxMessage += "MobileId: ";
     AfxMessage += MobileId;
-    AfxMessageBox(AfxMessage, MB_ICONSTOP);
+    AfxMessageBox(ConvertStringToCString(AfxMessage), MB_ICONSTOP);
     _endthread();
   }
-  AddMobToRoom(RoomId, MobileId);
-  SpawnMsg = pMobile->Desc1;
+  AddMobToRoom(ConvertStringToCString(RoomId), ConvertStringToCString(MobileId));
+  SpawnMsg = ConvertCStringToString(pMobile->Desc1);
   SpawnMsg += " suddenly appears!";
   pDnodeSrc = NULL;
   pDnodeTgt = NULL;
   SendToRoom(RoomId, SpawnMsg);
   MobileAction = pMobile->Action;
   delete pMobile;
-  if (IsWord("NoMove", MobileAction))
+  if (IsWord("NoMove", ConvertStringToCString(MobileAction)))
   {
-    SpawnMobileNoMove(MobileId);
+    SpawnMobileNoMove(ConvertStringToCString(MobileId));
   }
 }
 
