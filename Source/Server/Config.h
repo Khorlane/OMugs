@@ -320,7 +320,7 @@ void    ListObjects();
 void    LogIt(CString LogBuf);
 void    LogIt(string LogBuf);
 void    OpenLogFile();
-void    Osi(CString ScriptType, CString ScriptId);
+void    Osi(string ScriptType, string ScriptId);
 void    PrintIt(string Message);
 string  PronounSubstitute(string MsgText);
 void    PutMobBackInRoom(CString PlayerName, CString RoomId);

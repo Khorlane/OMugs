@@ -857,15 +857,15 @@ void World::MakeMobilesMove3()
 * Osi - OMugs script interpreter                           *
 ************************************************************/
 
-void World::Osi(CString ScriptType, CString ScriptId)
+void World::Osi(string ScriptType, string ScriptId)
 {
-  Symbol      **vpSymbol; // Symbol vector -- an array of Symbol pointers
+  Symbol     **vpSymbol; // Symbol vector -- an array of Symbol pointers
   Executor    *pExecutor;
   Icode       *pIcode;
   Parser      *pParser;
   Symbol      *pSymbolRoot;
-  CFileStatus  FileStatus;
   int          SymbolCount;
+  ifstream     ScriptFile;
 
   // Build script file name
   ScriptFileName  = SCRIPTS_DIR;
@@ -874,8 +874,10 @@ void World::Osi(CString ScriptType, CString ScriptId)
   ScriptFileName += ScriptId;
   ScriptFileName += ".txt";
   // Does the script file exist?
-  if (!CFile::GetStatus(ScriptFileName.c_str(), FileStatus))
+  ScriptFile.open(ScriptFileName);
+  if (!ScriptFile.is_open())
   { // No script file, nothing to do
+    ScriptFile.close();
     return;
   }
   // Parse script

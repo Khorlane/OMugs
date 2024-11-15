@@ -42,7 +42,7 @@ class World
     static  void    Events();
     static  void    HealMobiles();
     static  bool    HealMobilesFightCheck(string Dir, string MobileId);
-    static  void    Osi(CString ScriptType, CString ScriptId);
+    static  void    Osi(string ScriptType, string ScriptId);
     static  void    SpawnMobile(CString MobileId, CString RoomId);
     static  void    SpawnMobileNoMove(CString MobileId);
 };

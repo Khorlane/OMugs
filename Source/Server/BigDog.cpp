@@ -1026,7 +1026,7 @@ void OpenLogFile()
   Log::OpenLogFile();
 }
 
-void Osi(CString ScriptType, CString ScriptId)
+void Osi(string ScriptType, string ScriptId)
 {
   World::Osi(ScriptType, ScriptId);
 }

@@ -430,9 +430,8 @@ void Room::MovePlayer(Dnode *pDnode, string ExitToRoomId)
   }
   // Switch rooms
   pDnode->pPlayer->RoomIdBeforeMove = pDnode->pPlayer->RoomId;
-  csExitToRoomId = ConvertStringToCString(ExitToRoomId);
   pDnode->pPlayer->RoomId = csExitToRoomId;
-  Osi("Rooms", csExitToRoomId);
+  Osi("Rooms", ExitToRoomId);
   pDnode->pPlayer->Save();
   // Arrives message
   MoveMsg = pDnode->PlayerName + " arrives.";
