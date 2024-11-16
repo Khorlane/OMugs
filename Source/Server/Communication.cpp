@@ -2887,7 +2887,7 @@ void Communication::DoFlee()
   CandidateCount  = StrCountWords(CandidateList);
   CandidateTarget = GetRandomNumber(CandidateCount);
   Target          = StrGetWord(CandidateList, CandidateTarget);
-  CreateMobPlayer(ConvertStringToCString(Target), ConvertStringToCString(MobileIdSave));
+  CreateMobPlayer(Target, MobileIdSave);
 }
 
 /***********************************************************
@@ -4222,7 +4222,7 @@ void Communication::DoKill()
   UpdateMobInWorld(ConvertStringToCString(MobileId), "add"); // Keep Mob InWorld count correct
   // Set player and mobile to fight
   CreatePlayerMob(ConvertStringToCString(PlayerName), ConvertStringToCString(MobileId));
-  CreateMobPlayer(ConvertStringToCString(PlayerName), ConvertStringToCString(MobileId));
+  CreateMobPlayer(PlayerName, MobileId);
   delete pMobile;
   pDnodeActor->PlayerStateFighting = true;
 }
@@ -7601,5 +7601,5 @@ void Communication::ViolencePlayerDied(string MobileDesc1)
   CandidateCount  = StrCountWords(CandidateList);
   CandidateTarget = GetRandomNumber(CandidateCount);
   Target          = StrGetWord(CandidateList, CandidateTarget);
-  CreateMobPlayer(ConvertStringToCString(Target), ConvertStringToCString(MobileIdSave));
+  CreateMobPlayer(Target, MobileIdSave);
 }

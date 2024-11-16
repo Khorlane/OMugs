@@ -203,32 +203,26 @@ int Mobile::CountMob(string MobileId)
 * Create mobile player file                                *
 ************************************************************/
 
-void Mobile::CreateMobPlayer(CString PlayerName, CString MobileId)
+void Mobile::CreateMobPlayer(string PlayerName, string MobileId)
 {
   bool       NewFile;
-  CStdioFile MobPlayerFile;
-  CString    MobPlayerFileName;
-  int        Success;
+  fstream    MobPlayerFile;
+  string     MobPlayerFileName;
 
-  NewFile            = true;
-  MobPlayerFileName  = MOB_PLAYER_DIR;
-  MobPlayerFileName += PlayerName;
-  MobPlayerFileName += ".txt";
-  Success = MobPlayerFile.Open(MobPlayerFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-  if (Success)
+  NewFile              = true;
+  MobPlayerFileName    = MOB_PLAYER_DIR;
+  MobPlayerFileName   += PlayerName;
+  MobPlayerFileName   += ".txt";
+  MobPlayerFile.open(MobPlayerFileName);
+  if (MobPlayerFile.is_open())
   {
     NewFile = false;
-    MobPlayerFile.Close();
+    MobPlayerFile.close();
   }
   if (NewFile)
   { // Create new file
-    Success = MobPlayerFile.Open(MobPlayerFileName,
-                      CFile::modeCreate |
-                      CFile::modeWrite  |
-                      CFile::typeText);
-    if(!Success)
+    MobPlayerFile.open(MobPlayerFileName);
+    if (!MobPlayerFile.is_open())
     {
       AfxMessageBox("Mobile::CreateMobPlayer - Open MobPlayerile file failed 1", MB_ICONSTOP);
       _endthread();
@@ -236,10 +230,8 @@ void Mobile::CreateMobPlayer(CString PlayerName, CString MobileId)
   }
   else
   { // Use existing file
-    Success = MobPlayerFile.Open(MobPlayerFileName,
-                      CFile::modeWrite |
-                      CFile::typeText);
-    if(!Success)
+    MobPlayerFile.open(MobPlayerFileName);
+    if(!MobPlayerFile.is_open())
     {
       AfxMessageBox("Mobile::CreateMobPlayer - Open MobPlayerile file failed 2", MB_ICONSTOP);
       _endthread();
@@ -247,11 +239,11 @@ void Mobile::CreateMobPlayer(CString PlayerName, CString MobileId)
   }
   if (!NewFile)
   {
-    MobPlayerFile.SeekToEnd();
-    MobPlayerFile.WriteString("\r\n");
+    MobPlayerFile.seekg(0, std::ios::end);
+    MobPlayerFile << "\r\n";
   }
-  MobPlayerFile.WriteString(MobileId);
-  MobPlayerFile.Close();
+  MobPlayerFile << MobileId << endl;
+  MobPlayerFile.close();
 }
 
 /***********************************************************
@@ -1022,12 +1014,12 @@ CString Mobile::MobAttacks(Mobile *pMobile)
   if (!pDnodeActor->PlayerStateFighting)
   { // Set player and mobile to fight
     CreatePlayerMob(PlayerName, MobileId);
-    CreateMobPlayer(PlayerName, MobileId);
+    CreateMobPlayer(ConvertCStringToString(PlayerName), ConvertCStringToString(MobileId));
     pDnodeActor->PlayerStateFighting = true;
   }
   else
   { // Player is fighting, this mob is an 'add'
-    CreateMobPlayer(PlayerName, MobileId);
+    CreateMobPlayer(ConvertCStringToString(PlayerName), ConvertCStringToString(MobileId));
   }
   return MobileIdToBeRemoved;
 }

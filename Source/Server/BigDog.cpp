@@ -741,7 +741,7 @@ int CountMob(string MobileId)
   return Mobile::CountMob(MobileId);
 }
 
-void CreateMobPlayer(CString PlayerName, CString MobileId)
+void CreateMobPlayer(string PlayerName, string MobileId)
 {
   Mobile::CreateMobPlayer(PlayerName, MobileId);
 }
