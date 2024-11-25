@@ -33,7 +33,7 @@ class Mobile
     static  void    AddMobToRoom(string RoomId, string MobileId);
     static  int     CountMob(string MobileId);
     static  void    CreateMobPlayer(string PlayerName, string MobileId);
-    static  void    CreateMobStatsFileWrite(CString Directory, CString MobileIdForFight, CString Stuff);
+    static  void    CreateMobStatsFileWrite(string Directory, string MobileIdForFight, string Stuff);
     static  void    CreatePlayerMob(CString PlayerName, CString MobileId);
     static  void    DeleteMobPlayer(CString PlayerName, CString MobileId);
     static  void    DeleteMobStats(CString MobileId);

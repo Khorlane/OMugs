@@ -805,7 +805,7 @@ void World::MakeMobilesMove3()
       }
       END_CATCH
       // Write new RoomId into MobStats Room file
-      CreateMobStatsFileWrite(MOB_STATS_ROOM_DIR, ConvertStringToCString(MobileId), ConvertStringToCString(ExitToRoomId));
+      CreateMobStatsFileWrite(MOB_STATS_ROOM_DIR, MobileId, ExitToRoomId);
     }
     // Read next line
     getline(RoomMobMoveFile, Stuff);

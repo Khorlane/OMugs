@@ -746,7 +746,7 @@ void CreateMobPlayer(string PlayerName, string MobileId)
   Mobile::CreateMobPlayer(PlayerName, MobileId);
 }
 
-void CreateMobStatsFileWrite(CString Directory, CString MobileIdForFight, CString Stuff)
+void CreateMobStatsFileWrite(string Directory, string MobileIdForFight, string Stuff)
 {
   Mobile::CreateMobStatsFileWrite(Directory, MobileIdForFight, Stuff);
 }

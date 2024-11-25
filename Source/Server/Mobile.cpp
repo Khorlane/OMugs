@@ -250,34 +250,28 @@ void Mobile::CreateMobPlayer(string PlayerName, string MobileId)
 * Create mobile statistics file - Write                    *
 ************************************************************/
 
-void Mobile::CreateMobStatsFileWrite(CString Directory,
-                                     CString MobileIdForFight,
-                                     CString Stuff)
+void Mobile::CreateMobStatsFileWrite(string Directory, string MobileIdForFight, string Stuff)
 {
-  CString    AfxMessage;
-  CStdioFile MobStatsFile;
-  CString    MobStatsFileName;
-  int        Success;
+  string     AfxMessage;
+  ofstream   MobStatsFile;
+  string     MobStatsFileName;
 
   MobStatsFileName =  Directory;
   MobStatsFileName += MobileIdForFight;
   MobStatsFileName += ".txt";
-  Success = MobStatsFile.Open(MobStatsFileName,
-                   CFile::modeCreate |
-                   CFile::modeWrite  |
-                   CFile::typeText);
-  if(!Success)
+  MobStatsFile.open(MobStatsFileName);
+  if (MobStatsFile.is_open())
   { // Open file failed
     AfxMessage = "Mobile::CreateMobStatsFileWrite - Open for ";
     AfxMessage += Directory;
     AfxMessage += " ";
     AfxMessage += MobileIdForFight;
     AfxMessage += " failed.";
-    AfxMessageBox(AfxMessage, MB_ICONSTOP);
+    AfxMessageBox(ConvertStringToCString(AfxMessage), MB_ICONSTOP);
     _endthread();
   }
-  MobStatsFile.WriteString(Stuff);
-  MobStatsFile.Close();
+  MobStatsFile << Stuff << endl;
+  MobStatsFile.close();
 }
 
 /***********************************************************
@@ -1184,21 +1178,21 @@ void Mobile::CreateMobStatsFile(CString RoomId)
   Stuff = TmpStr;
   Stuff += " ";
   Stuff += TmpStr;
-  CreateMobStatsFileWrite(MOB_STATS_HPT_DIR, MobileIdForFight, Stuff);
+  CreateMobStatsFileWrite(MOB_STATS_HPT_DIR, ConvertCStringToString(MobileIdForFight), ConvertCStringToString(Stuff));
   // Armor
   sprintf(Buf, "%d", Armor);
   Stuff = ConvertStringToCString(Buf);
-  CreateMobStatsFileWrite(MOB_STATS_ARM_DIR, MobileIdForFight, Stuff);
+  CreateMobStatsFileWrite(MOB_STATS_ARM_DIR, ConvertCStringToString(MobileIdForFight), ConvertCStringToString(Stuff));
   // Attack
   Stuff= Attack;
-  CreateMobStatsFileWrite(MOB_STATS_ATK_DIR, MobileIdForFight, Stuff);
+  CreateMobStatsFileWrite(MOB_STATS_ATK_DIR, ConvertCStringToString(MobileIdForFight), ConvertCStringToString(Stuff));
   // Damage
   sprintf(Buf, "%d", Damage);
   Stuff = ConvertStringToCString(Buf);
-  CreateMobStatsFileWrite(MOB_STATS_DMG_DIR, MobileIdForFight, Stuff);
+  CreateMobStatsFileWrite(MOB_STATS_DMG_DIR, ConvertCStringToString(MobileIdForFight), ConvertCStringToString(Stuff));
   // Desc1
   Stuff = Desc1;
-  CreateMobStatsFileWrite(MOB_STATS_DSC_DIR, MobileIdForFight, Stuff);
+  CreateMobStatsFileWrite(MOB_STATS_DSC_DIR, ConvertCStringToString(MobileIdForFight), ConvertCStringToString(Stuff));
   // ExpPoints
   sprintf(Buf, "%d", ExpPoints);
   Stuff = ConvertStringToCString(Buf);
@@ -1206,13 +1200,13 @@ void Mobile::CreateMobStatsFile(CString RoomId)
   TmpStr = ConvertStringToCString(Buf);
   Stuff += " ";
   Stuff += TmpStr;
-  CreateMobStatsFileWrite(MOB_STATS_EXP_DIR, MobileIdForFight, Stuff);
+  CreateMobStatsFileWrite(MOB_STATS_EXP_DIR, ConvertCStringToString(MobileIdForFight), ConvertCStringToString(Stuff));
   // Loot
   Stuff = Loot;
-  CreateMobStatsFileWrite(MOB_STATS_LOOT_DIR, MobileIdForFight, Stuff);
+  CreateMobStatsFileWrite(MOB_STATS_LOOT_DIR, ConvertCStringToString(MobileIdForFight), ConvertCStringToString(Stuff));
   // Room
   Stuff = RoomId;
-  CreateMobStatsFileWrite(MOB_STATS_ROOM_DIR, MobileIdForFight, Stuff);
+  CreateMobStatsFileWrite(MOB_STATS_ROOM_DIR, ConvertCStringToString(MobileIdForFight), ConvertCStringToString(Stuff));
 }
 
 /***********************************************************
