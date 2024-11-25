@@ -1773,7 +1773,7 @@ void Communication::DoAssist()
   //* Make the assist happen *
   //**************************
   MobileId = GetPlayerMobMobileId(ConvertCStringToString(pDnodeTgt->PlayerName));
-  CreatePlayerMob(pDnodeActor->PlayerName, ConvertStringToCString(MobileId));
+  CreatePlayerMob(ConvertCStringToString(pDnodeActor->PlayerName), MobileId);
   pDnodeActor->PlayerStateFighting = true;
 }
 
@@ -4221,7 +4221,7 @@ void Communication::DoKill()
   }
   UpdateMobInWorld(ConvertStringToCString(MobileId), "add"); // Keep Mob InWorld count correct
   // Set player and mobile to fight
-  CreatePlayerMob(ConvertStringToCString(PlayerName), ConvertStringToCString(MobileId));
+  CreatePlayerMob(PlayerName, MobileId);
   CreateMobPlayer(PlayerName, MobileId);
   delete pMobile;
   pDnodeActor->PlayerStateFighting = true;
@@ -7449,7 +7449,7 @@ void Communication::ViolenceMobileMore()
   {
     return;
   }
-  CreatePlayerMob(pDnodeActor->pPlayer->Name, ConvertStringToCString(MobileId));
+  CreatePlayerMob(ConvertCStringToString(pDnodeActor->pPlayer->Name), MobileId);
   pDnodeActor->PlayerStateFighting = true;
 }
 

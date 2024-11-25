@@ -267,7 +267,7 @@ CString ConvertStringToCString(string  Str1);
 int     CountMob(string MobileId);
 void    CreateMobPlayer(string PlayerName, string MobileId);
 void    CreateMobStatsFileWrite(string Directory, string MobileIdForFight, string Stuff);
-void    CreatePlayerMob(CString PlayerName, CString MobileId);
+void    CreatePlayerMob(string PlayerName, string MobileId);
 void    DeleteMobPlayer(CString PlayerName, CString MobileId);
 void    DeleteMobStats(CString MobileId);
 bool    DeleteNode();

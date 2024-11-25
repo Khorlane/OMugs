@@ -260,7 +260,7 @@ void Mobile::CreateMobStatsFileWrite(string Directory, string MobileIdForFight, 
   MobStatsFileName += MobileIdForFight;
   MobStatsFileName += ".txt";
   MobStatsFile.open(MobStatsFileName);
-  if (MobStatsFile.is_open())
+  if (!MobStatsFile.is_open())
   { // Open file failed
     AfxMessage = "Mobile::CreateMobStatsFileWrite - Open for ";
     AfxMessage += Directory;
@@ -278,26 +278,22 @@ void Mobile::CreateMobStatsFileWrite(string Directory, string MobileIdForFight, 
 * Create player mobile file                                *
 ************************************************************/
 
-void Mobile::CreatePlayerMob(CString PlayerName, CString MobileId)
+void Mobile::CreatePlayerMob(string PlayerName, string MobileId)
 {
-  CStdioFile PlayerMobFile;
-  CString    PlayerMobFileName;
-  int        Success;
+  ofstream   PlayerMobFile;
+  string     PlayerMobFileName;
 
   PlayerMobFileName =  PLAYER_MOB_DIR;
   PlayerMobFileName += PlayerName;
   PlayerMobFileName += ".txt";
-  Success = PlayerMobFile.Open(PlayerMobFileName,
-                    CFile::modeCreate |
-                    CFile::modeWrite  |
-                    CFile::typeText);
-  if(!Success)
+  PlayerMobFile.open(PlayerMobFileName);
+  if (!PlayerMobFile.is_open())
   {
     AfxMessageBox("Mobile::CreatePlayerMob - Open PlayerMob file failed", MB_ICONSTOP);
     _endthread();
   }
-  PlayerMobFile.WriteString(MobileId);
-  PlayerMobFile.Close();
+  PlayerMobFile << MobileId << endl;
+  PlayerMobFile.close();
 }
 
 /***********************************************************
@@ -1007,7 +1003,7 @@ CString Mobile::MobAttacks(Mobile *pMobile)
   }
   if (!pDnodeActor->PlayerStateFighting)
   { // Set player and mobile to fight
-    CreatePlayerMob(PlayerName, MobileId);
+    CreatePlayerMob(ConvertCStringToString(PlayerName), ConvertCStringToString(MobileId));
     CreateMobPlayer(ConvertCStringToString(PlayerName), ConvertCStringToString(MobileId));
     pDnodeActor->PlayerStateFighting = true;
   }
