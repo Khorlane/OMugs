@@ -4177,7 +4177,7 @@ void Communication::DoKill()
     pDnodeTgt = pDnodeActor;
     SendToRoom(RoomId, KillMsg);
     // Remove mobile from room
-    RemoveMobFromRoom(ConvertStringToCString(RoomId), pMobile->MobileId);
+    RemoveMobFromRoom(RoomId, ConvertCStringToString(pMobile->MobileId));
     delete pMobile;
     return;
   }
@@ -4211,13 +4211,13 @@ void Communication::DoKill()
     pMobile->GetNextMobNbr();
     pMobile->CreateMobStatsFile(ConvertStringToCString(RoomId));
     MobileId = pMobile->MobileId;
-    RemoveMobFromRoom(ConvertStringToCString(RoomId), ConvertStringToCString(MobileId));
+    RemoveMobFromRoom(RoomId, MobileId);
     MobileId = pMobile->MobileId + "." + pMobile->MobNbr;
   }
   else
   { // Mobile is hurt
     MobileId = pMobile->MobileId + "." + pMobile->MobNbr;
-    RemoveMobFromRoom(ConvertStringToCString(RoomId), ConvertStringToCString(MobileId));
+    RemoveMobFromRoom(RoomId, MobileId);
   }
   UpdateMobInWorld(ConvertStringToCString(MobileId), "add"); // Keep Mob InWorld count correct
   // Set player and mobile to fight

@@ -1041,7 +1041,7 @@ void PutMobBackInRoom(CString PlayerName, CString RoomId)
   Mobile::PutMobBackInRoom(PlayerName, RoomId);
 }
 
-void RemoveMobFromRoom(CString RoomId, CString MobileId)
+void RemoveMobFromRoom(string RoomId, string MobileId)
 {
   Mobile::RemoveMobFromRoom(RoomId, MobileId);
 }

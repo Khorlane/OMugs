@@ -301,7 +301,7 @@ void World::HealMobiles()
     //* Heal the mobile *
     //*******************
     RoomId = GetMobileRoom(MobileId);
-    RemoveMobFromRoom(ConvertStringToCString(RoomId), ConvertStringToCString(MobileId));
+    RemoveMobFromRoom(RoomId, MobileId);
     DeleteMobStats(MobileId);
     PositionOfDot = StrFindFirstChar(MobileId, '.');
     MobileId = StrLeft(MobileId, PositionOfDot);
@@ -782,7 +782,7 @@ void World::MakeMobilesMove3()
     LeaveMsg    += " leaves.";
     ArriveMsg    = MobileDesc1;
     ArriveMsg   += " arrives.";
-    RemoveMobFromRoom(ConvertStringToCString(RoomId), ConvertStringToCString(MobileId));
+    RemoveMobFromRoom(RoomId, MobileId);
     AddMobToRoom(ExitToRoomId, MobileId);
     pDnodeSrc = NULL;
     pDnodeTgt = NULL;

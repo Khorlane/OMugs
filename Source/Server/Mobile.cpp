@@ -733,30 +733,27 @@ void Mobile::PutMobBackInRoom(CString PlayerName, CString RoomIdBeforeFleeing)
 * Remove a mobile from room                                *
 ************************************************************/
 
-void Mobile::RemoveMobFromRoom(CString RoomId, CString MobileId)
+void Mobile::RemoveMobFromRoom(string RoomId, string MobileId)
 {
-  int        BytesInFile;
+  streamoff  BytesInFile;
   bool       MobileIdRemoved;
-  CString    MobileIdCheck;
+  string     MobileIdCheck;
   int        MobCount;
-  CString    RoomMobFileName;
-  CString    RoomMobTmpFileName;
-  CStdioFile RoomMobFile;
-  CStdioFile RoomMobTmpFile;
-  CString    Stuff;
-  int        Success;
-  CString    TmpStr;
+  string     RoomMobFileName;
+  string     RoomMobTmpFileName;
+  ifstream   RoomMobFile;
+  ofstream   RoomMobTmpFile;
+  string     Stuff;
+  string     TmpStr;
 
-  UpdateMobInWorld(MobileId, "remove");
+  UpdateMobInWorld(ConvertStringToCString(MobileId), "remove");
   MobileId = StrMakeLower(MobileId);
   // Open RoomMob file
   RoomMobFileName =  ROOM_MOB_DIR;
   RoomMobFileName += RoomId;
   RoomMobFileName += ".txt";
-  Success = RoomMobFile.Open(RoomMobFileName,
-                  CFile::modeRead |
-                  CFile::typeText);
-  if(!Success)
+  RoomMobFile.open(RoomMobFileName);
+  if(!RoomMobFile.is_open())
   {
     AfxMessageBox("Mobile::RemoveMobFromRoom - Open RoomMob file failed", MB_ICONSTOP);
     _endthread();
@@ -770,31 +767,28 @@ void Mobile::RemoveMobFromRoom(CString RoomId, CString MobileId)
     _endthread();
   }
   RoomMobTmpFileName += ".tmp.txt";
-  Success = RoomMobTmpFile.Open(RoomMobTmpFileName,
-                  CFile::modeCreate |
-                  CFile::modeWrite  |
-                  CFile::typeText);
-  if(!Success)
+  RoomMobTmpFile.open(RoomMobTmpFileName);
+  if(!RoomMobTmpFile.is_open())
   {
     AfxMessageBox("Mobile::RemoveMobFromRoom - Open RoomMob temp file failed", MB_ICONSTOP);
     _endthread();
   }
   // Write temp RoomMob file
   MobileIdRemoved = false;
-  RoomMobFile.ReadString(Stuff);
+  getline(RoomMobFile, Stuff);
   while (Stuff != "")
   {
     if (MobileIdRemoved)
     { // Mobile has been removed, just write the rest of the mobiles
       Stuff += "\n";
-      RoomMobTmpFile.WriteString(Stuff);
-      RoomMobFile.ReadString(Stuff);
+      RoomMobTmpFile << Stuff << endl;
+      getline(RoomMobFile, Stuff);
       continue;
     }
     MobileIdCheck = StrGetWord(Stuff, 2);
     if (MobileId == MobileIdCheck)
     { // Found it, subtract 1 from count
-      MobCount = atoi(StrGetWord(Stuff, 1));
+      MobCount = stoi(StrGetWord(Stuff, 1));
       MobCount--;
       MobileIdRemoved = true;
       if (MobCount > 0)
@@ -803,32 +797,32 @@ void Mobile::RemoveMobFromRoom(CString RoomId, CString MobileId)
         TmpStr = ConvertStringToCString(Buf);
         MobileId = TmpStr + " " + MobileId;
         MobileId += "\n";
-        RoomMobTmpFile.WriteString(MobileId);
+        RoomMobTmpFile << Stuff << endl;
       }
-      RoomMobFile.ReadString(Stuff);
+      getline(RoomMobFile, Stuff);
       continue;
     }
     // None of the above conditions satisfied, just write it
     Stuff += "\n";
-    RoomMobTmpFile.WriteString(Stuff);
-    RoomMobFile.ReadString(Stuff);
+    RoomMobTmpFile << Stuff << endl;
+    getline(RoomMobFile, Stuff);
   }
   if (!MobileIdRemoved)
   { // Mobile not removed, this is definitely BAD!
     AfxMessageBox("Mobile::RemoveMobFromRoom - Mobile not removed", MB_ICONSTOP);
     _endthread();
   }
-  BytesInFile = (int) RoomMobTmpFile.GetLength();
-  RoomMobFile.Close();
-  RoomMobTmpFile.Close();
-  CFile::Remove(RoomMobFileName);
+  BytesInFile = RoomMobTmpFile.tellp();
+  RoomMobFile.close();
+  RoomMobTmpFile.close();
+  Remove(RoomMobFileName);
   if (BytesInFile > 0)
   { // If the file is not empty, rename it
-    CFile::Rename(RoomMobTmpFileName, RoomMobFileName);
+    Rename(RoomMobTmpFileName, RoomMobFileName);
   }
   else
   { // If the file is empty, delete it
-    CFile::Remove(RoomMobTmpFileName);
+    Remove(RoomMobTmpFileName);
   }
 }
 
@@ -926,7 +920,7 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
   for (i = 1; i <= RemoveMobCount; i++)
   {
     MobileId = StrGetWord(MobileIdsToBeRemoved, i);
-    RemoveMobFromRoom(pDnode->pPlayer->RoomId, MobileId);
+    RemoveMobFromRoom(ConvertCStringToString(pDnode->pPlayer->RoomId), ConvertCStringToString(MobileId));
   }
 }
 
