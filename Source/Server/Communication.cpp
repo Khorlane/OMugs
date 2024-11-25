@@ -2840,7 +2840,7 @@ void Communication::DoFlee()
   // Get mobile id for mob that fleeing player was fighting
   MobileIdSave = GetPlayerMobMobileId(PlayerName1);
   // Delete PlayerMob file -- player is no longer attacking mob
-  DeletePlayerMob(ConvertStringToCString(PlayerName1));
+  DeletePlayerMob(PlayerName1);
   // See if a mob is whacking player
   MobPlayerFileName =  MOB_PLAYER_DIR;
   MobPlayerFileName += PlayerName1;
@@ -7254,7 +7254,7 @@ void Communication::ViolenceMobileDied(string MobileBeenWhacked,
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
   }
   // Fight done, clean up
-  DeletePlayerMob(pDnodeActor->PlayerName);
+  DeletePlayerMob(ConvertCStringToString(pDnodeActor->PlayerName));
   DeleteMobPlayer(ConvertCStringToString(pDnodeActor->PlayerName), MobileId);
   DeleteMobStats(MobileId);
   pDnodeActor->PlayerStateFighting = false;
@@ -7271,7 +7271,7 @@ void Communication::ViolenceMobileDied(string MobileBeenWhacked,
       MobileIdCheck = GetPlayerMobMobileId(ConvertCStringToString(pDnodeOthers->PlayerName));
       if (MobileId == MobileIdCheck)
       { // The same mobile
-        DeletePlayerMob(pDnodeOthers->PlayerName);
+        DeletePlayerMob(ConvertCStringToString(pDnodeOthers->PlayerName));
         DeleteMobPlayer(ConvertCStringToString(pDnodeOthers->PlayerName), MobileId);
         pDnodeOthers->PlayerStateFighting = false;
       }
@@ -7564,7 +7564,7 @@ void Communication::ViolencePlayerDied(string MobileDesc1)
   // Get mobile id for mob that dead player was fighting
   MobileIdSave = GetPlayerMobMobileId(ConvertCStringToString(pDnodeActor->PlayerName));
   // Delete PlayerMob file
-  DeletePlayerMob(pDnodeActor->PlayerName);
+  DeletePlayerMob(ConvertCStringToString(pDnodeActor->PlayerName));
   //********************************************************
   //* Delete fighting mobiles from MobPlayer file          *
   //********************************************************

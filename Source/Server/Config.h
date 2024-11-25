@@ -271,7 +271,7 @@ void    CreatePlayerMob(string PlayerName, string MobileId);
 void    DeleteMobPlayer(string PlayerName, string MobileId);
 void    DeleteMobStats(string MobileId);
 bool    DeleteNode();
-void    DeletePlayerMob(CString PlayerName);
+void    DeletePlayerMob(string PlayerName);
 CString DeleteWord(CString String, int WordNbr);
 bool    EndOfDnodeList();
 void    Events();

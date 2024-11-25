@@ -771,7 +771,7 @@ bool DeleteNode()
   return Descriptor::DeleteNode();
 }
 
-void DeletePlayerMob(CString PlayerName)
+void DeletePlayerMob(string PlayerName)
 {
   Mobile::DeletePlayerMob(PlayerName);
 }

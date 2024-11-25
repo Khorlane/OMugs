@@ -432,16 +432,16 @@ void Mobile::DeleteMobStats(string MobileId)
 * Delete player->mobile fight relationship                 *
 ************************************************************/
 
-void Mobile::DeletePlayerMob(CString PlayerName)
+void Mobile::DeletePlayerMob(string PlayerName)
 {
-  CString MobStatsFileName;
-  CString PlayerMobFileName;
+  string MobStatsFileName;
+  string PlayerMobFileName;
 
   // Delete 'PlayerMob' file
   PlayerMobFileName =  PLAYER_MOB_DIR;
   PlayerMobFileName += PlayerName;
   PlayerMobFileName += ".txt";
-  CFile::Remove(PlayerMobFileName);
+  Remove(PlayerMobFileName);
 }
 
 /***********************************************************
