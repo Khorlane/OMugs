@@ -7256,7 +7256,7 @@ void Communication::ViolenceMobileDied(string MobileBeenWhacked,
   // Fight done, clean up
   DeletePlayerMob(pDnodeActor->PlayerName);
   DeleteMobPlayer(ConvertCStringToString(pDnodeActor->PlayerName), MobileId);
-  DeleteMobStats(ConvertStringToCString(MobileId));
+  DeleteMobStats(MobileId);
   pDnodeActor->PlayerStateFighting = false;
   UpdateMobInWorld(ConvertStringToCString(MobileId), "remove");
   //***************************************************

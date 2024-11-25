@@ -302,7 +302,7 @@ void World::HealMobiles()
     //*******************
     RoomId = GetMobileRoom(MobileId);
     RemoveMobFromRoom(ConvertStringToCString(RoomId), ConvertStringToCString(MobileId));
-    DeleteMobStats(ConvertStringToCString(MobileId));
+    DeleteMobStats(MobileId);
     PositionOfDot = StrFindFirstChar(MobileId, '.');
     MobileId = StrLeft(MobileId, PositionOfDot);
     AddMobToRoom(RoomId, MobileId);

@@ -269,7 +269,7 @@ void    CreateMobPlayer(string PlayerName, string MobileId);
 void    CreateMobStatsFileWrite(string Directory, string MobileIdForFight, string Stuff);
 void    CreatePlayerMob(string PlayerName, string MobileId);
 void    DeleteMobPlayer(string PlayerName, string MobileId);
-void    DeleteMobStats(CString MobileId);
+void    DeleteMobStats(string MobileId);
 bool    DeleteNode();
 void    DeletePlayerMob(CString PlayerName);
 CString DeleteWord(CString String, int WordNbr);

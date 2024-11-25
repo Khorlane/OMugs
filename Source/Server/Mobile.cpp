@@ -381,51 +381,51 @@ void Mobile::DeleteMobPlayer(string PlayerName, string MobileId)
 * Delete mobile->statistics fight relationships            *
 ************************************************************/
 
-void Mobile::DeleteMobStats(CString MobileId)
+void Mobile::DeleteMobStats(string MobileId)
 {
-  CString MobStatsFileName;
-  CString PlayerMobFileName;
+  string MobStatsFileName;
+  string PlayerMobFileName;
 
   // Delete 'MobStats' Armor file
   MobStatsFileName = MOB_STATS_ARM_DIR;
   MobStatsFileName += MobileId;
   MobStatsFileName += ".txt";
-  CFile::Remove(MobStatsFileName);
+  Remove(MobStatsFileName);
   // Delete 'MobStats' Attack file
   MobStatsFileName = MOB_STATS_ATK_DIR;
   MobStatsFileName += MobileId;
   MobStatsFileName += ".txt";
-  CFile::Remove(MobStatsFileName);
+  Remove(MobStatsFileName);
   // Delete 'MobStats' Damage file
   MobStatsFileName = MOB_STATS_DMG_DIR;
   MobStatsFileName += MobileId;
   MobStatsFileName += ".txt";
-  CFile::Remove(MobStatsFileName);
+  Remove(MobStatsFileName);
   // Delete 'MobStats' Desc1 file
   MobStatsFileName = MOB_STATS_DSC_DIR;
   MobStatsFileName += MobileId;
   MobStatsFileName += ".txt";
-  CFile::Remove(MobStatsFileName);
+  Remove(MobStatsFileName);
   // Delete 'MobStats' ExpPoints file
   MobStatsFileName = MOB_STATS_EXP_DIR;
   MobStatsFileName += MobileId;
   MobStatsFileName += ".txt";
-  CFile::Remove(MobStatsFileName);
+  Remove(MobStatsFileName);
   // Delete 'MobStats' HitPoints file
   MobStatsFileName = MOB_STATS_HPT_DIR;
   MobStatsFileName += MobileId;
   MobStatsFileName += ".txt";
-  CFile::Remove(MobStatsFileName);
+  Remove(MobStatsFileName);
   // Delete 'MobStats' Loot file
   MobStatsFileName = MOB_STATS_LOOT_DIR;
   MobStatsFileName += MobileId;
   MobStatsFileName += ".txt";
-  CFile::Remove(MobStatsFileName);
+  Remove(MobStatsFileName);
   // Delete 'MobStats' Room file
   MobStatsFileName = MOB_STATS_ROOM_DIR;
   MobStatsFileName += MobileId;
   MobStatsFileName += ".txt";
-  CFile::Remove(MobStatsFileName);
+  Remove(MobStatsFileName);
 }
 
 /***********************************************************
@@ -714,7 +714,7 @@ void Mobile::PutMobBackInRoom(CString PlayerName, CString RoomIdBeforeFleeing)
     MobHitPointsLeft  = StrGetWord(Stuff, 2);
     if (MobHitPointsTotal == MobHitPointsLeft)
     { // Mobile is not hurt
-      DeleteMobStats(MobileId);
+      DeleteMobStats(ConvertCStringToString(MobileId));
       PositionOfDot = StrFindFirstChar(MobileId, '.');
       if (PositionOfDot > 1)
       { // Get MobileId

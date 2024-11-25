@@ -761,7 +761,7 @@ void DeleteMobPlayer(string PlayerName, string MobileId)
   Mobile::DeleteMobPlayer(PlayerName, MobileId);
 }
 
-void DeleteMobStats(CString MobileId)
+void DeleteMobStats(string MobileId)
 {
   Mobile::DeleteMobStats(MobileId);
 }
