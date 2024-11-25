@@ -2863,7 +2863,7 @@ void Communication::DoFlee()
       { // In the same room
         PlayerName2 = pDnodeOthers->PlayerName;
         MobileId = GetPlayerMobMobileId(PlayerName2);
-        DeleteMobPlayer(ConvertStringToCString(PlayerName1), ConvertStringToCString(MobileId));
+        DeleteMobPlayer(PlayerName1, MobileId);
         if (MobileId == MobileIdSave)
         { // Add player to candidate list for MobileIdSave
           CandidateList += PlayerName2;
@@ -2878,7 +2878,7 @@ void Communication::DoFlee()
   // Put mobiles that are not fighting back in room
   PutMobBackInRoom(ConvertStringToCString(PlayerName1), ConvertStringToCString(RoomIdBeforeFleeing));
   // Player is gone, so delete MobPlayer completely
-  DeleteMobPlayer(ConvertStringToCString(PlayerName1), "file");
+  DeleteMobPlayer(PlayerName1, "file");
   // Select a new target for MobileIdSave
   if (StrGetLength(CandidateList) == 0)
   { // No available target for MobileIdSave
@@ -7255,7 +7255,7 @@ void Communication::ViolenceMobileDied(string MobileBeenWhacked,
   }
   // Fight done, clean up
   DeletePlayerMob(pDnodeActor->PlayerName);
-  DeleteMobPlayer(pDnodeActor->PlayerName, ConvertStringToCString(MobileId));
+  DeleteMobPlayer(ConvertCStringToString(pDnodeActor->PlayerName), MobileId);
   DeleteMobStats(ConvertStringToCString(MobileId));
   pDnodeActor->PlayerStateFighting = false;
   UpdateMobInWorld(ConvertStringToCString(MobileId), "remove");
@@ -7272,7 +7272,7 @@ void Communication::ViolenceMobileDied(string MobileBeenWhacked,
       if (MobileId == MobileIdCheck)
       { // The same mobile
         DeletePlayerMob(pDnodeOthers->PlayerName);
-        DeleteMobPlayer(pDnodeOthers->PlayerName, ConvertStringToCString(MobileId));
+        DeleteMobPlayer(ConvertCStringToString(pDnodeOthers->PlayerName), MobileId);
         pDnodeOthers->PlayerStateFighting = false;
       }
     }
@@ -7577,7 +7577,7 @@ void Communication::ViolencePlayerDied(string MobileDesc1)
       if (RoomIdBeforeDying == ConvertCStringToString(pDnodeOthers->pPlayer->RoomId))
       { // In the same room
         MobileId = GetPlayerMobMobileId(ConvertCStringToString(pDnodeOthers->PlayerName));
-        DeleteMobPlayer(pDnodeActor->PlayerName, ConvertStringToCString(MobileId));
+        DeleteMobPlayer(ConvertCStringToString(pDnodeActor->PlayerName), MobileId);
         if (MobileId == MobileIdSave)
         { // Add player to candidate list for MobileIdSave
           CandidateList += pDnodeOthers->PlayerName;
@@ -7592,7 +7592,7 @@ void Communication::ViolencePlayerDied(string MobileDesc1)
   // Put mobiles that are not fighting back in room
   PutMobBackInRoom(pDnodeActor->PlayerName, ConvertStringToCString(RoomIdBeforeDying));
   // Player is gone, so delete MobPlayer completely
-  DeleteMobPlayer(pDnodeActor->PlayerName, "file");
+  DeleteMobPlayer(ConvertCStringToString(pDnodeActor->PlayerName), "file");
   // Select a new target for MobileIdSave
   if (StrGetLength(CandidateList) == 0)
   { // MobileIdSave's target is still in room, nothing to do

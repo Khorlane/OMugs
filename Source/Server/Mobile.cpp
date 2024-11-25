@@ -300,60 +300,54 @@ void Mobile::CreatePlayerMob(string PlayerName, string MobileId)
 * Delete mobile->player fight relationship                 *
 ************************************************************/
 
-void Mobile::DeleteMobPlayer(CString PlayerName, CString MobileId)
+void Mobile::DeleteMobPlayer(string PlayerName, string MobileId)
 {
-  int        BytesInFile;
+  streamoff  BytesInFile;
   bool       MobileIdDeleted;
-  CString    MobileIdCheck;
-  CString    MobPlayerFileName;
-  CString    MobPlayerFileNameTmp;
-  CStdioFile MobPlayerFile;
-  CStdioFile MobPlayerFileTmp;
-  CString    Stuff;
-  int        Success;
-  CString    TmpStr;
+  string     MobileIdCheck;
+  string     MobPlayerFileName;
+  string     MobPlayerFileNameTmp;
+  ifstream   MobPlayerFile;
+  ofstream   MobPlayerFileTmp;
+  string     Stuff;
+  string     TmpStr;
 
   MobileId = StrMakeLower(MobileId);
   // Open MobPlayer file
   MobPlayerFileName =  MOB_PLAYER_DIR;
   MobPlayerFileName += PlayerName;
   MobPlayerFileName += ".txt";
-  Success = MobPlayerFile.Open(MobPlayerFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-  if(!Success)
+  MobPlayerFile.open(MobPlayerFileName);
+  if(!MobPlayerFile.is_open())
   { // MobPlayer player file does not exist
     return;
   }
   if (MobileId == "file")
   { // Delete the file
-    MobPlayerFile.Close();
-    CFile::Remove(MobPlayerFileName);
+    MobPlayerFile.close();
+    Remove(MobPlayerFileName);
     return;
   }
   // Open temp MobPlayer file
   MobPlayerFileNameTmp =  MOB_PLAYER_DIR;
   MobPlayerFileNameTmp += PlayerName;
   MobPlayerFileNameTmp += ".tmp.txt";
-  Success = MobPlayerFileTmp.Open(MobPlayerFileNameTmp,
-                    CFile::modeCreate |
-                    CFile::modeWrite  |
-                    CFile::typeText);
-  if(!Success)
+  MobPlayerFileTmp.open(MobPlayerFileNameTmp);
+  if(!MobPlayerFileTmp.is_open())
   {
     AfxMessageBox("Mobile::DeleteMobPlayer - Open MobPlayer temp file failed", MB_ICONSTOP);
     _endthread();
   }
   // Write temp MobPlayer file
   MobileIdDeleted = false;
-  MobPlayerFile.ReadString(Stuff);
+  getline(MobPlayerFile, Stuff);
   while (Stuff != "")
   {
     if (MobileIdDeleted)
     { // Mobile has been deleted, just write the rest of the mobiles
       Stuff += "\n";
-      MobPlayerFileTmp.WriteString(Stuff);
-      MobPlayerFile.ReadString(Stuff);
+      MobPlayerFileTmp << Stuff << endl;
+      getline(MobPlayerFile, Stuff);
       continue;
     }
     MobileIdCheck = StrGetWord(Stuff, 1);
@@ -361,25 +355,25 @@ void Mobile::DeleteMobPlayer(CString PlayerName, CString MobileId)
     if (MobileId == MobileIdCheck)
     { // Found it, delete it
       MobileIdDeleted = true;
-      MobPlayerFile.ReadString(Stuff);
+      getline(MobPlayerFile, Stuff);
       continue;
     }
     // None of the above conditions satisfied, just write it
     Stuff += "\n";
-    MobPlayerFileTmp.WriteString(Stuff);
-    MobPlayerFile.ReadString(Stuff);
+    MobPlayerFileTmp << Stuff << endl;
+    getline(MobPlayerFile, Stuff);
   }
-  BytesInFile = (int) MobPlayerFileTmp.GetLength();
-  MobPlayerFile.Close();
-  MobPlayerFileTmp.Close();
-  CFile::Remove(MobPlayerFileName);
+  BytesInFile = MobPlayerFileTmp.tellp();
+  MobPlayerFile.close();
+  MobPlayerFileTmp.close();
+  Remove(MobPlayerFileName);
   if (BytesInFile > 0)
   { // If the file is not empty, rename it
-    CFile::Rename(MobPlayerFileNameTmp, MobPlayerFileName);
+    Rename(MobPlayerFileNameTmp, MobPlayerFileName);
   }
   else
   { // If the file is empty, delete it
-    CFile::Remove(MobPlayerFileNameTmp);
+    Remove(MobPlayerFileNameTmp);
   }
 }
 

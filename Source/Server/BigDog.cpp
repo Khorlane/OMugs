@@ -756,7 +756,7 @@ void CreatePlayerMob(string PlayerName, string MobileId)
   Mobile::CreatePlayerMob(PlayerName, MobileId);
 }
 
-void DeleteMobPlayer(CString PlayerName, CString MobileId)
+void DeleteMobPlayer(string PlayerName, string MobileId)
 {
   Mobile::DeleteMobPlayer(PlayerName, MobileId);
 }

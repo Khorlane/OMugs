@@ -268,7 +268,7 @@ int     CountMob(string MobileId);
 void    CreateMobPlayer(string PlayerName, string MobileId);
 void    CreateMobStatsFileWrite(string Directory, string MobileIdForFight, string Stuff);
 void    CreatePlayerMob(string PlayerName, string MobileId);
-void    DeleteMobPlayer(CString PlayerName, CString MobileId);
+void    DeleteMobPlayer(string PlayerName, string MobileId);
 void    DeleteMobStats(CString MobileId);
 bool    DeleteNode();
 void    DeletePlayerMob(CString PlayerName);

@@ -35,7 +35,7 @@ class Mobile
     static  void    CreateMobPlayer(string PlayerName, string MobileId);
     static  void    CreateMobStatsFileWrite(string Directory, string MobileIdForFight, string Stuff);
     static  void    CreatePlayerMob(string PlayerName, string MobileId);
-    static  void    DeleteMobPlayer(CString PlayerName, CString MobileId);
+    static  void    DeleteMobPlayer(string PlayerName, string MobileId);
     static  void    DeleteMobStats(CString MobileId);
     static  void    DeletePlayerMob(CString PlayerName);
     static  CString GetMobDesc1(CString MobileId);
