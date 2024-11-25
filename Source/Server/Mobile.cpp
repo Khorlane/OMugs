@@ -448,21 +448,20 @@ void Mobile::DeletePlayerMob(string PlayerName)
 * Is mobile in room                                        *
 ************************************************************/
 
-Mobile *Mobile::IsMobInRoom(CString MobileName)
+Mobile *Mobile::IsMobInRoom(string MobileName)
 {
   Mobile     *pMobile;
-  CString     NamesCheck;
+  string      NamesCheck;
   bool        MobileHurt;
-  CString     MobileId;
-  CString     MobileIdCheck;
-  CString     MobileIdHurt;
-  CString     MobileNameCheck;
-  CString     MobNbr;
+  string      MobileId;
+  string      MobileIdCheck;
+  string      MobileIdHurt;
+  string      MobileNameCheck;
+  string      MobNbr;
   int         PositionOfDot;
-  CStdioFile  RoomMobFile;
-  CString     RoomMobFileName;
-  CString     Stuff;
-  int         Success;
+  ifstream    RoomMobFile;
+  string      RoomMobFileName;
+  string      Stuff;
 
   // Open RoomMob file
   RoomMobFileName =  ROOM_MOB_DIR;
@@ -471,20 +470,18 @@ Mobile *Mobile::IsMobInRoom(CString MobileName)
   //*******************************
   //* Try matching using MobileId *
   //*******************************
-  Success = RoomMobFile.Open(RoomMobFileName,
-                  CFile::modeRead |
-                  CFile::typeText);
-  if(!Success)
+  RoomMobFile.open(RoomMobFileName);
+  if(!RoomMobFile.is_open())
   { // Room has no mobiles
     return NULL;
   }
-  RoomMobFile.ReadString(Stuff);
+  getline(RoomMobFile,Stuff);
   while (Stuff != "")
   { // Process each mobile in the room
     MobileId = StrGetWord(Stuff, 2);
     if (MobileId == MobileName)
     { // This mobile is a match
-      RoomMobFile.Close();
+      RoomMobFile.close();
       PositionOfDot = StrFindFirstChar(MobileId, '.');
       MobileHurt    = false;
       if (PositionOfDot > 1)
@@ -494,25 +491,23 @@ Mobile *Mobile::IsMobInRoom(CString MobileName)
         MobNbr       = StrRight(MobileId, StrGetLength(MobileId) - PositionOfDot - 1);
         MobileId     = StrLeft(MobileId, PositionOfDot);
       }
-      pMobile = new Mobile(ConvertCStringToString(MobileId));
+      pMobile = new Mobile(MobileId);
       pMobile->Hurt   = MobileHurt;
-      pMobile->MobNbr = MobNbr;
+      pMobile->MobNbr = ConvertStringToCString(MobNbr);
       return pMobile;
     }
-    RoomMobFile.ReadString(Stuff);
+    getline(RoomMobFile, Stuff);
   }
-  RoomMobFile.Close();
+  RoomMobFile.close();
   //***************************************************
   //* No match found, try getting match using 'names' *
   //***************************************************
-  Success = RoomMobFile.Open(RoomMobFileName,
-                  CFile::modeRead |
-                  CFile::typeText);
-  if(!Success)
+  RoomMobFile.open(RoomMobFileName);
+  if(!RoomMobFile.is_open())
   { // Room has no mobiles
     return NULL;
   }
-  RoomMobFile.ReadString(Stuff);
+  getline(RoomMobFile, Stuff);
   while (Stuff != "")
   { // Process each mobile in the room
     MobileId      = StrGetWord(Stuff, 2);
@@ -525,31 +520,31 @@ Mobile *Mobile::IsMobInRoom(CString MobileName)
       MobNbr       = StrRight(MobileId, StrGetLength(MobileId) - PositionOfDot - 1);
       MobileId     = StrLeft(MobileId, PositionOfDot);
     }
-    pMobile = new Mobile(ConvertCStringToString(MobileId));
+    pMobile = new Mobile(MobileId);
     pMobile->Hurt    = MobileHurt;
-    pMobile->MobNbr  = MobNbr;
+    pMobile->MobNbr  = ConvertStringToCString(MobNbr);
     if (pMobile->Hurt)
     { // Mobile is hurt
       if (MobNbr == MobileName)
       { // Kill nnn was entered, where nnn is the MobNbr
-        RoomMobFile.Close();
+        RoomMobFile.close();
         return pMobile;
       }
     }
     NamesCheck = pMobile->Names;
     NamesCheck = StrMakeLower(NamesCheck);
-    if (IsWord(MobileName, NamesCheck))
+    if (StrIsWord(MobileName, NamesCheck))
     { // This mobile is a match
-      RoomMobFile.Close();
+      RoomMobFile.close();
       return pMobile;
     }
     else
     { // This mobile doesn't match
       delete pMobile;
     }
-    RoomMobFile.ReadString(Stuff);
+    getline(RoomMobFile, Stuff);
   }
-  RoomMobFile.Close();
+  RoomMobFile.close();
   return NULL;
 }
 

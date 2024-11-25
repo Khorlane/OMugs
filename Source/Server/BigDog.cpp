@@ -446,6 +446,45 @@ string StrInsertChar(string Str1, int Position, char c)
   return Str1.insert(Position, 1, c);
 }
 
+// Is word 'in' word list?  (temporary)
+bool StrIsWord(CString Word, CString WordList)
+{
+  return StrIsWord(ConvertCStringToString(Word), ConvertCStringToString(WordList));
+}
+
+// Is word 'in' word list?
+bool StrIsWord(string Word, string WordList)
+
+{
+  bool    Found;
+  int     i;
+  int     n;
+  string  String;
+
+  Found = false;
+  if (Word.length() == 0)
+  { // Word is null, so it can't be in word list
+    return false;
+  }
+  n = StrWordCount(WordList);
+  for (i = 1; i <= n; i++)
+  {
+    String = StrGetWord(WordList, i);
+    if (Word == String)
+    {
+      Found = true;
+    }
+  }
+  if (Found)
+  { // Word was found in word list
+    return true;
+  }
+  else
+  { // Word was not found in word list
+    return false;
+  }
+}
+
 // Get the left portion of a string (temporary)
 CString StrLeft(CString Str1, int Len)
 {
@@ -545,7 +584,8 @@ void StrReplace(string &str, const string &from, const string &to)
   if (from.empty())
     return;
   size_t start_pos = 0;
-  while ((start_pos = str.find(from, start_pos)) != std::string::npos) {
+  while ((start_pos = str.find(from, start_pos)) != std::string::npos)
+ {
     str.replace(start_pos, from.length(), to);
     start_pos += to.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
   }
@@ -655,6 +695,24 @@ void StrVectorSetAt(vector<string> &StrVector1, int Position, string Str1) // TO
     return;
   }
   StrVector1[Position] = Str1;
+}
+
+// Count the number of words (temporary)
+int StrWordCount(CString String)
+{
+  return StrWordCount(ConvertCStringToString(String));
+}
+
+ // Count the number of words
+int StrWordCount(string String)
+{
+  std::string T = String;
+
+  size_t NWords = T.empty() || T.back() == ' ' ? 0 : 1;
+  for (size_t s = T.size(); s > 0; --s)
+    if (T[s] == ' ' && T[s - 1] != ' ') ++NWords;
+
+  return NWords;
 }
 
 //
@@ -921,7 +979,7 @@ bool IsHelp()
   return Help::IsHelp();
 }
 
-Mobile *IsMobInRoom(CString MobileName)
+Mobile *IsMobInRoom(string MobileName)
 {
   return Mobile::IsMobInRoom(MobileName);
 }

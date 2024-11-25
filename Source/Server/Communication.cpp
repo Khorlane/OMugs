@@ -30,7 +30,7 @@ vector<string>   ValidCmds;
 
 void    AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId);  // Object
 Dnode  *GetDnode();                                             // Descriptor
-Mobile *IsMobInRoom(CString MobileName);                        // Mobile
+Mobile *IsMobInRoom(string MobileName);                         // Mobile
 Mobile *IsMobValid(string MobileId);                            // Mobile
 void    ShowRoom(Dnode *pDnode);                                // Room
 void    ShowPlayerEqu(Dnode *pDnodeTgt1);                       // Object
@@ -2019,7 +2019,7 @@ void Communication::DoConsider()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  pMobile = IsMobInRoom(ConvertStringToCString(Target));
+  pMobile = IsMobInRoom(Target);
   if (!pMobile)
   { // Target mobile is not here
     pDnodeActor->PlayerOut += "There doesn't seem to be a(n) ";
@@ -3933,7 +3933,7 @@ void Communication::DoHail()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  pMobile = IsMobInRoom(ConvertStringToCString(Target));
+  pMobile = IsMobInRoom(Target);
   if (!pMobile)
   { // Target mobile is not here
     pDnodeActor->PlayerOut += "Try hailing an NPC that is in this room.";
@@ -4143,7 +4143,7 @@ void Communication::DoKill()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  pMobile = IsMobInRoom(ConvertStringToCString(Target));
+  pMobile = IsMobInRoom(Target);
   if (!pMobile)
   { // Target mobile is not here
     pDnodeActor->PlayerOut += "There doesn't seem to be a(n) ";
@@ -4455,7 +4455,7 @@ void Communication::DoLook(string CmdStr1)
   //*******************
   //* Is it a mobile? *
   //*******************
-  pMobile = IsMobInRoom(ConvertStringToCString(TargetName));
+  pMobile = IsMobInRoom(TargetName);
   if (pMobile)
   { // Player is looking at a mob
     TmpStr = StrMakeFirstLower(pMobile->Desc1);
