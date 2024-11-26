@@ -397,7 +397,7 @@ void    StrVectorSetAt(vector<string> &StrVector1, int Position, string Str1);
 int     StrWordCount(CString String);
 int     StrWordCount(string String);
 CString TranslateWord(CString Word);
-void    UpdateMobInWorld(CString MobileId, CString AddRemove);
+void    UpdateMobInWorld(string MobileId, string AddRemove);
 bool    ValidateIt(CString ValidationType);
 string  WhackMobile(string PlayerName, int DamageToMobile, string MobileDesc1, string WeaponType);
 string  WhackPlayer(string MobileDesc1, string MobileAttack, int DamageToPlayer);

@@ -46,7 +46,7 @@ class Mobile
     static  void    PutMobBackInRoom(string PlayerName, string RoomId);
     static  void    RemoveMobFromRoom(string RoomId, string MobileId);
     static  void    ShowMobsInRoom(Dnode *pDnode);
-    static  void    UpdateMobInWorld(CString MobileId, CString AddRemove);
+    static  void    UpdateMobInWorld(string MobileId, string AddRemove);
     static  void    WhereMob(string MobileIdSearch);
 
 // Public functions

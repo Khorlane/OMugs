@@ -4219,7 +4219,7 @@ void Communication::DoKill()
     MobileId = pMobile->MobileId + "." + pMobile->MobNbr;
     RemoveMobFromRoom(RoomId, MobileId);
   }
-  UpdateMobInWorld(ConvertStringToCString(MobileId), "add"); // Keep Mob InWorld count correct
+  UpdateMobInWorld(MobileId, "add"); // Keep Mob InWorld count correct
   // Set player and mobile to fight
   CreatePlayerMob(PlayerName, MobileId);
   CreateMobPlayer(PlayerName, MobileId);
@@ -7258,7 +7258,7 @@ void Communication::ViolenceMobileDied(string MobileBeenWhacked,
   DeleteMobPlayer(ConvertCStringToString(pDnodeActor->PlayerName), MobileId);
   DeleteMobStats(MobileId);
   pDnodeActor->PlayerStateFighting = false;
-  UpdateMobInWorld(ConvertStringToCString(MobileId), "remove");
+  UpdateMobInWorld(MobileId, "remove");
   //***************************************************
   //* Stop other players who are whacking this mobile *
   //***************************************************

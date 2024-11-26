@@ -64,7 +64,7 @@ void Mobile::AddMobToRoom(string RoomId, string MobileId)
   string     Stuff;
   string     TmpStr;
 
-  UpdateMobInWorld(ConvertStringToCString(MobileId), "add");
+  UpdateMobInWorld(MobileId, "add");
   MobileId = StrMakeLower(MobileId);
   // Open RoomMob file
   RoomMobFileName =  ROOM_MOB_DIR;
@@ -703,7 +703,7 @@ void Mobile::PutMobBackInRoom(string PlayerName, string RoomIdBeforeFleeing)
       }
     }
     AddMobToRoom(RoomIdBeforeFleeing, MobileId);
-    UpdateMobInWorld(ConvertStringToCString(MobileId), "remove");
+    UpdateMobInWorld(MobileId, "remove");
     getline(MobPlayerFile, Stuff);
   }
   MobPlayerFile.close();
@@ -727,7 +727,7 @@ void Mobile::RemoveMobFromRoom(string RoomId, string MobileId)
   string     Stuff;
   string     TmpStr;
 
-  UpdateMobInWorld(ConvertStringToCString(MobileId), "remove");
+  UpdateMobInWorld(MobileId, "remove");
   MobileId = StrMakeLower(MobileId);
   // Open RoomMob file
   RoomMobFileName =  ROOM_MOB_DIR;
@@ -1059,15 +1059,14 @@ void Mobile::WhereMob(string MobileIdSearch)
 * Update mobiles in the world count                        *
 ************************************************************/
 
-void Mobile::UpdateMobInWorld(CString MobileId, CString AddRemove)
+void Mobile::UpdateMobInWorld(string MobileId, string AddRemove)
 {
   int        MobInWorldCount;
-  CStdioFile MobInWorldFile;
-  CString    MobInWorldFileName;
+  fstream    MobInWorldFile;
+  string     MobInWorldFileName;
   int        PositionOfDot;
-  CString    Stuff;
-  int        Success;
-  CString    TmpStr;
+  string     Stuff;
+  string     TmpStr;
   
   MobInWorldCount = 0;
   PositionOfDot = StrFindFirstChar(MobileId, '.');
@@ -1079,23 +1078,18 @@ void Mobile::UpdateMobInWorld(CString MobileId, CString AddRemove)
   MobInWorldFileName =  CONTROL_MOB_INWORLD_DIR;
   MobInWorldFileName += MobileId;
   MobInWorldFileName += ".txt";
-  Success = MobInWorldFile.Open(MobInWorldFileName,
-                     CFile::modeRead |
-                     CFile::typeText);
-  if(Success)
+  MobInWorldFile.open(MobInWorldFileName, fstream::in);
+  if (MobInWorldFile.is_open())
   { // Get current count
-    MobInWorldFile.ReadString(Stuff);
-    MobInWorldCount = atoi(Stuff);
-    MobInWorldFile.Close();
+    getline(MobInWorldFile, Stuff);
+    MobInWorldCount = stoi(Stuff);
+    MobInWorldFile.close();
   }
   // Create Mobiles InWorld file, doesn't matter if it already exists
-  Success = MobInWorldFile.Open(MobInWorldFileName,
-                  CFile::modeCreate |
-                  CFile::modeWrite  |
-                  CFile::typeText);
-  if(!Success)
+  MobInWorldFile.open(MobInWorldFileName, fstream::out);
+  if (!MobInWorldFile.is_open())
   {
-    AfxMessageBox("Mobile::UpdateMobInWorld - Open Mobiles InWorld file failed for: " + MobInWorldFileName, MB_ICONSTOP);
+    AfxMessageBox("Mobile::UpdateMobInWorld - Open Mobiles InWorld file failed for: " + ConvertStringToCString(MobInWorldFileName), MB_ICONSTOP);
     _endthread();
   }
   if (AddRemove == "add")
@@ -1107,9 +1101,9 @@ void Mobile::UpdateMobInWorld(CString MobileId, CString AddRemove)
     MobInWorldCount--;
   }
   sprintf(Buf, "%d", MobInWorldCount);
-  TmpStr = ConvertStringToCString(Buf);
-  MobInWorldFile.WriteString(TmpStr);
-  MobInWorldFile.Close();
+  TmpStr = Buf;
+  MobInWorldFile << TmpStr << endl;
+  MobInWorldFile.close();
 }
 
 ////////////////////////////////////////////////////////////

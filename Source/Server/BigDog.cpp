@@ -1199,7 +1199,7 @@ CString TranslateWord(CString Word)
   return Utility::TranslateWord(Word);
 }
 
-void UpdateMobInWorld(CString MobileId, CString AddRemove)
+void UpdateMobInWorld(string MobileId, string AddRemove)
 {
   Mobile::UpdateMobInWorld(MobileId, AddRemove);
 }
