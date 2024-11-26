@@ -885,7 +885,7 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
       j = stoi(MobileCount);
       for (i = 1; i <= j; i++)
       {
-        MobileIdsToBeRemoved += ConvertCStringToString(MobAttacks(pMobile));
+        MobileIdsToBeRemoved += MobAttacks(pMobile);
         MobileIdsToBeRemoved += " ";
       }
     }
@@ -906,15 +906,15 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
 * Mobile attacks!!                                         *
 ************************************************************/
 
-CString Mobile::MobAttacks(Mobile *pMobile)
+string Mobile::MobAttacks(Mobile *pMobile)
 {
-  CString KillMsg;
-  CString MobileId;
-  CString MobileIdToBeRemoved;
-  CString PhraseAll;
-  CString PhrasePlayer;
-  CString PlayerName;
-  CString RoomId;
+  string KillMsg;
+  string MobileId;
+  string MobileIdToBeRemoved;
+  string PhraseAll;
+  string PhrasePlayer;
+  string PlayerName;
+  string RoomId;
 
   PlayerName = pDnodeActor->PlayerName;
   RoomId     = pDnodeActor->pPlayer->RoomId;
@@ -936,7 +936,7 @@ CString Mobile::MobAttacks(Mobile *pMobile)
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += "&R";
   pDnodeActor->PlayerOut += pMobile->Desc1;
-  pDnodeActor->PlayerOut += PhrasePlayer;
+  pDnodeActor->PlayerOut += ConvertStringToCString(PhrasePlayer);
   pDnodeActor->PlayerOut += "&N";
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
@@ -957,25 +957,25 @@ CString Mobile::MobAttacks(Mobile *pMobile)
   if (!pMobile->Hurt)
   { //  Mobile not hurt
     pMobile->GetNextMobNbr();
-    pMobile->CreateMobStatsFile(RoomId);
+    pMobile->CreateMobStatsFile(ConvertStringToCString(RoomId));
     MobileId = pMobile->MobileId;
     MobileIdToBeRemoved = MobileId; // RemoveMobFromRoom(RoomId, MobileId);
-    MobileId = pMobile->MobileId + "." + pMobile->MobNbr;
+    MobileId = ConvertCStringToString(pMobile->MobileId) + "." + ConvertCStringToString(pMobile->MobNbr);
   }
   else
   { // Mobile is hurt
-    MobileId = pMobile->MobileId + "." + pMobile->MobNbr;
+    MobileId = ConvertCStringToString(pMobile->MobileId) + "." + ConvertCStringToString(pMobile->MobNbr);
     MobileIdToBeRemoved = MobileId;// RemoveMobFromRoom(RoomId, MobileId);
   }
   if (!pDnodeActor->PlayerStateFighting)
   { // Set player and mobile to fight
-    CreatePlayerMob(ConvertCStringToString(PlayerName), ConvertCStringToString(MobileId));
-    CreateMobPlayer(ConvertCStringToString(PlayerName), ConvertCStringToString(MobileId));
+    CreatePlayerMob(PlayerName, MobileId);
+    CreateMobPlayer(PlayerName, MobileId);
     pDnodeActor->PlayerStateFighting = true;
   }
   else
   { // Player is fighting, this mob is an 'add'
-    CreateMobPlayer(ConvertCStringToString(PlayerName), ConvertCStringToString(MobileId));
+    CreateMobPlayer(PlayerName, MobileId);
   }
   return MobileIdToBeRemoved;
 }
