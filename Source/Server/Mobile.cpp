@@ -816,31 +816,28 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
   Mobile     *pMobile;
   int         i;
   int         j;
-  CString     MobileCount;
+  string      MobileCount;
   bool        MobileHurt;
-  CString     MobileId;
-  CString     MobileIdsToBeRemoved;
-  CString     MobileIdHurt;
-  CString     MobNbr;
+  string      MobileId;
+  string      MobileIdsToBeRemoved;
+  string      MobileIdHurt;
+  string      MobNbr;
   int         PositionOfDot;
   int         RemoveMobCount;
-  CStdioFile  RoomMobFile;
-  CString     RoomMobFileName;
-  CString     Stuff;
-  int         Success;
+  ifstream    RoomMobFile;
+  string      RoomMobFileName;
+  string      Stuff;
 
   // Open RoomMob file
   RoomMobFileName =  ROOM_MOB_DIR;
   RoomMobFileName += pDnode->pPlayer->RoomId;
   RoomMobFileName += ".txt";
-  Success = RoomMobFile.Open(RoomMobFileName,
-                  CFile::modeRead |
-                  CFile::typeText);
-  if(!Success)
+  RoomMobFile.open(RoomMobFileName);
+  if(!RoomMobFile.is_open())
   { // No mobiles in room to display
     return;
   }
-  RoomMobFile.ReadString(Stuff);
+  getline(RoomMobFile, Stuff);
   while (Stuff != "")
   {
     MobileCount = StrGetWord(Stuff, 1);
@@ -849,14 +846,14 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
     MobileHurt = false;
     if (PositionOfDot > 1)
     { // Mobile is hurt but not fighting
-      MobileHurt = true;
+      MobileHurt   = true;
       MobileIdHurt = MobileId;
-      MobNbr = StrRight(MobileId, StrGetLength(MobileId) - PositionOfDot - 1);
-      MobileId = StrLeft(MobileId, PositionOfDot);
+      MobNbr       = StrRight(MobileId, StrGetLength(MobileId) - PositionOfDot - 1);
+      MobileId     = StrLeft(MobileId, PositionOfDot);
     }
-    pMobile = new Mobile(ConvertCStringToString(MobileId));
-    pMobile->Hurt = MobileHurt;
-    pMobile->MobNbr = MobNbr;
+    pMobile = new Mobile(MobileId);
+    pMobile->Hurt   = MobileHurt;
+    pMobile->MobNbr = ConvertStringToCString(MobNbr);
     if (MobileHurt)
     { // Mobile is hurt
       pDnode->PlayerOut += "\r\n";
@@ -870,7 +867,7 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
       pDnode->PlayerOut +=  ", trying to hide.";
       pDnode->PlayerOut += "&B";
       pDnode->PlayerOut += " (";
-      pDnode->PlayerOut += MobileIdHurt;
+      pDnode->PlayerOut += ConvertStringToCString(MobileIdHurt);
       pDnode->PlayerOut += ")";
       pDnode->PlayerOut += "&N";
     }
@@ -878,30 +875,30 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
     { // Mobile is not hurt
       pDnode->PlayerOut += "\r\n";
       pDnode->PlayerOut += "&W";
-      pDnode->PlayerOut += "(" + MobileCount + ") ";
+      pDnode->PlayerOut += "(" + ConvertStringToCString(MobileCount) + ") ";
       pDnode->PlayerOut += pMobile->Desc2;
       pDnode->PlayerOut += "&N";
     }
     // Check for AGGRO mobs
     if (IsWord("Aggro", pMobile->Action))
     { // Attack player
-      j = atoi(MobileCount);
+      j = stoi(MobileCount);
       for (i = 1; i <= j; i++)
       {
-        MobileIdsToBeRemoved += MobAttacks(pMobile);
+        MobileIdsToBeRemoved += ConvertCStringToString(MobAttacks(pMobile));
         MobileIdsToBeRemoved += " ";
       }
     }
     delete pMobile;
-    RoomMobFile.ReadString(Stuff);
+    getline(RoomMobFile, Stuff);
   }
-  RoomMobFile.Close();
+  RoomMobFile.close();
   // Remove mobs, that attacked a player, from room
   RemoveMobCount = StrCountWords(MobileIdsToBeRemoved);
   for (i = 1; i <= RemoveMobCount; i++)
   {
     MobileId = StrGetWord(MobileIdsToBeRemoved, i);
-    RemoveMobFromRoom(ConvertCStringToString(pDnode->pPlayer->RoomId), ConvertCStringToString(MobileId));
+    RemoveMobFromRoom(ConvertCStringToString(pDnode->pPlayer->RoomId), MobileId);
   }
 }
 
