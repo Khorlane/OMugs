@@ -772,12 +772,12 @@ void World::MakeMobilesMove3()
     MobileId     = StrGetWord(Stuff, 1);
     RoomId       = StrGetWord(Stuff, 2);
     ExitToRoomId = StrGetWord(Stuff, 3);
-    if (!IsMobileIdInRoom(ConvertStringToCString(RoomId), ConvertStringToCString(MobileId)))
+    if (!IsMobileIdInRoom(RoomId, MobileId))
     { // Mob not in room anymore, prolly get itself killed, so can't be moved
       getline(RoomMobMoveFile, Stuff);
       continue;
     }
-    MobileDesc1  = GetMobDesc1(ConvertStringToCString(MobileId));
+    MobileDesc1  = GetMobDesc1(MobileId);
     LeaveMsg     = MobileDesc1;
     LeaveMsg    += " leaves.";
     ArriveMsg    = MobileDesc1;

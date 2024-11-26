@@ -552,14 +552,13 @@ Mobile *Mobile::IsMobInRoom(string MobileName)
 * Get mobile get Desc1                                     *
 ************************************************************/
 
-CString Mobile::GetMobDesc1(CString MobileId)
+string Mobile::GetMobDesc1(string MobileId)
 {
-  CString    Desc1;
-  CStdioFile MobileFile;
-  CString    MobileFileName;
+  string     Desc1;
+  ifstream   MobileFile;
+  string     MobileFileName;
   int        PositionOfDot;
-  CString    Stuff;
-  int        Success;
+  string     Stuff;
 
   PositionOfDot = StrFindFirstChar(MobileId, '.');
   if (PositionOfDot > 1)
@@ -569,10 +568,8 @@ CString Mobile::GetMobDesc1(CString MobileId)
   MobileFileName =  MOBILES_DIR;
   MobileFileName += MobileId;
   MobileFileName += ".txt";
-  Success = MobileFile.Open(MobileFileName,
-                 CFile::modeRead |
-                 CFile::typeText);
-  if(!Success)
+  MobileFile.open(MobileFileName);
+  if(!MobileFile.is_open())
   {
     AfxMessageBox("Mobile::GetMobDesc1 - Mobile does not exist!", MB_ICONSTOP);
     _endthread();
@@ -580,11 +577,11 @@ CString Mobile::GetMobDesc1(CString MobileId)
   Stuff = "";
   while (StrLeft(Stuff, 6) != "Desc1:")
   {
-    MobileFile.ReadString(Stuff);
+    getline(MobileFile, Stuff);
   }
   Desc1 = StrRight(Stuff, StrGetLength(Stuff)-6);
   Desc1 = StrTrimLeft(Desc1);
-  MobileFile.Close();
+  MobileFile.close();
   return Desc1;
 }
 
@@ -592,38 +589,35 @@ CString Mobile::GetMobDesc1(CString MobileId)
 * Is mobile in the room?                                   *
 ************************************************************/
 
-bool Mobile::IsMobileIdInRoom(CString RoomId, CString MobileId)
+bool Mobile::IsMobileIdInRoom(string RoomId, string MobileId)
 {
-  CString    MobileIdCheck;
-  CStdioFile RoomMobFile;
-  CString    RoomMobFileName;
-  CString    Stuff;
-  int        Success;
+  string     MobileIdCheck;
+  ifstream   RoomMobFile;
+  string     RoomMobFileName;
+  string     Stuff;
 
   // Open RoomMob file
   RoomMobFileName =  ROOM_MOB_DIR;
   RoomMobFileName += RoomId;
   RoomMobFileName += ".txt";
-  Success = RoomMobFile.Open(RoomMobFileName,
-                  CFile::modeRead |
-                  CFile::typeText);
-  if(!Success)
+  RoomMobFile.open(RoomMobFileName);
+  if(!RoomMobFile.is_open())
   { // Room has no mobiles
     return false;
   }
-  RoomMobFile.ReadString(Stuff);
+  getline(RoomMobFile, Stuff);
   while (Stuff != "")
   { // Process each mobile in the room
     MobileIdCheck = StrGetWord(Stuff, 2);
     if (MobileId == MobileIdCheck)
     { // Found matching mobile
-      RoomMobFile.Close();
+      RoomMobFile.close();
       return true;
     }
-    RoomMobFile.ReadString(Stuff);
+    getline(RoomMobFile, Stuff);
   }
   // No matching mobile found
-  RoomMobFile.Close();
+  RoomMobFile.close();
   return false;
 }
 

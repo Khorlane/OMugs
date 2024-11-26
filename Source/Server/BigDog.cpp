@@ -869,7 +869,7 @@ string GetHomeDir()
   return Utility::GetHomeDir();
 }
 
-CString GetMobDesc1(CString MobileId)
+string GetMobDesc1(string MobileId)
 {
   return Mobile::GetMobDesc1(MobileId);
 }
@@ -989,7 +989,7 @@ Mobile *IsMobValid(string MobileId)
   return Mobile::IsMobValid(MobileId);
 }
 
-bool IsMobileIdInRoom(CString RoomId, CString MobileId)
+bool IsMobileIdInRoom(string RoomId, string MobileId)
 {
   return Mobile::IsMobileIdInRoom(RoomId, MobileId);
 }

@@ -38,8 +38,8 @@ class Mobile
     static  void    DeleteMobPlayer(string PlayerName, string MobileId);
     static  void    DeleteMobStats(string MobileId);
     static  void    DeletePlayerMob(string PlayerName);
-    static  CString GetMobDesc1(CString MobileId);
-    static  bool    IsMobileIdInRoom(CString RoomId, CString MobileId);
+    static  string  GetMobDesc1(string MobileId);
+    static  bool    IsMobileIdInRoom(string RoomId, string MobileId);
     static  Mobile *IsMobInRoom(string MobileName);
     static  Mobile *IsMobValid(string MobileId);
     static  CString MobAttacks(Mobile *pMobile);
