@@ -651,33 +651,30 @@ Mobile *Mobile::IsMobValid(string MobileId)
 * Put non-fighting mobiles back in room                    *
 ************************************************************/
 
-void Mobile::PutMobBackInRoom(CString PlayerName, CString RoomIdBeforeFleeing)
+void Mobile::PutMobBackInRoom(string PlayerName, string RoomIdBeforeFleeing)
 {
-  CString    MobHitPointsLeft;
-  CString    MobHitPointsTotal;
-  CString    MobileId;
-  CString    MobPlayerFileName;
-  CStdioFile MobPlayerFile;
-  CStdioFile MobStatsHitPointsFile;
-  CString    MobStatsHitPointsFileName;
+  string     MobHitPointsLeft;
+  string     MobHitPointsTotal;
+  string     MobileId;
+  string     MobPlayerFileName;
+  ifstream   MobPlayerFile;
+  ifstream   MobStatsHitPointsFile;
+  string     MobStatsHitPointsFileName;
   int        PositionOfDot;
-  CString    Stuff;
-  int        Success;
-  CString    TmpStr;
+  string     Stuff;
+  string     TmpStr;
 
   // Open MobPlayer file
   MobPlayerFileName =  MOB_PLAYER_DIR;
   MobPlayerFileName += PlayerName;
   MobPlayerFileName += ".txt";
-  Success = MobPlayerFile.Open(MobPlayerFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-  if(!Success)
+  MobPlayerFile.open(MobPlayerFileName);
+  if(!MobPlayerFile.is_open())
   { // No mobiles to put back, someone else may be fighting the mob
     return;
   }
   // For each mobile still in MobPlayer file(non-fighting mobiles), put it back in room
-  MobPlayerFile.ReadString(Stuff);
+  getline(MobPlayerFile, Stuff);
   while (Stuff != "")
   {
     MobileId = StrGetWord(Stuff, 1);
@@ -686,33 +683,31 @@ void Mobile::PutMobBackInRoom(CString PlayerName, CString RoomIdBeforeFleeing)
     MobStatsHitPointsFileName = MOB_STATS_HPT_DIR;
     MobStatsHitPointsFileName += MobileId;
     MobStatsHitPointsFileName += ".txt";
-    Success = MobStatsHitPointsFile.Open(MobStatsHitPointsFileName,
-                              CFile::modeRead |
-                              CFile::typeText);
-    if(!Success)
+    MobStatsHitPointsFile.open(MobStatsHitPointsFileName);
+    if(!MobStatsHitPointsFile.is_open())
     {
       AfxMessageBox("Mobile::PutMobBackInRoom - Open MobStatsHitPointsFile file failed (read)", MB_ICONSTOP);
       _endthread();
     }
-    MobStatsHitPointsFile.ReadString(Stuff);
-    MobStatsHitPointsFile.Close();
+    getline(MobStatsHitPointsFile, Stuff);
+    MobStatsHitPointsFile.close();
     MobHitPointsTotal = StrGetWord(Stuff, 1);
     MobHitPointsLeft  = StrGetWord(Stuff, 2);
     if (MobHitPointsTotal == MobHitPointsLeft)
     { // Mobile is not hurt
-      DeleteMobStats(ConvertCStringToString(MobileId));
+      DeleteMobStats(MobileId);
       PositionOfDot = StrFindFirstChar(MobileId, '.');
       if (PositionOfDot > 1)
       { // Get MobileId
         MobileId = StrLeft(MobileId, PositionOfDot);
       }
     }
-    AddMobToRoom(ConvertCStringToString(RoomIdBeforeFleeing), ConvertCStringToString(MobileId));
-    UpdateMobInWorld(MobileId, "remove");
-    MobPlayerFile.ReadString(Stuff);
+    AddMobToRoom(RoomIdBeforeFleeing, MobileId);
+    UpdateMobInWorld(ConvertStringToCString(MobileId), "remove");
+    getline(MobPlayerFile, Stuff);
   }
-  MobPlayerFile.Close();
-  CFile::Remove(MobPlayerFileName);
+  MobPlayerFile.close();
+  Remove(MobPlayerFileName);
 }
 
 /***********************************************************

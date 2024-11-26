@@ -323,7 +323,7 @@ void    OpenLogFile();
 void    Osi(string ScriptType, string ScriptId);
 void    PrintIt(string Message);
 string  PronounSubstitute(string MsgText);
-void    PutMobBackInRoom(CString PlayerName, CString RoomId);
+void    PutMobBackInRoom(string PlayerName, string RoomId);
 error_code Remove(string File1);
 void    RemoveMobFromRoom(string RoomId, string MobileId);
 void    RemoveObjFromPlayerEqu(string ObjectId);

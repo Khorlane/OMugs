@@ -1094,7 +1094,7 @@ string PronounSubstitute(string MsgText)
   return Utility::PronounSubstitute(MsgText);
 }
 
-void PutMobBackInRoom(CString PlayerName, CString RoomId)
+void PutMobBackInRoom(string PlayerName, string RoomId)
 {
   Mobile::PutMobBackInRoom(PlayerName, RoomId);
 }

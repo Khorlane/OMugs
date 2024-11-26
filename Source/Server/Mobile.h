@@ -43,7 +43,7 @@ class Mobile
     static  Mobile *IsMobInRoom(string MobileName);
     static  Mobile *IsMobValid(string MobileId);
     static  CString MobAttacks(Mobile *pMobile);
-    static  void    PutMobBackInRoom(CString PlayerName, CString RoomId);
+    static  void    PutMobBackInRoom(string PlayerName, string RoomId);
     static  void    RemoveMobFromRoom(string RoomId, string MobileId);
     static  void    ShowMobsInRoom(Dnode *pDnode);
     static  void    UpdateMobInWorld(CString MobileId, CString AddRemove);

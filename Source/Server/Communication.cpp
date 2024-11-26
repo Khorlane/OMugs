@@ -2876,7 +2876,7 @@ void Communication::DoFlee()
   // Re-position pDnodeCursor
   RepositionDnodeCursor();
   // Put mobiles that are not fighting back in room
-  PutMobBackInRoom(ConvertStringToCString(PlayerName1), ConvertStringToCString(RoomIdBeforeFleeing));
+  PutMobBackInRoom(PlayerName1, RoomIdBeforeFleeing);
   // Player is gone, so delete MobPlayer completely
   DeleteMobPlayer(PlayerName1, "file");
   // Select a new target for MobileIdSave
@@ -7590,7 +7590,7 @@ void Communication::ViolencePlayerDied(string MobileDesc1)
   // Re-position pDnodeCursor
   RepositionDnodeCursor();
   // Put mobiles that are not fighting back in room
-  PutMobBackInRoom(pDnodeActor->PlayerName, ConvertStringToCString(RoomIdBeforeDying));
+  PutMobBackInRoom(ConvertCStringToString(pDnodeActor->PlayerName), RoomIdBeforeDying);
   // Player is gone, so delete MobPlayer completely
   DeleteMobPlayer(ConvertCStringToString(pDnodeActor->PlayerName), "file");
   // Select a new target for MobileIdSave
