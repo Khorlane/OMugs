@@ -401,7 +401,7 @@ void    UpdateMobInWorld(CString MobileId, CString AddRemove);
 bool    ValidateIt(CString ValidationType);
 string  WhackMobile(string PlayerName, int DamageToMobile, string MobileDesc1, string WeaponType);
 string  WhackPlayer(string MobileDesc1, string MobileAttack, int DamageToPlayer);
-void    WhereMob(CString MobileIdSearch);
+void    WhereMob(string MobileIdSearch);
 void    WhereObj(string ObjectIdSearch);
 int     WordCount(CString String);
 

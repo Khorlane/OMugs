@@ -1219,7 +1219,7 @@ string WhackPlayer(string MobileDesc1, string MobileAttack, int DamageToPlayer)
   return Violence::WhackPlayer(MobileDesc1, MobileAttack, DamageToPlayer);
 }
 
-void WhereMob(CString MobileIdSearch)
+void WhereMob(string MobileIdSearch)
 {
   Mobile::WhereMob(MobileIdSearch);
 }

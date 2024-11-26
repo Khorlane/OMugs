@@ -984,19 +984,16 @@ string Mobile::MobAttacks(Mobile *pMobile)
 * Search all rooms for mobile                              *
 ************************************************************/
 
-void Mobile::WhereMob(CString MobileIdSearch)
+void Mobile::WhereMob(string MobileIdSearch)
 {
-  CFileFind  FileList;
-  CString    FileName;
+  string     FileName;
   bool       MobileHurt;
-  CString    MobileId;
-  BOOL       MoreFiles;
+  string     MobileId;
   int        PositionOfDot;
-  CString    RoomMobFileName;
-  CStdioFile RoomMobFile;
-  CString    RoomName;
-  CString    Stuff;
-  int        Success;
+  string     RoomMobFileName;
+  ifstream   RoomMobFile;
+  string     RoomName;
+  string     Stuff;
 
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += "Mobiles";
@@ -1008,27 +1005,23 @@ void Mobile::WhereMob(CString MobileIdSearch)
     AfxMessageBox("Mobile::WhereMob - Change directory to ROOM_MOB_DIR failed", MB_ICONSTOP);
     _endthread();
   }
-  MoreFiles = FileList.FindFile("*.*");
-  while (MoreFiles)
+  for (const auto &entry : fs::directory_iterator("./"))
   {
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
+    if (entry.is_directory())
     {
       continue;
     }
-    FileName = FileList.GetFileName();
+    FileName = entry.path().filename().string();
     // Open RoomMob file
     RoomMobFileName = FileName;
-    Success = RoomMobFile.Open(RoomMobFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-    if(!Success)
+    RoomMobFile.open(RoomMobFileName);
+    if(!RoomMobFile.is_open())
     { // File does not exist - Very bad!
       AfxMessageBox("Mobile::WhereMob - Open RoomMob file failed", MB_ICONSTOP);
       _endthread();
     }
     RoomName = StrLeft(FileName, StrGetLength(FileName) - 4);
-    RoomMobFile.ReadString(Stuff);
+    getline(RoomMobFile, Stuff);
     while (Stuff != "")
     {
       MobileId      = StrGetWord(Stuff, 2);
@@ -1041,19 +1034,19 @@ void Mobile::WhereMob(CString MobileIdSearch)
       }
       if (MobileId == MobileIdSearch)
       {
-        pDnodeActor->PlayerOut += RoomName;
+        pDnodeActor->PlayerOut += ConvertStringToCString(RoomName);
         pDnodeActor->PlayerOut += " ";
         if (MobileHurt)
         {
           pDnodeActor->PlayerOut += "&R";
         }
-        pDnodeActor->PlayerOut += Stuff;
+        pDnodeActor->PlayerOut += ConvertStringToCString(Stuff);
         pDnodeActor->PlayerOut += "&N";
         pDnodeActor->PlayerOut += "\r\n";
       }
-      RoomMobFile.ReadString(Stuff);
+      getline(RoomMobFile, Stuff);
     }
-    RoomMobFile.Close();
+    RoomMobFile.close();
   }
   if (ChgDir(HomeDir))
   { // Change directory failed

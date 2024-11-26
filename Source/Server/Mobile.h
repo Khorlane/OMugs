@@ -47,7 +47,7 @@ class Mobile
     static  void    RemoveMobFromRoom(string RoomId, string MobileId);
     static  void    ShowMobsInRoom(Dnode *pDnode);
     static  void    UpdateMobInWorld(CString MobileId, CString AddRemove);
-    static  void    WhereMob(CString MobileIdSearch);
+    static  void    WhereMob(string MobileIdSearch);
 
 // Public functions
   public:

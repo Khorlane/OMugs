@@ -6162,7 +6162,7 @@ void Communication::DoWhere()
   else
   if (IsMobValid(SearchId))
   { // Find Mobiles
-    WhereMob(ConvertStringToCString(SearchId));
+    WhereMob(SearchId);
   }
   else
   {
