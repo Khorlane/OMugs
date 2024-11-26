@@ -628,19 +628,16 @@ bool Mobile::IsMobileIdInRoom(string RoomId, string MobileId)
 Mobile *Mobile::IsMobValid(string MobileId)
 {
   Mobile     *pMobile;
-  CString     MobileFileName;
-  CStdioFile  MobileFile;
-  int         Success;
+  string      MobileFileName;
+  ifstream    MobileFile;
 
   MobileFileName =  MOBILES_DIR;
   MobileFileName += ConvertStringToCString(MobileId);
   MobileFileName += ".txt";
-  Success = MobileFile.Open(MobileFileName,
-                 CFile::modeRead |
-                 CFile::typeText);
-  if(Success)
+  MobileFile.open(MobileFileName);
+  if(MobileFile.is_open())
   {
-    MobileFile.Close();
+    MobileFile.close();
     pMobile = new Mobile(MobileId);
     return pMobile;
   }
