@@ -54,7 +54,7 @@ class Mobile
     Mobile(string MobileId);
     ~Mobile();
     void            CreateMobStatsFile(string RoomId);
-    void            ExamineMob(CString MobileId);
+    void            ExamineMob(string MobileId);
     CString         MobTalk();
     void            GetNextMobNbr();
 

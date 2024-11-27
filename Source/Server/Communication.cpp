@@ -4463,7 +4463,7 @@ void Communication::DoLook(string CmdStr1)
     pDnodeActor->PlayerOut += ConvertStringToCString(TmpStr);
     pDnodeActor->PlayerOut += ".";
     pDnodeActor->PlayerOut += "\r\n";
-    pMobile->ExamineMob(pMobile->MobileId);
+    pMobile->ExamineMob(ConvertCStringToString(pMobile->MobileId));
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     delete pMobile;

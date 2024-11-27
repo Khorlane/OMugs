@@ -1162,9 +1162,9 @@ void Mobile::CreateMobStatsFile(string RoomId)
 * Examine a mobile, get Desc3                              *
 ************************************************************/
 
-void Mobile::ExamineMob(CString MobileId)
+void Mobile::ExamineMob(string MobileId)
 {
-  OpenFile(MobileId);
+  OpenFile(ConvertStringToCString(MobileId));
   while (Stuff != "Desc3:")
   {
     MobileFile.ReadString(Stuff); // Do not use ReadLine() here
