@@ -957,7 +957,7 @@ string Mobile::MobAttacks(Mobile *pMobile)
   if (!pMobile->Hurt)
   { //  Mobile not hurt
     pMobile->GetNextMobNbr();
-    pMobile->CreateMobStatsFile(ConvertStringToCString(RoomId));
+    pMobile->CreateMobStatsFile(RoomId);
     MobileId = pMobile->MobileId;
     MobileIdToBeRemoved = MobileId; // RemoveMobFromRoom(RoomId, MobileId);
     MobileId = ConvertCStringToString(pMobile->MobileId) + "." + ConvertCStringToString(pMobile->MobNbr);
@@ -1114,11 +1114,11 @@ void Mobile::UpdateMobInWorld(string MobileId, string AddRemove)
 * Create mobile statistics file                            *
 ************************************************************/
 
-void Mobile::CreateMobStatsFile(CString RoomId)
+void Mobile::CreateMobStatsFile(string RoomId)
 {
-  CString MobileIdForFight;
-  CString Stuff;
-  CString TmpStr;
+  string MobileIdForFight;
+  string Stuff;
+  string TmpStr;
 
   MobileIdForFight = MobileId + "." + MobNbr;
   // HitPoints
@@ -1127,35 +1127,35 @@ void Mobile::CreateMobStatsFile(CString RoomId)
   Stuff = TmpStr;
   Stuff += " ";
   Stuff += TmpStr;
-  CreateMobStatsFileWrite(MOB_STATS_HPT_DIR, ConvertCStringToString(MobileIdForFight), ConvertCStringToString(Stuff));
+  CreateMobStatsFileWrite(MOB_STATS_HPT_DIR, MobileIdForFight, Stuff);
   // Armor
   sprintf(Buf, "%d", Armor);
   Stuff = ConvertStringToCString(Buf);
-  CreateMobStatsFileWrite(MOB_STATS_ARM_DIR, ConvertCStringToString(MobileIdForFight), ConvertCStringToString(Stuff));
+  CreateMobStatsFileWrite(MOB_STATS_ARM_DIR, MobileIdForFight, Stuff);
   // Attack
   Stuff= Attack;
-  CreateMobStatsFileWrite(MOB_STATS_ATK_DIR, ConvertCStringToString(MobileIdForFight), ConvertCStringToString(Stuff));
+  CreateMobStatsFileWrite(MOB_STATS_ATK_DIR, MobileIdForFight, Stuff);
   // Damage
   sprintf(Buf, "%d", Damage);
   Stuff = ConvertStringToCString(Buf);
-  CreateMobStatsFileWrite(MOB_STATS_DMG_DIR, ConvertCStringToString(MobileIdForFight), ConvertCStringToString(Stuff));
+  CreateMobStatsFileWrite(MOB_STATS_DMG_DIR, MobileIdForFight, Stuff);
   // Desc1
   Stuff = Desc1;
-  CreateMobStatsFileWrite(MOB_STATS_DSC_DIR, ConvertCStringToString(MobileIdForFight), ConvertCStringToString(Stuff));
+  CreateMobStatsFileWrite(MOB_STATS_DSC_DIR, MobileIdForFight, Stuff);
   // ExpPoints
   sprintf(Buf, "%d", ExpPoints);
-  Stuff = ConvertStringToCString(Buf);
+  Stuff = Buf;
   sprintf(Buf, "%d", Level);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Stuff += " ";
   Stuff += TmpStr;
-  CreateMobStatsFileWrite(MOB_STATS_EXP_DIR, ConvertCStringToString(MobileIdForFight), ConvertCStringToString(Stuff));
+  CreateMobStatsFileWrite(MOB_STATS_EXP_DIR, MobileIdForFight, Stuff);
   // Loot
   Stuff = Loot;
-  CreateMobStatsFileWrite(MOB_STATS_LOOT_DIR, ConvertCStringToString(MobileIdForFight), ConvertCStringToString(Stuff));
+  CreateMobStatsFileWrite(MOB_STATS_LOOT_DIR, MobileIdForFight, Stuff);
   // Room
   Stuff = RoomId;
-  CreateMobStatsFileWrite(MOB_STATS_ROOM_DIR, ConvertCStringToString(MobileIdForFight), ConvertCStringToString(Stuff));
+  CreateMobStatsFileWrite(MOB_STATS_ROOM_DIR, MobileIdForFight, Stuff);
 }
 
 /***********************************************************

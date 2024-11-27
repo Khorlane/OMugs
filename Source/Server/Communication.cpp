@@ -4209,7 +4209,7 @@ void Communication::DoKill()
   if (!pMobile->Hurt)
   { //  Mobile not hurt
     pMobile->GetNextMobNbr();
-    pMobile->CreateMobStatsFile(ConvertStringToCString(RoomId));
+    pMobile->CreateMobStatsFile(RoomId);
     MobileId = pMobile->MobileId;
     RemoveMobFromRoom(RoomId, MobileId);
     MobileId = pMobile->MobileId + "." + pMobile->MobNbr;

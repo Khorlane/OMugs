@@ -53,7 +53,7 @@ class Mobile
   public:
     Mobile(string MobileId);
     ~Mobile();
-    void            CreateMobStatsFile(CString RoomId);
+    void            CreateMobStatsFile(string RoomId);
     void            ExamineMob(CString MobileId);
     CString         MobTalk();
     void            GetNextMobNbr();
