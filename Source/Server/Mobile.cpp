@@ -1186,49 +1186,44 @@ void Mobile::ExamineMob(string MobileId)
 ************************************************************/
 void Mobile::GetNextMobNbr()
 {
-  CString    NextMobNbr;
-  CStdioFile NextMobNbrFile;
-  CString    NextMobNbrFileName;
+  string     NextMobNbr;
+  fstream    NextMobNbrFile;
+  string     NextMobNbrFileName;
   int        NextMobNbrInteger;
-  CString    NextMobNbrString;
-  CString    Stuff;
-  int        Success;
+  string     NextMobNbrString;
+  string     Stuff;
 
   // Read next mobile number file
   NextMobNbrFileName = CONTROL_DIR;
   NextMobNbrFileName += "NextMobileNumber";
   NextMobNbrFileName += ".txt";
-  Success = NextMobNbrFile.Open(NextMobNbrFileName,
-                     CFile::modeRead |
-                     CFile::typeText);
-  if(!Success)
+  NextMobNbrFile.open(NextMobNbrFileName, fstream::in);
+  if (!NextMobNbrFile.is_open())
   {
     AfxMessageBox("Mobile::GetNextMobNbr - Open NextMobileNumber file failed (read)", MB_ICONSTOP);
     _endthread();
   }
-  NextMobNbrFile.ReadString(Stuff);
-  NextMobNbrFile.Close();
+  getline(NextMobNbrFile, Stuff);
+  NextMobNbrFile.close();
   // Increment next mobile number
   Stuff = StrTrimLeft(Stuff);
   Stuff = StrTrimRight(Stuff);
   NextMobNbr        = Stuff;
-  NextMobNbrInteger = atoi(Stuff);
+  NextMobNbrInteger = stoi(Stuff);
   NextMobNbrInteger++;
   sprintf(Buf, "%d", NextMobNbrInteger);
-  NextMobNbrString = ConvertStringToCString(Buf);
+  NextMobNbrString = Buf;
   // Write next mobile number file
-  Success = NextMobNbrFile.Open(NextMobNbrFileName,
-                     CFile::modeWrite |
-                     CFile::typeText);
-  if(!Success)
+  NextMobNbrFile.open(NextMobNbrFileName, fstream::out);
+  if (!NextMobNbrFile.is_open())
   {
     AfxMessageBox("Mobile::GetNextMobNbr - Open NextMobileNumber file failed (write)", MB_ICONSTOP);
     _endthread();
   }
-  NextMobNbrFile.WriteString(NextMobNbrString);
-  NextMobNbrFile.Close();
+  NextMobNbrFile << NextMobNbrString << endl;
+  NextMobNbrFile.close();
   // Set mobile number
-  MobNbr = NextMobNbr;
+  MobNbr = ConvertStringToCString(NextMobNbr);
 }
 
 /***********************************************************
