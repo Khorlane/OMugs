@@ -55,7 +55,7 @@ class Mobile
     ~Mobile();
     void            CreateMobStatsFile(string RoomId);
     void            ExamineMob(string MobileId);
-    CString         MobTalk();
+    string          MobTalk();
     void            GetNextMobNbr();
 
 // Private functions

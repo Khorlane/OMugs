@@ -1230,17 +1230,16 @@ void Mobile::GetNextMobNbr()
 * Make the mobiles talk                                    *
 ************************************************************/
 
-CString Mobile::MobTalk()
+string Mobile::MobTalk()
 {
-  CString    LogBuf;
-  CStdioFile MobTalkFile;
-  CString    MobTalkFileName;
-  CString    MobileMsg;
+  string     LogBuf;
+  ifstream   MobTalkFile;
+  string     MobTalkFileName;
+  string     MobileMsg;
   int        MsgCount;
   int        RndMsgNbr;
-  CString    Stuff;
-  int        Success;
-  CString    TmpStr;
+  string     Stuff;
+  string    TmpStr;
 
   //******************************
   //* Open and read message file *
@@ -1248,10 +1247,8 @@ CString Mobile::MobTalk()
   MobTalkFileName =  TALK_DIR;
   MobTalkFileName += Talk;
   MobTalkFileName += ".txt";
-  Success = MobTalkFile.Open(MobTalkFileName,
-                  CFile::modeRead |
-                  CFile::typeText);
-  if(!Success)
+  MobTalkFile.open(MobTalkFileName);
+  if (!MobTalkFile.is_open())
   { // Open failed
     if (Talk != "None")
     { // Talk is not 'None', so file should exist
@@ -1264,55 +1261,55 @@ CString Mobile::MobTalk()
   }
   // Mobile is going to talk
   MobileMsg  = "&W";
-  MobileMsg += StrMakeFirstUpper(Desc1);
+  MobileMsg += StrMakeFirstUpper(ConvertCStringToString(Desc1));
   MobileMsg += " says:";
   MobileMsg += "&N";
   MobileMsg += "\r\n";
   // Select random message number
-  MobTalkFile.ReadString(Stuff);
-  MsgCount = atoi(StrGetWord(Stuff, 4));
+  getline(MobTalkFile, Stuff);
+  MsgCount = stoi(StrGetWord(Stuff, 4));
   RndMsgNbr = GetRandomNumber(MsgCount);
   // Search for selected message number
-  MobTalkFile.ReadString(Stuff);
-  while (atoi(StrGetWord(Stuff, 2)) != RndMsgNbr)
+  getline(MobTalkFile, Stuff);
+  while (stoi(StrGetWord(Stuff, 2)) != RndMsgNbr)
   { // Find the selected message
-    if (MobTalkFile.GetPosition() == MobTalkFile.GetLength())
+    if (MobTalkFile.eof())
     { // End of file and message was not found
       sprintf(Buf, "%d", RndMsgNbr);
-      TmpStr = ConvertStringToCString(Buf);
+      TmpStr = Buf;
       LogBuf  = "Mobile::MobTalk - Failed to find message ";
       LogBuf += TmpStr;
       LogBuf += " ";
       LogBuf += MobTalkFileName;
       LogIt(LogBuf);
-      MobTalkFile.Close();
+      MobTalkFile.close();
       MobileMsg = "You are ignored.\r\n";
       return MobileMsg;
     }
-    MobTalkFile.ReadString(Stuff);
+    getline(MobTalkFile, Stuff);
   }
   // Message found
-  MobTalkFile.ReadString(Stuff);
+  getline(MobTalkFile, Stuff);
   while (Stuff != "End of Message")
   { // Read the message
-    if (MobTalkFile.GetPosition() == MobTalkFile.GetLength())
+    if (MobTalkFile.eof())
     { // End of file and normal end of message not found
       sprintf(Buf, "%d", RndMsgNbr);
-      TmpStr = ConvertStringToCString(Buf);
+      TmpStr = Buf;
       LogBuf  = "Mobile::MobTalk - Unexpect end of file reading message ";
       LogBuf += TmpStr;
       LogBuf += " ";
       LogBuf += MobTalkFileName;
       LogIt(LogBuf);
-      MobTalkFile.Close();
+      MobTalkFile.close();
       MobileMsg = "You are ignored.\r\n";
       return MobileMsg;
     }
     MobileMsg += Stuff;
     MobileMsg += "\r\n";
-    MobTalkFile.ReadString(Stuff);
+    getline(MobTalkFile, Stuff);
   }
-  MobTalkFile.Close();
+  MobTalkFile.close();
   return MobileMsg;
 }
 
