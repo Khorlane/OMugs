@@ -2091,7 +2091,7 @@ void Communication::DoConsider()
   //*****************
   // Send message to player
   pDnodeActor->PlayerOut += "You consider ";
-  pDnodeActor->PlayerOut += pMobile->Desc1;
+  pDnodeActor->PlayerOut += ConvertStringToCString(pMobile->Desc1);
   pDnodeActor->PlayerOut += ".";
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += ConvertStringToCString(HintMsg);
@@ -3948,7 +3948,7 @@ void Communication::DoHail()
   // Send message to player
   pDnodeActor->PlayerOut += "&W";
   pDnodeActor->PlayerOut += "You hail ";
-  pDnodeActor->PlayerOut += pMobile->Desc1;
+  pDnodeActor->PlayerOut += ConvertStringToCString(pMobile->Desc1);
   pDnodeActor->PlayerOut += "!";
   pDnodeActor->PlayerOut += "&N";
   pDnodeActor->PlayerOut += "\r\n";
@@ -4161,7 +4161,7 @@ void Communication::DoKill()
     pDnodeActor->PlayerStateFighting = false;
     pDnodeActor->PlayerOut += "&R";
     pDnodeActor->PlayerOut += "One WHACK and ";
-    pDnodeActor->PlayerOut += pMobile->Desc1;
+    pDnodeActor->PlayerOut += ConvertStringToCString(pMobile->Desc1);
     pDnodeActor->PlayerOut += " is dead!\r\n";
     pDnodeActor->PlayerOut += "&N";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -4177,7 +4177,7 @@ void Communication::DoKill()
     pDnodeTgt = pDnodeActor;
     SendToRoom(RoomId, KillMsg);
     // Remove mobile from room
-    RemoveMobFromRoom(RoomId, ConvertCStringToString(pMobile->MobileId));
+    RemoveMobFromRoom(RoomId, pMobile->MobileId);
     delete pMobile;
     return;
   }
@@ -4187,7 +4187,7 @@ void Communication::DoKill()
   // Send message to player
   pDnodeActor->PlayerOut += "&R";
   pDnodeActor->PlayerOut += "You start a fight with ";
-  pDnodeActor->PlayerOut += pMobile->Desc1;
+  pDnodeActor->PlayerOut += ConvertStringToCString(pMobile->Desc1);
   pDnodeActor->PlayerOut += "!";
   pDnodeActor->PlayerOut += "&N";
   pDnodeActor->PlayerOut += "\r\n";
@@ -4463,7 +4463,7 @@ void Communication::DoLook(string CmdStr1)
     pDnodeActor->PlayerOut += ConvertStringToCString(TmpStr);
     pDnodeActor->PlayerOut += ".";
     pDnodeActor->PlayerOut += "\r\n";
-    pMobile->ExamineMob(ConvertCStringToString(pMobile->MobileId));
+    pMobile->ExamineMob(pMobile->MobileId);
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     delete pMobile;

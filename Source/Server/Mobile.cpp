@@ -27,7 +27,7 @@
 
 Mobile::Mobile(string MobileId)
 {
-  OpenFile(ConvertStringToCString(MobileId));
+  OpenFile(MobileId);
   ParseStuff();
   CloseFile();
   Hurt = false;
@@ -859,7 +859,7 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
       pDnode->PlayerOut += "\r\n";
       pDnode->PlayerOut += "&W";
       pDnode->PlayerOut += "You see ";
-      pDnode->PlayerOut += pMobile->Desc1;
+      pDnode->PlayerOut += ConvertStringToCString(pMobile->Desc1);
       pDnode->PlayerOut += ", ";
       pDnode->PlayerOut += "&M";
       pDnode->PlayerOut += "wounded";
@@ -876,11 +876,11 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
       pDnode->PlayerOut += "\r\n";
       pDnode->PlayerOut += "&W";
       pDnode->PlayerOut += "(" + ConvertStringToCString(MobileCount) + ") ";
-      pDnode->PlayerOut += pMobile->Desc2;
+      pDnode->PlayerOut += ConvertStringToCString(pMobile->Desc2);
       pDnode->PlayerOut += "&N";
     }
     // Check for AGGRO mobs
-    if (IsWord("Aggro", pMobile->Action))
+    if (StrIsWord("Aggro", pMobile->Action))
     { // Attack player
       j = stoi(MobileCount);
       for (i = 1; i <= j; i++)
@@ -935,7 +935,7 @@ string Mobile::MobAttacks(Mobile *pMobile)
   // Send message to player
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += "&R";
-  pDnodeActor->PlayerOut += pMobile->Desc1;
+  pDnodeActor->PlayerOut += ConvertStringToCString(pMobile->Desc1);
   pDnodeActor->PlayerOut += ConvertStringToCString(PhrasePlayer);
   pDnodeActor->PlayerOut += "&N";
   pDnodeActor->PlayerOut += "\r\n";
@@ -960,11 +960,11 @@ string Mobile::MobAttacks(Mobile *pMobile)
     pMobile->CreateMobStatsFile(RoomId);
     MobileId = pMobile->MobileId;
     MobileIdToBeRemoved = MobileId; // RemoveMobFromRoom(RoomId, MobileId);
-    MobileId = ConvertCStringToString(pMobile->MobileId) + "." + ConvertCStringToString(pMobile->MobNbr);
+    MobileId = pMobile->MobileId + "." + pMobile->MobNbr;
   }
   else
   { // Mobile is hurt
-    MobileId = ConvertCStringToString(pMobile->MobileId) + "." + ConvertCStringToString(pMobile->MobNbr);
+    MobileId = pMobile->MobileId + "." + pMobile->MobNbr;
     MobileIdToBeRemoved = MobileId;// RemoveMobFromRoom(RoomId, MobileId);
   }
   if (!pDnodeActor->PlayerStateFighting)
@@ -1164,18 +1164,18 @@ void Mobile::CreateMobStatsFile(string RoomId)
 
 void Mobile::ExamineMob(string MobileId)
 {
-  OpenFile(ConvertStringToCString(MobileId));
+  OpenFile(MobileId);
   while (Stuff != "Desc3:")
   {
-    MobileFile.ReadString(Stuff); // Do not use ReadLine() here
+    getline(MobileFile, Stuff); // Do not use ReadLine() here
   }
   // Mobile Description 3
-  MobileFile.ReadString(Stuff); // Do not use ReadLine() here
+  getline(MobileFile, Stuff); // Do not use ReadLine() here
   while (Stuff != "End Desc3")
   {
-    pDnodeActor->PlayerOut += Stuff;
+    pDnodeActor->PlayerOut += ConvertStringToCString(Stuff);
     pDnodeActor->PlayerOut += "\r\n";
-    MobileFile.ReadString(Stuff); // Do not use ReadLine() here
+    getline(MobileFile, Stuff); // Do not use ReadLine() here
   }
   pDnodeActor->PlayerOut += "&N";
   CloseFile();
@@ -1261,7 +1261,7 @@ string Mobile::MobTalk()
   }
   // Mobile is going to talk
   MobileMsg  = "&W";
-  MobileMsg += StrMakeFirstUpper(ConvertCStringToString(Desc1));
+  MobileMsg += StrMakeFirstUpper(Desc1);
   MobileMsg += " says:";
   MobileMsg += "&N";
   MobileMsg += "\r\n";
@@ -1323,25 +1323,22 @@ string Mobile::MobTalk()
 
 void Mobile::CloseFile()
 {
-  MobileFile.Close();
+  MobileFile.close();
 }
 
 /***********************************************************
 * Open Mobile file                                         *
 ************************************************************/
 
-void Mobile::OpenFile(CString MobileId)
+void Mobile::OpenFile(string MobileId)
 {
-  CString MobileFileName;
-  int     Success;
+  string MobileFileName;
 
   MobileFileName =  MOBILES_DIR;
   MobileFileName += MobileId;
   MobileFileName += ".txt";
-  Success = MobileFile.Open(MobileFileName,
-                 CFile::modeRead |
-                 CFile::typeText);
-  if(!Success)
+  MobileFile.open(MobileFileName);
+  if (!MobileFile.is_open())
   {
     AfxMessageBox("Mobile::OpenFile - Mobile does not exist!", MB_ICONSTOP);
     _endthread();
@@ -1400,18 +1397,18 @@ void Mobile::ParseStuff()
     else
     if (StrLeft(Stuff, 6) == "Level:")
     {
-      Level = atoi(StrRight(Stuff, StrGetLength(Stuff) - 6));
+      Level = stoi(StrRight(Stuff, StrGetLength(Stuff) - 6));
     }
     else
     if (StrLeft(Stuff, 10) == "HitPoints:")
     {
-      HitPoints  = atoi(StrRight(Stuff, StrGetLength(Stuff) - 10));
+      HitPoints  = stoi(StrRight(Stuff, StrGetLength(Stuff) - 10));
       HitPoints += Level * MOB_HPT_PER_LEVEL;
     }
     else
     if (StrLeft(Stuff, 6) == "Armor:")
     {
-      Armor  = atoi(StrRight(Stuff, StrGetLength(Stuff) - 6));
+      Armor  = stoi(StrRight(Stuff, StrGetLength(Stuff) - 6));
       Armor += Level * MOB_ARM_PER_LEVEL;
     }
     else
@@ -1424,13 +1421,13 @@ void Mobile::ParseStuff()
     else
     if (StrLeft(Stuff, 7) == "Damage:")
     {
-      Damage  = atoi(StrRight(Stuff, StrGetLength(Stuff) - 7));
+      Damage  = stoi(StrRight(Stuff, StrGetLength(Stuff) - 7));
       Damage += Level * MOB_DMG_PER_LEVEL;
     }
     else
     if (StrLeft(Stuff, 10) == "ExpPoints:")
     {
-      ExpPoints  = atoi(StrRight(Stuff, StrGetLength(Stuff) - 10));
+      ExpPoints  = stoi(StrRight(Stuff, StrGetLength(Stuff) - 10));
       ExpPoints += Level * MOB_EXP_PER_LEVEL;
     }
     else
@@ -1455,7 +1452,7 @@ void Mobile::ParseStuff()
 
 void Mobile::ReadLine()
 {
-  MobileFile.ReadString(Stuff);
+  getline(MobileFile, Stuff);
   Stuff = StrTrimLeft(Stuff);
   Stuff = StrTrimRight(Stuff);
 }

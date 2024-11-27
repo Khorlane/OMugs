@@ -931,7 +931,7 @@ void World::SpawnMobile(string MobileId, string RoomId)
     _endthread();
   }
   AddMobToRoom(RoomId, MobileId);
-  SpawnMsg = ConvertCStringToString(pMobile->Desc1);
+  SpawnMsg = pMobile->Desc1;
   SpawnMsg += " suddenly appears!";
   pDnodeSrc = NULL;
   pDnodeTgt = NULL;

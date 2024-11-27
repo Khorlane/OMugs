@@ -61,31 +61,31 @@ class Mobile
 // Private functions
   private:
     void            CloseFile();
-    void            OpenFile(CString MobileId);
+    void            OpenFile(string MobileId);
     void            ParseStuff();
     void            ReadLine();
 
 // Public variables
   public:
-    CString         Action;
+    string          Action;
     int             Armor;
-    CString         Attack;
+    string          Attack;
     int             Damage;
-    CString         Desc1;
-    CString         Desc2;
-    CString         Desc3;
+    string          Desc1;
+    string          Desc2;
+    string          Desc3;
     int             ExpPoints;
-    CString         Faction;
+    string          Faction;
     int             HitPoints;
     bool            Hurt;
     int             Level;
-    CString         Loot;
-    CStdioFile      MobileFile;
-    CString         MobileId;
-    CString         MobNbr;
-    CString         Names;
-    CString         Stuff;
-    CString         Talk;
+    string          Loot;
+    ifstream        MobileFile;
+    string          MobileId;
+    string          MobNbr;
+    string          Names;
+    string          Stuff;
+    string          Talk;
 };
 
 #endif
