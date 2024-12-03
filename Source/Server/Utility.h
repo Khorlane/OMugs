@@ -37,7 +37,6 @@ class Utility
     static  CString GetSqlStmt(CString SqlStmtId);
     static  string  PronounSubstitute(string MsgText);
     static  CString TranslateWord(CString Word);
-    static  int     WordCount(CString String);
 };
 
 #endif

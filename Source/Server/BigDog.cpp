@@ -1310,8 +1310,3 @@ void WhereObj(string ObjectIdSearch)
 {
   Object::WhereObj(ObjectIdSearch);
 }
-
-int WordCount(CString String)
-{
-  return Utility::WordCount(String);
-}

@@ -311,28 +311,3 @@ CString Utility::TranslateWord(CString Word)
 
   return Word;
 }
-
-/***********************************************************
- * Count the number of words                               *
- ***********************************************************/
-
-int Utility::WordCount(CString String)
-{
-  int i;
-  int n;
-
-  if (String.GetLength() == 0)
-  { // No words ... length is zero
-    return 0;
-  }
-  i = 1;
-  while (i)
-  {
-    i = String.Replace("  ", " ");
-  }
-  String.TrimLeft();
-  String.TrimRight();
-  n = String.Remove(' ');
-  n++;
-  return n;
-}

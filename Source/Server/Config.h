@@ -403,7 +403,6 @@ string  WhackMobile(string PlayerName, int DamageToMobile, string MobileDesc1, s
 string  WhackPlayer(string MobileDesc1, string MobileAttack, int DamageToPlayer);
 void    WhereMob(string MobileIdSearch);
 void    WhereObj(string ObjectIdSearch);
-int     WordCount(CString String);
 
 // Variables
 inline char           Buf[256];
