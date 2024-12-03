@@ -676,7 +676,7 @@ void Validate::ValidateLibraryRooms()
         for (i = 1; i <= j; i++)
         { // Check each word in FieldValue
           TmpStr = StrGetWord(FieldValue, i);
-          if (IsWord(TmpStr, "None Dark Drink NoFight NoNPC"))
+          if (StrIsWord(ConvertCStringToString(TmpStr), "None Dark Drink NoFight NoNPC"))
           { // Valid RoomType
             if (TmpStr != "None")
             { // Exclude RoomType of 'None'
@@ -697,7 +697,7 @@ void Validate::ValidateLibraryRooms()
       //************
       if (FieldName == "Terrain:")
       { // Terrain validation
-        if (IsWord(FieldValue, "Inside Street Road Field Forest Swamp Desert Hill Mountain"))
+        if (StrIsWord(ConvertCStringToString(FieldValue), "Inside Street Road Field Forest Swamp Desert Hill Mountain"))
         { // Valid Terrain
         }
         else

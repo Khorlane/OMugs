@@ -36,7 +36,6 @@ class Utility
     static  int     GetRandomNumber(int Limit);
     static  CString GetSqlStmt(CString SqlStmtId);
     static  bool    IsNotWord(CString Word, CString WordList);
-    static  bool    IsWord(CString Word, CString WordList);
     static  string  PronounSubstitute(string MsgText);
     static  CString TranslateWord(CString Word);
     static  int     WordCount(CString String);

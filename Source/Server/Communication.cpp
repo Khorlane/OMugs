@@ -2364,7 +2364,7 @@ void Communication::DoDrink()
     TmpStr   = StrGetWord(CmdStr, 2);
     TmpStr   = StrMakeLower(TmpStr);
     RoomName = StrMakeLower(RoomName);
-    if (IsWord(ConvertStringToCString(TmpStr), ConvertStringToCString(RoomName)))
+    if (StrIsWord(TmpStr, RoomName))
     { //*****************
       //* Player drinks *
       //*****************
@@ -6078,7 +6078,7 @@ void Communication::DoWear()
     return;
   }
   // Handle wear positions that require left or right
-  if (IsWord(ConvertStringToCString(pObject->WearPosition), ConvertStringToCString("ear wrist finger ankle")))
+  if (StrIsWord(pObject->WearPosition, "ear wrist finger ankle"))
   { // Object must be worn using left and right
     TmpStr = StrGetWord(CmdStr, 3);
     TmpStr = StrMakeLower(TmpStr);

@@ -192,41 +192,6 @@ bool Utility::IsNotWord(CString Word, CString WordList)
 }
 
 /***********************************************************
- * Is word 'in' word list?                                 *
- ***********************************************************/
-
-bool Utility::IsWord(CString Word, CString WordList)
-{
-  bool    Found;
-  int     i;
-  int     n;
-  CString String;
-
-  Found = false;
-  if (Word.GetLength() == 0)
-  { // Word is null, so it can't be in word list
-    return false;
-  }
-  n = WordCount(WordList);
-  for (i = 1; i <= n; i++)
-  {
-    String = ConvertStringToCString(StrGetWord(ConvertCStringToString(WordList), i));
-    if (Word == String)
-    {
-      Found = true;
-    }
-  }
-  if (Found)
-  { // Word was found in word list
-    return true;
-  }
-  else
-  { // Word was not found in word list
-    return false;
-  }
-}
-
-/***********************************************************
 * Substitute $thingies to more meaningful pronouns         *
 ************************************************************/
 

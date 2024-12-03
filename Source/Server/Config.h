@@ -312,7 +312,6 @@ bool    IsShop(string RoomId);
 void    IsShopObj(string RoomId, string ObjectName);
 bool    IsSleeping();
 bool    IsSocial();
-bool    IsWord(CString Word, CString WordList);
 void    ListObjects();
 void    LogIt(CString LogBuf);
 void    LogIt(string LogBuf);

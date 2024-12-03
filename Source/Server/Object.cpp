@@ -473,7 +473,7 @@ void Object::IsObjInPlayerEqu(string ObjectName)
     }
     NamesCheck = pObject->Names;
     NamesCheck = StrMakeLower(NamesCheck);
-    if (IsWord(ConvertStringToCString(ObjectName), ConvertStringToCString(NamesCheck)))
+    if (StrIsWord(ObjectName, NamesCheck))
     { // Match
       return;
     }
@@ -572,7 +572,7 @@ void Object::IsObjInPlayerInv(string ObjectName)
     pObject->Count = ConvertStringToCString(StrGetWord(Stuff, 1));
     NamesCheck     = pObject->Names;
     NamesCheck = StrMakeLower(NamesCheck);
-    if (IsWord(ConvertStringToCString(ObjectName), ConvertStringToCString(NamesCheck)))
+    if (StrIsWord(ObjectName, NamesCheck))
     { // Match
       return;
     }
@@ -668,7 +668,7 @@ void Object::IsObjInRoom(string ObjectName)
     }
     NamesCheck = pObject->Names;
     NamesCheck = StrMakeLower(NamesCheck);
-    if (IsWord(ConvertStringToCString(ObjectName), ConvertStringToCString(NamesCheck)))
+    if (StrIsWord(ObjectName, NamesCheck))
     { // Match
       return;
     }

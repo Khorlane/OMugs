@@ -938,7 +938,7 @@ void World::SpawnMobile(string MobileId, string RoomId)
   SendToRoom(RoomId, SpawnMsg);
   MobileAction = pMobile->Action;
   delete pMobile;
-  if (IsWord("NoMove", ConvertStringToCString(MobileAction)))
+  if (StrIsWord("NoMove", MobileAction))
   {
     SpawnMobileNoMove(MobileId);
   }

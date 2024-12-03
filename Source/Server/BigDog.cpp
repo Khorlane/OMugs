@@ -1113,11 +1113,6 @@ bool IsSocial()
   return Social::IsSocial();
 }
 
-bool IsWord(CString Word, CString WordList)
-{
-  return Utility::IsWord(Word, WordList);
-}
-
 void ListObjects()
 {
   Shop::ListObjects();
