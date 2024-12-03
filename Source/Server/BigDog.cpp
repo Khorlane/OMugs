@@ -288,13 +288,13 @@ string StrDelete(string Str1, int Position, int Length)
   return Str1.erase(Position, Length);
 }
 
-// Delete the word specified by WordNbr and Squeeze() (temporary)
+// Delete the word specified by WordNbr, Squeezing string first (temporary)
 CString StrDeleteWord(CString Str1, int WordNbr)
 {
   return ConvertStringToCString(StrDeleteWord(ConvertCStringToString(Str1), WordNbr));
 }
 
-// Delete the word specified by WordNbr and Squeeze()
+// Delete the word specified by WordNbr, Squeezing string first
 string StrDeleteWord(string Str1, int WordNbr)
 {
   string S1, TmpStr;
@@ -328,6 +328,12 @@ int StrFind(CString HayStack, const char *Needle)
 int StrFind(string HayStack, string Needle)
 {
   return HayStack.find(Needle);
+}
+
+// Find first occurrence of Needle in HayStack after Pos
+int StrFind(string HayStack, string Needle, int Pos)
+{
+  return HayStack.find(Needle, Pos);
 }
 
 // Find first occurrence of a character in a string (Temporary)
@@ -398,6 +404,63 @@ string StrGetWord(string Str1, int WordNbr)
       return Word;
   }
   return "";
+}
+
+// Get the position and length of a word from String
+CString StrGetWordPosLen(CString String, int WordNbr)
+{
+  bool    Found;  // Toggle in case WordNbr requested doesn't exist
+  CString Word;   // Return value
+  int     i;      // Start positon for Find
+  int     j;      // For loop control
+  int     x;      // Position of the blank before the word
+  int     y;      // Position of the blank after the word
+  int     z;      // Length of String
+
+  i = 0;
+  j = 0;
+  x = 0;
+  y = 0;
+  z = 0;
+  if (WordCount(String) < WordNbr)
+  { // WordNbr is greater than the number of words in String
+    Word = "0 0";
+    return Word;
+  }
+  Found = true;
+  i = 1;
+  while (i)
+  {
+    i = String.Replace("  ", " ");
+  }
+  String.TrimLeft();
+  String.TrimRight();
+  String = String + " ";
+  String = " " + String;
+  i = 0;
+  z = String.GetLength();
+  for (j = 1; j <= WordNbr; j++)
+  {
+    x = String.Find(' ', i);
+    i = x + 1;
+    y = String.Find(' ', i);
+    i = y;
+    if (i >= z)
+    {
+      Found = false;
+      break;
+    }
+  }
+  if (Found)
+  {
+    sprintf(Buf, "%d %d", x + 1, y - x - 1);
+    Word = ConvertStringToCString(Buf);
+  }
+  else
+  {
+    Word = "0 0";
+  }
+  return Word;
 }
 
 // Get the rest of the Words in a string starting with the Word indicated by WordNbr
