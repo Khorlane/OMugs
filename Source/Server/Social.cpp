@@ -23,8 +23,7 @@
 
 ifstream   SocialFile;
 
-Dnode *GetTargetDnode(CString TargetName); // Communication
-Dnode *GetTargetDnode( string TargetName); // Communication
+Dnode *GetTargetDnode(string TargetName); // Communication
 
 /***********************************************************
 * Social constructor                                       *
@@ -143,7 +142,7 @@ bool Social::PositionNotOk(Dnode *pDnode, string MinPos)
   int PlayerPosNbr;
 
   MinPosNbr = PosNbr(MinPos);
-  PlayerPosNbr = PosNbr(ConvertCStringToString(pDnodeActor->pPlayer->Position));
+  PlayerPosNbr = PosNbr(pDnodeActor->pPlayer->Position);
   if (PlayerPosNbr < MinPosNbr)
   {
     return true;
@@ -193,7 +192,7 @@ string Social::ReadLine()
 
 void Social::SendToPlayer(string MsgText)
 {
-  pDnodeActor->PlayerOut += ConvertStringToCString(MsgText);
+  pDnodeActor->PlayerOut += MsgText;
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -207,7 +206,7 @@ void Social::SendToTarget(Dnode *pDnodeTgt1, string MsgText)
 {
   pDnodeTgt = pDnodeTgt1;
   pDnodeTgt->PlayerOut += "\r\n";
-  pDnodeTgt->PlayerOut += ConvertStringToCString(MsgText);
+  pDnodeTgt->PlayerOut += MsgText;
   pDnodeTgt->PlayerOut += "\r\n";
   pDnodeTgt->pPlayer->CreatePrompt();
   pDnodeTgt->PlayerOut += pDnodeTgt->pPlayer->GetOutput();
@@ -255,7 +254,7 @@ void Social::Socialize(string MinPos, string MsgText)
     SendToPlayer(MsgText);
     MsgText = ReadLine();
     MsgText = PronounSubstitute(MsgText);
-    SendToRoom(pDnodeActor->pPlayer->RoomId, ConvertStringToCString(MsgText));
+    SendToRoom(pDnodeActor->pPlayer->RoomId, MsgText);
     return;
   }
   if (PlayerName == TargetName)
@@ -321,6 +320,6 @@ void Social::Socialize(string MinPos, string MsgText)
     MsgText = ReadLine();
     // Message to the others
     MsgText = PronounSubstitute(MsgText);
-    SendToRoom(pDnodeActor->pPlayer->RoomId, ConvertStringToCString(MsgText));
+    SendToRoom(pDnodeActor->pPlayer->RoomId, MsgText);
   }
 }

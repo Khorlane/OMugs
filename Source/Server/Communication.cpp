@@ -231,14 +231,6 @@ void Communication::SendToAll(CString PlayerMsg, CString AllMsg)
 ************************************************************/
 void Communication::SendToRoom(string TargetRoomId, string MsgText)
 {
-  SendToRoom(ConvertStringToCString(TargetRoomId), ConvertStringToCString(MsgText));
-}
-void Communication::SendToRoom(CString TargetRoomId, string MsgText)
-{
-  SendToRoom(TargetRoomId, ConvertStringToCString(MsgText));
-}
-void Communication::SendToRoom(CString TargetRoomId, CString MsgText)
-{
   string   LookupRoomId;
 
   // Send output to all players in the room
@@ -253,7 +245,7 @@ void Communication::SendToRoom(CString TargetRoomId, CString MsgText)
       { // It's not the originating player
         if (pDnodeTgt != pDnodeOthers)
         { // It's not the target player
-          if (ConvertCStringToString(TargetRoomId) == LookupRoomId)
+          if (TargetRoomId == LookupRoomId)
           { // Others who are in the same room
             if (pDnodeOthers->pPlayer->Position != "sleep")
             { // and are not sleeping
@@ -711,7 +703,7 @@ void Communication::SockRecv()
     { // Player has output, handle color codes
       Color();
       // 'send' resquires a standard c string
-      SockSend((LPCTSTR) pDnodeActor->PlayerOut);
+      SockSend(pDnodeActor->PlayerOut.c_str());
     }
     //**********************
     //* Is player quiting? *
@@ -1607,7 +1599,7 @@ void Communication::DoAdvance()
   pDnodeTgt->pPlayer->CreatePrompt();
   pDnodeTgt->PlayerOut += pDnodeTgt->pPlayer->GetOutput();
   // Restore the player as a bonus to being advanced
-  DoRestore("restore " + ConvertCStringToString(pDnodeTgt->pPlayer->Name));
+  DoRestore("restore " + pDnodeTgt->pPlayer->Name);
 }
 
 /***********************************************************
@@ -1772,8 +1764,8 @@ void Communication::DoAssist()
   //**************************
   //* Make the assist happen *
   //**************************
-  MobileId = GetPlayerMobMobileId(ConvertCStringToString(pDnodeTgt->PlayerName));
-  CreatePlayerMob(ConvertCStringToString(pDnodeActor->PlayerName), MobileId);
+  MobileId = GetPlayerMobMobileId(pDnodeTgt->PlayerName);
+  CreatePlayerMob(pDnodeActor->PlayerName, MobileId);
   pDnodeActor->PlayerStateFighting = true;
 }
 
@@ -1802,7 +1794,7 @@ void Communication::DoBuy()
   { // Player is fighting, send msg, command is not done
     return;
   }
-  RoomId = ConvertCStringToString(pDnodeActor->pPlayer->RoomId);
+  RoomId = pDnodeActor->pPlayer->RoomId;
   if (!IsShop(RoomId))
   { // Room is not a shop
     pDnodeActor->PlayerOut += "Find a shop.";
@@ -2011,7 +2003,7 @@ void Communication::DoConsider()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  if (IsPlayer(ConvertStringToCString(Target)))
+  if (IsPlayer(Target))
   { // Trying to kill another player
     pDnodeActor->PlayerOut += "Why consider another player? Player killing is not allowed.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -2023,7 +2015,7 @@ void Communication::DoConsider()
   if (!pMobile)
   { // Target mobile is not here
     pDnodeActor->PlayerOut += "There doesn't seem to be a(n) ";
-    pDnodeActor->PlayerOut += ConvertStringToCString(MobileName);
+    pDnodeActor->PlayerOut += MobileName;
     pDnodeActor->PlayerOut += " here.\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();      
@@ -2138,7 +2130,7 @@ void Communication::DoDelete()
   Name     = StrGetWord(CmdStr, 2);
   Password = StrGetWord(CmdStr, 3);
   Phrase   = StrGetWords(ConvertCStringToString(CmdStr), 4);
-  if (Name != ConvertCStringToString(pDnodeActor->PlayerName))
+  if (Name != pDnodeActor->PlayerName)
   {
     pDnodeActor->PlayerOut += "Your name was not entered correctly.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -2201,7 +2193,7 @@ void Communication::DoDelete()
   PlayerFileName += ".txt";
   TRY
   {
-    CFile::Remove(ConvertStringToCString(PlayerFileName));
+    Remove(PlayerFileName);
   }
   CATCH (CFileException, e)
   { // It should be impossible for this delete to fail
@@ -2215,7 +2207,7 @@ void Communication::DoDelete()
   PlayerFileName += ".txt";
   TRY
   {
-    CFile::Remove(ConvertStringToCString(PlayerFileName));
+    Remove(PlayerFileName);
   }
   CATCH (CFileException, e)
   { // Don't care if delete fails
@@ -2227,7 +2219,7 @@ void Communication::DoDelete()
   PlayerFileName += ".txt";
   TRY
   {
-    CFile::Remove(ConvertStringToCString(PlayerFileName));
+    Remove(PlayerFileName);
   }
   CATCH (CFileException, e)
   { // Don't care if delete fails
@@ -2239,7 +2231,7 @@ void Communication::DoDelete()
   PlayerFileName += ".txt";
   TRY
   {
-    CFile::Remove(ConvertStringToCString(PlayerFileName));
+    Remove(PlayerFileName);
   }
   CATCH (CFileException, e)
   { // Don't care if delete fails
@@ -2507,7 +2499,7 @@ void Communication::DoDrop()
   pDnodeTgt = pDnodeActor;
   SendToRoom(pDnodeActor->pPlayer->RoomId, DropMsg);
   // Add object to room
-  AddObjToRoom(ConvertCStringToString(pDnodeActor->pPlayer->RoomId), pObject->ObjectId);
+  AddObjToRoom(pDnodeActor->pPlayer->RoomId, pObject->ObjectId);
   delete pObject;
   pObject = NULL;
 }
@@ -2859,7 +2851,7 @@ void Communication::DoFlee()
     pDnodeOthers = GetDnode();
     if (pDnodeOthers->PlayerStateFighting)
     { // Players who are fighting
-      if (RoomIdBeforeFleeing == ConvertCStringToString(pDnodeOthers->pPlayer->RoomId))
+      if (RoomIdBeforeFleeing == pDnodeOthers->pPlayer->RoomId)
       { // In the same room
         PlayerName2 = pDnodeOthers->PlayerName;
         MobileId = GetPlayerMobMobileId(PlayerName2);
@@ -4135,7 +4127,7 @@ void Communication::DoKill()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  if (IsPlayer(ConvertStringToCString(Target)))
+  if (IsPlayer(Target))
   { // Trying to kill another player
     pDnodeActor->PlayerOut += "Don't even think about it, player killing is not allowed.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4147,7 +4139,7 @@ void Communication::DoKill()
   if (!pMobile)
   { // Target mobile is not here
     pDnodeActor->PlayerOut += "There doesn't seem to be a(n) ";
-    pDnodeActor->PlayerOut += ConvertStringToCString(MobileName);
+    pDnodeActor->PlayerOut += MobileName;
     pDnodeActor->PlayerOut += " here.\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();      
@@ -4161,7 +4153,7 @@ void Communication::DoKill()
     pDnodeActor->PlayerStateFighting = false;
     pDnodeActor->PlayerOut += "&R";
     pDnodeActor->PlayerOut += "One WHACK and ";
-    pDnodeActor->PlayerOut += ConvertStringToCString(pMobile->Desc1);
+    pDnodeActor->PlayerOut += pMobile->Desc1;
     pDnodeActor->PlayerOut += " is dead!\r\n";
     pDnodeActor->PlayerOut += "&N";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -4187,7 +4179,7 @@ void Communication::DoKill()
   // Send message to player
   pDnodeActor->PlayerOut += "&R";
   pDnodeActor->PlayerOut += "You start a fight with ";
-  pDnodeActor->PlayerOut += ConvertStringToCString(pMobile->Desc1);
+  pDnodeActor->PlayerOut += pMobile->Desc1;
   pDnodeActor->PlayerOut += "!";
   pDnodeActor->PlayerOut += "&N";
   pDnodeActor->PlayerOut += "\r\n";
@@ -4245,7 +4237,7 @@ void Communication::DoList()
   { // Player is fighting, send msg, command is not done
     return;
   }
-  if (!IsShop(ConvertCStringToString(pDnodeActor->pPlayer->RoomId)))
+  if (!IsShop(pDnodeActor->pPlayer->RoomId))
   { // Room is not a shop
     pDnodeActor->PlayerOut += "Find a shop.";
     pDnodeActor->PlayerOut += "\r\n";
@@ -4338,7 +4330,7 @@ void Communication::DoLoad()
       pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
       return;
     }
-    AddMobToRoom(ConvertCStringToString(pDnodeActor->pPlayer->RoomId), MobileId);
+    AddMobToRoom(pDnodeActor->pPlayer->RoomId, MobileId);
     SpawnMobileNoMove(MobileId);
     pDnodeActor->PlayerOut += "Load successful\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -5054,7 +5046,7 @@ void Communication::DoSell()
   { // Player is fighting, send msg, command is not done
     return;
   }
-  RoomId = ConvertCStringToString(pDnodeActor->pPlayer->RoomId);
+  RoomId = pDnodeActor->pPlayer->RoomId;
   if (!IsShop(RoomId))
   { // Room is not a shop
     pDnodeActor->PlayerOut += "Find a shop.";
@@ -6117,12 +6109,12 @@ void Communication::DoWear()
   RemoveObjFromPlayerInv(pObject->ObjectId, 1);
   // Send messages
   pDnodeActor->PlayerOut += "You wear ";
-  pDnodeActor->PlayerOut += ConvertStringToCString(pObject->Desc1);
+  pDnodeActor->PlayerOut += pObject->Desc1;
   pDnodeActor->PlayerOut += ".";
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
-  WearMsg = pDnodeActor->PlayerName + " wears " + ConvertStringToCString(pObject->Desc1) + ".";
+  WearMsg = pDnodeActor->PlayerName + " wears " + pObject->Desc1 + ".";
   pDnodeSrc = pDnodeActor;
   pDnodeTgt = pDnodeActor;
   SendToRoom(pDnodeActor->pPlayer->RoomId, WearMsg);
@@ -6215,7 +6207,7 @@ void Communication::DoWho()
         SetpDnodeCursorNext();
         continue;
       }
-      sprintf(Buf, "%-15s", (LPCSTR) pDnodeOthers->PlayerName);
+      sprintf(Buf, "%-15s", pDnodeOthers->PlayerName.c_str());
       DisplayName = ConvertStringToCString(Buf);
       sprintf(Buf, "%3d", pDnodeOthers->pPlayer->Level);
       DisplayLevel = ConvertStringToCString(Buf);
@@ -7053,7 +7045,7 @@ void Communication::SockSend(const char *arg)
   }
   else
   { // Some was not sent
-    pDnodeActor->PlayerOut = pDnodeActor->PlayerOut.Right(Length-Written);
+    pDnodeActor->PlayerOut = StrRight(pDnodeActor->PlayerOut, Length-Written);
   }
 }
 
@@ -7142,7 +7134,7 @@ void Communication::ViolenceMobile()
 
   i = 0;
   i++;
-  MobileId = GetMobPlayerMobileId(ConvertCStringToString(pDnodeActor->PlayerName), i);
+  MobileId = GetMobPlayerMobileId(pDnodeActor->PlayerName, i);
   while (MobileId != "No more mobiles")
   { // For each mob whacking the player
     PAC               = pDnodeActor->pPlayer->ArmorClass;
@@ -7167,7 +7159,7 @@ void Communication::ViolenceMobile()
       return;
     }
     i++;
-    MobileId = GetMobPlayerMobileId(ConvertCStringToString(pDnodeActor->PlayerName), i);
+    MobileId = GetMobPlayerMobileId(pDnodeActor->PlayerName, i);
   }
   // Player is still alive!
   pDnodeActor->pPlayer->CreatePrompt();
@@ -7198,7 +7190,7 @@ void Communication::ViolenceMobileDied(string MobileBeenWhacked,
   MobileLoot           = GetMobileLoot(MobileId);
   // Send dead mob message to player
   pDnodeActor->PlayerOut += "\r\n";
-  pDnodeActor->PlayerOut += ConvertStringToCString(MobileBeenWhacked);
+  pDnodeActor->PlayerOut += MobileBeenWhacked;
   // Let others in room know that the mobile is DEAD!
   DeadMsg =  "&R";
   DeadMsg += pDnodeActor->PlayerName;
@@ -7207,7 +7199,7 @@ void Communication::ViolenceMobileDied(string MobileBeenWhacked,
   DeadMsg += "!";
   pDnodeSrc = pDnodeActor;
   pDnodeTgt = pDnodeActor;
-  SendToRoom(pDnodeActor->pPlayer->RoomId, ConvertStringToCString(DeadMsg));
+  SendToRoom(pDnodeActor->pPlayer->RoomId, DeadMsg);
   // Calculate experience distribution
   if (pDnodeActor->pPlayer->pPlayerGrpMember[0] != NULL)
   { // Player is in a group, award group experience
@@ -7254,8 +7246,8 @@ void Communication::ViolenceMobileDied(string MobileBeenWhacked,
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
   }
   // Fight done, clean up
-  DeletePlayerMob(ConvertCStringToString(pDnodeActor->PlayerName));
-  DeleteMobPlayer(ConvertCStringToString(pDnodeActor->PlayerName), MobileId);
+  DeletePlayerMob(pDnodeActor->PlayerName);
+  DeleteMobPlayer(pDnodeActor->PlayerName, MobileId);
   DeleteMobStats(MobileId);
   pDnodeActor->PlayerStateFighting = false;
   UpdateMobInWorld(MobileId, "remove");
@@ -7268,11 +7260,11 @@ void Communication::ViolenceMobileDied(string MobileBeenWhacked,
     pDnodeOthers = GetDnode();
     if (pDnodeOthers->PlayerStateFighting)
     { // Players who are fighting
-      MobileIdCheck = GetPlayerMobMobileId(ConvertCStringToString(pDnodeOthers->PlayerName));
+      MobileIdCheck = GetPlayerMobMobileId(pDnodeOthers->PlayerName);
       if (MobileId == MobileIdCheck)
       { // The same mobile
-        DeletePlayerMob(ConvertCStringToString(pDnodeOthers->PlayerName));
-        DeleteMobPlayer(ConvertCStringToString(pDnodeOthers->PlayerName), MobileId);
+        DeletePlayerMob(pDnodeOthers->PlayerName);
+        DeleteMobPlayer(pDnodeOthers->PlayerName, MobileId);
         pDnodeOthers->PlayerStateFighting = false;
       }
     }
@@ -7444,12 +7436,12 @@ void Communication::ViolenceMobileMore()
 {
   string MobileId;
 
-  MobileId = GetMobPlayerMobileId(ConvertCStringToString(pDnodeActor->PlayerName), 1);
+  MobileId = GetMobPlayerMobileId(pDnodeActor->PlayerName, 1);
   if (MobileId == "No more mobiles")
   {
     return;
   }
-  CreatePlayerMob(ConvertCStringToString(pDnodeActor->pPlayer->Name), MobileId);
+  CreatePlayerMob(pDnodeActor->pPlayer->Name, MobileId);
   pDnodeActor->PlayerStateFighting = true;
 }
 
@@ -7470,9 +7462,9 @@ void Communication::ViolencePlayer()
   string  WeaponType;
 
   WeaponSkill       = pDnodeActor->pPlayer->GetWeaponSkill();
-  WeaponType        = ConvertCStringToString(pDnodeActor->pPlayer->WeaponType);
+  WeaponType        = pDnodeActor->pPlayer->WeaponType;
   MaxDamageToMobile = pDnodeActor->pPlayer->WeaponDamage;
-  MobileId          = GetPlayerMobMobileId(ConvertCStringToString(pDnodeActor->PlayerName));
+  MobileId          = GetPlayerMobMobileId(pDnodeActor->PlayerName);
   MobileArmor       = GetMobileArmor(MobileId);
   MobileDesc1       = GetMobileDesc1(MobileId);
   DamageToMobile    = CalcDamageToMobile(MaxDamageToMobile, WeaponSkill);
@@ -7484,7 +7476,7 @@ void Communication::ViolencePlayer()
   if (DeadOrAlive == "alive")
   { // Mobile is not dead, Send fight messages to player
     pDnodeActor->PlayerOut += "\r\n";
-    pDnodeActor->PlayerOut += ConvertStringToCString(MobileBeenWhacked);
+    pDnodeActor->PlayerOut += MobileBeenWhacked;
     pDnodeActor->PlayerOut += "\r\n";
   }
   else
@@ -7555,16 +7547,16 @@ void Communication::ViolencePlayerDied(string MobileDesc1)
   DeadMsg += "&N";
   pDnodeSrc = pDnodeActor;
   pDnodeTgt = pDnodeActor;
-  SendToRoom(pDnodeActor->pPlayer->RoomId, ConvertStringToCString(DeadMsg));
+  SendToRoom(pDnodeActor->pPlayer->RoomId, DeadMsg);
   RoomIdBeforeDying = pDnodeActor->pPlayer->RoomId;
   // Move player to a safe room, stop the fight
   pDnodeActor->pPlayer->RoomId = SAFE_ROOM;
   ShowRoom(pDnodeActor);
   pDnodeActor->PlayerStateFighting = false;
   // Get mobile id for mob that dead player was fighting
-  MobileIdSave = GetPlayerMobMobileId(ConvertCStringToString(pDnodeActor->PlayerName));
+  MobileIdSave = GetPlayerMobMobileId(pDnodeActor->PlayerName);
   // Delete PlayerMob file
-  DeletePlayerMob(ConvertCStringToString(pDnodeActor->PlayerName));
+  DeletePlayerMob(pDnodeActor->PlayerName);
   //********************************************************
   //* Delete fighting mobiles from MobPlayer file          *
   //********************************************************
@@ -7574,10 +7566,10 @@ void Communication::ViolencePlayerDied(string MobileDesc1)
     pDnodeOthers = GetDnode();
     if (pDnodeOthers->PlayerStateFighting)
     { // Players who are fighting
-      if (RoomIdBeforeDying == ConvertCStringToString(pDnodeOthers->pPlayer->RoomId))
+      if (RoomIdBeforeDying == pDnodeOthers->pPlayer->RoomId)
       { // In the same room
-        MobileId = GetPlayerMobMobileId(ConvertCStringToString(pDnodeOthers->PlayerName));
-        DeleteMobPlayer(ConvertCStringToString(pDnodeActor->PlayerName), MobileId);
+        MobileId = GetPlayerMobMobileId(pDnodeOthers->PlayerName);
+        DeleteMobPlayer(pDnodeActor->PlayerName, MobileId);
         if (MobileId == MobileIdSave)
         { // Add player to candidate list for MobileIdSave
           CandidateList += pDnodeOthers->PlayerName;
@@ -7590,9 +7582,9 @@ void Communication::ViolencePlayerDied(string MobileDesc1)
   // Re-position pDnodeCursor
   RepositionDnodeCursor();
   // Put mobiles that are not fighting back in room
-  PutMobBackInRoom(ConvertCStringToString(pDnodeActor->PlayerName), RoomIdBeforeDying);
+  PutMobBackInRoom(pDnodeActor->PlayerName, RoomIdBeforeDying);
   // Player is gone, so delete MobPlayer completely
-  DeleteMobPlayer(ConvertCStringToString(pDnodeActor->PlayerName), "file");
+  DeleteMobPlayer(pDnodeActor->PlayerName, "file");
   // Select a new target for MobileIdSave
   if (StrGetLength(CandidateList) == 0)
   { // MobileIdSave's target is still in room, nothing to do

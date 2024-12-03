@@ -179,7 +179,7 @@ string Utility::PronounSubstitute(string MsgText)
     PronounHimselfHerself = "herself";
   }
   // Make the player substitutions
-  StrReplace(MsgText, "$P",               ConvertCStringToString(pDnodeSrc->PlayerName));
+  StrReplace(MsgText, "$P",               pDnodeSrc->PlayerName);
   StrReplace(MsgText, "$pHeShe",          PronounHeShe);
   StrReplace(MsgText, "$pHimHer",         PronounHimHer);
   StrReplace(MsgText, "$pHisHers",        PronounHisHers);
@@ -201,7 +201,7 @@ string Utility::PronounSubstitute(string MsgText)
       PronounHimselfHerself = "herself";
     }
     // Make the target substitutions
-    StrReplace(MsgText, "$T",               ConvertCStringToString(pDnodeTgt->PlayerName));
+    StrReplace(MsgText, "$T",               pDnodeTgt->PlayerName);
     StrReplace(MsgText, "$tHeShe",          PronounHeShe);
     StrReplace(MsgText, "$tHimHer",         PronounHimHer);
     StrReplace(MsgText, "$tHisHers",        PronounHisHers);

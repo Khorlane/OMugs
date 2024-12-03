@@ -36,9 +36,9 @@ class Player
     static  float   CalcLevelExperience(int Level);
     static  float   CalcLevelExperienceAdd(int Level, float BaseExp);
     static  float   CalcLevelExperienceBase(int Level);
-    static  bool    IsPlayer(CString PlayerName);
+    static  bool    IsPlayer(string PlayerName);
     static  int     GetCount();
-    static  bool    IsNameValid(CString Name);
+    static  bool    IsNameValid(string Name);
 
 // Public functions
   public:
@@ -48,32 +48,32 @@ class Player
     void            Drink(int Percent);
     void            Eat(int Percent);
     void            GainExperience(Dnode *pDnode, int ExperienceToBeGained);
-    CString         GetOutput();
+    string          GetOutput();
     int             GetWeaponSkill();
     void            ParsePlayerStuff();
     bool            PlayerRoomHasNotBeenHere();
     void            Save();
-    void            SetMoney(char PlusMinus, int Amount, CString Metal);
+    void            SetMoney(char PlusMinus, int Amount, string Metal);
     void            ShowMoney();
     void            ShowStatus();
 
 // Private functions
   private:
     void            CloseFile();
-    bool            OpenFile(CString Name, CString Mode);
+    bool            OpenFile(string Name, string Mode);
     void            PlayerRoomBitsToCharConvert();
     void            PlayerRoomCharToBitsConvert();
     void            PlayerRoomStringRead();
     void            PlayerRoomStringWrite();
     void            ReadLine();
-    void            WriteLine(CString Stuff);
+    void            WriteLine(string Stuff);
 
 // Public variables
   public:
     Player         *pPlayerGrpMember[GRP_LIMIT];
     Player         *pPlayerFollowers[GRP_LIMIT];
     int             SessionTime;
-    CString         RoomIdBeforeMove;
+    string          RoomIdBeforeMove;
 
 // Private variables static
   private:
@@ -82,9 +82,9 @@ class Player
 // Private variables  
   private:
     Dnode          *pDnode;
-    CString         Output;
-    CStdioFile      PlayerFile;
-    CString         Stuff;
+    string          Output;
+    fstream         PlayerFile;
+    string          Stuff;
 
     // Exploration tracking variables
     int             PlayerRoomBitPos;
@@ -95,29 +95,29 @@ class Player
 
 // Player file variables
   public:
-    CString         Name;
+    string          Name;
     string          Password;
     bool            Admin;
-    CString         Afk;
+    string          Afk;
     bool            AllowAssist;
     bool            AllowGroup;
     int             ArmorClass;
     int             Born;
     bool            Color;
     float           Experience;
-    CString         GoToArrive;
-    CString         GoToDepart;
+    string          GoToArrive;
+    string          GoToDepart;
     int             HitPoints;
     int             Hunger;
     bool            Invisible;
     int             Level;
     int             MovePoints;
     bool            OneWhack;
-    CString         Online;
-    CString         Position;
-    CString         RoomId;
+    string          Online;
+    string          Position;
+    string          RoomId;
     bool            RoomInfo;
-    CString         Sex;
+    string          Sex;
     int             Silver;
     int             SkillAxe;
     int             SkillClub;
@@ -128,10 +128,10 @@ class Player
     int             SkillSword;
     int             Thirst;
     int             TimePlayed;
-    CString         Title;
+    string          Title;
     int             WeaponDamage;
-    CString         WeaponDesc1;
-    CString         WeaponType;
+    string          WeaponDesc1;
+    string          WeaponType;
 };
 
 #endif

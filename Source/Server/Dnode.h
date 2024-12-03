@@ -68,9 +68,9 @@ class Dnode
     int             InputTick;
     string          PlayerInp;
     string          PlayerIpAddress;
-    CString         PlayerName;
+    string          PlayerName;
     string          PlayerNewCharacter;
-    CString         PlayerOut;
+    string          PlayerOut;
     string          PlayerPassword;
     bool            PlayerStateAfk;
     bool            PlayerStateBye;

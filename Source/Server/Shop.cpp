@@ -174,7 +174,7 @@ void Shop::ListObjects()
   CString     TmpStr;
   
   ShopFileName = SHOPS_DIR;
-  ShopFileName += pDnodeActor->pPlayer->RoomId + ".txt";
+  ShopFileName += ConvertStringToCString(pDnodeActor->pPlayer->RoomId) + ".txt";
   Success = ShopFile.Open(ShopFileName,
             CFile::modeRead |
             CFile::typeText);

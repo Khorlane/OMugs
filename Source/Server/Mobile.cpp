@@ -898,7 +898,7 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
   for (i = 1; i <= RemoveMobCount; i++)
   {
     MobileId = StrGetWord(MobileIdsToBeRemoved, i);
-    RemoveMobFromRoom(ConvertCStringToString(pDnode->pPlayer->RoomId), MobileId);
+    RemoveMobFromRoom(pDnode->pPlayer->RoomId, MobileId);
   }
 }
 

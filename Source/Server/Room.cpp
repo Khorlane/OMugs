@@ -392,7 +392,7 @@ void Room::MoveFollowers(Dnode *pDnode, string ExitToRoomId)
     { // No followers or no more followers
      return;
     }
-    pDnodeGrpMem = GetTargetDnode(ConvertCStringToString(pDnode->pPlayer->pPlayerFollowers[i]->Name));
+    pDnodeGrpMem = GetTargetDnode(pDnode->pPlayer->pPlayerFollowers[i]->Name);
     if (!pDnodeGrpMem)
     { // Follower is not online and/or not in 'playing' state
       continue;
@@ -416,7 +416,6 @@ void Room::MovePlayer(Dnode *pDnode, string ExitToRoomId)
   CString csExitToRoomId;
   string  TmpStr;
   string  MoveMsg;
-  CString csMoveMsg;
 
   pDnodeSrc = pDnode;
   pDnodeTgt = pDnode;
@@ -424,8 +423,7 @@ void Room::MovePlayer(Dnode *pDnode, string ExitToRoomId)
   if (MudCmd != "flee")
   { // If player is not fleeing
     MoveMsg = pDnode->PlayerName + " leaves.";
-    csMoveMsg = ConvertStringToCString(MoveMsg);
-    SendToRoom(pDnode->pPlayer->RoomId, csMoveMsg);
+    SendToRoom(pDnode->pPlayer->RoomId, MoveMsg);
   }
   // Switch rooms
   pDnode->pPlayer->RoomIdBeforeMove = pDnode->pPlayer->RoomId;
@@ -434,7 +432,7 @@ void Room::MovePlayer(Dnode *pDnode, string ExitToRoomId)
   pDnode->pPlayer->Save();
   // Arrives message
   MoveMsg = pDnode->PlayerName + " arrives.";
-  SendToRoom(pDnode->pPlayer->RoomId, csMoveMsg);
+  SendToRoom(pDnode->pPlayer->RoomId, MoveMsg);
 }
 
 /***********************************************************
@@ -572,8 +570,7 @@ void Room::ShowRoomName(Dnode *pDnode)
     _endthread();
   }
   RoomId = StrGetWord(Stuff, 2);
-  csRoomId = ConvertStringToCString(RoomId);
-  if (csRoomId != pDnode->pPlayer->RoomId)
+  if (RoomId != pDnode->pPlayer->RoomId)
   {
     AfxMessageBox("Room::ShowRoomName - RoomId mis-match", MB_ICONSTOP);
     _endthread();

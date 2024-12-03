@@ -1086,7 +1086,7 @@ bool IsMobileIdInRoom(string RoomId, string MobileId)
   return Mobile::IsMobileIdInRoom(RoomId, MobileId);
 }
 
-bool IsNameValid(CString Name)
+bool IsNameValid(string Name)
 {
   return Player::IsNameValid(Name);
 }
@@ -1111,7 +1111,7 @@ void IsObject(string ObjectId)
   Object::IsObject(ObjectId);
 }
 
-bool IsPlayer(CString PlayerName)
+bool IsPlayer(string PlayerName)
 {
   return Player::IsPlayer(PlayerName);
 }
@@ -1201,14 +1201,9 @@ void RemoveObjFromRoom(string ObjectId)
   Object::RemoveObjFromRoom(ObjectId);
 }
 
-void SendToRoom(CString TargetRoomId, CString MsgText)
-{
-  Communication::SendToRoom(TargetRoomId, MsgText);
-}
-
 void SendToRoom(string TargetRoomId, string MsgText)
 {
-  Communication::SendToRoom(ConvertStringToCString(TargetRoomId), ConvertStringToCString(MsgText));
+  Communication::SendToRoom(TargetRoomId, MsgText);
 }
 
 void SetpDnodeCursorFirst()

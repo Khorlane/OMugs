@@ -178,7 +178,7 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId)
   ObjectId = StrMakeLower(ObjectId);
   // Open PlayerObj file
   PlayerObjFileName =  PLAYER_OBJ_DIR;
-  PlayerObjFileName += ConvertCStringToString(pDnodeTgt->PlayerName);
+  PlayerObjFileName += pDnodeTgt->PlayerName;
   PlayerObjFileName += ".txt";
   NewPlayerObjFile = false;
   PlayerObjFile.open(PlayerObjFileName);
@@ -188,7 +188,7 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId)
   }
   // Open temp PlayerObj file
   PlayerObjFileNameTmp =  PLAYER_OBJ_DIR;
-  PlayerObjFileNameTmp += ConvertCStringToString(pDnodeTgt->PlayerName);
+  PlayerObjFileNameTmp += pDnodeTgt->PlayerName;
   PlayerObjFileNameTmp += ".tmp.txt";
   PlayerObjFileTmp.open(PlayerObjFileNameTmp);
   if(!PlayerObjFileTmp.is_open())

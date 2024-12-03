@@ -158,21 +158,18 @@ float Player::CalcLevelExperienceBase(int Level)
 * Is this a valid Player?                                  *
 ************************************************************/
 
-bool Player::IsPlayer(CString PlayerName)
+bool Player::IsPlayer(string PlayerName)
 {
-  CString    PlayerFileName;
-  CStdioFile PlayerFile;
-  int        Success;
+  string     PlayerFileName;
+  ifstream   PlayerFile;
   
   PlayerFileName = PLAYER_DIR;
   PlayerFileName += PlayerName + ".txt";
-  Success = PlayerFile.Open(PlayerFileName,
-            CFile::modeRead |
-            CFile::typeText);
-  if(Success)
+  PlayerFile.open(PlayerFileName);
+  if (PlayerFile.is_open())
   {
     return true;
-    PlayerFile.Close();
+    PlayerFile.close();
   }
   else
   {
@@ -193,37 +190,34 @@ int Player::GetCount()
 * Validate player name                                     *
 ************************************************************/
 
-bool Player::IsNameValid(CString Name)
+bool Player::IsNameValid(string Name)
 {
-  CString    NameIn;
-  int        Success;
-  CStdioFile ValidNameFile;
-  CString    ValidNamesFileName;
+  string     NameIn;
+  ifstream   ValidNameFile;
+  string     ValidNamesFileName;
 
   ValidNamesFileName  = VALID_NAMES_DIR;
   ValidNamesFileName += "ValidNames.txt";
 
-  Success = ValidNameFile.Open(ValidNamesFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-  if(!Success)
+  ValidNameFile.open(ValidNamesFileName);
+  if (!ValidNameFile.is_open())
   { // Ok, who deleted the valid names file?
     AfxMessageBox("Player::IsNameValid - Error opening valid name file, it may not exist", MB_ICONSTOP);
     _endthread();
   }
   Name = StrMakeLower(Name);
-  ValidNameFile.ReadString(NameIn);
+  getline(ValidNameFile, NameIn);
   NameIn = StrMakeLower(NameIn);
   while (NameIn != "")
   { // Read all names
     if (Name == NameIn)
     { // Name is valid
-      ValidNameFile.Close();
+      ValidNameFile.close();
       return true;
     }
-    ValidNameFile.ReadString(NameIn);
+    getline(ValidNameFile, NameIn);
   }
-  ValidNameFile.Close();
+  ValidNameFile.close();
   return false;
 }
 
@@ -242,10 +236,10 @@ void Player::CreatePrompt()
 
   Output  = "\r\n";
   sprintf(Buf, "%d", HitPoints);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Output += TmpStr + "H ";
   sprintf(Buf, "%d", MovePoints);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Output += TmpStr + "M ";
   Output += "> ";
 }
@@ -359,8 +353,8 @@ void Player::Eat(int Percent)
 void Player::GainExperience(Dnode *pDnode, int ExperienceToBeGained)
 {
   float   LevelExperience;
-  CString LogBuf;
-  CString TmpStr;
+  string  LogBuf;
+  string  TmpStr;
 
   Experience += ExperienceToBeGained;
   LevelExperience = CalcLevelExperience(Level+1);
@@ -374,7 +368,7 @@ void Player::GainExperience(Dnode *pDnode, int ExperienceToBeGained)
     LogBuf  = pDnode->PlayerName;
     LogBuf += " has gained level ";
     sprintf(Buf, "%d",Level);
-    TmpStr = ConvertStringToCString(Buf);
+    TmpStr = Buf;
     LogBuf += TmpStr;
     LogBuf += "!";
     LogIt(LogBuf);
@@ -385,7 +379,7 @@ void Player::GainExperience(Dnode *pDnode, int ExperienceToBeGained)
 * Get player output                                        *
 ************************************************************/
 
-CString Player::GetOutput()
+string Player::GetOutput()
 {
   return Output;
 }
@@ -444,9 +438,9 @@ int Player::GetWeaponSkill()
 void Player::ParsePlayerStuff()
 {
   int     Amount;
-  CString LogBuf;
-  CString Name;
-  CString TmpStr;
+  string  LogBuf;
+  string  Name;
+  string  TmpStr;
 
   Name = pDnodeActor->PlayerName;
   if (!OpenFile(Name, "Read"))
@@ -484,7 +478,7 @@ void Player::ParsePlayerStuff()
     }
     else
     // AFK
-    if(StrLeft(Stuff, 4) == "AFK:")
+    if (StrLeft(Stuff, 4) == "AFK:")
     {
       TmpStr = ""; // Does not matter what is the file
     }
@@ -528,7 +522,7 @@ void Player::ParsePlayerStuff()
     // Born
     if (StrLeft(Stuff, 5) == "Born:")
     {
-      Born = atol(StrRight(Stuff, StrGetLength(Stuff) - 5));
+      Born = stol(StrRight(Stuff, StrGetLength(Stuff) - 5));
     }
     else
     // Color
@@ -549,7 +543,7 @@ void Player::ParsePlayerStuff()
     // Experience
     if (StrLeft(Stuff, 11) == "Experience:")
     {
-      Experience = (float) atof(StrRight(Stuff, StrGetLength(Stuff) - 11));
+      Experience = (float) stof(StrRight(Stuff, StrGetLength(Stuff) - 11));
     }
     else
     // GoToArrive
@@ -581,13 +575,13 @@ void Player::ParsePlayerStuff()
     // HitPoints
     if (StrLeft(Stuff, 10) == "HitPoints:")
     {
-      HitPoints = atoi(StrRight(Stuff, StrGetLength(Stuff) - 10));
+      HitPoints = stoi(StrRight(Stuff, StrGetLength(Stuff) - 10));
     }
     else
     // Hunger
     if (StrLeft(Stuff, 7) == "Hunger:")
     {
-      Hunger = atoi(StrRight(Stuff, StrGetLength(Stuff) - 7));
+      Hunger = stoi(StrRight(Stuff, StrGetLength(Stuff) - 7));
     }
     else
     // Invisible
@@ -610,13 +604,13 @@ void Player::ParsePlayerStuff()
     // Level
     if (StrLeft(Stuff, 6) == "Level:")
     {
-      Level = atoi(StrRight(Stuff, StrGetLength(Stuff) - 6));
+      Level = stoi(StrRight(Stuff, StrGetLength(Stuff) - 6));
     }
     else
     // MovePoints
     if (StrLeft(Stuff, 11) == "MovePoints:")
     {
-      MovePoints = atoi(StrRight(Stuff, StrGetLength(Stuff) - 11));
+      MovePoints = stoi(StrRight(Stuff, StrGetLength(Stuff) - 11));
     }
     else
     // OneWhack
@@ -677,62 +671,62 @@ void Player::ParsePlayerStuff()
     // Sivler
     if (StrLeft(Stuff, 7) == "Silver:")
     {
-      Amount = atoi(StrRight(Stuff, StrGetLength(Stuff) - 7));
+      Amount = stoi(StrRight(Stuff, StrGetLength(Stuff) - 7));
       SetMoney('+', Amount, "Silver");
     }
     else
     // SkillAxe
     if (StrLeft(Stuff, 9) == "SkillAxe:")
     {
-      SkillAxe = atoi(StrRight(Stuff, StrGetLength(Stuff) - 9));
+      SkillAxe = stoi(StrRight(Stuff, StrGetLength(Stuff) - 9));
     }
     else
     // SkillClub
     if (StrLeft(Stuff, 10) == "SkillClub:")
     {
-      SkillClub = atoi(StrRight(Stuff, StrGetLength(Stuff) - 10));
+      SkillClub = stoi(StrRight(Stuff, StrGetLength(Stuff) - 10));
     }
     else
     // SkillDagger
     if (StrLeft(Stuff, 12) == "SkillDagger:")
     {
-      SkillDagger = atoi(StrRight(Stuff, StrGetLength(Stuff) - 12));
+      SkillDagger = stoi(StrRight(Stuff, StrGetLength(Stuff) - 12));
     }
     else
     // SkillHammer
     if (StrLeft(Stuff, 12) == "SkillHammer:")
     {
-      SkillHammer = atoi(StrRight(Stuff, StrGetLength(Stuff) - 12));
+      SkillHammer = stoi(StrRight(Stuff, StrGetLength(Stuff) - 12));
     }
     else
     // SkillSpear
     if (StrLeft(Stuff, 11) == "SkillSpear:")
     {
-      SkillSpear = atoi(StrRight(Stuff, StrGetLength(Stuff) - 11));
+      SkillSpear = stoi(StrRight(Stuff, StrGetLength(Stuff) - 11));
     }
     else
     // SkillStaff
     if (StrLeft(Stuff, 11) == "SkillStaff:")
     {
-      SkillStaff = atoi(StrRight(Stuff, StrGetLength(Stuff) - 11));
+      SkillStaff = stoi(StrRight(Stuff, StrGetLength(Stuff) - 11));
     }
     else
     // SkillSword
     if (StrLeft(Stuff, 11) == "SkillSword:")
     {
-      SkillSword = atoi(StrRight(Stuff, StrGetLength(Stuff) - 11));
+      SkillSword = stoi(StrRight(Stuff, StrGetLength(Stuff) - 11));
     }
     else
     // Thirst
     if (StrLeft(Stuff, 7) == "Thirst:")
     {
-      Thirst = atoi(StrRight(Stuff, StrGetLength(Stuff) - 7));
+      Thirst = stoi(StrRight(Stuff, StrGetLength(Stuff) - 7));
     }
     else
     // TimePlayed
     if (StrLeft(Stuff, 11) == "TimePlayed:")
     {
-      TimePlayed = atol(StrRight(Stuff, StrGetLength(Stuff) - 11));
+      TimePlayed = stol(StrRight(Stuff, StrGetLength(Stuff) - 11));
     }
     else
     // Title
@@ -744,7 +738,7 @@ void Player::ParsePlayerStuff()
     // WeaponDamage
     if (StrLeft(Stuff, 13) == "WeaponDamage:")
     {
-      WeaponDamage = atoi(StrRight(Stuff, StrGetLength(Stuff) - 13));
+      WeaponDamage = stoi(StrRight(Stuff, StrGetLength(Stuff) - 13));
     }
     else
     // WeaponDesc1
@@ -784,7 +778,7 @@ void Player::ParsePlayerStuff()
 
 void Player::Save()
 {
-  CString TmpStr;
+  string TmpStr;
 
   if (!OpenFile(Name, "Write"))
   {
@@ -795,7 +789,7 @@ void Player::Save()
   Stuff = "Name:" + Name;
   WriteLine(Stuff);
   // Password
-  Stuff = "Password:" + ConvertStringToCString(Password);
+  Stuff = "Password:" + Password;
   WriteLine(Stuff);
   // Admin
   if (Admin)
@@ -843,12 +837,12 @@ void Player::Save()
   }
   // ArmorClass - save only, ParsePlayerStuff calls CalcPlayerArmorClass
   sprintf(Buf, "%d", ArmorClass);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Stuff = "ArmorClass:" + TmpStr;
   WriteLine(Stuff);
   // Born
   sprintf(Buf, "%d", Born);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Stuff = "Born:" + TmpStr;
   WriteLine(Stuff);
   // Color
@@ -864,7 +858,7 @@ void Player::Save()
   }
   // Experience
   sprintf(Buf, "%f15.0", Experience);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Stuff = "Experience:" + TmpStr;
   WriteLine(Stuff);
   // GoToArrive
@@ -875,12 +869,12 @@ void Player::Save()
   WriteLine(Stuff);
   // HitPoints
   sprintf(Buf, "%d", HitPoints);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Stuff = "HitPoints:" + TmpStr;
   WriteLine(Stuff);
   // Hunger
   sprintf(Buf, "%d", Hunger);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Stuff = "Hunger:" + TmpStr;
   WriteLine(Stuff);
   // Invisible
@@ -896,12 +890,12 @@ void Player::Save()
   }
   // Level
   sprintf(Buf, "%d", Level);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Stuff = "Level:" + TmpStr;
   WriteLine(Stuff);
   // MovePoints
   sprintf(Buf, "%d", MovePoints);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Stuff = "MovePoints:" + TmpStr;
   WriteLine(Stuff);
   // OneWhack
@@ -948,47 +942,47 @@ void Player::Save()
   WriteLine(Stuff);
   // Silver
   sprintf(Buf, "%d", Silver);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Stuff = "Silver:" + TmpStr;
   WriteLine(Stuff);
   // SkillAxe
   sprintf(Buf, "%d", SkillAxe);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Stuff = "SkillAxe:" + TmpStr;
   WriteLine(Stuff);
   // SkillClub
   sprintf(Buf, "%d", SkillClub);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Stuff = "SkillClub:" + TmpStr;
   WriteLine(Stuff);
   // SkillDagger
   sprintf(Buf, "%d", SkillDagger);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Stuff = "SkillDagger:" + TmpStr;
   WriteLine(Stuff);
   // SkillHammer
   sprintf(Buf, "%d", SkillHammer);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Stuff = "SkillHammer:" + TmpStr;
   WriteLine(Stuff);
   // SkillSpear
   sprintf(Buf, "%d", SkillSpear);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Stuff = "SkillSpear:" + TmpStr;
   WriteLine(Stuff);
   // SkillStaff
   sprintf(Buf, "%d", SkillStaff);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Stuff = "SkillStaff:" + TmpStr;
   WriteLine(Stuff);
   // SkillSword
   sprintf(Buf, "%d", SkillSword);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Stuff = "SkillSword:" + TmpStr;
   WriteLine(Stuff);
   // Thirst
   sprintf(Buf, "%d", Thirst);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Stuff = "Thirst:" + TmpStr;
   WriteLine(Stuff);
   // TimePlayed
@@ -998,7 +992,7 @@ void Player::Save()
     SessionTime = GetTimeSeconds();
   }
   sprintf(Buf, "%d", TimePlayed);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Stuff = "TimePlayed:" + TmpStr;
   WriteLine(Stuff);
   // Title
@@ -1006,7 +1000,7 @@ void Player::Save()
   WriteLine(Stuff);
   // WeaponDamage
   sprintf(Buf, "%d", WeaponDamage);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Stuff = "WeaponDamage:" + TmpStr;
   WriteLine(Stuff);
   // WeaponDesc1
@@ -1023,7 +1017,7 @@ void Player::Save()
 * Manipulate player money                                  *
 ************************************************************/
 
-void Player::SetMoney(char PlusMinus, int Amount, CString Metal)
+void Player::SetMoney(char PlusMinus, int Amount, string Metal)
 {
   if (PlusMinus == '-')
     Amount = Amount * -1;
@@ -1040,10 +1034,10 @@ void Player::SetMoney(char PlusMinus, int Amount, CString Metal)
 
 void Player::ShowMoney()
 {
-  CString TmpStr;
+  string TmpStr;
 
   sprintf(Buf, "%d", Silver);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Output = "Silver: " + TmpStr + "\r\n";
 }
 
@@ -1053,9 +1047,9 @@ void Player::ShowMoney()
 
 void Player::ShowStatus()
 {
-  CString Exp1; // Current Experience
-  CString Exp2; // Experience needed for next level
-  CString TmpStr;
+  string Exp1; // Current Experience
+  string Exp2; // Experience needed for next level
+  string TmpStr;
 
   Output = "\r\n";
   // Name
@@ -1068,30 +1062,30 @@ void Player::ShowStatus()
   Output += "\r\n";
   // Level
   sprintf(Buf, "%d", Level);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Output += "Level:        ";
   Output += TmpStr;
   Output += "\r\n";
   // Hit Points
   Output += "Hit Points:   ";
   sprintf(Buf, "%d", HitPoints);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Output += TmpStr;
   Output += "/";
   sprintf(Buf, "%d", Level * PLAYER_HPT_PER_LEVEL);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Output += TmpStr;
   Output += "\r\n";
   // Current Experience and Experience needed for next level
   sprintf(Buf, "%f15.0", Experience);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   TmpStr = StrLeft(TmpStr, StrFindFirstChar(TmpStr, '.'));
-  Exp1   = ConvertStringToCString(FormatCommas(ConvertCStringToString(TmpStr)));
+  Exp1   = FormatCommas(TmpStr);
 
   sprintf(Buf, "%f15.0", CalcLevelExperience(Level + 1));
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   TmpStr = StrLeft(TmpStr, StrFindFirstChar(TmpStr, '.'));
-  Exp2   = ConvertStringToCString(FormatCommas(ConvertCStringToString(TmpStr)));
+  Exp2   = FormatCommas(TmpStr);
   while (StrGetLength(Exp1) < StrGetLength(Exp2))
   {
     Exp1 = StrInsertChar(Exp1, 0, ' ');
@@ -1104,7 +1098,7 @@ void Player::ShowStatus()
   Output += "\r\n";
   // Armor Class
   sprintf(Buf, "%d", ArmorClass);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Output += "Armor Class:  ";
   Output += TmpStr;
   Output += "\r\n";
@@ -1157,19 +1151,19 @@ void Player::ShowStatus()
   Output += "\r\n";
   // Silver
   sprintf(Buf, "%d", Silver);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Output += "Silver:       ";
   Output += TmpStr;
   Output += "\r\n";
   // Hunger
   sprintf(Buf, "%d", Hunger);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Output += "Hunger:       ";
   Output += TmpStr;
   Output += "\r\n";
   // Thirst
   sprintf(Buf, "%d", Thirst);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Output += "Thirst:       ";
   Output += TmpStr;
   Output += "\r\n";
@@ -1185,27 +1179,24 @@ void Player::ShowStatus()
 
 void Player::CloseFile()
 {
-  PlayerFile.Close();
+  PlayerFile.close();
 }
 
 /***********************************************************
 * Open player file                                         *
 ************************************************************/
 
-bool Player::OpenFile(CString Name, CString Mode)
+bool Player::OpenFile(string Name, string Mode)
 {
-  CString PlayerFileName;
-  int     Success;
+  string  PlayerFileName;
 
   PlayerFileName = PLAYER_DIR;
   PlayerFileName += Name + ".txt";
 
   if (Mode == "Read")
   {
-    Success = PlayerFile.Open(PlayerFileName,
-              CFile::modeRead |
-              CFile::typeText);
-    if(!Success)
+    PlayerFile.open(PlayerFileName, ios::in);
+    if (!PlayerFile.is_open())
     {
       return false;
     }
@@ -1217,11 +1208,8 @@ bool Player::OpenFile(CString Name, CString Mode)
   else
   if (Mode == "Write")
   {
-    Success = PlayerFile.Open(PlayerFileName,
-                   CFile::modeCreate |
-                   CFile::modeWrite  |
-                   CFile::typeText);
-    if(!Success)
+    PlayerFile.open(PlayerFileName, ios::out);
+    if (!PlayerFile.is_open())
     {
       return false;
     }
@@ -1244,18 +1232,18 @@ bool Player::OpenFile(CString Name, CString Mode)
 
 void Player::ReadLine()
 {
-  PlayerFile.ReadString(Stuff);
+  getline(PlayerFile, Stuff);
 }
 
 /***********************************************************
 * Write a line to player file                              *
 ************************************************************/
 
-void Player::WriteLine(CString Stuff)
+void Player::WriteLine(string Stuff)
 {
   Stuff = Stuff + "\n";
-  PlayerFile.WriteString(Stuff);
-  PlayerFile.Flush();
+  PlayerFile << Stuff << endl;
+  PlayerFile.flush();
 }
 
 /***********************************************************
@@ -1266,8 +1254,9 @@ bool Player::PlayerRoomHasNotBeenHere()
 {
   char    Char;
   int     CharPos;
+  string  CharStr;
   int     RoomNbr;
-  CString RoomNbrStr;
+  string  RoomNbrStr;
 
   if (PlayerRoomVector.size() == 0)
   {
@@ -1278,11 +1267,13 @@ bool Player::PlayerRoomHasNotBeenHere()
   Char    = StrGetAt(RoomId, CharPos);
   while (isdigit(Char))
   {
-    RoomNbrStr = StrInsert(RoomNbrStr, 0, Char);
+    CharStr.clear();
+    CharStr = CharStr + Char; // Convert char to string
+    RoomNbrStr = StrInsert(RoomNbrStr, 0, CharStr);
     CharPos--;
     Char        = StrGetAt(RoomId, CharPos);
   }
-  RoomNbr = atoi(RoomNbrStr);
+  RoomNbr = stoi(RoomNbrStr);
   // Has player been here?
   PlayerRoomCharPos = (int) ceil(RoomNbr/8.0)-1;
   PlayerRoomBitPos  = RoomNbr-(PlayerRoomCharPos*8)-1;
