@@ -516,28 +516,28 @@ string StrInsertChar(string Str1, int Position, char c)
 }
 
 // Is word 'not in' word list? (temporary)
-bool StrIsNotWord(string Word, string WordList)
+bool StrIsNotWord(CString Word, CString WordList)
 {
-  return StrIsNotWord(ConvertStringToCString(Word), ConvertStringToCString(WordList));
+  return StrIsNotWord(ConvertCStringToString(Word), ConvertCStringToString(WordList));
 }
 
 // Is word 'not in' word list?
-bool StrIsNotWord(CString Word, CString WordList)
+bool StrIsNotWord(string Word, string WordList)
 {
   bool    Found;
   int     i;
   int     n;
-  CString String;
+  string  String;
 
   Found = false;
-  if (Word.GetLength() == 0)
+  if (StrGetLength(Word) == 0)
   { // Word is null, so it can't be in word list
     return true;
   }
-  n = WordCount(WordList);
+  n = StrWordCount(WordList);
   for (i = 1; i <= n; i++)
   {
-    String = ConvertStringToCString(StrGetWord(ConvertCStringToString(WordList), i));
+    String = StrGetWord(WordList, i);
     if (Word == String)
     {
       Found = true;
