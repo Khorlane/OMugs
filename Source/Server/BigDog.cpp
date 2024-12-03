@@ -406,11 +406,17 @@ string StrGetWord(string Str1, int WordNbr)
   return "";
 }
 
-// Get the position and length of a word from String
+// Get the position and length of a word from String (temporary)
 CString StrGetWordPosLen(CString String, int WordNbr)
 {
+  return ConvertStringToCString(StrGetWordPosLen(ConvertCStringToString(String), WordNbr));
+}
+
+// Get the position and length of a word from String
+string StrGetWordPosLen(string String, int WordNbr)
+{
   bool    Found;  // Toggle in case WordNbr requested doesn't exist
-  CString Word;   // Return value
+  string  Word;   // Return value
   int     i;      // Start positon for Find
   int     j;      // For loop control
   int     x;      // Position of the blank before the word
@@ -422,7 +428,7 @@ CString StrGetWordPosLen(CString String, int WordNbr)
   x = 0;
   y = 0;
   z = 0;
-  if (WordCount(String) < WordNbr)
+  if (StrWordCount(String) < WordNbr)
   { // WordNbr is greater than the number of words in String
     Word = "0 0";
     return Word;
@@ -431,19 +437,19 @@ CString StrGetWordPosLen(CString String, int WordNbr)
   i = 1;
   while (i)
   {
-    i = String.Replace("  ", " ");
+    StrReplace(String, "  ", " ");
   }
-  String.TrimLeft();
-  String.TrimRight();
+  StrTrimLeft(String);
+  StrTrimRight(String);
   String = String + " ";
   String = " " + String;
   i = 0;
-  z = String.GetLength();
+  z = StrGetLength(String);
   for (j = 1; j <= WordNbr; j++)
   {
-    x = String.Find(' ', i);
+    x = StrFind(String, " ", i);
     i = x + 1;
-    y = String.Find(' ', i);
+    y = StrFind(String, " ", i);
     i = y;
     if (i >= z)
     {
@@ -454,7 +460,7 @@ CString StrGetWordPosLen(CString String, int WordNbr)
   if (Found)
   {
     sprintf(Buf, "%d %d", x + 1, y - x - 1);
-    Word = ConvertStringToCString(Buf);
+    Word = Buf;
   }
   else
   {
