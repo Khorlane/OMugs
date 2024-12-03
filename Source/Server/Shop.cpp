@@ -164,27 +164,24 @@ void Shop::ListObjects()
 {
   int         i;
   int         j;
-  CString     LogBuf;
-  CString     ObjectId;
-  CString     ShopFileName;
-  CStdioFile  ShopFile;
-  CString     ShopText;
-  CString     Stuff;
-  int         Success;
-  CString     TmpStr;
+  string      LogBuf;
+  string      ObjectId;
+  string      ShopFileName;
+  ifstream    ShopFile;
+  string      ShopText;
+  string      Stuff;
+  string      TmpStr;
   
   ShopFileName = SHOPS_DIR;
-  ShopFileName += ConvertStringToCString(pDnodeActor->pPlayer->RoomId) + ".txt";
-  Success = ShopFile.Open(ShopFileName,
-            CFile::modeRead |
-            CFile::typeText);
-  if(!Success)
+  ShopFileName += pDnodeActor->pPlayer->RoomId + ".txt";
+  ShopFile.open(ShopFileName);
+  if (!ShopFile.is_open())
   { // No such file???, But there should be, This is bad!
     AfxMessageBox("Shop::ListObjects - Shop does not exist", MB_ICONSTOP);
     _endthread();
   }
   // Shop welcome message
-  ShopFile.ReadString(Stuff);
+  getline(ShopFile, Stuff);
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += "&W";
   pDnodeActor->PlayerOut += Stuff;
@@ -194,26 +191,26 @@ void Shop::ListObjects()
   pDnodeActor->PlayerOut += "\r\n";
   // Line one
   sprintf(Buf, "%-45s", "Items you may buy and sell");
-  ShopText = ConvertStringToCString(Buf);
+  ShopText = Buf;
   pDnodeActor->PlayerOut += ShopText;
   pDnodeActor->PlayerOut += " ";
   sprintf(Buf, "%-6s", "Amount");
-  ShopText = ConvertStringToCString(Buf);
+  ShopText = Buf;
   pDnodeActor->PlayerOut += ShopText;
   pDnodeActor->PlayerOut += "\r\n";
   // Line two
   sprintf(Buf, "%-45s", " ");
-  ShopText = ConvertStringToCString(Buf);
+  ShopText = Buf;
   StrReplace(ShopText, " ", "-");
   pDnodeActor->PlayerOut += ShopText;
   pDnodeActor->PlayerOut += " ";
   sprintf(Buf, "%-6s", " ");
-  ShopText = ConvertStringToCString(Buf);
+  ShopText = Buf;
   StrReplace(ShopText, " ", "-");
   pDnodeActor->PlayerOut += ShopText;
   pDnodeActor->PlayerOut += "\r\n";
   // List items for trade
-  ShopFile.ReadString(Stuff);
+  getline(ShopFile, Stuff);
   while (Stuff != "End of Items")
   { // Read 'item' lines in ShopFile
     Stuff = StrTrimLeft(Stuff);
@@ -223,11 +220,11 @@ void Shop::ListObjects()
     { // Found an item
       ObjectId = StrGetWord(Stuff, 2);
       pObject = NULL;
-      IsObject(ConvertCStringToString(ObjectId)); // Sets pObject
+      IsObject(ObjectId); // Sets pObject
       if (pObject)
       { // Format shop item text
         sprintf(Buf, "%-45s", pObject->Desc1.c_str());
-        ShopText = ConvertStringToCString(Buf);
+        ShopText = Buf;
         TmpStr = ShopText;
         i = StrCountChar(TmpStr, '&');
         i = i * 2;
@@ -238,7 +235,7 @@ void Shop::ListObjects()
         pDnodeActor->PlayerOut += ShopText;
         pDnodeActor->PlayerOut += " ";
         sprintf(Buf, "%6d", pObject->Cost);
-        ShopText = ConvertStringToCString(Buf);
+        ShopText = Buf;
         pDnodeActor->PlayerOut += ShopText;
         pDnodeActor->PlayerOut += "\r\n";
         // Done with object
@@ -253,7 +250,7 @@ void Shop::ListObjects()
         LogIt(LogBuf);
       }
     }
-    ShopFile.ReadString(Stuff);
+    getline(ShopFile, Stuff);
   }
-  ShopFile.Close();
+  ShopFile.close();
 }

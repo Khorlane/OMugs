@@ -245,7 +245,7 @@ void GenerateRooms::OpenRoomFile()
                   CFile::modeCreate |
                   CFile::modeWrite  |
                   CFile::typeText);
-  if(!Success)
+  if (!Success)
   {
     Message  = "GenerateRooms::OpenRoomFile - file failed to open";
     Message += RoomFileName;

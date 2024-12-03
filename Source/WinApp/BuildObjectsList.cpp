@@ -224,7 +224,7 @@ bool BuildObjectsList::PopulateListOk()
   Success = ObjectFile.Open(ObjectFileName,
                  CFile::modeRead |
                  CFile::typeText);
-  if(!Success)
+  if (!Success)
   { // Mobile not found
     AfxMessageBox("BuildObjectsList::PopulateListOk - Object not found", MB_ICONSTOP);
     _endthread();

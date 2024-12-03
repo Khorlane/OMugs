@@ -242,7 +242,7 @@ void BuildMobiles::OnDelete()
   Success = MobileFile.Open(MobileFileName,
                  CFile::modeRead |
                  CFile::typeText);
-  if(!Success)
+  if (!Success)
   {
     AfxMessageBox("Mobile not found", MB_ICONSTOP);
     return;
@@ -316,7 +316,7 @@ void BuildMobiles::ParseStuff()
   Success = MobileFile.Open(MobileFileName,
                  CFile::modeRead |
                  CFile::typeText);
-  if(!Success)
+  if (!Success)
   { // Mobile not found
     AfxMessageBox("Mobile not found", MB_ICONSTOP);
     return;
@@ -596,7 +596,7 @@ void BuildMobiles::WriteStuff()
                  CFile::modeCreate |
                  CFile::modeWrite  |
                  CFile::typeText);
-  if(!Success)
+  if (!Success)
   {
     AfxMessageBox("Mobile not found", MB_ICONSTOP);
     return;

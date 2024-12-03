@@ -182,7 +182,7 @@ void Validate::ValidateLibraryLoot()
     Success = LootFile.Open(LootFileName,
                  CFile::modeRead |
                  CFile::typeText);
-    if(!Success)
+    if (!Success)
     { // File does not exist - Very bad!
       AfxMessageBox("Validate::ValidateLibraryLoot - Open loot file failed", MB_ICONSTOP);
       _endthread();
@@ -274,7 +274,7 @@ void Validate::ValidateLibraryMobiles()
     Success = MobileFile.Open(MobileFileName,
                    CFile::modeRead |
                    CFile::typeText);
-    if(!Success)
+    if (!Success)
     { // File does not exist - Very bad!
       AfxMessageBox("Validate::ValidateLibraryMobiles - Open mobile file failed", MB_ICONSTOP);
       _endthread();
@@ -440,7 +440,7 @@ void Validate::ValidateLibraryObjects()
     Success = ObjectFile.Open(ObjectFileName,
                    CFile::modeRead |
                    CFile::typeText);
-    if(!Success)
+    if (!Success)
     { // File does not exist - Very bad!
       AfxMessageBox("Validate::ValidateLibraryObjects - Open object file failed", MB_ICONSTOP);
       _endthread();
@@ -630,7 +630,7 @@ void Validate::ValidateLibraryRooms()
     Success = RoomFile.Open(RoomFileName,
                  CFile::modeRead |
                  CFile::typeText);
-    if(!Success)
+    if (!Success)
     { // File does not exist - Very bad!
       AfxMessageBox("Validate::ValidateLibraryRooms - Open room file failed", MB_ICONSTOP);
       _endthread();
@@ -796,7 +796,7 @@ void Validate::ValidateLibraryShops()
     Success = ShopFile.Open(ShopFileName,
                  CFile::modeRead |
                  CFile::typeText);
-    if(!Success)
+    if (!Success)
     { // File does not exist - Very bad!
       AfxMessageBox("Validate::ValidateLibraryShops - Open shop file failed", MB_ICONSTOP);
       _endthread();
@@ -913,7 +913,7 @@ void Validate::ValidateLibraryWorldMobiles()
     Success = WorldMobileFile.Open(WorldMobileFileName,
                         CFile::modeRead |
                         CFile::typeText);
-    if(!Success)
+    if (!Success)
     { // File does not exist - Very bad!
       AfxMessageBox("Validate::ValidateLibraryWorldMobiles - Open world mobile file failed", MB_ICONSTOP);
       _endthread();
@@ -1035,7 +1035,7 @@ void Validate::ValidateRunningPlayers()
     Success = PlayerFile.Open(PlayerFileName,
                    CFile::modeRead |
                    CFile::typeText);
-    if(!Success)
+    if (!Success)
     { // File does not exist - Very bad!
       AfxMessageBox("Validate::ValidateRunningPlayers - Open player file failed", MB_ICONSTOP);
       _endthread();
@@ -1156,7 +1156,7 @@ void Validate::ValidateRunningPlayersPlayerEqu()
     Success = PlayerEquFile.Open(PlayerEquFileName,
                       CFile::modeRead |
                       CFile::typeText);
-    if(!Success)
+    if (!Success)
     { // File does not exist - Very bad!
       AfxMessageBox("Validate::ValidateRunningPlayersPlayerEqu - Open player file failed", MB_ICONSTOP);
       _endthread();
@@ -1263,7 +1263,7 @@ void Validate::ValidateRunningPlayersPlayerObj()
     Success = PlayerObjFile.Open(PlayerObjFileName,
                       CFile::modeRead |
                       CFile::typeText);
-    if(!Success)
+    if (!Success)
     { // File does not exist - Very bad!
       AfxMessageBox("Validate::ValidateRunningPlayersPlayerObj - Open player file failed", MB_ICONSTOP);
       _endthread();
@@ -1361,7 +1361,7 @@ void Validate::ValidateRunningRoomMob()
     Success = RoomMobFile.Open(RoomMobFileName,
                     CFile::modeRead |
                     CFile::typeText);
-    if(!Success)
+    if (!Success)
     { // File does not exist - Very bad!
       AfxMessageBox("Validate::ValidateRunningRoomMob - Open world mobile file failed", MB_ICONSTOP);
       _endthread();
@@ -1490,7 +1490,7 @@ void Validate::ValidateRunningRoomObj()
     Success = RoomObjFile.Open(RoomObjFileName,
                     CFile::modeRead |
                     CFile::typeText);
-    if(!Success)
+    if (!Success)
     { // File does not exist - Very bad!
       AfxMessageBox("Validate::ValidateRunningRoomObj - Open world mobile file failed", MB_ICONSTOP);
       _endthread();
