@@ -954,7 +954,7 @@ void Communication::CommandParse()
   MudCmd = StrGetWord(CmdStr, 1);
   MudCmd = StrMakeLower(MudCmd);
   // Translate 'n' into 'go north'
-  MudCmd = TranslateWord(MudCmd);
+  MudCmd = ConvertStringToCString(TranslateWord(ConvertCStringToString(MudCmd)));
   if (StrCountWords(MudCmd) == 2)
   { // Re-get MudCmd. In the case of 'go north', MudCmd is 'go'
     CmdStr = MudCmd;
@@ -4292,7 +4292,7 @@ void Communication::DoLoad()
   }
   TmpStr = StrGetWord(CmdStr, 2);
   TmpStr = StrMakeLower(TmpStr);
-  TmpStr = TranslateWord(ConvertStringToCString(TmpStr));
+  TmpStr = TranslateWord(TmpStr);
   if (StrIsNotWord(TmpStr, "object mobile"))
   { // obj or mob must be specified
     pDnodeActor->PlayerOut += "2nd parm must be obj{ect}|mob{ile}\r\n";

@@ -1276,7 +1276,7 @@ void SpawnMobileNoMove(string MobileId)
   World::SpawnMobileNoMove(MobileId);
 }
 
-CString TranslateWord(CString Word)
+string TranslateWord(string Word)
 {
   return Utility::TranslateWord(Word);
 }

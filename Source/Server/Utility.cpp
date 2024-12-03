@@ -217,7 +217,7 @@ string Utility::PronounSubstitute(string MsgText)
  * Translate a word                                        *
  ***********************************************************/
 
-CString Utility::TranslateWord(CString Word)
+string Utility::TranslateWord(string Word)
 {
   if (Word == "n")            return "go north";
   if (Word == "s")            return "go south";

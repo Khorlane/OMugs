@@ -460,7 +460,7 @@ string Violence::WhackMobile(string MobileId,
   // Format whack message
   MobHealthPct = CalcHealthPct(MobHitPointsLeft, MobHitPointsTotal);
   WeaponType = StrMakeLower(WeaponType);
-  WeaponAction = TranslateWord(ConvertStringToCString(WeaponType));
+  WeaponAction = TranslateWord(WeaponType);
   sprintf(Buf, "%d", DamageToMobile);
   DamageAmount = Buf;
   MobHealthPctNew = CalcPct(MobHitPointsLeft, MobHitPointsTotal);

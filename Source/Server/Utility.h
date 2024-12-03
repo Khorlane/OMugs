@@ -36,7 +36,7 @@ class Utility
     static  int     GetRandomNumber(int Limit);
     static  CString GetSqlStmt(CString SqlStmtId);
     static  string  PronounSubstitute(string MsgText);
-    static  CString TranslateWord(CString Word);
+    static  string  TranslateWord(string Word);
 };
 
 #endif

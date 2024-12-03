@@ -102,7 +102,7 @@ bool Object::AddObjToPlayerEqu(string WearPosition, string ObjectId)
     AfxMessageBox("Object::AddObjToPlayerEqu - Open PlayerEqu temp file failed", MB_ICONSTOP);
     _endthread();
   }
-  WearPosition = TranslateWord(ConvertStringToCString(WearPosition));
+  WearPosition = TranslateWord(WearPosition);
   if (NewPlayerEquFile)
   { // New player equipment file, write the object and return
     ObjectId = WearPosition + " " + ObjectId;
@@ -1010,7 +1010,7 @@ void Object::ShowPlayerEqu(Dnode *pDnodeTgt1)
   while (Stuff != "")
   {
     WearPosition = StrGetWord(Stuff, 1);
-    WearPosition = TranslateWord(ConvertStringToCString(WearPosition));
+    WearPosition = TranslateWord(WearPosition);
     ObjectId = StrGetWord(Stuff, 2);
     pObject = new Object(ObjectId);
     pDnodeActor->PlayerOut += ConvertStringToCString(WearPosition);
