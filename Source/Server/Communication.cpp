@@ -1885,7 +1885,7 @@ void Communication::DoChat()
   //********************
   //* Validate command *
   //********************
-  ChatMsg = GetWords(CmdStr, 2);
+  ChatMsg = StrGetWords(ConvertCStringToString(CmdStr), 2);
   if (StrGetLength(ChatMsg) < 1)
   { // Player did not enter any chat
     pDnodeActor->PlayerOut += "You start to chat, but, about what?";
@@ -2137,7 +2137,7 @@ void Communication::DoDelete()
   }
   Name     = StrGetWord(CmdStr, 2);
   Password = StrGetWord(CmdStr, 3);
-  Phrase   = GetWords(CmdStr, 4);
+  Phrase   = StrGetWords(ConvertCStringToString(CmdStr), 4);
   if (Name != ConvertCStringToString(pDnodeActor->PlayerName))
   {
     pDnodeActor->PlayerOut += "Your name was not entered correctly.";
@@ -2613,7 +2613,7 @@ void Communication::DoEmote()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  EmoteMsg = GetWords(CmdStr, 2);
+  EmoteMsg = StrGetWords(ConvertCStringToString(CmdStr), 2);
   if (StrGetLength(EmoteMsg) < 1)
   { // Player did not enter anything to say
     pDnodeActor->PlayerOut += "You try to show emotion, but fail.";
@@ -3473,7 +3473,7 @@ void Communication::DoGoToArrive()
       return;
     }
   }
-  TmpStr = GetWords(CmdStr, 2);
+  TmpStr = StrGetWords(ConvertCStringToString(CmdStr), 2);
   GoToArrive = TmpStr;
   // Strip out color codes so arrival message length can be checked
   StrReplace(TmpStr, "&N", "");
@@ -3550,7 +3550,7 @@ void Communication::DoGoToDepart()
       return;
     }
   }
-  TmpStr = GetWords(CmdStr, 2);
+  TmpStr = StrGetWords(ConvertCStringToString(CmdStr), 2);
   GoToDepart = TmpStr;
   // Strip out color codes so arrival message length can be checked
   StrReplace(TmpStr, "&N", "");
@@ -3830,7 +3830,7 @@ void Communication::DoGsay()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  GsayMsg = GetWords(CmdStr, 2);
+  GsayMsg = StrGetWords(ConvertCStringToString(CmdStr), 2);
   if (StrGetLength(GsayMsg) < 1)
   { // Player typed gsay but did not type a message
     pDnodeActor->PlayerOut += "Are you trying to say something to the group?\r\n";
@@ -4988,7 +4988,7 @@ void Communication::DoSay()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  SayMsg = GetWords(CmdStr, 2);
+  SayMsg = StrGetWords(ConvertCStringToString(CmdStr), 2);
   if (StrGetLength(SayMsg) < 1)
   { // Player did not enter anything to say
     pDnodeActor->PlayerOut += "You try to speak, but no words come out of your mouth.";
@@ -5513,7 +5513,7 @@ void Communication::DoTell()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  TellMsg = GetWords(CmdStr, 3);
+  TellMsg = StrGetWords(ConvertCStringToString(CmdStr), 3);
   if (StrGetLength(TellMsg) < 1)
   {
     pDnodeActor->PlayerOut += "Um, tell ";
@@ -5637,7 +5637,7 @@ void Communication::DoTitle()
       return;
     }
   }
-  TmpStr = GetWords(CmdStr, 2);
+  TmpStr = StrGetWords(ConvertCStringToString(CmdStr), 2);
   Title = TmpStr;
   // Strip out color codes so Title length can be checked
   StrReplace(TmpStr, "&N", "");

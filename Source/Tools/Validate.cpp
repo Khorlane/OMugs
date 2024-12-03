@@ -641,7 +641,7 @@ void Validate::ValidateLibraryRooms()
     { // For all lines
       LineCount++;
       FieldName  = StrGetWord(Stuff, 1);
-      FieldValue = GetWords(Stuff, 2);
+      FieldValue = ConvertStringToCString(StrGetWords(ConvertCStringToString(Stuff), 2));
       //********************************
       //* RoomId field must be first *
       //********************************
