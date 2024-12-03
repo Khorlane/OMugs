@@ -291,7 +291,7 @@ string  GetPlayerMobMobileId(string PlayerName);
 int     GetRandomNumber(int Limit);
 string  GetRoomId(string RoomId);
 string  GetRoomName(string RoomId);
-CString GetSqlStmt(CString SqlStmtId);
+string  GetSqlStmt(string SqlStmtId);
 int     GetTimeSeconds();
 string  GetValidMobRoomExits(string RoomId);
 void    HealMobiles();

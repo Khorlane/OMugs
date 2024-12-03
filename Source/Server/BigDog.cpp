@@ -1036,7 +1036,7 @@ string GetRoomName(string RoomId)
   return Room::GetRoomName(RoomId);
 }
 
-CString GetSqlStmt(CString SqlStmtId)
+string GetSqlStmt(string SqlStmtId)
 {
   return Utility::GetSqlStmt(SqlStmtId);
 }

@@ -122,36 +122,33 @@ int Utility::GetRandomNumber(int Limit)
  * Get a SQL statement                                     *
  ***********************************************************/
 
-CString Utility::GetSqlStmt(CString SqlStmtId)
+string Utility::GetSqlStmt(string SqlStmtId)
 {
   int        RipOutMoreSpaces;
-  CString    SqlStmt;
-  CStdioFile SqlStmtFile;
-  CString    SqlStmtFileName;
-  CString    Stuff;
-  int        Success;
+  string     SqlStmt;
+  ifstream   SqlStmtFile;
+  string     SqlStmtFileName;
+  string     Stuff;
 
   RipOutMoreSpaces = 0;
   // Read mobile stats Desc1 file
   SqlStmtFileName = SQL_DIR;
   SqlStmtFileName += SqlStmtId;
   SqlStmtFileName += ".txt";
-  Success = SqlStmtFile.Open(SqlStmtFileName,
-                  CFile::modeRead |
-                  CFile::typeText);
-  if(!Success)
+  SqlStmtFile.open(SqlStmtFileName);
+  if(!SqlStmtFile.is_open())
   {
     AfxMessageBox("Utility::GetSqlStmt - Open SqlStmt file failed", MB_ICONSTOP);
     _endthread();
   }
-  SqlStmtFile.ReadString(Stuff);
+  getline(SqlStmtFile, Stuff);
   while (Stuff != "")
   { // Read SQL statement
     SqlStmt += Stuff;
     SqlStmt += " ";
-    SqlStmtFile.ReadString(Stuff);
+    getline(SqlStmtFile, Stuff);
   }
-  SqlStmtFile.Close();
+  SqlStmtFile.close();
   SqlStmt = StrSqueeze(SqlStmt);
   return SqlStmt;
 }

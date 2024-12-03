@@ -34,7 +34,7 @@ class Utility
     static  CString FormatCommas(CString String);
     static  string  GetHomeDir();
     static  int     GetRandomNumber(int Limit);
-    static  CString GetSqlStmt(CString SqlStmtId);
+    static  string  GetSqlStmt(string SqlStmtId);
     static  string  PronounSubstitute(string MsgText);
     static  string  TranslateWord(string Word);
 };
