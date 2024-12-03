@@ -515,6 +515,44 @@ string StrInsertChar(string Str1, int Position, char c)
   return Str1.insert(Position, 1, c);
 }
 
+// Is word 'not in' word list? (temporary)
+bool StrIsNotWord(string Word, string WordList)
+{
+  return StrIsNotWord(ConvertStringToCString(Word), ConvertStringToCString(WordList));
+}
+
+// Is word 'not in' word list?
+bool StrIsNotWord(CString Word, CString WordList)
+{
+  bool    Found;
+  int     i;
+  int     n;
+  CString String;
+
+  Found = false;
+  if (Word.GetLength() == 0)
+  { // Word is null, so it can't be in word list
+    return true;
+  }
+  n = WordCount(WordList);
+  for (i = 1; i <= n; i++)
+  {
+    String = ConvertStringToCString(StrGetWord(ConvertCStringToString(WordList), i));
+    if (Word == String)
+    {
+      Found = true;
+    }
+  }
+  if (Found)
+  { // Word was found in word list
+    return false;
+  }
+  else
+  { // Word was not found in word list
+    return true;
+  }
+}
+
 // Is word 'in' word list?  (temporary)
 bool StrIsWord(CString Word, CString WordList)
 {

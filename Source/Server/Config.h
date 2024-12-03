@@ -365,6 +365,8 @@ CString StrInsert(CString Str1, int Position, CString Str2);
 string  StrInsert(string Str1, int Position, string str2);
 CString StrInsertChar(CString Str1, int Position, char c);
 string  StrInsertChar(string Str1, int Position, char c);
+bool    StrIsNotWord(CString Word, CString WordList);
+bool    StrIsNotWord(string Word, string WordList);
 bool    StrIsWord(CString Word, CString WordList);
 bool    StrIsWord(string Word, string WordList);
 CString StrLeft(CString Str1, int Len);
