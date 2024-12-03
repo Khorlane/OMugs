@@ -36,7 +36,6 @@ class Utility
     static  int     GetRandomNumber(int Limit);
     static  CString GetSqlStmt(CString SqlStmtId);
     static  CString GetWord(CString String, int WordNbr);
-    static  CString GetWordPosLen(CString String, int WordNbr);
     static  CString GetWords(CString String, int WordNbr);
     static  bool    IsNotWord(CString Word, CString WordList);
     static  bool    IsWord(CString Word, CString WordList);
