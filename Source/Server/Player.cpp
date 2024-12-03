@@ -232,7 +232,7 @@ bool Player::IsNameValid(string Name)
 
 void Player::CreatePrompt()
 {
-  CString TmpStr;
+  string TmpStr;
 
   Output  = "\r\n";
   sprintf(Buf, "%d", HitPoints);

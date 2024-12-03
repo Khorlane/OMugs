@@ -413,7 +413,6 @@ void Room::MoveFollowers(Dnode *pDnode, string ExitToRoomId)
 
 void Room::MovePlayer(Dnode *pDnode, string ExitToRoomId)
 {
-  CString csExitToRoomId;
   string  TmpStr;
   string  MoveMsg;
 
@@ -427,7 +426,7 @@ void Room::MovePlayer(Dnode *pDnode, string ExitToRoomId)
   }
   // Switch rooms
   pDnode->pPlayer->RoomIdBeforeMove = pDnode->pPlayer->RoomId;
-  pDnode->pPlayer->RoomId = csExitToRoomId;
+  pDnode->pPlayer->RoomId = ExitToRoomId;
   Osi("Rooms", ExitToRoomId);
   pDnode->pPlayer->Save();
   // Arrives message
@@ -464,7 +463,6 @@ bool Room::OpenFile(Dnode *pDnode)
 void Room::ShowRoomDesc(Dnode *pDnode)
 {
   string Stuff;
-  CString csStuff;
 
   // RoomDesc
   getline(RoomFile, Stuff);
@@ -477,8 +475,7 @@ void Room::ShowRoomDesc(Dnode *pDnode)
   getline(RoomFile, Stuff);
   while (Stuff != "End of RoomDesc")
   {
-    csStuff = ConvertStringToCString(Stuff);
-    pDnode->PlayerOut += csStuff;
+    pDnode->PlayerOut += Stuff;
     pDnode->PlayerOut += "\r\n";
     getline(RoomFile, Stuff);
   }
@@ -491,7 +488,6 @@ void Room::ShowRoomDesc(Dnode *pDnode)
 void Room::ShowRoomExitDesc()
 {
   string  Stuff;
-  CString csStuff;
 
   // ExitDesc
   getline(RoomFile, Stuff);
@@ -504,8 +500,7 @@ void Room::ShowRoomExitDesc()
   getline(RoomFile, Stuff);
   while (StrLeft(Stuff, 13) != "ExitToRoomId:")
   {
-    csStuff = ConvertStringToCString(Stuff);
-    pDnodeActor->PlayerOut += csStuff;
+    pDnodeActor->PlayerOut += Stuff;
     pDnodeActor->PlayerOut += "\r\n";
     getline(RoomFile, Stuff);
   }
@@ -521,7 +516,6 @@ void Room::ShowRoomExits(Dnode *pDnode)
 {
   bool    NoExits;
   string  Stuff;
-  CString csStuff;
 
   NoExits = true;
   pDnode->PlayerOut += "&C";
@@ -534,8 +528,7 @@ void Room::ShowRoomExits(Dnode *pDnode)
       NoExits = false;
       Stuff = StrGetWord(Stuff, 2);
       pDnode->PlayerOut += " ";
-      csStuff = ConvertStringToCString(Stuff);
-      pDnode->PlayerOut += csStuff;
+      pDnode->PlayerOut += Stuff;
     }
   }
   if (NoExits)
@@ -552,15 +545,10 @@ void Room::ShowRoomExits(Dnode *pDnode)
 void Room::ShowRoomName(Dnode *pDnode)
 {
   string  RoomId;
-  CString csRoomId;
   string  RoomType;
-  CString csRoomType;
   string  Stuff;
-  CString csStuff;
   string  Terrain;
-  CString csTerrain;
   string  RoomName;
-  CString csRoomName;
 
   // RoomId
   getline(RoomFile, Stuff);
@@ -591,7 +579,6 @@ void Room::ShowRoomName(Dnode *pDnode)
     _endthread();
   }
   Terrain = StrGetWord(Stuff, 2);
-  csTerrain = ConvertStringToCString(Terrain);
   // RoomName
   getline(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "RoomName:")
@@ -601,22 +588,21 @@ void Room::ShowRoomName(Dnode *pDnode)
   }
   RoomName = StrGetWords(Stuff, 2);
   StrTrimLeft(RoomName);
-  csRoomName = ConvertStringToCString(RoomName);
   // Build player output
   pDnode->PlayerOut += "\r\n";
   pDnode->PlayerOut += "&C";
-  pDnode->PlayerOut += csRoomName;
+  pDnode->PlayerOut += RoomName;
   pDnode->PlayerOut += "&N";
   if (pDnode->pPlayer->RoomInfo)
   { // Show hidden room info
     pDnode->PlayerOut += "&M";
     pDnode->PlayerOut += " [";
     pDnode->PlayerOut += "&N";
-    pDnode->PlayerOut += csRoomId;
+    pDnode->PlayerOut += RoomId;
     pDnode->PlayerOut += " ";
-    pDnode->PlayerOut += csTerrain;
+    pDnode->PlayerOut += Terrain;
     pDnode->PlayerOut += " ";
-    pDnode->PlayerOut += csRoomType;
+    pDnode->PlayerOut += RoomType;
     pDnode->PlayerOut += "&M";
     pDnode->PlayerOut += "]";
     pDnode->PlayerOut += "&N";

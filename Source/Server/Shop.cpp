@@ -31,7 +31,7 @@
 
 bool Shop::IsShop(string RoomId)
 {
-  string    ShopFileName;
+  string     ShopFileName;
   ifstream   ShopFile;
   
   ShopFileName = SHOPS_DIR;
