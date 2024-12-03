@@ -951,7 +951,7 @@ void Events()
   World::Events();
 }
 
-CString FormatCommas(CString String)
+string FormatCommas(string String)
 {
   return Utility::FormatCommas(String);
 }

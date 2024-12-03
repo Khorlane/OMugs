@@ -275,7 +275,7 @@ void    DeletePlayerMob(string PlayerName);
 bool    EndOfDnodeList();
 void    Events();
 bool    FileExist(string Name);
-CString FormatCommas(CString String);
+string  FormatCommas(string String);
 int     GetCount();
 string  GetHomeDir();
 string  GetMobDesc1(string MobileId);

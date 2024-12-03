@@ -1086,12 +1086,12 @@ void Player::ShowStatus()
   sprintf(Buf, "%f15.0", Experience);
   TmpStr = ConvertStringToCString(Buf);
   TmpStr = StrLeft(TmpStr, StrFindFirstChar(TmpStr, '.'));
-  Exp1   = FormatCommas(TmpStr);
+  Exp1   = ConvertStringToCString(FormatCommas(ConvertCStringToString(TmpStr)));
 
   sprintf(Buf, "%f15.0", CalcLevelExperience(Level + 1));
   TmpStr = ConvertStringToCString(Buf);
   TmpStr = StrLeft(TmpStr, StrFindFirstChar(TmpStr, '.'));
-  Exp2   = FormatCommas(TmpStr);
+  Exp2   = ConvertStringToCString(FormatCommas(ConvertCStringToString(TmpStr)));
   while (StrGetLength(Exp1) < StrGetLength(Exp2))
   {
     Exp1 = StrInsertChar(Exp1, 0, ' ');

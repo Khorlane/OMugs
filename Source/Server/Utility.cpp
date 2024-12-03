@@ -45,7 +45,7 @@ int Utility::CalcPct(int Dividend, int Divisor)
  * Insert commas into a nueric string                      *
  ***********************************************************/
 
-CString Utility::FormatCommas(CString String)
+string Utility::FormatCommas(string String)
 {
   int i; // For loop control
   int j; // Insert comma position
@@ -53,7 +53,7 @@ CString Utility::FormatCommas(CString String)
   int y; // Number of commas to be inserted
   int z; // Remainder after dividing by 3
 
-  x = String.GetLength();
+  x = StrGetLength(String);
   if (x < 4)
   { // No commas needed
     return String;
@@ -67,7 +67,7 @@ CString Utility::FormatCommas(CString String)
   j = x - 3;
   for (i = y; i > 0; i--)
   { // Insert the commas
-    String.Insert(j,',');
+    String = StrInsert(String, j, ",");
     j = j - 3;
   }
   return String;
