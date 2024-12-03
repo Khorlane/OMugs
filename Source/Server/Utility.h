@@ -31,7 +31,6 @@ class Utility
 // Public functions static
   public:
     static  int     CalcPct(int Dividend, int Divisor);
-    static  CString DeleteWord(CString String, int WordNbr);
     static  CString FormatCommas(CString String);
     static  string  GetHomeDir();
     static  int     GetRandomNumber(int Limit);

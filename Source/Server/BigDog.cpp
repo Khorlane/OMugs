@@ -903,11 +903,6 @@ void DeletePlayerMob(string PlayerName)
   Mobile::DeletePlayerMob(PlayerName);
 }
 
-CString DeleteWord(CString String, int WordNbr)
-{
-  return Utility::DeleteWord(String, WordNbr);
-}
-
 bool EndOfDnodeList()
 {
   return Descriptor::EndOfDnodeList();

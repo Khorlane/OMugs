@@ -42,40 +42,6 @@ int Utility::CalcPct(int Dividend, int Divisor)
 }
 
 /***********************************************************
- * Delete a word plus one blank after from a string        *
- ***********************************************************/
-
-CString Utility::DeleteWord(CString String, int WordNbr)
-{
-  int     Count;
-  int     Len;
-  CString PosLen;
-  int     Pos;
-
-  if (WordNbr < 1)
-  { // That is just plain silly
-    return String;
-  }
-  Count = WordCount(String);
-  if (WordNbr > Count)
-  { // WordNbr is greater than the number of words in String
-    return String;
-  }
-  PosLen = GetWordPosLen(String, WordNbr);
-  Pos    = atoi(GetWord(PosLen, 1));
-  Len    = atoi(GetWord(PosLen, 2));
-  if (WordNbr < Count)
-  { // Not the last word, so delete the word and the blank after the word
-    String = StrDelete(String, Pos-1, Len+1);
-  }
-  else
-  { // This is the last word, so delete the word and the blank before the word
-    String = StrDelete(String, Pos-2, Len+1);
-  }
-  return String;
-}
-
-/***********************************************************
  * Insert commas into a nueric string                      *
  ***********************************************************/
 
