@@ -35,7 +35,6 @@ class Utility
     static  string  GetHomeDir();
     static  int     GetRandomNumber(int Limit);
     static  CString GetSqlStmt(CString SqlStmtId);
-    static  CString GetWords(CString String, int WordNbr);
     static  bool    IsNotWord(CString Word, CString WordList);
     static  bool    IsWord(CString Word, CString WordList);
     static  string  PronounSubstitute(string MsgText);

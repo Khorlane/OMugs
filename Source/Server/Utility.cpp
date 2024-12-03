@@ -157,57 +157,6 @@ CString Utility::GetSqlStmt(CString SqlStmtId)
 }
 
 /***********************************************************
- * Get words starting with word number specified           *
- ***********************************************************/
-
-CString Utility::GetWords(CString String, int StartWordNbr)
-{
-  bool    Found;  // Toggle in case WordNbr requested doesn't exist
-  CString Words;  // Return value
-  int     i;      // Start positon for Find
-  int     j;      // For loop control
-  int     x;      // Position of the blank before the word
-  int     y;      // Position of the blank after the word
-  int     z;      // Length of String
-
-  i = 0;
-  j = 0;
-  x = 0;
-  y = 0;
-  z = 0;
-  Found = true;
-  String.TrimLeft();
-  String.TrimRight();
-  String  = " "     + String;
-  String  = String  + " ";
-  i       = 0;
-  z       = String.GetLength();
-  for (j = 1; j <= StartWordNbr; j++)
-  {
-    x = String.Find(' ', i);
-    i = x + 1;
-    y = String.Find(' ', i);
-    i = y;
-    if (i >= z)
-    {
-      Found = false;
-      break;
-    }
-  }
-  if (Found)
-  {
-    Words = String.Mid(x+1, z-(x+2));
-    Words.TrimLeft();
-    Words.TrimRight();
-  }
-  else
-  {
-    Words = "";
-  }
-  return Words;
-}
-
-/***********************************************************
  * Is word 'not in' word list?                             *
  ***********************************************************/
 

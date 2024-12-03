@@ -294,7 +294,6 @@ string  GetRoomName(string RoomId);
 CString GetSqlStmt(CString SqlStmtId);
 int     GetTimeSeconds();
 string  GetValidMobRoomExits(string RoomId);
-CString GetWords(CString String, int StartWordNbr);
 void    HealMobiles();
 void    InitDescriptor();
 bool    IsExit(string MudCmdIsExit);
