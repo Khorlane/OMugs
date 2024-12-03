@@ -255,7 +255,7 @@ void    AppTestCode();
 int     CalcAdjustedExpPoints(int PlayerLevel, int MobileLevel, int ExpPoints);
 int     CalcDamageToMobile(int Damage, int WeaponSkill);
 int     CalcDamageToPlayer(int Damage, int PAC);
-CString CalcHealthPct(int HitPoints, int HitPointsMax);
+string  CalcHealthPct(int HitPoints, int HitPointsMax);
 float   CalcLevelExperience(int Level);
 int     CalcPct(int Dividend, int Divisor);
 int     CalcPlayerArmorClass();

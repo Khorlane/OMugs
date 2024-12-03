@@ -871,7 +871,7 @@ int CalcDamageToPlayer(int Damage, int PAC)
   return Violence::CalcDamageToPlayer(Damage, PAC);
 }
 
-CString CalcHealthPct(int HitPoints, int HitPointsMax)
+string CalcHealthPct(int HitPoints, int HitPointsMax)
 {
   return Violence::CalcHealthPct(HitPoints, HitPointsMax);
 }

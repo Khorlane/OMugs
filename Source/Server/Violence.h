@@ -31,7 +31,7 @@ class Violence
   public:
     static  int     CalcDamageToMobile(int Damage, int WeaponSkill);
     static  int     CalcDamageToPlayer(int Damage, int PAC);
-    static  CString CalcHealthPct(int HitPoints, int HitPointsMax);
+    static  string  CalcHealthPct(int HitPoints, int HitPointsMax);
     static  int     GetMobileArmor(string MobileId);
     static  string  GetMobileAttack(string MobileId);
     static  int     GetMobileDamage(string MobileId);

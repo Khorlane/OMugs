@@ -65,11 +65,11 @@ int Violence::CalcDamageToPlayer(int Damage, int PAC)
  * Calculate damage to player                              *
  ***********************************************************/
 
-CString Violence::CalcHealthPct(int HitPoints, int HitPointsMax)
+string Violence::CalcHealthPct(int HitPoints, int HitPointsMax)
 {
-  CString HealthPct;
+  string  HealthPct;
   int     Percent;
-  CString TmpStr;
+  string  TmpStr;
 
   if (HitPoints < 1)
   { // Skip percent calculation
@@ -98,7 +98,7 @@ CString Violence::CalcHealthPct(int HitPoints, int HitPointsMax)
     HealthPct = "&R";
   }
   sprintf(Buf, "%3d", int(Percent));
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   HealthPct += TmpStr;
   HealthPct += "&N";
   return HealthPct;
@@ -407,10 +407,7 @@ string Violence::GetPlayerMobMobileId(string PlayerName)
  * Whack the mobile - do some damage!                      *
  ***********************************************************/
 
-string Violence::WhackMobile(string MobileId,
-                             int    DamageToMobile,
-                             string MobileDesc1,
-                             string WeaponType)
+string Violence::WhackMobile(string MobileId, int DamageToMobile, string MobileDesc1, string WeaponType)
 {
   string     DamageAmount;
   int        DamageMagnitude;
@@ -571,9 +568,7 @@ string Violence::WhackMobile(string MobileId,
  * Whack the player - do some damage!                      *
  ***********************************************************/
 
-string Violence::WhackPlayer(string MobileDesc1,
-                             string MobileAttack,
-                             int    DamageToPlayer)
+string Violence::WhackPlayer(string MobileDesc1, string MobileAttack, int DamageToPlayer)
 {
   string PlayerBeenWhacked;
   string TmpStr;
