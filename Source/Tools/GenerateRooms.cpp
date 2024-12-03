@@ -103,26 +103,26 @@ void GenerateRooms::CloseRecordsets()
 
 void GenerateRooms::Final()
 {
-  CString Message;
+  string Message;
 
   // Room rows read
   sprintf(Buf, "%d", RowCount1);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Message  = "Room rows read from Rooms recordset = ";
   Message += TmpStr;
   Message += "\n";
   // Exit rows read
   sprintf(Buf, "%d", RowCount2);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Message += "Exit rows read from Exits recordset = ";
   Message += TmpStr;
   Message += "\n";
   // Rooms created
   sprintf(Buf, "%d", RoomCount);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Message += "Rooms created = ";
   Message += TmpStr;
-  AfxMessageBox(Message, MB_ICONINFORMATION);
+  AfxMessageBox(ConvertStringToCString(Message), MB_ICONINFORMATION);
 }
 
 /***********************************************************
