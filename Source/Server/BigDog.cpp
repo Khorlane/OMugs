@@ -1091,11 +1091,6 @@ bool IsNameValid(CString Name)
   return Player::IsNameValid(Name);
 }
 
-bool IsNotWord(CString Word, CString WordList)
-{
-  return Utility::IsNotWord(Word, WordList);
-}
-
 void IsObjInPlayerEqu(string ObjectName)
 {
   Object::IsObjInPlayerEqu(ObjectName);

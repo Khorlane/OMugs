@@ -300,7 +300,6 @@ bool    IsExit(string MudCmdIsExit);
 bool    IsHelp();
 bool    IsMobileIdInRoom(string RoomId, string MobileId);
 bool    IsNameValid(CString Name);
-bool    IsNotWord(CString Word, CString WordList);
 void    IsObjInPlayerEqu(string ObjectName);
 void    IsObjInPlayerInv(string ObjectName);
 void    IsObjInRoom(string ObjectName);
