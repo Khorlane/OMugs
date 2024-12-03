@@ -152,17 +152,14 @@ void GenerateRooms::Init()
     AfxMessageBox("GenerateRooms::Init - Change to rooms directory failed");
     _endthread();
   }
-  MoreFiles = FileList.FindFile("*.*");
-  // FileList now contains a list of room files
-  while (MoreFiles)
-  { // For each room file
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
-    { // Skip directories
+  for (const auto& entry : fs::directory_iterator("./"))
+  {
+    if (entry.is_directory())
+    {
       continue;
     }
-    RoomFileName = FileList.GetFileName();
-    CFile::Remove(RoomFileName);
+    RoomFileName = entry.path().filename().string();
+    Remove(RoomFileName);
   }
   // Change back to home directory
   if (ChgDir(HomeDir))
@@ -194,7 +191,7 @@ void GenerateRooms::OpenRecordsets()
   DatabaseName += "HolyQuest";
   try
   {
-    MapDatabase.Open(DatabaseName);
+    MapDatabase.Open(DatabaseName.c_str());
   }
   catch(CDaoException* e)
   {
@@ -207,7 +204,7 @@ void GenerateRooms::OpenRecordsets()
   SqlStmt1 = ConvertStringToCString(GetSqlStmt("GetRoomInfo"));
   try
   {
-    RoomsRecordset.Open(AFX_DAO_USE_DEFAULT_TYPE, SqlStmt1, 0);
+    RoomsRecordset.Open(AFX_DAO_USE_DEFAULT_TYPE, ConvertStringToCString(SqlStmt1), 0);
   }
   catch(CDaoException* e)
   {
@@ -220,7 +217,7 @@ void GenerateRooms::OpenRecordsets()
   SqlStmt2 = ConvertStringToCString(GetSqlStmt("GetExitInfo"));
   try
   {
-    ExitsRecordset.Open(AFX_DAO_USE_DEFAULT_TYPE, SqlStmt2, 0);
+    ExitsRecordset.Open(AFX_DAO_USE_DEFAULT_TYPE, ConvertStringToCString(SqlStmt2), 0);
   }
   catch(CDaoException* e)
   {
@@ -241,15 +238,12 @@ void GenerateRooms::OpenRoomFile()
   RoomFileName  = ROOMS_DIR;
   RoomFileName += oRoomId;
   RoomFileName += ".txt";
-  Success = GenRoomFile.Open(RoomFileName,
-                  CFile::modeCreate |
-                  CFile::modeWrite  |
-                  CFile::typeText);
-  if (!Success)
+  GenRoomFile.open(RoomFileName);
+  if (!GenRoomFile.is_open())
   {
     Message  = "GenerateRooms::OpenRoomFile - file failed to open";
     Message += RoomFileName;
-    AfxMessageBox(Message, MB_ICONSTOP);
+    AfxMessageBox(ConvertStringToCString(Message), MB_ICONSTOP);
     _endthread();
   }
 }
@@ -314,31 +308,31 @@ void GenerateRooms::Parse1()
   //***************************
   OpenRoomFile();
   // RoomId
-  GenRoomFile.WriteString("RoomId:       ");
-  GenRoomFile.WriteString(oRoomId);
-  GenRoomFile.WriteString("\n");
+  GenRoomFile << "RoomId:       ";
+  GenRoomFile << oRoomId;
+  GenRoomFile << "\n";
   // RoomType
-  GenRoomFile.WriteString("RoomType:     ");
-  GenRoomFile.WriteString(oRoomType);
-  GenRoomFile.WriteString("\n");
+  GenRoomFile << "RoomType:     ";
+  GenRoomFile << oRoomType;
+  GenRoomFile << "\n";
   // Terrain
-  GenRoomFile.WriteString("Terrain:      ");
-  GenRoomFile.WriteString(oTerrain);
-  GenRoomFile.WriteString("\n");
+  GenRoomFile << "Terrain:      ";
+  GenRoomFile << oTerrain;
+  GenRoomFile << "\n";
   // RoomName
-  GenRoomFile.WriteString("RoomName:     ");
-  GenRoomFile.WriteString(oRoomName);
-  GenRoomFile.WriteString("\n");
+  GenRoomFile << "RoomName:     ";
+  GenRoomFile << oRoomName;
+  GenRoomFile << "\n";
   // RoomDesc
-  GenRoomFile.WriteString("RoomDesc:");
-  GenRoomFile.WriteString("\n");
-  GenRoomFile.WriteString(oRoomDesc);
-  GenRoomFile.WriteString("\n");
+  GenRoomFile << "RoomDesc:";
+  GenRoomFile << "\n";
+  GenRoomFile << oRoomDesc;
+  GenRoomFile << "\n";
   // End of RoomDesc
-  GenRoomFile.WriteString("End of RoomDesc");
-  GenRoomFile.WriteString("\n");
+  GenRoomFile << "End of RoomDesc";
+  GenRoomFile << "\n";
   // Blank line
-  GenRoomFile.WriteString("\n");
+  GenRoomFile << "\n";
   //*****************************
   //* Parse and write exit info *
   //*****************************
@@ -356,16 +350,16 @@ void GenerateRooms::Parse1()
     }
   }
   // End of Exits
-  GenRoomFile.WriteString("End of Exits");
-  GenRoomFile.WriteString("\n");
+  GenRoomFile << "End of Exits";
+  GenRoomFile << "\n";
   // Blank line
-  GenRoomFile.WriteString("\n");
+  GenRoomFile << "\n";
   // End of Room
-  GenRoomFile.WriteString("End of Room");
+  GenRoomFile << "End of Room";
   //*************
   //* Room done *
   //*************
-  GenRoomFile.Close();
+  GenRoomFile.close();
   RoomCount++;
   Read1();
   if (!LastStuff1)
@@ -462,7 +456,7 @@ void GenerateRooms::Parse2()
   //* ExitToRoomId *
   //****************
   sprintf(Buf, "%d", iToRoomNbr);
-  ToRoomNbr = ConvertStringToCString(Buf);
+  ToRoomNbr = Buf;
   ToRoomName = iToRoomName;
   oExitToRoomId = ToRoomName + ToRoomNbr;
   oExitToRoomId = StrRemove(oExitToRoomId, ' ');
@@ -470,32 +464,32 @@ void GenerateRooms::Parse2()
   //* Start writing exit info *
   //***************************
   // ExitName
-  GenRoomFile.WriteString("ExitName:     ");
-  GenRoomFile.WriteString(oExitName);
-  GenRoomFile.WriteString("\n");
+  GenRoomFile << "ExitName:     ";
+  GenRoomFile << oExitName;
+  GenRoomFile << "\n";
   // ExitDesc
-  GenRoomFile.WriteString("ExitDesc:     ");
-  GenRoomFile.WriteString("\n");
-  GenRoomFile.WriteString(oExitDesc);
-  GenRoomFile.WriteString("\n");
+  GenRoomFile << "ExitDesc:     ";
+  GenRoomFile << "\n";
+  GenRoomFile << oExitDesc;
+  GenRoomFile << "\n";
   // ExitToRoomId
-  GenRoomFile.WriteString("ExitToRoomId: ");
-  GenRoomFile.WriteString(oExitToRoomId);
-  GenRoomFile.WriteString("\n");
+  GenRoomFile << "ExitToRoomId: ";
+  GenRoomFile << oExitToRoomId;
+  GenRoomFile << "\n";
   // ExitDoor
-  GenRoomFile.WriteString("ExitDoor:     ");
-  GenRoomFile.WriteString("No");
-  GenRoomFile.WriteString("\n");
+  GenRoomFile << "ExitDoor:     ";
+  GenRoomFile << "No";
+  GenRoomFile << "\n";
   // ExitLocked
-  GenRoomFile.WriteString("ExitLocked    ");
-  GenRoomFile.WriteString("No");
-  GenRoomFile.WriteString("\n");
+  GenRoomFile << "ExitLocked    ";
+  GenRoomFile << "No";
+  GenRoomFile << "\n";
   // ExitKeyObjId
-  GenRoomFile.WriteString("ExitKeyObjId: ");
-  GenRoomFile.WriteString("None");
-  GenRoomFile.WriteString("\n");
+  GenRoomFile << "ExitKeyObjId: ";
+  GenRoomFile << "None";
+  GenRoomFile << "\n";
   // Blank line
-  GenRoomFile.WriteString("\n");
+  GenRoomFile << "\n";
 }
 
 /***********************************************************

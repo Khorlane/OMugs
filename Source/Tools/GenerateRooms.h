@@ -49,56 +49,54 @@ class GenerateRooms
 // Private variables
   private:
     // Work variables
-    CString         AlternateExit;
+    string          AlternateExit;
     int             CurrentRoomNbr;
-    CString         DatabaseName;
-    CFileFind       FileList;
-    CStdioFile      GenRoomFile;
+    string          DatabaseName;
+    ofstream        GenRoomFile;
     bool            LastStuff1;
     bool            LastStuff2;
     BOOL            MoreFiles;
     int             RowCount1;
     int             RowCount2;
-    CString         Message;
+    string          Message;
     bool            MoreDesc;
     bool            MoreRooms;
     int             n;
     int             RoomCount;
-    CString         RoomFileName;
-    int             Success;
-    CString         Stuff;
-    CString         ToRoomName;
-    CString         ToRoomNbr;
-    CString         TmpStr;
+    string          RoomFileName;
+    string          Stuff;
+    string          ToRoomName;
+    string          ToRoomNbr;
+    string          TmpStr;
 
     // Dao stuff
     COleVariant     OleVar;
-    CString         SqlStmt1;
-    CString         SqlStmt2;
+    string          SqlStmt1;
+    string          SqlStmt2;
 
     // Rooms table columns
     int             iRoomNbr;
-    CString         iRoomName;
-    CString         iRoomType;
-    CString         iRoomDesc;
+    string          iRoomName;
+    string          iRoomType;
+    string          iRoomDesc;
 
     // Exits table columns
     int             iFromRoomNbr;
     int             iDirection;
-    CString         iAlternateExit;
-    CString         iExitDesc;
+    string          iAlternateExit;
+    string          iExitDesc;
     int             iToRoomNbr;
-    CString         iToRoomName;
+    string          iToRoomName;
 
     // Room fields
-    CString         oRoomId;
-    CString         oRoomType;
-    CString         oTerrain;
-    CString         oRoomName;
-    CString         oRoomDesc;
-    CString         oExitName;
-    CString         oExitDesc;
-    CString         oExitToRoomId;
+    string          oRoomId;
+    string          oRoomType;
+    string          oTerrain;
+    string          oRoomName;
+    string          oRoomDesc;
+    string          oExitName;
+    string          oExitDesc;
+    string          oExitToRoomId;
 };
 
 #endif
