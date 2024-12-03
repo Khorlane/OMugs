@@ -157,65 +157,6 @@ CString Utility::GetSqlStmt(CString SqlStmtId)
 }
 
 /***********************************************************
- * Get a word from String                                  *
- ***********************************************************/
-
-CString Utility::GetWord(CString String, int WordNbr)
-{
-  bool    Found;  // Toggle in case WordNbr requested doesn't exist
-  CString Word;   // Return value
-  int     i;      // Start positon for Find
-  int     j;      // For loop control
-  int     x;      // Position of the blank before the word
-  int     y;      // Position of the blank after the word
-  int     z;      // Length of String
-
-  i = 0;
-  j = 0;
-  x = 0;
-  y = 0;
-  z = 0;
-  if (WordCount(String) < WordNbr)
-  { // WordNbr is greater than the number of words in String
-    Word = "";
-    return Word;
-  }
-  Found = true;
-  i = 1;
-  while (i)
-  {
-    i = String.Replace("  ", " ");
-  }
-  String.TrimLeft();
-  String.TrimRight();
-  String  = String  + " ";
-  String  = " "     + String;
-  i       = 0;
-  z       = String.GetLength();
-  for (j = 1; j <= WordNbr; j++)
-  {
-    x = String.Find(' ', i);
-    i = x + 1;
-    y = String.Find(' ', i);
-    i = y;
-    if (i >= z)
-    {
-      Found = false;
-      break;
-    }
-  }
-  if (Found)
-  {
-    Word = String.Mid(x+1, y-x-1);
-  }
-  else
-  {
-    Word = "";
-  }
-  return Word;
-}
-
-/***********************************************************
  * Get words starting with word number specified           *
  ***********************************************************/
 
@@ -285,7 +226,7 @@ bool Utility::IsNotWord(CString Word, CString WordList)
   n = WordCount(WordList);
   for (i = 1; i <= n; i++)
   {
-    String = GetWord(WordList, i);
+    String = ConvertStringToCString(StrGetWord(ConvertCStringToString(WordList), i));
     if (Word == String)
     {
       Found = true;
@@ -320,7 +261,7 @@ bool Utility::IsWord(CString Word, CString WordList)
   n = WordCount(WordList);
   for (i = 1; i <= n; i++)
   {
-    String = GetWord(WordList, i);
+    String = ConvertStringToCString(StrGetWord(ConvertCStringToString(WordList), i));
     if (Word == String)
     {
       Found = true;

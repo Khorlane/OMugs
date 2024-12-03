@@ -1013,11 +1013,6 @@ string GetValidMobRoomExits(string RoomId)
   return Room::GetValidMobRoomExits(RoomId);
 }
 
-CString GetWord(CString String, int WordNbr)
-{
-  return Utility::GetWord(String, WordNbr);
-}
-
 CString GetWords(CString String, int StartWordNbr)
 {
   return Utility::GetWords(String, StartWordNbr);
