@@ -315,7 +315,7 @@ void Validate::ValidateLibraryMobiles()
       //********
       if (FieldName == "Sex:")
       { // Sex field validation
-        if (IsNotWord(FieldValue, "F M N"))
+        if (StrIsNotWord(ConvertCStringToString(FieldValue), "F M N"))
         { // Invalid mobile sex
           Message = "Mobile sex is invalid";
           FileName = MobileFileName;
@@ -327,7 +327,7 @@ void Validate::ValidateLibraryMobiles()
       //***********
       if (FieldName == "Action:")
       { // Sex field validation
-        if (IsNotWord(FieldValue, "None Aggro Faction Destroy Help NoMove Wimpy"))
+        if (StrIsNotWord(ConvertCStringToString(FieldValue), "None Aggro Faction Destroy Help NoMove Wimpy"))
         { // Invalid mobile action
           Message = "Mobile action is invalid";
           FileName = MobileFileName;
@@ -339,7 +339,7 @@ void Validate::ValidateLibraryMobiles()
       //************
       if (FieldName == "Faction:")
       { // Faction field validation
-        if (IsNotWord(FieldValue, "Evil Lawless Neutral Lawful Good"))
+        if (StrIsNotWord(ConvertCStringToString(FieldValue), "Evil Lawless Neutral Lawful Good"))
         { // Invalid mobile faction
           Message = "Mobile faction is invalid";
           FileName = MobileFileName;
@@ -352,7 +352,7 @@ void Validate::ValidateLibraryMobiles()
       if (FieldName == "Attack:")
       { // Faction field validation
         FieldValue = StrMakeLower(FieldValue);
-        if (IsNotWord(FieldValue, "bites claws crushes hits mauls pierces punches slashes stabs stings thrashes"))
+        if (StrIsNotWord(ConvertCStringToString(FieldValue), "bites claws crushes hits mauls pierces punches slashes stabs stings thrashes"))
         { // Invalid mobile attack
           Message = "Mobile attack is invalid";
           FileName = MobileFileName;
@@ -481,7 +481,7 @@ void Validate::ValidateLibraryObjects()
       //*********
       if (FieldName == "Type:")
       { // Type field validation
-        if (IsNotWord(FieldValue, "Armor Container Drink Food Junk Key Light NoTake Treasure Weapon"))
+        if (StrIsNotWord(ConvertCStringToString(FieldValue), "Armor Container Drink Food Junk Key Light NoTake Treasure Weapon"))
         { // Invalid object type
           Message = "Object type is invalid";
           FileName = ObjectFileName;
@@ -519,7 +519,7 @@ void Validate::ValidateLibraryObjects()
           }
           else
           { // Validate 'wear' positions
-            if (IsNotWord(FieldValue, "Head Ear Neck Shoulders Chest Back Arms Wrist Hands Finger Shield Waist Legs Ankle Feet"))
+            if (StrIsNotWord(ConvertCStringToString(FieldValue), "Head Ear Neck Shoulders Chest Back Arms Wrist Hands Finger Shield Waist Legs Ankle Feet"))
             { // Invalid wear position
               Message = "Wear position is invalid";
               FileName = ObjectFileName;
@@ -546,7 +546,7 @@ void Validate::ValidateLibraryObjects()
           }
           else
           { // Validate WeaponType
-            if (IsNotWord(FieldValue, "Axe Club Dagger Hammer Spear Staff Sword"))
+            if (StrIsNotWord(ConvertCStringToString(FieldValue), "Axe Club Dagger Hammer Spear Staff Sword"))
             { // Invalid weapon type
               Message = "Weapon type is invalid";
               FileName = ObjectFileName;

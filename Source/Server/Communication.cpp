@@ -4293,7 +4293,7 @@ void Communication::DoLoad()
   TmpStr = StrGetWord(CmdStr, 2);
   TmpStr = StrMakeLower(TmpStr);
   TmpStr = TranslateWord(ConvertStringToCString(TmpStr));
-  if (IsNotWord(ConvertStringToCString(TmpStr),"object mobile"))
+  if (StrIsNotWord(TmpStr, "object mobile"))
   { // obj or mob must be specified
     pDnodeActor->PlayerOut += "2nd parm must be obj{ect}|mob{ile}\r\n";
     pDnodeActor->pPlayer->CreatePrompt();
@@ -5204,7 +5204,7 @@ void Communication::DoShow()
     return;
   }
   TmpStr = StrMakeLower(TmpStr);
-  if (IsNotWord(ConvertStringToCString(TmpStr), "commands socials help"))
+  if (StrIsNotWord(TmpStr, "commands socials help"))
   { // Show target not valid
     pDnodeActor->PlayerOut += "Show what??";
     pDnodeActor->PlayerOut += "\r\n";
@@ -5715,7 +5715,7 @@ void Communication::DoTrain()
   }
   if (WeaponType != "")
   { // WeaponType specified
-    if (IsNotWord(ConvertStringToCString(WeaponType), "axe club dagger hammer spear staff sword"))
+    if (StrIsNotWord(WeaponType, "axe club dagger hammer spear staff sword"))
     { // But it was the invalid
       pDnodeActor->PlayerOut += "Please specify a valid weapon type.";
       pDnodeActor->PlayerOut += "\r\n";
@@ -6082,7 +6082,7 @@ void Communication::DoWear()
   { // Object must be worn using left and right
     TmpStr = StrGetWord(CmdStr, 3);
     TmpStr = StrMakeLower(TmpStr);
-    if (IsNotWord(ConvertStringToCString(TmpStr),"left right"))
+    if (StrIsNotWord(TmpStr,"left right"))
     { // Player did not specify left or right
       pDnodeActor->PlayerOut += "You must specify left or right";
       pDnodeActor->PlayerOut += ".\r\n";

@@ -331,7 +331,7 @@ bool Room::IsRoomType(string RoomId, string RoomType)
   StrTrimLeft(Stuff);
   StrTrimRight(Stuff);
   RoomFile.close();
-  if (IsNotWord(ConvertStringToCString(RoomType), ConvertStringToCString(Stuff)))
+  if (StrIsNotWord(RoomType, Stuff))
   { // No matching RoomType found
     return false;
   }
