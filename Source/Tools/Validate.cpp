@@ -719,22 +719,19 @@ void Validate::ValidateLibraryRooms()
 
 void Validate::ValidateLibraryShops()
 {
-  CString    FieldName;
-  CString    FieldValue;
-  CFileFind  FileList;
-  CString    FileName;
+  string     FieldName;
+  string     FieldValue;
+  string     FileName;
   int        LineCount;
-  CString    LogBuf;
-  CString    Message;
-  CString    ObjectId;
-  CStdioFile ObjectIdFile;
-  CString    ObjectIdFileName;
-  CStdioFile ShopFile;
-  CString    ShopFileName;
-  CString    PlayerName;
-  BOOL       MoreFiles;
-  CString    Stuff;
-  int        Success;
+  string     LogBuf;
+  string     Message;
+  string     ObjectId;
+  ifstream   ObjectIdFile;
+  string     ObjectIdFileName;
+  ifstream   ShopFile;
+  string     ShopFileName;
+  string     PlayerName;
+  string     Stuff;
 
   LogBuf = "Begin validation LibraryShops";
   LogIt(LogBuf);
@@ -744,33 +741,29 @@ void Validate::ValidateLibraryShops()
     _endthread();
   }
   // Get list of all LibraryShops files
-  MoreFiles = FileList.FindFile("*.*");
   if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateLibraryShops - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
   }
-  while (MoreFiles)
+  for (const auto &entry : fs::directory_iterator("./"))
   {
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
-    { // Skip directories
+    if (entry.is_directory())
+    {
       continue;
     }
     // Open player file
-    ShopFileName = FileList.GetFileName();
+    ShopFileName = entry.path().filename().string();
     PlayerName = StrLeft(ShopFileName, StrGetLength(ShopFileName) - 4);
     ShopFileName = SHOPS_DIR + ShopFileName;
-    Success = ShopFile.Open(ShopFileName,
-                 CFile::modeRead |
-                 CFile::typeText);
-    if (!Success)
+    ShopFile.open(ShopFileName);
+    if (!ShopFile.is_open())
     { // File does not exist - Very bad!
       AfxMessageBox("Validate::ValidateLibraryShops - Open shop file failed", MB_ICONSTOP);
       _endthread();
     }
     LineCount = 0;
-    ShopFile.ReadString(Stuff);
+    getline(ShopFile, Stuff);
     while (Stuff != "End of Shop")
     { // For all lines
       LineCount++;
@@ -778,8 +771,8 @@ void Validate::ValidateLibraryShops()
       FieldValue = StrGetWord(Stuff, 2);
       if (FieldName != "Item:")
       { // Not an item line
-        ShopFile.ReadString(Stuff);
-        if (ShopFile.GetPosition() == ShopFile.GetLength())
+        getline(ShopFile, Stuff);
+        if (ShopFile.eof())
         { // ObjectId file not found
           if (Stuff != "End of Shop")
           { // 'End of Shop' must be last line
@@ -798,12 +791,10 @@ void Validate::ValidateLibraryShops()
       ObjectIdFileName = OBJECTS_DIR;
       ObjectIdFileName += ObjectId;
       ObjectIdFileName += ".txt";
-      Success = ObjectIdFile.Open(ObjectIdFileName,
-                       CFile::modeRead |
-                       CFile::typeText);
-      if (Success)
+      ObjectIdFile.open(ObjectIdFileName);
+      if (ObjectIdFile.is_open())
       { // RoomId file found, don't leave it open
-        ObjectIdFile.Close();
+        ObjectIdFile.close();
       }
       else
       { // ObjectId file not found
@@ -815,9 +806,9 @@ void Validate::ValidateLibraryShops()
         FileName = ShopFileName;
         LogValErr(Message, FileName);
       }
-      ShopFile.ReadString(Stuff);
+      getline(ShopFile, Stuff);
     }
-    ShopFile.Close();
+    ShopFile.close();
   }
   LogBuf = "Done  validating LibraryShops";
   LogIt(LogBuf);
