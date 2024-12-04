@@ -1232,23 +1232,20 @@ void Validate::ValidateRunningPlayersPlayerObj()
 
 void Validate::ValidateRunningRoomMob()
 {
-  CFileFind  FileList;
-  CString    FileName;
+  string     FileName;
   int        LineCount;
-  CString    LogBuf;
-  CString    Message;
-  CString    MobileId;
-  CStdioFile MobileIdFile;
-  CString    MobileIdFileName;
-  BOOL       MoreFiles;
+  string     LogBuf;
+  string     Message;
+  string     MobileId;
+  ifstream   MobileIdFile;
+  string     MobileIdFileName;
   int        PositionOfDot;
-  CString    RoomId;
-  CStdioFile RoomIdFile;
-  CString    RoomIdFileName;
-  CString    Stuff;
-  int        Success;
-  CStdioFile RoomMobFile;
-  CString    RoomMobFileName;
+  string     RoomId;
+  ifstream   RoomIdFile;
+  string     RoomIdFileName;
+  string     Stuff;
+  ifstream   RoomMobFile;
+  string     RoomMobFileName;
 
   LogBuf = "Begin validation RunningRoomMob";
   LogIt(LogBuf);
@@ -1258,31 +1255,27 @@ void Validate::ValidateRunningRoomMob()
     _endthread();
   }
   // Get list of all RunningRoomMob files
-  MoreFiles = FileList.FindFile("*.*");
   if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateRunningRoomMob - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
   }
-  while (MoreFiles)
+  for (const auto &entry : fs::directory_iterator("./"))
   {
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
-    { // Skip directories
+    if (entry.is_directory())
+    {
       continue;
     }
     // Open world mobile file
-    RoomMobFileName = FileList.GetFileName();
+    RoomMobFileName = entry.path().filename().string();
     if (RoomMobFileName == "ReadMe.txt")
     { // Skip ReadMe files
       continue;
     }
     RoomId = StrLeft(RoomMobFileName, StrGetLength(RoomMobFileName) - 4);
     RoomMobFileName = ROOM_MOB_DIR + RoomMobFileName;
-    Success = RoomMobFile.Open(RoomMobFileName,
-                    CFile::modeRead |
-                    CFile::typeText);
-    if (!Success)
+    RoomMobFile.open(RoomMobFileName);
+    if (!RoomMobFile.is_open())
     { // File does not exist - Very bad!
       AfxMessageBox("Validate::ValidateRunningRoomMob - Open world mobile file failed", MB_ICONSTOP);
       _endthread();
@@ -1293,12 +1286,10 @@ void Validate::ValidateRunningRoomMob()
     RoomIdFileName = ROOMS_DIR;
     RoomIdFileName += RoomId;
     RoomIdFileName += ".txt";
-    Success = RoomIdFile.Open(RoomIdFileName,
-                   CFile::modeRead |
-                   CFile::typeText);
-    if (Success)
+    RoomIdFile.open(RoomIdFileName);
+    if (RoomIdFile.is_open())
     { // RoomId file found, don't leave it open
-      RoomIdFile.Close();
+      RoomIdFile.close();
     }
     else
     { // RoomId file not found
@@ -1314,7 +1305,7 @@ void Validate::ValidateRunningRoomMob()
     //* Check file contents *
     //***********************
     LineCount = 0;
-    RoomMobFile.ReadString(Stuff);
+    getline(RoomMobFile, Stuff);
     while (Stuff != "")
     { // For all lines
       LineCount++;
@@ -1331,12 +1322,10 @@ void Validate::ValidateRunningRoomMob()
       MobileIdFileName = MOBILES_DIR;
       MobileIdFileName += MobileId;
       MobileIdFileName += ".txt";
-      Success = MobileIdFile.Open(MobileIdFileName,
-                       CFile::modeRead |
-                       CFile::typeText);
-      if (Success)
+      MobileIdFile.open(MobileIdFileName);
+      if (MobileIdFile.is_open())
       { // MobileId file found, don't leave it open
-        MobileIdFile.Close();
+        MobileIdFile.close();
       }
       else
       { // MobileId file not found
@@ -1348,9 +1337,9 @@ void Validate::ValidateRunningRoomMob()
         FileName = RoomMobFileName;
         LogValErr(Message, FileName);
       }
-      RoomMobFile.ReadString(Stuff);
+      getline(RoomMobFile, Stuff);
     }
-    RoomMobFile.Close();
+    RoomMobFile.close();
   }
   LogBuf = "Done  validating RunningRoomMob";
   LogIt(LogBuf);
