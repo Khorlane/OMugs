@@ -46,12 +46,8 @@ Validate::~Validate()
  ***********************************************************/
 void Validate::LogValErr(string Message, string FileName)
 {
-  return LogValErr(ConvertStringToCString(Message), ConvertStringToCString(FileName));
-}
-void Validate::LogValErr(CString Message, CString FileName)
-{
-  CString LogBuf;
-  CString TmpStr;
+  string LogBuf;
+  string TmpStr;
 
   if (StrGetLength(Message) > 50)
   { // Message is too long, chop it off
@@ -74,7 +70,7 @@ void Validate::LogValErr(CString Message, CString FileName)
  * ValidateIt                                              *
  ***********************************************************/
 
-bool Validate::ValidateIt(CString ValidationType)
+bool Validate::ValidateIt(string ValidationType)
 {
   CString LogBuf;
 

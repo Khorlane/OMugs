@@ -397,7 +397,7 @@ int     StrWordCount(CString String);
 int     StrWordCount(string String);
 string  TranslateWord(string Word);
 void    UpdateMobInWorld(string MobileId, string AddRemove);
-bool    ValidateIt(CString ValidationType);
+bool    ValidateIt(string ValidationType);
 string  WhackMobile(string PlayerName, int DamageToMobile, string MobileDesc1, string WeaponType);
 string  WhackPlayer(string MobileDesc1, string MobileAttack, int DamageToPlayer);
 void    WhereMob(string MobileIdSearch);

@@ -32,8 +32,7 @@ class Validate
     Validate();
     ~Validate();
     void    static  LogValErr(string Message, string FileName);
-    void    static  LogValErr(CString Message, CString FileName);
-    bool    static  ValidateIt(CString ValidationType);
+    bool    static  ValidateIt(string ValidationType);
     void    static  ValidateAll();
     void    static  ValidateLibraryLoot();
     void    static  ValidateLibraryMobiles();

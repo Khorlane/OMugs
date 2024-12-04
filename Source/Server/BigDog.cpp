@@ -1281,7 +1281,7 @@ void UpdateMobInWorld(string MobileId, string AddRemove)
   Mobile::UpdateMobInWorld(MobileId, AddRemove);
 }
 
-bool ValidateIt(CString ValidationType)
+bool ValidateIt(string ValidationType)
 {
   return Validate::ValidateIt(ValidationType);
 }

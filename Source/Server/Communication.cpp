@@ -190,14 +190,6 @@ bool Communication::IsSleeping()
 ************************************************************/
 void Communication::SendToAll(string PlayerMsg, string AllMsg)
 {
-  SendToAll(ConvertStringToCString(PlayerMsg), ConvertStringToCString(AllMsg));
-}
-void Communication::SendToAll(CString PlayerMsg, string AllMsg)
-{
-  SendToAll(PlayerMsg, ConvertStringToCString(AllMsg));
-}
-void Communication::SendToAll(CString PlayerMsg, CString AllMsg)
-{
   SetpDnodeCursorFirst();
   while (!EndOfDnodeList())
   { // Loop thru all connections
@@ -1901,7 +1893,7 @@ void Communication::DoChat()
   AllMsg += ChatMsg;
   AllMsg += "&N";
   AllMsg += "\r\n";
-  SendToAll(ConvertStringToCString(PlayerMsg), ConvertStringToCString(AllMsg));
+  SendToAll(PlayerMsg, AllMsg);
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
 }
@@ -2251,7 +2243,7 @@ void Communication::DoDelete()
   AllMsg    = PronounSubstitute(AllMsg);
   pDnodeSrc = NULL;
   pDnodeTgt = NULL;
-  SendToAll(ConvertStringToCString(PlayerMsg), ConvertStringToCString(AllMsg));
+  SendToAll(PlayerMsg, AllMsg);
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
 }
@@ -6649,7 +6641,7 @@ void Communication::LogonWaitMaleFemale()
     AllMsg += pDnodeActor->PlayerName;
     AllMsg += ".";
     AllMsg += "\r\n";
-    SendToAll(ConvertStringToCString(PlayerMsg), ConvertStringToCString(AllMsg));
+    SendToAll(PlayerMsg, AllMsg);
     ShowRoom(pDnodeActor);
     LogBuf  = "New player ";
     LogBuf += pDnodeActor->PlayerName;
@@ -6878,7 +6870,7 @@ void Communication::LogonWaitPassword()
         AllMsg += pDnodeActor->PlayerName;
         AllMsg += " has entered the game.";
         AllMsg += "\r\n";
-        SendToAll(ConvertStringToCString(PlayerMsg), ConvertStringToCString(AllMsg));
+        SendToAll(PlayerMsg, AllMsg);
         ShowRoom(pDnodeActor);
         LogBuf  = "Returning player ";
         LogBuf += pDnodeActor->PlayerName;
