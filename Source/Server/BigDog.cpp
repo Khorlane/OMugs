@@ -240,25 +240,10 @@ void PrintIt(string Message)
 // String Functions
 //
 
-// Count characters in a string (temporary)
-int StrCountChar(CString Str1, char c)
-{
-  string x;
-  x = ConvertCStringToString(Str1);
-  return StrCountChar(x, c);
-}
-
 // Count characters in a string
 int StrCountChar(string Str1, char c)
 {
   return count(Str1.begin(), Str1.end(), c);
-}
-
-int StrCountWords(CString Str1)
-{
-  string x;
-  x = ConvertCStringToString(Str1);
-  return StrCountWords(x);
 }
 
 // Count number of words in a string
@@ -276,22 +261,10 @@ int StrCountWords(string Str1)
   return Words.size();
 }
 
-// Delete characters from a string (temporary)
-CString StrDelete(CString Str1, int Position, int Length)
-{
-  return ConvertStringToCString(StrDelete(ConvertCStringToString(Str1), Position, Length));
-}
-
 // Delete characters from a string
 string StrDelete(string Str1, int Position, int Length)
 {
   return Str1.erase(Position, Length);
-}
-
-// Delete the word specified by WordNbr, Squeezing string first (temporary)
-CString StrDeleteWord(CString Str1, int WordNbr)
-{
-  return ConvertStringToCString(StrDeleteWord(ConvertCStringToString(Str1), WordNbr));
 }
 
 // Delete the word specified by WordNbr, Squeezing string first
@@ -312,18 +285,6 @@ string StrDeleteWord(string Str1, int WordNbr)
   return Str1;
 }
 
-// Find first occurrence of Needle in HayStack (temporary)
-int StrFind(CString HayStack, CString Needle)
-{
-  return StrFind(ConvertCStringToString(HayStack), ConvertCStringToString(Needle));
-}
-
-// Find first occurrence of Needle in HayStack (temporary)
-int StrFind(CString HayStack, const char *Needle)
-{
-  return StrFind(ConvertCStringToString(HayStack), Needle);
-}
-
 // Find first occurrence of Needle in HayStack
 int StrFind(string HayStack, string Needle)
 {
@@ -336,34 +297,16 @@ int StrFind(string HayStack, string Needle, int Pos)
   return HayStack.find(Needle, Pos);
 }
 
-// Find first occurrence of a character in a string (Temporary)
-int StrFindFirstChar(CString Str1, char c)
-{
-  return StrFindFirstChar(ConvertCStringToString(Str1), c);
-}
-
 // Find first occurrence of a character in a string
 int StrFindFirstChar(string Str1, char c)
 {
   return Str1.find_first_of(c);
 }
 
-// Find one of the characters specified in Needle in the HayStack (temporary)
-int StrFindOneOf(CString HayStack, string Needle)
-{
-  return StrFindOneOf(ConvertCStringToString(HayStack), Needle);
-}
-
 // Find one of the characters specified in Needle in the HayStack
 int StrFindOneOf(string HayStack, string Needle)
 {
   return HayStack.find_first_of(Needle);
-}
-
-// Return the character in Str1 at Position (temporary)
-char StrGetAt(CString Str1, int Position)
-{
-  return StrGetAt(ConvertCStringToString(Str1), Position);
 }
 
 // Return the character in Str1 at Position
@@ -376,12 +319,6 @@ char StrGetAt(string Str1, int Position)
 int StrGetLength(string Str1)
 {
   return Str1.length();
-}
-
-// Get the Word indicated by WordNbr (temporary)
-CString StrGetWord(CString Str1, int WordNbr)
-{
-  return ConvertStringToCString(StrGetWord(ConvertCStringToString(Str1), WordNbr));
 }
 
 // Get the Word indicated by WordNbr
@@ -398,12 +335,6 @@ string StrGetWord(string Str1, int WordNbr)
       return Word;
   }
   return "";
-}
-
-// Get the position and length of a word from String (temporary)
-CString StrGetWordPosLen(CString String, int WordNbr)
-{
-  return ConvertStringToCString(StrGetWordPosLen(ConvertCStringToString(String), WordNbr));
 }
 
 // Get the position and length of a word from String
@@ -485,34 +416,16 @@ string StrGetWords(string Str1, int WordNbr)
   return "";
 }
 
-// Insert string Str2 into string Str1 at Position (temporary)
-CString StrInsert(CString Str1, int Position, CString Str2)
-{
-  return ConvertStringToCString(StrInsert(ConvertCStringToString(Str1), Position, ConvertCStringToString(Str2)));
-}
-
 // Insert string Str2 into string Str1 at Position
 string  StrInsert(string Str1, int Position, string Str2)
 {
   return Str1.insert(Position, Str2);
 }
 
-// Insert character c into string Str1 at Position (temporary)
-CString StrInsertChar(CString Str1, int Position, char c)
-{
-  return ConvertStringToCString(StrInsertChar(ConvertCStringToString(Str1), Position, c));
-}
-
 // Insert character c into string Str1 at Position
 string StrInsertChar(string Str1, int Position, char c)
 {
   return Str1.insert(Position, 1, c);
-}
-
-// Is word 'not in' word list? (temporary)
-bool StrIsNotWord(CString Word, CString WordList)
-{
-  return StrIsNotWord(ConvertCStringToString(Word), ConvertCStringToString(WordList));
 }
 
 // Is word 'not in' word list?
@@ -545,12 +458,6 @@ bool StrIsNotWord(string Word, string WordList)
   { // Word was not found in word list
     return true;
   }
-}
-
-// Is word 'in' word list?  (temporary)
-bool StrIsWord(CString Word, CString WordList)
-{
-  return StrIsWord(ConvertCStringToString(Word), ConvertCStringToString(WordList));
 }
 
 // Is word 'in' word list?
@@ -586,22 +493,10 @@ bool StrIsWord(string Word, string WordList)
   }
 }
 
-// Get the left portion of a string (temporary)
-CString StrLeft(CString Str1, int Len)
-{
-  return ConvertStringToCString(StrLeft(ConvertCStringToString(Str1), Len));
-}
-
 // Get the left portion of a string
 string StrLeft(string Str1, int Len)
 {
   return Str1.substr(0, Len);
-}
-
-// Make First Letter Lowercase (temporary)
-CString StrMakeFirstLower(CString Str1)
-{
-  return ConvertStringToCString(StrMakeFirstLower(ConvertCStringToString(Str1)));
 }
 
 // Make First Letter Lowercase
@@ -611,23 +506,11 @@ string StrMakeFirstLower(string Str1)
   return Str1;
 }
 
-// Make First Letter Uppercase (temporary)
-CString StrMakeFirstUpper(CString Str1)
-{
-  return ConvertStringToCString(StrMakeFirstUpper(ConvertCStringToString(Str1)));
-}
-
 // Make First Letter Uppercase
 string StrMakeFirstUpper(string Str1)
 {
   Str1[0] = toupper(Str1[0]);
   return Str1;
-}
-
-// Lower case the whole string (temporary)
-CString StrMakeLower(CString Str1)
-{
-  return ConvertStringToCString(StrMakeLower(ConvertCStringToString(Str1)));
 }
 
 // Lower case the whole string
@@ -646,28 +529,11 @@ string StrMakeUpper(string Str1)
   return Str1;
 }
 
-CString StrRemove(CString Str1, char c)
-{
-  string x;
-  x = ConvertCStringToString(Str1);
-  x = StrRemove(x, c);
-  return ConvertStringToCString(x);
-}
-
 // Remove all occurrences of a character from a string
 string StrRemove(string Str1, char c)
 {
   Str1.erase(remove(Str1.begin(), Str1.end(), c), Str1.end());
   return Str1;
-}
-
-// Replace a string in a string (temporary)
-void StrReplace(CString &str, const string &from, const string &to)
-{
-  string x;
-  x = ConvertCStringToString(str);
-  StrReplace(x, from, to);
-  str = ConvertStringToCString(x);
 }
 
 // Replace a string in a string
@@ -693,23 +559,11 @@ string StrRight(string Str1, int Len)
   return Str1.substr(Str1.length() - Len, Len);
 }
 
-// Replace the character in Str1 at Position (temporary)
-CString StrSetAt(CString Str1, int Position, char c)
-{
-  return ConvertStringToCString(StrSetAt(ConvertCStringToString(Str1), Position, c));
-}
-
 // Replace the character in Str1 at Position
 string StrSetAt(string Str1, int Position, char c)
 {
   Str1[Position] = c;
   return Str1;
-}
-
-// Remove leading, trailing, and extra spaces
-CString StrSqueeze(CString Str1)
-{
-  return ConvertStringToCString(StrSqueeze(ConvertCStringToString(Str1)));
 }
 
 // Remove leading, trailing, and extra spaces
@@ -763,12 +617,6 @@ void StrVectorSetAt(vector<string> &StrVector1, int Position, string Str1) // TO
     return;
   }
   StrVector1[Position] = Str1;
-}
-
-// Count the number of words (temporary)
-int StrWordCount(CString String)
-{
-  return StrWordCount(ConvertCStringToString(String));
 }
 
  // Count the number of words
@@ -1115,11 +963,6 @@ void ListObjects()
 void LogIt(string LogBuf)
 {
   Log::LogIt(LogBuf);
-}
-
-void LogIt(CString LogBuf)
-{
-  Log::LogIt(ConvertCStringToString(LogBuf));
 }
 
 void OpenLogFile()
