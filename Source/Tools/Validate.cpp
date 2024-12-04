@@ -820,24 +820,21 @@ void Validate::ValidateLibraryShops()
 
 void Validate::ValidateLibraryWorldMobiles()
 {
-  CString    FieldName;
-  CString    FieldValue;
-  CFileFind  FileList;
-  CString    FileName;
+  string     FieldName;
+  string     FieldValue;
+  string     FileName;
   int        LineCount;
-  CString    LogBuf;
-  CString    Message;
-  CString    MobileId;
-  CStdioFile MobileIdFile;
-  CString    MobileIdFileName;
-  BOOL       MoreFiles;
-  CStdioFile RoomIdFile;
-  CString    RoomIdFileName;
-  CString    Stuff;
-  int        Success;
-  CStdioFile WorldMobileFile;
-  CString    WorldMobileFileName;
-  CString    WorldMobileName;
+  string     LogBuf;
+  string     Message;
+  string     MobileId;
+  ifstream   MobileIdFile;
+  string     MobileIdFileName;
+  ifstream   RoomIdFile;
+  string     RoomIdFileName;
+  string     Stuff;
+  ifstream   WorldMobileFile;
+  string     WorldMobileFileName;
+  string     WorldMobileName;
 
   LogBuf = "Begin validation LibraryWorldMobiles";
   LogIt(LogBuf);
@@ -847,21 +844,19 @@ void Validate::ValidateLibraryWorldMobiles()
     _endthread();
   }
   // Get list of all LibraryWorldMobiles files
-  MoreFiles = FileList.FindFile("*.*");
   if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateLibraryWorldMobiles - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
   }
-  while (MoreFiles)
+  for (const auto& entry : fs::directory_iterator("./"))
   {
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
-    { // Skip directories
+    if (entry.is_directory())
+    {
       continue;
     }
     // Open world mobile file
-    WorldMobileFileName = FileList.GetFileName();
+    WorldMobileFileName = entry.path().filename().string();
     if (WorldMobileFileName == "ReadMe.txt")
     { // Skip ReadMe files
       continue;
@@ -869,10 +864,8 @@ void Validate::ValidateLibraryWorldMobiles()
     WorldMobileName = StrLeft(WorldMobileFileName, StrGetLength(WorldMobileFileName) - 4);
     MobileId = WorldMobileName;
     WorldMobileFileName = WORLD_MOBILES_DIR + WorldMobileFileName;
-    Success = WorldMobileFile.Open(WorldMobileFileName,
-                        CFile::modeRead |
-                        CFile::typeText);
-    if (!Success)
+    WorldMobileFile.open(WorldMobileFileName);
+    if (!WorldMobileFile.is_open())
     { // File does not exist - Very bad!
       AfxMessageBox("Validate::ValidateLibraryWorldMobiles - Open world mobile file failed", MB_ICONSTOP);
       _endthread();
@@ -883,12 +876,10 @@ void Validate::ValidateLibraryWorldMobiles()
     MobileIdFileName = MOBILES_DIR;
     MobileIdFileName += MobileId;
     MobileIdFileName += ".txt";
-    Success = MobileIdFile.Open(MobileIdFileName,
-                     CFile::modeRead |
-                     CFile::typeText);
-    if (Success)
+    MobileIdFile.open(MobileIdFileName);
+    if (MobileIdFile.is_open())
     { // MobileId file found, don't leave it open
-      MobileIdFile.Close();
+      MobileIdFile.close();
     }
     else
     { // MobileId file not found
@@ -904,7 +895,7 @@ void Validate::ValidateLibraryWorldMobiles()
     //* Check file contents *
     //***********************
     LineCount = 0;
-    WorldMobileFile.ReadString(Stuff);
+    getline(WorldMobileFile, Stuff);
     while (Stuff != "")
     { // For all lines
       LineCount++;
@@ -918,12 +909,10 @@ void Validate::ValidateLibraryWorldMobiles()
         RoomIdFileName = ROOMS_DIR;
         RoomIdFileName += FieldValue;
         RoomIdFileName += ".txt";
-        Success = RoomIdFile.Open(RoomIdFileName,
-                       CFile::modeRead |
-                       CFile::typeText);
-        if (Success)
+        RoomIdFile.open(RoomIdFileName);
+        if (RoomIdFile)
         { // RoomId file found, don't leave it open
-          RoomIdFile.Close();
+          RoomIdFile.close();
         }
         else
         { // RoomId file not found
@@ -936,9 +925,9 @@ void Validate::ValidateLibraryWorldMobiles()
           LogValErr(Message, FileName);
         }
       }
-      WorldMobileFile.ReadString(Stuff);
+      getline(WorldMobileFile, Stuff);
     }
-    WorldMobileFile.Close();
+    WorldMobileFile.close();
   }
   LogBuf = "Done  validating LibraryWorldMobiles";
   LogIt(LogBuf);
