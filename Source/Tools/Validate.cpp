@@ -559,25 +559,22 @@ void Validate::ValidateLibraryObjects()
 
 void Validate::ValidateLibraryRooms()
 {
-  CStdioFile ExitToRoomIdFile;
-  CString    ExitToRoomIdFileName;
-  CString    FieldName;
-  CString    FieldValue;
-  CFileFind  FileList;
-  CString    FileName;
+  ifstream   ExitToRoomIdFile;
+  string     ExitToRoomIdFileName;
+  string     FieldName;
+  string     FieldValue;
+  string     FileName;
   int        i;
   int        j;
   int        LineCount;
-  CString    LogBuf;
-  CString    Message;
-  BOOL       MoreFiles;
-  CStdioFile RoomFile;
-  CString    RoomFileName;
-  CString    RoomId;
+  string     LogBuf;
+  string     Message;
+  ifstream   RoomFile;
+  string     RoomFileName;
+  string     RoomId;
   bool       RoomTypeError;
-  CString    Stuff;
-  int        Success;
-  CString    TmpStr;
+  string     Stuff;
+  string     TmpStr;
 
   LogBuf = "Begin validation LibraryRooms";
   LogIt(LogBuf);
@@ -587,38 +584,34 @@ void Validate::ValidateLibraryRooms()
     _endthread();
   }
   // Get list of all LibraryRooms files
-  MoreFiles = FileList.FindFile("*.*");
   if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateRooms - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
   }
-  while (MoreFiles)
+  for (const auto &entry : fs::directory_iterator("./"))
   {
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
-    { // Skip directories
+    if (entry.is_directory())
+    {
       continue;
     }
     // Open room file
-    RoomFileName = FileList.GetFileName();
+    RoomFileName = entry.path().filename().string();;
     RoomId = StrLeft(RoomFileName, StrGetLength(RoomFileName) - 4);
     RoomFileName = ROOMS_DIR + RoomFileName;
-    Success = RoomFile.Open(RoomFileName,
-                 CFile::modeRead |
-                 CFile::typeText);
-    if (!Success)
+    RoomFile.open(RoomFileName);
+    if (!RoomFile.is_open())
     { // File does not exist - Very bad!
       AfxMessageBox("Validate::ValidateLibraryRooms - Open room file failed", MB_ICONSTOP);
       _endthread();
     }
     LineCount = 0;
-    RoomFile.ReadString(Stuff);
+    getline(RoomFile, Stuff);
     while (Stuff != "End of Room")
     { // For all lines
       LineCount++;
       FieldName  = StrGetWord(Stuff, 1);
-      FieldValue = ConvertStringToCString(StrGetWords(ConvertCStringToString(Stuff), 2));
+      FieldValue = StrGetWords(Stuff, 2);
       //********************************
       //* RoomId field must be first *
       //********************************
@@ -653,7 +646,7 @@ void Validate::ValidateLibraryRooms()
         for (i = 1; i <= j; i++)
         { // Check each word in FieldValue
           TmpStr = StrGetWord(FieldValue, i);
-          if (StrIsWord(ConvertCStringToString(TmpStr), "None Dark Drink NoFight NoNPC"))
+          if (StrIsWord(TmpStr, "None Dark Drink NoFight NoNPC"))
           { // Valid RoomType
             if (TmpStr != "None")
             { // Exclude RoomType of 'None'
@@ -674,7 +667,7 @@ void Validate::ValidateLibraryRooms()
       //************
       if (FieldName == "Terrain:")
       { // Terrain validation
-        if (StrIsWord(ConvertCStringToString(FieldValue), "Inside Street Road Field Forest Swamp Desert Hill Mountain"))
+        if (StrIsWord(FieldValue, "Inside Street Road Field Forest Swamp Desert Hill Mountain"))
         { // Valid Terrain
         }
         else
@@ -692,12 +685,10 @@ void Validate::ValidateLibraryRooms()
         ExitToRoomIdFileName = ROOMS_DIR;
         ExitToRoomIdFileName += FieldValue;
         ExitToRoomIdFileName += ".txt";
-        Success = ExitToRoomIdFile.Open(ExitToRoomIdFileName,
-                             CFile::modeRead |
-                             CFile::typeText);
-        if (Success)
+        ExitToRoomIdFile.open(ExitToRoomIdFileName);
+        if (ExitToRoomIdFile)
         { // ExitToRoomId file found, don't leave it open
-          ExitToRoomIdFile.Close();
+          ExitToRoomIdFile.close();
         }
         else
         { // ExitToRoom file not found
@@ -710,13 +701,13 @@ void Validate::ValidateLibraryRooms()
           LogValErr(Message, FileName);
         }
       }
-      RoomFile.ReadString(Stuff);
-      if (RoomFile.GetPosition() == RoomFile.GetLength())
+      getline(RoomFile, Stuff);
+      if (RoomFile.eof())
       { // End of file reached
         Stuff = "End of Room";
       }
     }
-    RoomFile.Close();
+    RoomFile.close();
   }
   LogBuf = "Done  validating LibraryRooms";
   LogIt(LogBuf);
