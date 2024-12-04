@@ -218,35 +218,35 @@ void BuildObjects::ParseStuff()
   while (Stuff != "")
   {
     // ObjectId
-    if (StrLeft(Stuff, 9) == "ObjectId:")
+    if (StrLeft((LPCTSTR) Stuff, 9) == "ObjectId:")
     {
-      ObjectId = StrRight(Stuff, StrGetLength(Stuff) - 9);
-      ObjectId = StrTrimLeft(ObjectId);
+      ObjectId = StrRight((LPCTSTR) Stuff, StrGetLength((LPCTSTR) Stuff) - 9).c_str();
+      ObjectId = StrTrimLeft((LPCTSTR) ObjectId).c_str();
     }
     else
     // Names
-    if (StrLeft(Stuff, 6) == "Names:")
+    if (StrLeft((LPCTSTR) Stuff, 6) == "Names:")
     {
-      Names = StrRight(Stuff, StrGetLength(Stuff) - 6);
-      Names = StrTrimLeft(Names);
+      Names = StrRight((LPCTSTR) Stuff, StrGetLength((LPCTSTR) Stuff) - 6).c_str();
+      Names = StrTrimLeft((LPCTSTR) Names).c_str();
     }
     else
     // Desc1
-    if (StrLeft(Stuff, 6) == "Desc1:")
+    if (StrLeft((LPCTSTR) Stuff, 6) == "Desc1:")
     {
-      Desc1 = StrRight(Stuff, StrGetLength(Stuff) - 6);
-      Desc1 = StrTrimLeft(Desc1);
+      Desc1 = StrRight((LPCTSTR) Stuff, StrGetLength((LPCTSTR) Stuff) - 6).c_str();
+      Desc1 = StrTrimLeft((LPCTSTR) Desc1).c_str();
     }
     else
     // Desc2
-    if (StrLeft(Stuff, 6) == "Desc2:")
+    if (StrLeft((LPCTSTR) Stuff, 6) == "Desc2:")
     {
-      Desc2 = StrRight(Stuff, StrGetLength(Stuff) - 6);
-      Desc2 = StrTrimLeft(Desc2);
+      Desc2 = StrRight((LPCTSTR) Stuff, StrGetLength((LPCTSTR) Stuff) - 6).c_str();
+      Desc2 = StrTrimLeft((LPCTSTR) Desc2).c_str();
     }
     else
     // Desc3
-    if (StrLeft(Stuff, 6) == "Desc3:")
+    if (StrLeft((LPCTSTR) Stuff, 6) == "Desc3:")
     { 
       Desc3 = "";
       ObjectFile.ReadString(Stuff); // Do not use Readline()
@@ -256,52 +256,52 @@ void BuildObjects::ParseStuff()
         Desc3 += "\r\n";
         ObjectFile.ReadString(Stuff); // Do not use Readline()
       }
-      Desc3 = StrLeft(Desc3, StrGetLength(Desc3) - 2);
+      Desc3 = StrLeft((LPCTSTR) Desc3, StrGetLength((LPCTSTR) Desc3) - 2).c_str();
     }
     else
     // Weight
-    if (StrLeft(Stuff, 7) == "Weight:")
+    if (StrLeft((LPCTSTR) Stuff, 7) == "Weight:")
     {
-      Weight = StrRight(Stuff, StrGetLength(Stuff) - 7);
-      Weight = StrTrimLeft(Weight);
+      Weight = StrRight((LPCTSTR) Stuff, StrGetLength((LPCTSTR) Stuff) - 7).c_str();
+      Weight = StrTrimLeft((LPCTSTR) Weight).c_str();
     }
     else
     // Cost
-    if (StrLeft(Stuff, 5) == "Cost:")
+    if (StrLeft((LPCTSTR) Stuff, 5) == "Cost:")
     {
-      Cost = StrRight(Stuff, StrGetLength(Stuff) - 5);
-      Cost = StrTrimLeft(Cost);
+      Cost = StrRight((LPCTSTR) Stuff, StrGetLength((LPCTSTR) Stuff) - 5).c_str();
+      Cost = StrTrimLeft((LPCTSTR) Cost).c_str();
     }
     else
     // Type
-    if (StrLeft(Stuff, 5) == "Type:")
+    if (StrLeft((LPCTSTR) Stuff, 5) == "Type:")
     {
-      Type = StrRight(Stuff, StrGetLength(Stuff) - 5);
-      Type = StrTrimLeft(Type);
+      Type = StrRight((LPCTSTR) Stuff, StrGetLength((LPCTSTR) Stuff) - 5).c_str();
+      Type = StrTrimLeft((LPCTSTR) Type).c_str();
       // Armor
       if (Type == "Armor")
       {
         TypeDropList = 0;
         // ArmorValue
         ReadLine();
-        if (StrLeft(Stuff, 11) != "ArmorValue:")
+        if (StrLeft((LPCTSTR) Stuff, 11) != "ArmorValue:")
         { // Expecting ArmorValue
           AfxMessageBox("Expecting ArmorValue", MB_ICONSTOP);
           ObjectFile.Close();
           return;
         }
-        ArmorValue = StrRight(Stuff, StrGetLength(Stuff) - 11);
-        ArmorValue = StrTrimLeft(ArmorValue);
+        ArmorValue = StrRight((LPCTSTR) Stuff, StrGetLength((LPCTSTR) Stuff) - 11).c_str();
+        ArmorValue = StrTrimLeft((LPCTSTR) ArmorValue).c_str();
         // ArmorWear
         ReadLine();
-        if (StrLeft(Stuff, 10) != "ArmorWear:")
+        if (StrLeft((LPCTSTR) Stuff, 10) != "ArmorWear:")
         { // Expecting ArmorValue
           AfxMessageBox("Expecting ArmorWear", MB_ICONSTOP);
           ObjectFile.Close();
           return;
         }
-        ArmorWear = StrRight(Stuff, StrGetLength(Stuff) - 10);
-        ArmorWear = StrTrimLeft(ArmorWear);
+        ArmorWear = StrRight((LPCTSTR) Stuff, StrGetLength((LPCTSTR) Stuff) - 10).c_str();
+        ArmorWear = StrTrimLeft((LPCTSTR) ArmorWear).c_str();
         if (ArmorWear == "Head")
         {
           ArmorWearDropList = 0;
@@ -384,14 +384,14 @@ void BuildObjects::ParseStuff()
         TypeDropList = 1;
         // WeaponType
         ReadLine();
-        if (StrLeft(Stuff, 11) != "WeaponType:")
+        if (StrLeft((LPCTSTR) Stuff, 11) != "WeaponType:")
         { // Expecting WeaponType
           AfxMessageBox("Expecting WeaponType", MB_ICONSTOP);
           ObjectFile.Close();
           return;
         }
-        WeaponType = StrRight(Stuff, StrGetLength(Stuff) - 11);
-        WeaponType = StrTrimLeft(WeaponType);
+        WeaponType = StrRight((LPCTSTR) Stuff, StrGetLength((LPCTSTR) Stuff) - 11).c_str();
+        WeaponType = StrTrimLeft((LPCTSTR) WeaponType).c_str();
         if (WeaponType == "Axe")
         {
           WeaponTypeDropList = 0;
@@ -428,14 +428,14 @@ void BuildObjects::ParseStuff()
         }
         // WeaponDamage
         ReadLine();
-        if (StrLeft(Stuff, 13) != "WeaponDamage:")
+        if (StrLeft((LPCTSTR) Stuff, 13) != "WeaponDamage:")
         { // Expecting WeaponDamage
           AfxMessageBox("Expecting WeaponDamage", MB_ICONSTOP);
           ObjectFile.Close();
           return;
         }
-        WeaponDamage = StrRight(Stuff, StrGetLength(Stuff) - 13);
-        WeaponDamage = StrTrimLeft(WeaponDamage);
+        WeaponDamage = StrRight((LPCTSTR) Stuff, StrGetLength((LPCTSTR) Stuff) - 13).c_str();
+        WeaponDamage = StrTrimLeft((LPCTSTR) WeaponDamage).c_str();
       }
       else
       // Drink
@@ -444,14 +444,14 @@ void BuildObjects::ParseStuff()
         TypeDropList = 2;
         // DrinkPct
         ReadLine();
-        if (StrLeft(Stuff, 9) != "DrinkPct:")
+        if (StrLeft((LPCTSTR) Stuff, 9) != "DrinkPct:")
         { // Expecting DrinkPct
           AfxMessageBox("Expecting DrinkPct", MB_ICONSTOP);
           ObjectFile.Close();
           return;
         }
-        DrinkPct = StrRight(Stuff, StrGetLength(Stuff) - 9);
-        DrinkPct = StrTrimLeft(DrinkPct);
+        DrinkPct = StrRight((LPCTSTR) Stuff, StrGetLength((LPCTSTR) Stuff) - 9).c_str();
+        DrinkPct = StrTrimLeft((LPCTSTR) DrinkPct).c_str();
       }
       else
       // Food
@@ -460,14 +460,14 @@ void BuildObjects::ParseStuff()
         TypeDropList = 3;
         // FoodPct
         ReadLine();
-        if (StrLeft(Stuff, 8) != "FoodPct:")
+        if (StrLeft((LPCTSTR) Stuff, 8) != "FoodPct:")
         { // Expecting FoodPct
           AfxMessageBox("Expecting FoodPct", MB_ICONSTOP);
           ObjectFile.Close();
           return;
         }
-        FoodPct = StrRight(Stuff, StrGetLength(Stuff) - 8);
-        FoodPct = StrTrimLeft(FoodPct);
+        FoodPct = StrRight((LPCTSTR) Stuff, StrGetLength((LPCTSTR) Stuff) - 8).c_str();
+        FoodPct = StrTrimLeft((LPCTSTR) FoodPct).c_str();
       }
       else
       // Junk
@@ -495,8 +495,8 @@ void BuildObjects::ParseStuff()
 void BuildObjects::ReadLine()
 {
   ObjectFile.ReadString(Stuff);
-  Stuff = ConvertStringToCString(StrTrimLeft(ConvertCStringToString(Stuff)));
-  Stuff = ConvertStringToCString(StrTrimRight(ConvertCStringToString(Stuff)));
+  Stuff = StrTrimLeft((LPCTSTR) Stuff).c_str();
+  Stuff = StrTrimRight((LPCTSTR) Stuff).c_str();
 }
 
 /***********************************************************

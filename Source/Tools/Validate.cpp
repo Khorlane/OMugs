@@ -72,7 +72,7 @@ void Validate::LogValErr(string Message, string FileName)
 
 bool Validate::ValidateIt(string ValidationType)
 {
-  CString LogBuf;
+  string LogBuf;
 
   ValErr = false;
   ValidationType = StrMakeLower(ValidationType);

@@ -239,22 +239,20 @@ void BuildMobiles::OnDelete()
   MobileFileName  = MOBILES_DIR;
   MobileFileName += MobileId;
   MobileFileName += ".txt";
-  Success = MobileFile.Open(MobileFileName,
-                 CFile::modeRead |
-                 CFile::typeText);
-  if (!Success)
+  MobileFile.open(MobileFileName, ios::in);
+  if (!MobileFile.is_open())
   {
     AfxMessageBox("Mobile not found", MB_ICONSTOP);
     return;
   }
-  MobileFile.Close();
+  MobileFile.close();
   AfxMsgBox = AfxMessageBox("Delete " + MobileId + "?", MB_YESNO);
   if (AfxMsgBox == IDNO)
   {
     AfxMessageBox(MobileId + " was NOT deleted", MB_ICONSTOP);
     return;
   }
-  CFile::Remove(MobileFileName);
+  Remove(MobileFileName);
 }
 
 /***********************************************************
@@ -313,10 +311,8 @@ void BuildMobiles::ParseStuff()
   MobileFileName =  MOBILES_DIR;
   MobileFileName += MobileId;
   MobileFileName += ".txt";
-  Success = MobileFile.Open(MobileFileName,
-                 CFile::modeRead |
-                 CFile::typeText);
-  if (!Success)
+  MobileFile.open(MobileFileName, ios::in);
+  if (!MobileFile.is_open())
   { // Mobile not found
     AfxMessageBox("Mobile not found", MB_ICONSTOP);
     return;
@@ -327,15 +323,15 @@ void BuildMobiles::ParseStuff()
     // MobileId
     if (StrLeft(Stuff, 9) == "MobileId:")
     {
-      MobileId = StrRight(Stuff, StrGetLength(Stuff) - 9);
-      MobileId = StrTrimLeft(MobileId);
+      MobileId = StrRight(Stuff, StrGetLength(Stuff) - 9).c_str();
+      MobileId = StrTrimLeft((LPCTSTR) MobileId).c_str();
     }
     else
     // Names
     if (StrLeft(Stuff, 6) == "Names:")
     {
-      Names = StrRight(Stuff, StrGetLength(Stuff) - 6);
-      Names = StrTrimLeft(Names);
+      Names = StrRight(Stuff, StrGetLength(Stuff) - 6).c_str();
+      Names = StrTrimLeft((LPCTSTR) Names).c_str();
     }
     else
     // Sex
@@ -361,29 +357,29 @@ void BuildMobiles::ParseStuff()
     // Desc1
     if (StrLeft(Stuff, 6) == "Desc1:")
     {
-      Desc1 = StrRight(Stuff, StrGetLength(Stuff) - 6);
-      Desc1 = StrTrimLeft(Desc1);
+      Desc1 = StrRight(Stuff, StrGetLength(Stuff) - 6).c_str();
+      Desc1 = StrTrimLeft((LPCTSTR) Desc1).c_str();
     }
     else
     // Desc2
     if (StrLeft(Stuff, 6) == "Desc2:")
     {
-      Desc2 = StrRight(Stuff, StrGetLength(Stuff) - 6);
-      Desc2 = StrTrimLeft(Desc2);
+      Desc2 = StrRight(Stuff, StrGetLength(Stuff) - 6).c_str();
+      Desc2 = StrTrimLeft((LPCTSTR) Desc2).c_str();
     }
     else
     // Desc3
     if (StrLeft(Stuff, 6) == "Desc3:")
     { 
       Desc3 = "";
-      MobileFile.ReadString(Stuff); // Do not use Readline()
+      getline(MobileFile, Stuff); // Do not use Readline()
       while (Stuff != "End Desc3")
       {
-        Desc3 += Stuff;
+        Desc3 += Stuff.c_str();
         Desc3 += "\r\n";
-        MobileFile.ReadString(Stuff); // Do not use Readline()
+        getline(MobileFile, Stuff); // Do not use Readline()
       }
-      Desc3 = StrLeft(Desc3, StrGetLength(Desc3) - 2);
+      Desc3 = StrLeft((LPCTSTR) Desc3, StrGetLength((LPCTSTR) Desc3) - 2).c_str();
     }
     else
     // Action
@@ -462,22 +458,22 @@ void BuildMobiles::ParseStuff()
     // Level
     if (StrLeft(Stuff, 6) == "Level:")
     {
-      Level = StrRight(Stuff, StrGetLength(Stuff) - 6);
-      Level = StrTrimLeft(Level);
+      Level = StrRight(Stuff, StrGetLength(Stuff) - 6).c_str();
+      Level = StrTrimLeft((LPCTSTR) Level).c_str();
     }
     else
     // HitPoints
     if (StrLeft(Stuff, 10) == "HitPoints:")
     {
-      HitPoints = StrRight(Stuff, StrGetLength(Stuff) - 10);
-      HitPoints = StrTrimLeft(HitPoints);
+      HitPoints = StrRight(Stuff, StrGetLength(Stuff) - 10).c_str();
+      HitPoints = StrTrimLeft((LPCTSTR) HitPoints).c_str();
     }
     else
     // Armor
     if (StrLeft(Stuff, 6) == "Armor:")
     {
-      Armor = StrRight(Stuff, StrGetLength(Stuff) - 6);
-      Armor = StrTrimLeft(Armor);
+      Armor = StrRight(Stuff, StrGetLength(Stuff) - 6).c_str();
+      Armor = StrTrimLeft((LPCTSTR) Armor).c_str();
     }
     else
     // Attack
@@ -544,32 +540,32 @@ void BuildMobiles::ParseStuff()
     // Damage
     if (StrLeft(Stuff, 7) == "Damage:")
     {
-      Damage = StrRight(Stuff, StrGetLength(Stuff) - 7);
-      Damage = StrTrimLeft(Damage);
+      Damage = StrRight(Stuff, StrGetLength(Stuff) - 7).c_str();
+      Damage = StrTrimLeft((LPCTSTR) Damage).c_str();
     }
     else
     if (StrLeft(Stuff, 10) == "ExpPoints:")
     {
-      ExpPoints = StrRight(Stuff, StrGetLength(Stuff) - 10);
-      ExpPoints = StrTrimLeft(ExpPoints);
+      ExpPoints = StrRight(Stuff, StrGetLength(Stuff) - 10).c_str();
+      ExpPoints = StrTrimLeft((LPCTSTR) ExpPoints).c_str();
     }
     else
     // Loot
     if (StrLeft(Stuff, 5) == "Loot:")
     {
-      Loot = StrRight(Stuff, StrGetLength(Stuff) - 5);
-      Loot = StrTrimLeft(Loot);
+      Loot = StrRight(Stuff, StrGetLength(Stuff) - 5).c_str();
+      Loot = StrTrimLeft((LPCTSTR) Loot).c_str();
     }
     else
     // Talk
     if (StrLeft(Stuff, 5) == "Talk:")
     {
-      Talk = StrRight(Stuff, StrGetLength(Stuff) - 5);
-      Talk = StrTrimLeft(Talk);
+      Talk = StrRight(Stuff, StrGetLength(Stuff) - 5).c_str();
+      Talk = StrTrimLeft((LPCTSTR) Talk).c_str();
     }
     ReadLine();
   }
-  MobileFile.Close();
+  MobileFile.close();
 }
 
 /***********************************************************
@@ -578,9 +574,9 @@ void BuildMobiles::ParseStuff()
 
 void BuildMobiles::ReadLine()
 {
-  MobileFile.ReadString(Stuff);
-  Stuff = ConvertStringToCString(StrTrimLeft(ConvertCStringToString(Stuff)));
-  Stuff = ConvertStringToCString(StrTrimRight(ConvertCStringToString(Stuff)));
+  getline(MobileFile, Stuff);
+  Stuff = StrTrimLeft(Stuff);
+  Stuff = StrTrimRight(Stuff);
 }
 
 /***********************************************************
@@ -592,11 +588,8 @@ void BuildMobiles::WriteStuff()
   MobileFileName =  MOBILES_DIR;
   MobileFileName += MobileId;
   MobileFileName += ".txt";
-  Success = MobileFile.Open(MobileFileName,
-                 CFile::modeCreate |
-                 CFile::modeWrite  |
-                 CFile::typeText);
-  if (!Success)
+  MobileFile.open(MobileFileName, ios::out);
+  if (!MobileFile.is_open())
   {
     AfxMessageBox("Mobile not found", MB_ICONSTOP);
     return;
@@ -673,7 +666,7 @@ void BuildMobiles::WriteStuff()
   {
     Stuff += "Wimpy ";
   }
-  Stuff = ConvertStringToCString(StrTrimRight(ConvertCStringToString(Stuff)));
+  Stuff = StrTrimRight(Stuff);
   Stuff += "\n";
   // Faction
   Stuff += "Faction:   ";
@@ -788,6 +781,6 @@ void BuildMobiles::WriteStuff()
   Stuff += Talk;
   Stuff += "\n";
   // Write it all out and close file
-  MobileFile.WriteString(Stuff);
-  MobileFile.Close();
+  MobileFile << Stuff;
+  MobileFile.close();
 }

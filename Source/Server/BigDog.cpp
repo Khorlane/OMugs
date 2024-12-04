@@ -372,12 +372,6 @@ char StrGetAt(string Str1, int Position)
   return Str1[Position];
 }
 
-// Get length of a string (temporary)
-int StrGetLength(CString Str1)
-{
-  return StrGetLength(ConvertCStringToString(Str1));
-}
-
 // Get length of a string
 int StrGetLength(string Str1)
 {
@@ -644,15 +638,6 @@ string StrMakeLower(string Str1)
   return Str1;
 }
 
-// Upper case the whole string (temporary)
-CString StrMakeUpper(CString Str1)
-{
-  string x;
-  x = ConvertCStringToString(Str1);
-  x = StrMakeUpper(x);
-  return ConvertStringToCString(x);
-}
-
 // Upper case the whole string
 string StrMakeUpper(string Str1)
 {
@@ -698,12 +683,6 @@ void StrReplace(string &str, const string &from, const string &to)
   }
 }
 
-// Get the right portion of a string (temporary)
-CString StrRight(CString Str1, int Len)
-{
-  return ConvertStringToCString(StrRight(ConvertCStringToString(Str1), Len));
-}
-
 // Get the right portion of a string
 string StrRight(string Str1, int Len)
 {
@@ -745,15 +724,6 @@ string StrSqueeze(string Str1)
     StrReplace(Str1, "  ", " ");
   }
   return Str1;
-}
-
-// Remove leading whitespace (temporary)
-CString StrTrimLeft(CString Str1)
-{
-  string x;
-  x = ConvertCStringToString(Str1);
-  x = StrTrimLeft(x);
-  return ConvertStringToCString(x);
 }
 
 // Remove leading whitespace

@@ -69,7 +69,7 @@ bool Social::IsSocial()
     if (StrLeft(MsgText, 9) == "Social : ")
     { // Ok, a social has been found
       TmpStr = StrRight(MsgText, StrGetLength(MsgText) - 9);
-      if (TmpStr == ConvertCStringToString(MudCmd))
+      if (TmpStr == MudCmd)
       { // THE social has been found
         Found = true;
         MsgText = ReadLine();

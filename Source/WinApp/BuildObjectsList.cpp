@@ -200,7 +200,7 @@ void BuildObjectsList::PopulateList()
       continue;
     }
     ObjectFileName = FileList.GetFileName();
-    ObjectId = StrLeft(ObjectFileName, StrGetLength(ObjectFileName)-4);
+    ObjectId = StrLeft((LPCTSTR) ObjectFileName, StrGetLength((LPCTSTR) ObjectFileName)-4).c_str();
     if (PopulateListOk())
     { // Object passed through the filters, add it to the list
       ObjectsListBox.AddString(ObjectId);
@@ -232,10 +232,10 @@ bool BuildObjectsList::PopulateListOk()
   ReadLine();
   while (Stuff != "")
   { // Read lines until EOF
-    if (StrLeft(Stuff, 5) == "type:")
+    if (StrLeft((LPCTSTR) Stuff, 5) == "type:")
     { // 'type:' is found
-      TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 5);
-      TmpStr = StrTrimLeft(TmpStr);
+      TmpStr = StrRight((LPCTSTR) Stuff, StrGetLength((LPCTSTR) Stuff) - 5).c_str();
+      TmpStr = StrTrimLeft((LPCTSTR) TmpStr).c_str();
       if (TmpStr == Type)
       { // Type selected matches type for this object
         //*********
@@ -250,8 +250,8 @@ bool BuildObjectsList::PopulateListOk()
           }
           ReadLine(); // ArmorValue
           ReadLine(); // ArmorWear
-          TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 10);
-          TmpStr = StrTrimLeft(TmpStr);
+          TmpStr = StrRight((LPCTSTR) Stuff, StrGetLength((LPCTSTR) Stuff) - 10).c_str();
+          TmpStr = StrTrimLeft((LPCTSTR) TmpStr).c_str();
           if (TmpStr == ArmorWear)
           { // ArmorWear matches
             ObjectFile.Close();
@@ -274,8 +274,8 @@ bool BuildObjectsList::PopulateListOk()
             return true;
           }
           ReadLine(); // WeaponType
-          TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 11);
-          TmpStr = StrTrimLeft(TmpStr);
+          TmpStr = StrRight((LPCTSTR) Stuff, StrGetLength((LPCTSTR) Stuff) - 11).c_str();
+          TmpStr = StrTrimLeft((LPCTSTR) TmpStr).c_str();
           if (TmpStr == WeaponType)
           { // WeaponType matches
             ObjectFile.Close();
@@ -305,9 +305,9 @@ bool BuildObjectsList::PopulateListOk()
 void BuildObjectsList::ReadLine()
 {
   ObjectFile.ReadString(Stuff);
-  Stuff = ConvertStringToCString(StrTrimLeft(ConvertCStringToString(Stuff)));
-  Stuff = ConvertStringToCString(StrTrimRight(ConvertCStringToString(Stuff)));
-  Stuff = StrMakeLower(Stuff);
+  Stuff = StrTrimLeft((LPCTSTR) Stuff).c_str();
+  Stuff = StrTrimRight((LPCTSTR) Stuff).c_str();
+  Stuff = StrMakeLower((LPCTSTR) Stuff).c_str();
 }
 
 /***********************************************************
@@ -362,7 +362,7 @@ void BuildObjectsList::SetFilter()
   {
     Type = "NotImplementedYet";
   }
-  Type = StrMakeLower(Type);
+  Type = StrMakeLower((LPCTSTR) Type).c_str();
   //*************
   //* ArmorWear *
   //*************
@@ -450,7 +450,7 @@ void BuildObjectsList::SetFilter()
   {
     ArmorWear = "Feet";
   }
-  ArmorWear = StrMakeLower(ArmorWear);
+  ArmorWear = StrMakeLower((LPCTSTR) ArmorWear).c_str();
   //***************
   //* Weapon Type *
   //***************
@@ -498,5 +498,5 @@ void BuildObjectsList::SetFilter()
   {
     WeaponType = "Sword";
   }
-  WeaponType = StrMakeLower(WeaponType);
+  WeaponType = StrMakeLower((LPCTSTR) WeaponType).c_str();
 }

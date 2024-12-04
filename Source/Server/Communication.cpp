@@ -905,7 +905,7 @@ void Communication::CommandParse()
   //**************************
   // Get next command string *
   //**************************
-  CmdStr = ConvertStringToCString(pDnodeActor->PlayerInp);
+  CmdStr = pDnodeActor->PlayerInp;
   CmdStrLength = StrGetLength(CmdStr);
   PositionOfNewline = StrFindOneOf(CmdStr, "\r\n");
   if (PositionOfNewline < 0)
@@ -938,7 +938,7 @@ void Communication::CommandParse()
   MudCmd = StrGetWord(CmdStr, 1);
   MudCmd = StrMakeLower(MudCmd);
   // Translate 'n' into 'go north'
-  MudCmd = ConvertStringToCString(TranslateWord(ConvertCStringToString(MudCmd)));
+  MudCmd = TranslateWord(MudCmd);
   if (StrCountWords(MudCmd) == 2)
   { // Re-get MudCmd. In the case of 'go north', MudCmd is 'go'
     CmdStr = MudCmd;
@@ -950,7 +950,7 @@ void Communication::CommandParse()
   { // 'go' command is ok
     pDnodeActor->CmdName3 = pDnodeActor->CmdName2;
     pDnodeActor->CmdName2 = pDnodeActor->CmdName1;
-    pDnodeActor->CmdName1 = ConvertCStringToString(MudCmd);
+    pDnodeActor->CmdName1 = MudCmd;
     pDnodeActor->CmdTime3 = pDnodeActor->CmdTime2;
     pDnodeActor->CmdTime2 = pDnodeActor->CmdTime1;
     pDnodeActor->CmdTime1 = clock();
@@ -1155,7 +1155,7 @@ void Communication::CommandParse()
   /* FOLLOW command */
   if (MudCmd == "follow")
   {
-    DoFollow(pDnodeActor, ConvertCStringToString(CmdStr));
+    DoFollow(pDnodeActor, CmdStr);
     return;
   }
 
@@ -1267,7 +1267,7 @@ void Communication::CommandParse()
   /* LOOK command */
   if (MudCmd == "look")
   {
-    DoLook(ConvertCStringToString(CmdStr));
+    DoLook(CmdStr);
     return;
   }
 
@@ -1330,7 +1330,7 @@ void Communication::CommandParse()
   /* RESTORE command */
   if (MudCmd == "restore")
   {
-    DoRestore(ConvertCStringToString(CmdStr));
+    DoRestore(CmdStr);
     return;
   }
 
@@ -1501,7 +1501,7 @@ void Communication::DoAdvance()
   TargetNameSave  = TargetName;
   PlayerName = StrMakeLower(PlayerName);
   TargetName = StrMakeLower(TargetName);
-  Level = atoi(StrGetWord(CmdStr, 3));
+  Level = stoi(StrGetWord(CmdStr, 3));
   sprintf(Buf, "%d", Level);
   LevelString = (string)Buf;
   if (TargetName == "")
@@ -1869,7 +1869,7 @@ void Communication::DoChat()
   //********************
   //* Validate command *
   //********************
-  ChatMsg = StrGetWords(ConvertCStringToString(CmdStr), 2);
+  ChatMsg = StrGetWords(CmdStr, 2);
   if (StrGetLength(ChatMsg) < 1)
   { // Player did not enter any chat
     pDnodeActor->PlayerOut += "You start to chat, but, about what?";
@@ -2121,7 +2121,7 @@ void Communication::DoDelete()
   }
   Name     = StrGetWord(CmdStr, 2);
   Password = StrGetWord(CmdStr, 3);
-  Phrase   = StrGetWords(ConvertCStringToString(CmdStr), 4);
+  Phrase   = StrGetWords(CmdStr, 4);
   if (Name != pDnodeActor->PlayerName)
   {
     pDnodeActor->PlayerOut += "Your name was not entered correctly.";
@@ -2597,7 +2597,7 @@ void Communication::DoEmote()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  EmoteMsg = StrGetWords(ConvertCStringToString(CmdStr), 2);
+  EmoteMsg = StrGetWords(CmdStr, 2);
   if (StrGetLength(EmoteMsg) < 1)
   { // Player did not enter anything to say
     pDnodeActor->PlayerOut += "You try to show emotion, but fail.";
@@ -3457,7 +3457,7 @@ void Communication::DoGoToArrive()
       return;
     }
   }
-  TmpStr = StrGetWords(ConvertCStringToString(CmdStr), 2);
+  TmpStr = StrGetWords(CmdStr, 2);
   GoToArrive = TmpStr;
   // Strip out color codes so arrival message length can be checked
   StrReplace(TmpStr, "&N", "");
@@ -3534,7 +3534,7 @@ void Communication::DoGoToDepart()
       return;
     }
   }
-  TmpStr = StrGetWords(ConvertCStringToString(CmdStr), 2);
+  TmpStr = StrGetWords(CmdStr, 2);
   GoToDepart = TmpStr;
   // Strip out color codes so arrival message length can be checked
   StrReplace(TmpStr, "&N", "");
@@ -3814,7 +3814,7 @@ void Communication::DoGsay()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  GsayMsg = StrGetWords(ConvertCStringToString(CmdStr), 2);
+  GsayMsg = StrGetWords(CmdStr, 2);
   if (StrGetLength(GsayMsg) < 1)
   { // Player typed gsay but did not type a message
     pDnodeActor->PlayerOut += "Are you trying to say something to the group?\r\n";
@@ -4972,7 +4972,7 @@ void Communication::DoSay()
   { // Player is sleeping, send msg, command is not done
     return;
   }
-  SayMsg = StrGetWords(ConvertCStringToString(CmdStr), 2);
+  SayMsg = StrGetWords(CmdStr, 2);
   if (StrGetLength(SayMsg) < 1)
   { // Player did not enter anything to say
     pDnodeActor->PlayerOut += "You try to speak, but no words come out of your mouth.";
@@ -5497,7 +5497,7 @@ void Communication::DoTell()
     pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
     return;
   }
-  TellMsg = StrGetWords(ConvertCStringToString(CmdStr), 3);
+  TellMsg = StrGetWords(CmdStr, 3);
   if (StrGetLength(TellMsg) < 1)
   {
     pDnodeActor->PlayerOut += "Um, tell ";
@@ -5621,7 +5621,7 @@ void Communication::DoTitle()
       return;
     }
   }
-  TmpStr = StrGetWords(ConvertCStringToString(CmdStr), 2);
+  TmpStr = StrGetWords(CmdStr, 2);
   Title = TmpStr;
   // Strip out color codes so Title length can be checked
   StrReplace(TmpStr, "&N", "");
@@ -6782,7 +6782,7 @@ void Communication::LogonWaitNewCharacter()
   else
   { // Y or N entered ... store response for use later
     pDnodeActor->PlayerStateWaitName = true;
-    pDnodeActor->PlayerNewCharacter = ConvertCStringToString(CmdStr);
+    pDnodeActor->PlayerNewCharacter = CmdStr;
     pDnodeActor->PlayerOut += "\r\n";
     pDnodeActor->PlayerOut += "Name?";
     pDnodeActor->PlayerOut += "\r\n";
@@ -6799,7 +6799,7 @@ void Communication::LogonWaitPassword()
   string   LogBuf;
   string   PlayerMsg;
 
-  if (pDnodeActor->PlayerPassword == ConvertCStringToString(CmdStr))
+  if (pDnodeActor->PlayerPassword == CmdStr)
   { // Password matches
     if (pDnodeActor->PlayerNewCharacter == "Y")
     { // Password matches and a new player, get sex
@@ -6887,7 +6887,7 @@ void Communication::LogonWaitPassword()
       pDnodeActor->PlayerStateWaitPassword = true;
       if (pDnodeActor->PlayerWrongPasswordCount == 1)
       { // First password entered
-        pDnodeActor->PlayerPassword = ConvertCStringToString(CmdStr);
+        pDnodeActor->PlayerPassword = CmdStr;
         pDnodeActor->PlayerOut += "\r\n";
         pDnodeActor->PlayerOut += "Retype Password:";
         pDnodeActor->PlayerOut += "\r\n";

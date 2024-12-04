@@ -41,26 +41,26 @@ class BuildMobiles : public CDialog
 	  enum { IDD = IDD_BuildMobiles };
 	  CString	MobileId;
 	  CString	Names;
-	  CString	Talk;
-	  CString	Level;
-	  CString	Loot;
-	  CString	HitPoints;
-	  CString	ExpPoints;
-	  CString	Desc2;
-	  CString	Desc1;
-	  CString	Damage;
-	  CString	Armor;
-	  BOOL	ActionAggro;
-	  BOOL	ActionDestroy;
-	  BOOL	ActionFaction;
-	  BOOL	ActionHelp;
-	  BOOL	ActionNoMove;
-	  BOOL	ActionNone;
-	  BOOL	ActionWimpy;
+	  CString Talk;
+	  CString Level;
+	  CString Loot;
+	  CString HitPoints;
+	  CString ExpPoints;
+	  CString Desc2;
+	  CString Desc1;
+	  CString Damage;
+	  CString Armor;
+	  BOOL	  ActionAggro;
+	  BOOL	  ActionDestroy;
+	  BOOL  	ActionFaction;
+	  BOOL	  ActionHelp;
+	  BOOL  	ActionNoMove;
+	  BOOL  	ActionNone;
+	  BOOL	  ActionWimpy;
 	  CString	Desc3;
-	  int		FactionRadio;
-	  int		SexRadio;
-	  int		AttackRadio;
+	  int	  	FactionRadio;
+	  int		  SexRadio;
+	  int		  AttackRadio;
 	  //}}AFX_DATA
 
 // Overrides
@@ -100,15 +100,14 @@ class BuildMobiles : public CDialog
 
 // Private variables
   private:
-    CString         Action;
+    string          Action;
     int             AfxMsgBox;
-    CString         Attack;
-    CString         Faction;
-    CStdioFile      MobileFile;
-    CString         MobileFileName;
-    CString         Sex;
-    CString         Stuff;
-    int             Success;
+    string          Attack;
+    string          Faction;
+    fstream         MobileFile;
+    string          MobileFileName;
+    string          Sex;
+    string          Stuff;
 };
 
 inline BuildMobiles *pBuildMobiles;

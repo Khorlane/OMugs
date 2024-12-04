@@ -173,7 +173,7 @@ void BuildMobilesList::PopulateList()
       continue;
     }
     MobFileName = FileList.GetFileName();
-    MobileId    = StrLeft(MobFileName, StrGetLength(MobFileName) - 4);
+    MobileId    = StrLeft((LPCTSTR) MobFileName, StrGetLength((LPCTSTR) MobFileName) - 4).c_str();
     MobilesListBox.AddString(MobileId);
   }
 }
