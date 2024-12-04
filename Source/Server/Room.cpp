@@ -61,7 +61,7 @@ string Room::GetRoomId(string RoomId)
   RoomFileName += RoomId;
   RoomFileName += ".txt";
   RoomFile.open(RoomFileName);
-  if(!RoomFile.is_open())
+  if (!RoomFile.is_open())
   { // No such file???, But there should be, This is bad!
     AfxMessageBox("Room::GetRoomId - Room does not exist", MB_ICONSTOP);
     _endthread();
@@ -446,7 +446,7 @@ bool Room::OpenFile(Dnode *pDnode)
   RoomFileName += pDnode->pPlayer->RoomId;
   RoomFileName += ".txt";
   RoomFile.open(RoomFileName);
-  if(RoomFile.is_open())
+  if (RoomFile.is_open())
   {
     return true;
   }

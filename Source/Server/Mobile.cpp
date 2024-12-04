@@ -72,21 +72,21 @@ void Mobile::AddMobToRoom(string RoomId, string MobileId)
   RoomMobFileName += ".txt";
   NewRoomMobFile = false;
   RoomMobFile.open(RoomMobFileName);
-  if(!RoomMobFile.is_open())
+  if (!RoomMobFile.is_open())
   {
     NewRoomMobFile = true;
   }
   // Open temp RoomMob file
   RoomMobTmpFileName =  ROOM_MOB_DIR;
   RoomMobTmpFileName += RoomId;
-  if(RoomId == "")
+  if (RoomId == "")
   {
     AfxMessageBox("RoomId is blank 1", MB_ICONSTOP);
     _endthread();
   }
   RoomMobTmpFileName += ".tmp.txt";
   RoomMobTmpFile.open(RoomMobTmpFileName);
-  if(!RoomMobTmpFile.is_open())
+  if (!RoomMobTmpFile.is_open())
   {
     AfxMessageBox("Mobile::AddMobToRoom - Open RoomMob temp file failed", MB_ICONSTOP);
     _endthread();
@@ -186,7 +186,7 @@ int Mobile::CountMob(string MobileId)
   MobInWorldFileName += MobileId;
   MobInWorldFileName += ".txt";
   MobInWorldFile.open(MobInWorldFileName);
-  if(MobInWorldFile.is_open())
+  if (MobInWorldFile.is_open())
   { // Get current count
     getline(MobInWorldFile,Stuff);
     MobInWorldCount = stoi(Stuff);
@@ -231,7 +231,7 @@ void Mobile::CreateMobPlayer(string PlayerName, string MobileId)
   else
   { // Use existing file
     MobPlayerFile.open(MobPlayerFileName);
-    if(!MobPlayerFile.is_open())
+    if (!MobPlayerFile.is_open())
     {
       AfxMessageBox("Mobile::CreateMobPlayer - Open MobPlayerile file failed 2", MB_ICONSTOP);
       _endthread();
@@ -318,7 +318,7 @@ void Mobile::DeleteMobPlayer(string PlayerName, string MobileId)
   MobPlayerFileName += PlayerName;
   MobPlayerFileName += ".txt";
   MobPlayerFile.open(MobPlayerFileName);
-  if(!MobPlayerFile.is_open())
+  if (!MobPlayerFile.is_open())
   { // MobPlayer player file does not exist
     return;
   }
@@ -333,7 +333,7 @@ void Mobile::DeleteMobPlayer(string PlayerName, string MobileId)
   MobPlayerFileNameTmp += PlayerName;
   MobPlayerFileNameTmp += ".tmp.txt";
   MobPlayerFileTmp.open(MobPlayerFileNameTmp);
-  if(!MobPlayerFileTmp.is_open())
+  if (!MobPlayerFileTmp.is_open())
   {
     AfxMessageBox("Mobile::DeleteMobPlayer - Open MobPlayer temp file failed", MB_ICONSTOP);
     _endthread();
@@ -471,7 +471,7 @@ Mobile *Mobile::IsMobInRoom(string MobileName)
   //* Try matching using MobileId *
   //*******************************
   RoomMobFile.open(RoomMobFileName);
-  if(!RoomMobFile.is_open())
+  if (!RoomMobFile.is_open())
   { // Room has no mobiles
     return NULL;
   }
@@ -503,7 +503,7 @@ Mobile *Mobile::IsMobInRoom(string MobileName)
   //* No match found, try getting match using 'names' *
   //***************************************************
   RoomMobFile.open(RoomMobFileName);
-  if(!RoomMobFile.is_open())
+  if (!RoomMobFile.is_open())
   { // Room has no mobiles
     return NULL;
   }
@@ -569,7 +569,7 @@ string Mobile::GetMobDesc1(string MobileId)
   MobileFileName += MobileId;
   MobileFileName += ".txt";
   MobileFile.open(MobileFileName);
-  if(!MobileFile.is_open())
+  if (!MobileFile.is_open())
   {
     AfxMessageBox("Mobile::GetMobDesc1 - Mobile does not exist!", MB_ICONSTOP);
     _endthread();
@@ -601,7 +601,7 @@ bool Mobile::IsMobileIdInRoom(string RoomId, string MobileId)
   RoomMobFileName += RoomId;
   RoomMobFileName += ".txt";
   RoomMobFile.open(RoomMobFileName);
-  if(!RoomMobFile.is_open())
+  if (!RoomMobFile.is_open())
   { // Room has no mobiles
     return false;
   }
@@ -635,7 +635,7 @@ Mobile *Mobile::IsMobValid(string MobileId)
   MobileFileName += ConvertStringToCString(MobileId);
   MobileFileName += ".txt";
   MobileFile.open(MobileFileName);
-  if(MobileFile.is_open())
+  if (MobileFile.is_open())
   {
     MobileFile.close();
     pMobile = new Mobile(MobileId);
@@ -669,7 +669,7 @@ void Mobile::PutMobBackInRoom(string PlayerName, string RoomIdBeforeFleeing)
   MobPlayerFileName += PlayerName;
   MobPlayerFileName += ".txt";
   MobPlayerFile.open(MobPlayerFileName);
-  if(!MobPlayerFile.is_open())
+  if (!MobPlayerFile.is_open())
   { // No mobiles to put back, someone else may be fighting the mob
     return;
   }
@@ -684,7 +684,7 @@ void Mobile::PutMobBackInRoom(string PlayerName, string RoomIdBeforeFleeing)
     MobStatsHitPointsFileName += MobileId;
     MobStatsHitPointsFileName += ".txt";
     MobStatsHitPointsFile.open(MobStatsHitPointsFileName);
-    if(!MobStatsHitPointsFile.is_open())
+    if (!MobStatsHitPointsFile.is_open())
     {
       AfxMessageBox("Mobile::PutMobBackInRoom - Open MobStatsHitPointsFile file failed (read)", MB_ICONSTOP);
       _endthread();
@@ -734,7 +734,7 @@ void Mobile::RemoveMobFromRoom(string RoomId, string MobileId)
   RoomMobFileName += RoomId;
   RoomMobFileName += ".txt";
   RoomMobFile.open(RoomMobFileName);
-  if(!RoomMobFile.is_open())
+  if (!RoomMobFile.is_open())
   {
     AfxMessageBox("Mobile::RemoveMobFromRoom - Open RoomMob file failed", MB_ICONSTOP);
     _endthread();
@@ -742,14 +742,14 @@ void Mobile::RemoveMobFromRoom(string RoomId, string MobileId)
   // Open temp RoomMob file
   RoomMobTmpFileName =  ROOM_MOB_DIR;
   RoomMobTmpFileName += RoomId;
-  if(RoomId == "")
+  if (RoomId == "")
   {
     AfxMessageBox("RoomId is blank 2", MB_ICONSTOP);
     _endthread();
   }
   RoomMobTmpFileName += ".tmp.txt";
   RoomMobTmpFile.open(RoomMobTmpFileName);
-  if(!RoomMobTmpFile.is_open())
+  if (!RoomMobTmpFile.is_open())
   {
     AfxMessageBox("Mobile::RemoveMobFromRoom - Open RoomMob temp file failed", MB_ICONSTOP);
     _endthread();
@@ -833,7 +833,7 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
   RoomMobFileName += pDnode->pPlayer->RoomId;
   RoomMobFileName += ".txt";
   RoomMobFile.open(RoomMobFileName);
-  if(!RoomMobFile.is_open())
+  if (!RoomMobFile.is_open())
   { // No mobiles in room to display
     return;
   }
@@ -1015,7 +1015,7 @@ void Mobile::WhereMob(string MobileIdSearch)
     // Open RoomMob file
     RoomMobFileName = FileName;
     RoomMobFile.open(RoomMobFileName);
-    if(!RoomMobFile.is_open())
+    if (!RoomMobFile.is_open())
     { // File does not exist - Very bad!
       AfxMessageBox("Mobile::WhereMob - Open RoomMob file failed", MB_ICONSTOP);
       _endthread();

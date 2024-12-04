@@ -152,7 +152,7 @@ void GenerateRooms::Init()
     AfxMessageBox("GenerateRooms::Init - Change to rooms directory failed");
     _endthread();
   }
-  for (const auto& entry : fs::directory_iterator("./"))
+  for (const auto &entry : fs::directory_iterator("./"))
   {
     if (entry.is_directory())
     {

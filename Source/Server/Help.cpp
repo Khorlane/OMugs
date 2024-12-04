@@ -114,7 +114,7 @@ bool Help::OpenFile()
   HelpFileName =  HELP_DIR;
   HelpFileName += "Help.txt";
   HelpFile.open(HelpFileName);
-  if(HelpFile.is_open())
+  if (HelpFile.is_open())
   {
     return true;
   }

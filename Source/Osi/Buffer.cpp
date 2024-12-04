@@ -115,7 +115,7 @@ void Buffer::GetScriptLine()
 void Buffer::OpenScriptFile()
 {
   ScriptFile.open(ScriptFileName);
-  if(!ScriptFile.is_open())
+  if (!ScriptFile.is_open())
   {
     LogBuf  = "Osi - Buffer::OpenScriptFile - Failed to open ";
     LogBuf += ScriptFileName;

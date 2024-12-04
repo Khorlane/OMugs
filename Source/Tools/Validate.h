@@ -31,6 +31,7 @@ class Validate
   public:
     Validate();
     ~Validate();
+    void    static  LogValErr(string Message, string FileName);
     void    static  LogValErr(CString Message, CString FileName);
     bool    static  ValidateIt(CString ValidationType);
     void    static  ValidateAll();

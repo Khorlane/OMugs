@@ -76,7 +76,7 @@ void World::CreateSpawnMobileEvents()
     ControlMobSpawnFileName =  CONTROL_MOB_SPAWN_DIR;
     ControlMobSpawnFileName += MobileId;
     ControlMobSpawnFile.open(ControlMobSpawnFileName);
-    if(ControlMobSpawnFile.is_open())
+    if (ControlMobSpawnFile.is_open())
     { // The NoMoreSpawnEventsFlag is set for this mobile
       ControlMobSpawnFile.close();
       continue;
@@ -84,7 +84,7 @@ void World::CreateSpawnMobileEvents()
     //* Check MaxInWorld against actual 'in world' count
     WorldMobileFileName = WORLD_MOBILES_DIR + WorldMobileFileName;
     WorldMobileFile.open(WorldMobileFileName);
-    if(!WorldMobileFile.is_open())
+    if (!WorldMobileFile.is_open())
     { // File does not exist - Very bad!
       AfxMessageBox("World::CreateSpawnMobileEvents - Open World Mobile file failed", MB_ICONSTOP);
       _endthread();
@@ -158,7 +158,7 @@ void World::CreateSpawnMobileEvents()
     WorldMobileFile.close();
     // Set the NoMoreSpawnEventsFlag for this mobile
     ControlMobSpawnFile.open(ControlMobSpawnFileName);
-    if(!ControlMobSpawnFile.is_open())
+    if (!ControlMobSpawnFile.is_open())
     { // Create file failed
       AfxMessageBox("World::CreateSpawnMobileEvents - Create Control Mobile Spawn file failed", MB_ICONSTOP);
       _endthread();
@@ -215,7 +215,7 @@ void World::CheckSpawnMobileEvents()
     // Event's time has arrived
     EventFileName = CONTROL_EVENTS_DIR + EventFileName;
     EventFile.open(EventFileName);
-    if(!EventFile.is_open())
+    if (!EventFile.is_open())
     { // File does not exist - Very bad!
       AfxMessageBox("World::CheckSpawnMobileEvents - Open Events file failed", MB_ICONSTOP);
       _endthread();
@@ -361,7 +361,7 @@ bool World::HealMobilesFightCheck(string Dir, string MobileId)
       MobPlayerFileName =  PLAYER_MOB_DIR + MobPlayerFileName;
     }
     MobPlayerFile.open(MobPlayerFileName);
-    if(!MobPlayerFile.is_open())
+    if (!MobPlayerFile.is_open())
     { // Failed to open MobPlayer or MobPlayer file
       TmpStr  = "World::HealMobilesFightCheck - Open ";
       TmpStr += Dir;
@@ -470,7 +470,7 @@ void World::MakeMobilesMove1()
   RoomMobListFileName =  CONTROL_DIR;
   RoomMobListFileName += "RoomMobList.txt";
   RoomMobListFile.open(RoomMobListFileName);
-  if(!RoomMobListFile.is_open())
+  if (!RoomMobListFile.is_open())
   { // Failed to open RoomMobMove file
     AfxMessageBox("World::MakeMobilesMove1 - Create RoomMobList file failed", MB_ICONSTOP);
     _endthread();
@@ -956,7 +956,7 @@ void World::SpawnMobileNoMove(string MobileId)
   ControlMobNoMoveFileName  = CONTROL_MOB_NOMOVE_DIR;
   ControlMobNoMoveFileName += MobileId;
   ControlMobNoMoveFile.open(ControlMobNoMoveFileName);
-  if(!ControlMobNoMoveFile.is_open())
+  if (!ControlMobNoMoveFile.is_open())
   { // Create file failed
     AfxMessageBox("World::SpawnMobile - Create Control Mobile NoMove file failed", MB_ICONSTOP);
     _endthread();

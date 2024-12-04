@@ -87,7 +87,7 @@ string Utility::GetHomeDir()
   HomeDirFileName  = "HomeDir";
   HomeDirFileName += ".txt";
   HomeDirFile.open(HomeDirFileName);
-  if(!HomeDirFile.is_open())
+  if (!HomeDirFile.is_open())
   {
     AfxMessageBox("Utility::GetHomeDir - Open HomeDir file failed (read)", MB_ICONSTOP);
     _endthread();
@@ -136,7 +136,7 @@ string Utility::GetSqlStmt(string SqlStmtId)
   SqlStmtFileName += SqlStmtId;
   SqlStmtFileName += ".txt";
   SqlStmtFile.open(SqlStmtFileName);
-  if(!SqlStmtFile.is_open())
+  if (!SqlStmtFile.is_open())
   {
     AfxMessageBox("Utility::GetSqlStmt - Open SqlStmt file failed", MB_ICONSTOP);
     _endthread();

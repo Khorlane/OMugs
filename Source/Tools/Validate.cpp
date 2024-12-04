@@ -44,7 +44,10 @@ Validate::~Validate()
 /***********************************************************
  * Log Validation Error                                    *
  ***********************************************************/
-
+void Validate::LogValErr(string Message, string FileName)
+{
+  return LogValErr(ConvertStringToCString(Message), ConvertStringToCString(FileName));
+}
 void Validate::LogValErr(CString Message, CString FileName)
 {
   CString LogBuf;
@@ -139,20 +142,17 @@ void Validate::ValidateAll()
 
 void Validate::ValidateLibraryLoot()
 {
-  CFileFind  FileList;
-  CString    FileName;
+  string     FileName;
   int        LineCount;
-  CString    LogBuf;
-  CString    Message;
-  CString    ObjectId;
-  CStdioFile ObjectIdFile;
-  CString    ObjectIdFileName;
-  CStdioFile LootFile;
-  CString    LootFileName;
-  CString    PlayerName;
-  BOOL       MoreFiles;
-  CString    Stuff;
-  int        Success;
+  string     LogBuf;
+  string     Message;
+  string     ObjectId;
+  ifstream   ObjectIdFile;
+  string     ObjectIdFileName;
+  ifstream   LootFile;
+  string     LootFileName;
+  string     PlayerName;
+  string     Stuff;
 
   LogBuf = "Begin validation LibraryLoot";
   LogIt(LogBuf);
@@ -162,33 +162,29 @@ void Validate::ValidateLibraryLoot()
     _endthread();
   }
   // Get list of all LibraryLoot files
-  MoreFiles = FileList.FindFile("*.*");
   if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateLibraryLoot - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
   }
-  while (MoreFiles)
+  for (const auto &entry : fs::directory_iterator("./"))
   {
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
-    { // Skip directories
+    if (entry.is_directory())
+    {
       continue;
     }
     // Open player file
-    LootFileName = FileList.GetFileName();
+    LootFileName = entry.path().filename().string();
     PlayerName = StrLeft(LootFileName, StrGetLength(LootFileName) - 4);
     LootFileName = LOOT_DIR + LootFileName;
-    Success = LootFile.Open(LootFileName,
-                 CFile::modeRead |
-                 CFile::typeText);
-    if (!Success)
+    LootFile.open(LootFileName);
+    if (!LootFile.is_open())
     { // File does not exist - Very bad!
       AfxMessageBox("Validate::ValidateLibraryLoot - Open loot file failed", MB_ICONSTOP);
       _endthread();
     }
     LineCount = 0;
-    LootFile.ReadString(Stuff);
+    getline(LootFile, Stuff);
     while (Stuff != "")
     { // For all lines
       LineCount++;
@@ -199,12 +195,10 @@ void Validate::ValidateLibraryLoot()
       ObjectIdFileName = OBJECTS_DIR;
       ObjectIdFileName += ObjectId;
       ObjectIdFileName += ".txt";
-      Success = ObjectIdFile.Open(ObjectIdFileName,
-                       CFile::modeRead |
-                       CFile::typeText);
-      if(Success)
+      ObjectIdFile.open(ObjectIdFileName);
+      if (ObjectIdFile.is_open())
       { // RoomId file found, don't leave it open
-        ObjectIdFile.Close();
+        ObjectIdFile.close();
       }
       else
       { // ObjectId file not found
@@ -216,9 +210,9 @@ void Validate::ValidateLibraryLoot()
         FileName = LootFileName;
         LogValErr(Message, FileName);
       }
-      LootFile.ReadString(Stuff);
+      getline(LootFile, Stuff);
     }
-    LootFile.Close();
+    LootFile.close();
   }
   LogBuf = "Done  validating LibraryLoot";
   LogIt(LogBuf);
@@ -370,7 +364,7 @@ void Validate::ValidateLibraryMobiles()
         Success = LootFile.Open(LootFileName,
                      CFile::modeRead |
                      CFile::typeText);
-        if(Success)
+        if (Success)
         { // Loot file found, don't leave it open
           LootFile.Close();
         }
@@ -718,7 +712,7 @@ void Validate::ValidateLibraryRooms()
         Success = ExitToRoomIdFile.Open(ExitToRoomIdFileName,
                              CFile::modeRead |
                              CFile::typeText);
-        if(Success)
+        if (Success)
         { // ExitToRoomId file found, don't leave it open
           ExitToRoomIdFile.Close();
         }
@@ -833,7 +827,7 @@ void Validate::ValidateLibraryShops()
       Success = ObjectIdFile.Open(ObjectIdFileName,
                        CFile::modeRead |
                        CFile::typeText);
-      if(Success)
+      if (Success)
       { // RoomId file found, don't leave it open
         ObjectIdFile.Close();
       }
@@ -927,7 +921,7 @@ void Validate::ValidateLibraryWorldMobiles()
     Success = MobileIdFile.Open(MobileIdFileName,
                      CFile::modeRead |
                      CFile::typeText);
-    if(Success)
+    if (Success)
     { // MobileId file found, don't leave it open
       MobileIdFile.Close();
     }
@@ -962,7 +956,7 @@ void Validate::ValidateLibraryWorldMobiles()
         Success = RoomIdFile.Open(RoomIdFileName,
                        CFile::modeRead |
                        CFile::typeText);
-        if(Success)
+        if (Success)
         { // RoomId file found, don't leave it open
           RoomIdFile.Close();
         }
@@ -1083,7 +1077,7 @@ void Validate::ValidateRunningPlayers()
         Success = RoomIdFile.Open(RoomIdFileName,
                        CFile::modeRead |
                        CFile::typeText);
-        if(Success)
+        if (Success)
         { // RoomId file found, don't leave it open
           RoomIdFile.Close();
         }
@@ -1192,7 +1186,7 @@ void Validate::ValidateRunningPlayersPlayerEqu()
       Success = ObjectIdFile.Open(ObjectIdFileName,
                        CFile::modeRead |
                        CFile::typeText);
-      if(Success)
+      if (Success)
       { // RoomId file found, don't leave it open
         ObjectIdFile.Close();
       }
@@ -1283,7 +1277,7 @@ void Validate::ValidateRunningPlayersPlayerObj()
       Success = ObjectIdFile.Open(ObjectIdFileName,
                        CFile::modeRead |
                        CFile::typeText);
-      if(Success)
+      if (Success)
       { // RoomId file found, don't leave it open
         ObjectIdFile.Close();
       }
@@ -1375,7 +1369,7 @@ void Validate::ValidateRunningRoomMob()
     Success = RoomIdFile.Open(RoomIdFileName,
                    CFile::modeRead |
                    CFile::typeText);
-    if(Success)
+    if (Success)
     { // RoomId file found, don't leave it open
       RoomIdFile.Close();
     }
@@ -1413,7 +1407,7 @@ void Validate::ValidateRunningRoomMob()
       Success = MobileIdFile.Open(MobileIdFileName,
                        CFile::modeRead |
                        CFile::typeText);
-      if(Success)
+      if (Success)
       { // MobileId file found, don't leave it open
         MobileIdFile.Close();
       }
@@ -1504,7 +1498,7 @@ void Validate::ValidateRunningRoomObj()
     Success = RoomIdFile.Open(RoomIdFileName,
                    CFile::modeRead |
                    CFile::typeText);
-    if(Success)
+    if (Success)
     { // RoomId file found, don't leave it open
       RoomIdFile.Close();
     }
@@ -1536,7 +1530,7 @@ void Validate::ValidateRunningRoomObj()
       Success = ObjectIdFile.Open(ObjectIdFileName,
                        CFile::modeRead |
                        CFile::typeText);
-      if(Success)
+      if (Success)
       { // ObjectId file found, don't leave it open
         ObjectIdFile.Close();
       }

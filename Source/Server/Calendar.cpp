@@ -226,7 +226,7 @@ void Calendar::LoadDayNamesArray()
   DayNamesFileName =  DAY_NAMES_DIR;
   DayNamesFileName += "DayNames.txt";
   DayNamesFile.open(DayNamesFileName);
-  if(!DayNamesFile.is_open())
+  if (!DayNamesFile.is_open())
   { // Open failed
     AfxMessageBox("Calendar::LoadDayNamesArray - Open Day Names file failed (read)", MB_ICONSTOP);
     _endthread();
@@ -254,7 +254,7 @@ void Calendar::LoadDayOfMonthArray()
   DayOfMonthFileName  =  DAY_NAMES_DIR;
   DayOfMonthFileName += "DayOfMonth.txt";
   DayOfMonthFile.open(DayOfMonthFileName);
-  if(!DayOfMonthFile.is_open())
+  if (!DayOfMonthFile.is_open())
   { // Open failed
     AfxMessageBox("Calendar::LoadDayOfMonthArray - Open Day Of Month file failed (read)", MB_ICONSTOP);
     _endthread();
@@ -282,7 +282,7 @@ void Calendar::LoadHourNamesArray()
   HourNamesFileName =  HOUR_NAMES_DIR;
   HourNamesFileName += "HourNames.txt";
   HourNamesFile.open(HourNamesFileName);
-  if(!HourNamesFile.is_open())
+  if (!HourNamesFile.is_open())
   { // Open failed
     AfxMessageBox("Calendar::LoadHourNamesArray - Open Hour Names file failed (read)", MB_ICONSTOP);
     _endthread();

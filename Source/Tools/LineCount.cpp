@@ -77,7 +77,7 @@ void LineCount::CountLines(string SourceCodeDir, string SourceCodeFileName)
   // Open source code file
   SourceCodeFileName = SourceCodeDir + SourceCodeFileName;
   SourceCodeFile.open(SourceCodeFileName);
-  if(!SourceCodeFile.is_open())
+  if (!SourceCodeFile.is_open())
   { // We don't care, just return
     return;
   }
@@ -149,7 +149,7 @@ void LineCount::OpenLineCount()
   LineCountFileName  = DOC_DIR;
   LineCountFileName += "LineCount.txt";
   LineCountFile.open(LineCountFileName);
-  if(!LineCountFile.is_open())
+  if (!LineCountFile.is_open())
   { // Create file failed
     AfxMessageBox("LineCount::OpenLineCount - OpenLineCount - Create LineCount file failed");
     _endthread();;

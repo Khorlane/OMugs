@@ -59,7 +59,7 @@ void WhoIsOnline::OpenStatsWho()
   StatsWhoFileName  = WEB_SITE_DIR;
   StatsWhoFileName += "StatsWho.xml";
   StatsWhoFile.open(StatsWhoFileName);
-  if(!StatsWhoFile.is_open())
+  if (!StatsWhoFile.is_open())
   { // Create file failed
     AfxMessageBox("WhoIsOnline::OpenStatsWho - Create StatsWho file failed", MB_ICONSTOP);
     _endthread();

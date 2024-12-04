@@ -821,7 +821,7 @@ void Communication::CommandArrayLoad()
   ValidCmdsFileName  = VALID_CMDS_DIR;
   ValidCmdsFileName += "ValidCommands.txt";
   ValidCmdsFile.open(ValidCmdsFileName);
-  if(!ValidCmdsFile.is_open())
+  if (!ValidCmdsFile.is_open())
   { // Open failed
     AfxMessageBox("Communication::CommandArrayLoad - Open Valid Commands file failed (read)", MB_ICONSTOP);
     _endthread();
@@ -6589,7 +6589,7 @@ void Communication::LogonGreeting()
   GreetingFileName += "Greeting";
   GreetingFileName += ".txt";
   GreetingFile.open(GreetingFileName);
-  if(!GreetingFile.is_open())
+  if (!GreetingFile.is_open())
   {
     AfxMessageBox("Communication::LogonGreeting - Open Greeting file failed (read)", MB_ICONSTOP);
     _endthread();
@@ -7299,7 +7299,7 @@ void Communication::ViolenceMobileLoot(string Loot)
   MobileLootFileName += ".txt";
 
   MobileLootFile.open(MobileLootFileName);
-  if(!MobileLootFile.is_open())
+  if (!MobileLootFile.is_open())
   {
     AfxMessageBox("Communication::ViolenceMobileLoot - Error opening mobile loot file, it may not exist", MB_ICONSTOP);
     _endthread();

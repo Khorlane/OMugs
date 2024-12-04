@@ -100,7 +100,7 @@ void Log::OpenLogFile()
     Rename(LogFileName, LogSaveFileName);
   }
   LogFile.open(LogFileName);
-  if(!LogFile.is_open())
+  if (!LogFile.is_open())
   {
     PrintIt("Log::OpenLogFile() - Failed");
     PrintIt("Hard Exit!");

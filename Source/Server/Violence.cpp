@@ -214,7 +214,7 @@ string Violence::GetMobileDesc1(string MobileId)
   MobStatsDesc1FileName += MobileId;
   MobStatsDesc1FileName += ".txt";
   MobStatsDesc1File.open(MobStatsDesc1FileName);
-  if(!MobStatsDesc1File.is_open())
+  if (!MobStatsDesc1File.is_open())
   {
     AfxMessageBox("Violence::GetMobileDesc1 - Open MobStatsDesc1 file failed (read)", MB_ICONSTOP);
     _endthread();
@@ -243,7 +243,7 @@ string Violence::GetMobileExpPointsLevel(string MobileId)
   MobStatsExpPointsFileName += MobileId;
   MobStatsExpPointsFileName += ".txt";
   MobStatsExpPointsFile.open(MobStatsExpPointsFileName);
-  if(!MobStatsExpPointsFile.is_open())
+  if (!MobStatsExpPointsFile.is_open())
   {
     AfxMessageBox("Violence::GetMobileExpPointsLevel - Open MobStatsExpPointsFile file failed (read)", MB_ICONSTOP);
     _endthread();
@@ -272,7 +272,7 @@ string Violence::GetMobileHitPoints(string MobileId)
   MobStatsHitPointsFileName += MobileId;
   MobStatsHitPointsFileName += ".txt";
   MobStatsHitPointsFile.open(MobStatsHitPointsFileName);
-  if(!MobStatsHitPointsFile.is_open())
+  if (!MobStatsHitPointsFile.is_open())
   {
     AfxMessageBox("Violence::WhackMobile - Open MobStatsHitPointsFile file failed (read)", MB_ICONSTOP);
     _endthread();
@@ -299,7 +299,7 @@ string Violence::GetMobileLoot(string MobileId)
   MobStatsLootFileName += MobileId;
   MobStatsLootFileName += ".txt";
   MobStatsLootFile.open(MobStatsLootFileName);
-  if(!MobStatsLootFile.is_open())
+  if (!MobStatsLootFile.is_open())
   {
     AfxMessageBox("Violence::GetMobileLoot - Open MobStatsLoot file failed (read)", MB_ICONSTOP);
     _endthread();
@@ -329,7 +329,7 @@ string Violence::GetMobileRoom(string MobileId)
   MobStatsRoomFileName += MobileId;
   MobStatsRoomFileName += ".txt";
   MobStatsRoomFile.open(MobStatsRoomFileName);
-  if(!MobStatsRoomFile.is_open())
+  if (!MobStatsRoomFile.is_open())
   {
     AfxMessageBox("Violence::GetMobileRoom - Open MobStatsRoom file failed (read)", MB_ICONSTOP);
     _endthread();
@@ -358,7 +358,7 @@ string Violence::GetMobPlayerMobileId(string PlayerName, int i)
   MobPlayerFileName += PlayerName;
   MobPlayerFileName += ".txt";
   MobPlayerFile.open(MobPlayerFileName);
-  if(!MobPlayerFile.is_open())
+  if (!MobPlayerFile.is_open())
   {
     MobileId = "No more mobiles";
     return MobileId;
@@ -391,7 +391,7 @@ string Violence::GetPlayerMobMobileId(string PlayerName)
   PlayerMobFileName += PlayerName;
   PlayerMobFileName += ".txt";
   PlayerMobFile.open(PlayerMobFileName);
-  if(!PlayerMobFile.is_open())
+  if (!PlayerMobFile.is_open())
   {
     AfxMessageBox("Violence::GetPlayerMobMobileId - Open PlayerMob file failed", MB_ICONSTOP);
     _endthread();
@@ -440,7 +440,7 @@ string Violence::WhackMobile(string MobileId, int DamageToMobile, string MobileD
   MobStatsHitPointsFileName += MobileId;
   MobStatsHitPointsFileName += ".txt";
   MobStatsHitPointsFile.open(MobStatsHitPointsFileName);
-  if(!MobStatsHitPointsFile.is_open())
+  if (!MobStatsHitPointsFile.is_open())
   { // Open failed - very bad
     AfxMessageBox("Violence::WhackMobile - Open MobStatsHitPointsFile file failed (write)", MB_ICONSTOP);
     _endthread();

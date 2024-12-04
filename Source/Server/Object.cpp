@@ -88,7 +88,7 @@ bool Object::AddObjToPlayerEqu(string WearPosition, string ObjectId)
   PlayerEquFileName += ".txt";
   NewPlayerEquFile = false;
   PlayerEquFile.open(PlayerEquFileName);
-  if(!PlayerEquFile.is_open())
+  if (!PlayerEquFile.is_open())
   {
     NewPlayerEquFile = true;
   }
@@ -97,7 +97,7 @@ bool Object::AddObjToPlayerEqu(string WearPosition, string ObjectId)
   PlayerEquFileNameTmp += pDnodeActor->PlayerName;
   PlayerEquFileNameTmp += ".tmp.txt";
   PlayerEquFileTmp.open(PlayerEquFileNameTmp);
-  if(!PlayerEquFileTmp.is_open())
+  if (!PlayerEquFileTmp.is_open())
   {
     AfxMessageBox("Object::AddObjToPlayerEqu - Open PlayerEqu temp file failed", MB_ICONSTOP);
     _endthread();
@@ -182,7 +182,7 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId)
   PlayerObjFileName += ".txt";
   NewPlayerObjFile = false;
   PlayerObjFile.open(PlayerObjFileName);
-  if(!PlayerObjFile.is_open())
+  if (!PlayerObjFile.is_open())
   {
     NewPlayerObjFile = true;
   }
@@ -191,7 +191,7 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId)
   PlayerObjFileNameTmp += pDnodeTgt->PlayerName;
   PlayerObjFileNameTmp += ".tmp.txt";
   PlayerObjFileTmp.open(PlayerObjFileNameTmp);
-  if(!PlayerObjFileTmp.is_open())
+  if (!PlayerObjFileTmp.is_open())
   {
     AfxMessageBox("Object::AddObjToPlayerInv - Open PlayerObj temp file failed", MB_ICONSTOP);
     _endthread();
@@ -277,7 +277,7 @@ void Object::AddObjToRoom(string RoomId, string ObjectId)
   RoomObjFileName += ".txt";
   NewRoomObjFile = false;
   RoomObjFile.open(RoomObjFileName);
-  if(!RoomObjFile.is_open())
+  if (!RoomObjFile.is_open())
   {
     NewRoomObjFile = true;
   }
@@ -286,7 +286,7 @@ void Object::AddObjToRoom(string RoomId, string ObjectId)
   RoomObjFileNameTmp += RoomId;
   RoomObjFileNameTmp += ".tmp.txt";
   RoomObjFileTmp.open(RoomObjFileNameTmp);
-  if(!RoomObjFileTmp.is_open())
+  if (!RoomObjFileTmp.is_open())
   {
     AfxMessageBox("Object::AddObjToRoom - Open RoomObj temp file failed", MB_ICONSTOP);
     _endthread();
@@ -375,7 +375,7 @@ int Object::CalcPlayerArmorClass()
   PlayerEquFileName += pDnodeActor->PlayerName;
   PlayerEquFileName += ".txt";
   PlayerEquFile.open(PlayerEquFileName);
-  if(!PlayerEquFile.is_open())
+  if (!PlayerEquFile.is_open())
   { // No player equipment
     return ArmorClass;
   }
@@ -416,7 +416,7 @@ void Object::IsObjInPlayerEqu(string ObjectName)
   //* Try matching using ObjectId *
   //*******************************
   PlayerEquFile.open(PlayerEquFileName);
-  if(!PlayerEquFile.is_open())
+  if (!PlayerEquFile.is_open())
   { // Player has no objects
     pObject = NULL;
     return;
@@ -451,7 +451,7 @@ void Object::IsObjInPlayerEqu(string ObjectName)
   //* No match found, try getting match using 'names' *
   //***************************************************
   PlayerEquFile.open(PlayerEquFileName);
-  if(!PlayerEquFile.is_open())
+  if (!PlayerEquFile.is_open())
   { // Player has no objects
     pObject = NULL;
     return;
@@ -513,7 +513,7 @@ void Object::IsObjInPlayerInv(string ObjectName)
   //* Try matching using ObjectId *
   //*******************************
   PlayerObjFile.open(PlayerObjFileName);
-  if(!PlayerObjFile.is_open())
+  if (!PlayerObjFile.is_open())
   { // Player has no objects
     pObject = NULL;
     return;
@@ -549,7 +549,7 @@ void Object::IsObjInPlayerInv(string ObjectName)
   //* No match found, try getting match using 'names' *
   //***************************************************
   PlayerObjFile.open(PlayerObjFileName);
-  if(!PlayerObjFile.is_open())
+  if (!PlayerObjFile.is_open())
   { // Player has no objects
     pObject = NULL;
     return;
@@ -611,7 +611,7 @@ void Object::IsObjInRoom(string ObjectName)
   //* Try matching using ObjectId *
   //*******************************
   RoomObjFile.open(RoomObjFileName);
-  if(!RoomObjFile.is_open())
+  if (!RoomObjFile.is_open())
   { // Room has no objects
     pObject = NULL;
     return;
@@ -646,7 +646,7 @@ void Object::IsObjInRoom(string ObjectName)
   //* No match found, try getting match using 'names' *
   //***************************************************
   RoomObjFile.open(RoomObjFileName);
-  if(!RoomObjFile.is_open())
+  if (!RoomObjFile.is_open())
   { // Room has no objects
     pObject = NULL;
     return;
@@ -697,7 +697,7 @@ void Object::IsObject(string ObjectId)
   ObjectFileName += ObjectId;
   ObjectFileName += ".txt";
   ObjectFile.open(ObjectFileName);
-  if(ObjectFile.is_open())
+  if (ObjectFile.is_open())
   {
     ObjectFile.close();
     pObject = new Object(ObjectId);
@@ -732,7 +732,7 @@ void Object::RemoveObjFromPlayerEqu(string ObjectId)
   PlayerEquFileName += pDnodeActor->PlayerName;
   PlayerEquFileName += ".txt";
   PlayerEquFile.open(PlayerEquFileName);
-  if(!PlayerEquFile.is_open())
+  if (!PlayerEquFile.is_open())
   {
     AfxMessageBox("Object::RemoveObjFromPlayerEqu - Open PlayerEqu file failed", MB_ICONSTOP);
     _endthread();
@@ -742,7 +742,7 @@ void Object::RemoveObjFromPlayerEqu(string ObjectId)
   PlayerEquFileNameTmp += pDnodeActor->PlayerName;
   PlayerEquFileNameTmp += ".tmp.txt";
   PlayerEquFileTmp.open(PlayerEquFileNameTmp);
-  if(!PlayerEquFileTmp.is_open())
+  if (!PlayerEquFileTmp.is_open())
   {
     AfxMessageBox("Object::RemoveObjFromPlayerEqu - Open PlayerEqu temp file failed", MB_ICONSTOP);
     _endthread();
@@ -811,7 +811,7 @@ void Object::RemoveObjFromPlayerInv(string ObjectId, int Count)
   PlayerObjFileName += pDnodeActor->PlayerName;
   PlayerObjFileName += ".txt";
   PlayerObjFile.open(PlayerObjFileName);
-  if(!PlayerObjFile.is_open())
+  if (!PlayerObjFile.is_open())
   {
     AfxMessageBox("Object::RemoveObjFromPlayerInv - Open PlayerObj file failed", MB_ICONSTOP);
     _endthread();
@@ -821,7 +821,7 @@ void Object::RemoveObjFromPlayerInv(string ObjectId, int Count)
   PlayerObjFileNameTmp += pDnodeActor->PlayerName;
   PlayerObjFileNameTmp += ".tmp.txt";
   PlayerObjFileTmp.open(PlayerObjFileNameTmp);
-  if(!PlayerObjFileTmp.is_open())
+  if (!PlayerObjFileTmp.is_open())
   {
     AfxMessageBox("Object::RemoveObjFromPlayerInv - Open PlayerObj temp file failed", MB_ICONSTOP);
     _endthread();
@@ -899,7 +899,7 @@ void Object::RemoveObjFromRoom(string ObjectId)
   RoomObjFileName += pDnodeActor->pPlayer->RoomId;
   RoomObjFileName += ".txt";
   RoomObjFile.open(RoomObjFileName);
-  if(!RoomObjFile.is_open())
+  if (!RoomObjFile.is_open())
   {
     AfxMessageBox("Object::RemoveObjFromRoom - Open RoomObj file failed", MB_ICONSTOP);
     _endthread();
@@ -909,7 +909,7 @@ void Object::RemoveObjFromRoom(string ObjectId)
   RoomObjFileNameTmp += pDnodeActor->pPlayer->RoomId;
   RoomObjFileNameTmp += ".tmp.txt";
   RoomObjFileTmp.open(RoomObjFileNameTmp);
-  if(!RoomObjFileTmp.is_open())
+  if (!RoomObjFileTmp.is_open())
   {
     AfxMessageBox("Object::RemoveObjFromRoom - Open RoomObj temp file failed", MB_ICONSTOP);
     _endthread();

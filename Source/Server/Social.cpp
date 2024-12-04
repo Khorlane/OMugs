@@ -122,7 +122,7 @@ bool Social::OpenFile()
   SocialFileName =  SOCIAL_DIR;
   SocialFileName += "Social.txt";
   SocialFile.open(SocialFileName);
-  if(SocialFile.is_open())
+  if (SocialFile.is_open())
   {
     return true;
   }

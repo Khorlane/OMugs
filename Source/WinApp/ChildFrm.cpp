@@ -59,7 +59,7 @@ BOOL CChildFrame::PreCreateWindow(CREATESTRUCT& cs)
 	// You can modify the Window class or styles here by modifying
 	//  the CREATESTRUCT cs
 
-	if( !CMDIChildWnd::PreCreateWindow(cs) )
+	if ( !CMDIChildWnd::PreCreateWindow(cs) )
 		return FALSE;
 
 	return TRUE;
