@@ -939,21 +939,18 @@ void Validate::ValidateLibraryWorldMobiles()
 
 void Validate::ValidateRunningPlayers()
 {
-  CString    FieldName;
-  CString    FieldValue;
-  CFileFind  FileList;
-  CString    FileName;
+  string     FieldName;
+  string     FieldValue;
+  string     FileName;
   int        LineCount;
-  CString    LogBuf;
-  CString    Message;
-  CStdioFile PlayerFile;
-  CString    PlayerFileName;
-  CString    PlayerName;
-  BOOL       MoreFiles;
-  CStdioFile RoomIdFile;
-  CString    RoomIdFileName;
-  CString    Stuff;
-  int        Success;
+  string     LogBuf;
+  string     Message;
+  ifstream   PlayerFile;
+  string     PlayerFileName;
+  string     PlayerName;
+  ifstream   RoomIdFile;
+  string     RoomIdFileName;
+  string     Stuff;
 
   LogBuf = "Begin validation RunningPlayers";
   LogIt(LogBuf);
@@ -963,33 +960,29 @@ void Validate::ValidateRunningPlayers()
     _endthread();
   }
   // Get list of all RunningPlayers files
-  MoreFiles = FileList.FindFile("*.*");
   if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateRunningPlayers - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
   }
-  while (MoreFiles)
+  for (const auto &entry : fs::directory_iterator("./"))
   {
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
-    { // Skip directories
+    if (entry.is_directory())
+    {
       continue;
     }
     // Open player file
-    PlayerFileName = FileList.GetFileName();
+    PlayerFileName = entry.path().filename().string();
     PlayerName = StrLeft(PlayerFileName, StrGetLength(PlayerFileName) - 4);
     PlayerFileName = PLAYER_DIR + PlayerFileName;
-    Success = PlayerFile.Open(PlayerFileName,
-                   CFile::modeRead |
-                   CFile::typeText);
-    if (!Success)
+    PlayerFile.open(PlayerFileName);
+    if (!PlayerFile.is_open())
     { // File does not exist - Very bad!
       AfxMessageBox("Validate::ValidateRunningPlayers - Open player file failed", MB_ICONSTOP);
       _endthread();
     }
     LineCount = 0;
-    PlayerFile.ReadString(Stuff);
+    getline(PlayerFile, Stuff);
     while (Stuff != "")
     { // For all lines
       LineCount++;
@@ -1028,12 +1021,10 @@ void Validate::ValidateRunningPlayers()
         RoomIdFileName = ROOMS_DIR;
         RoomIdFileName += FieldValue;
         RoomIdFileName += ".txt";
-        Success = RoomIdFile.Open(RoomIdFileName,
-                       CFile::modeRead |
-                       CFile::typeText);
-        if (Success)
+        RoomIdFile.open(RoomIdFileName);
+        if (RoomIdFile.is_open())
         { // RoomId file found, don't leave it open
-          RoomIdFile.Close();
+          RoomIdFile.close();
         }
         else
         { // RoomId file not found
@@ -1046,9 +1037,9 @@ void Validate::ValidateRunningPlayers()
           LogValErr(Message, FileName);
         }
       }
-      PlayerFile.ReadString(Stuff);
+      getline(PlayerFile, Stuff);
     }
-    PlayerFile.Close();
+    PlayerFile.close();
   }
   LogBuf = "Done  validating RunningPlayers";
   LogIt(LogBuf);
