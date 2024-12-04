@@ -380,22 +380,18 @@ void Validate::ValidateLibraryMobiles()
 
 void Validate::ValidateLibraryObjects()
 {
-
-  CString    FieldName;
-  CString    FieldValue;
-  CFileFind  FileList;
-  CString    FileName;
+  string     FieldName;
+  string     FieldValue;
+  string     FileName;
   int        LineCount;
-  CString    LogBuf;
-  CStdioFile LootFile;
-  CString    LootFileName;
-  CString    Message;
-  CStdioFile ObjectFile;
-  CString    ObjectFileName;
-  CString    ObjectId;
-  BOOL       MoreFiles;
-  CString    Stuff;
-  int        Success;
+  string     LogBuf;
+  ifstream   LootFile;
+  string     LootFileName;
+  string     Message;
+  ifstream   ObjectFile;
+  string     ObjectFileName;
+  string     ObjectId;
+  string     Stuff;
 
   LogBuf = "Begin validation LibraryObjects";
   LogIt(LogBuf);
@@ -405,33 +401,29 @@ void Validate::ValidateLibraryObjects()
     _endthread();
   }
   // Get list of all LibarryObjects files
-  MoreFiles = FileList.FindFile("*.*");
   if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateLibraryObjects - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
   }
-  while (MoreFiles)
+  for (const auto &entry : fs::directory_iterator("./"))
   {
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
-    { // Skip directories
+    if (entry.is_directory())
+    {
       continue;
     }
     // Open object file
-    ObjectFileName = FileList.GetFileName();
+    ObjectFileName = entry.path().filename().string();
     ObjectId = StrLeft(ObjectFileName, StrGetLength(ObjectFileName) - 4);
     ObjectFileName = OBJECTS_DIR + ObjectFileName;
-    Success = ObjectFile.Open(ObjectFileName,
-                   CFile::modeRead |
-                   CFile::typeText);
-    if (!Success)
+    ObjectFile.open(ObjectFileName);
+    if (!ObjectFile.is_open())
     { // File does not exist - Very bad!
       AfxMessageBox("Validate::ValidateLibraryObjects - Open object file failed", MB_ICONSTOP);
       _endthread();
     }
     LineCount = 0;
-    ObjectFile.ReadString(Stuff);
+    getline(ObjectFile, Stuff);
     while (Stuff != "")
     { // For all lines
       LineCount++;
@@ -466,7 +458,7 @@ void Validate::ValidateLibraryObjects()
       //*********
       if (FieldName == "Type:")
       { // Type field validation
-        if (StrIsNotWord(ConvertCStringToString(FieldValue), "Armor Container Drink Food Junk Key Light NoTake Treasure Weapon"))
+        if (StrIsNotWord(FieldValue, "Armor Container Drink Food Junk Key Light NoTake Treasure Weapon"))
         { // Invalid object type
           Message = "Object type is invalid";
           FileName = ObjectFileName;
@@ -479,7 +471,7 @@ void Validate::ValidateLibraryObjects()
         { //***************
           //* ArmorValue: *
           //***************
-          ObjectFile.ReadString(Stuff);
+          getline(ObjectFile, Stuff);
           LineCount++;
           FieldName  = StrGetWord(Stuff, 1);
           FieldValue = StrGetWord(Stuff, 2);
@@ -492,7 +484,7 @@ void Validate::ValidateLibraryObjects()
           //**************
           //* ArmorWear: *
           //**************
-          ObjectFile.ReadString(Stuff);
+          getline(ObjectFile, Stuff);
           LineCount++;
           FieldName  = StrGetWord(Stuff, 1);
           FieldValue = StrGetWord(Stuff, 2);
@@ -504,7 +496,7 @@ void Validate::ValidateLibraryObjects()
           }
           else
           { // Validate 'wear' positions
-            if (StrIsNotWord(ConvertCStringToString(FieldValue), "Head Ear Neck Shoulders Chest Back Arms Wrist Hands Finger Shield Waist Legs Ankle Feet"))
+            if (StrIsNotWord(FieldValue, "Head Ear Neck Shoulders Chest Back Arms Wrist Hands Finger Shield Waist Legs Ankle Feet"))
             { // Invalid wear position
               Message = "Wear position is invalid";
               FileName = ObjectFileName;
@@ -519,7 +511,7 @@ void Validate::ValidateLibraryObjects()
         { //***************
           //* WeaponType: *
           //***************
-          ObjectFile.ReadString(Stuff);
+          getline(ObjectFile, Stuff);
           LineCount++;
           FieldName  = StrGetWord(Stuff, 1);
           FieldValue = StrGetWord(Stuff, 2);
@@ -531,7 +523,7 @@ void Validate::ValidateLibraryObjects()
           }
           else
           { // Validate WeaponType
-            if (StrIsNotWord(ConvertCStringToString(FieldValue), "Axe Club Dagger Hammer Spear Staff Sword"))
+            if (StrIsNotWord(FieldValue, "Axe Club Dagger Hammer Spear Staff Sword"))
             { // Invalid weapon type
               Message = "Weapon type is invalid";
               FileName = ObjectFileName;
@@ -541,7 +533,7 @@ void Validate::ValidateLibraryObjects()
           //*****************
           //* WeaponDamage: *
           //*****************
-          ObjectFile.ReadString(Stuff);
+          getline(ObjectFile, Stuff);
           LineCount++;
           FieldName  = StrGetWord(Stuff, 1);
           FieldValue = StrGetWord(Stuff, 2);
@@ -553,9 +545,9 @@ void Validate::ValidateLibraryObjects()
           }
         }
       }
-      ObjectFile.ReadString(Stuff);
+      getline(ObjectFile, Stuff);
     }
-    ObjectFile.Close();
+    ObjectFile.close();
   }
   LogBuf = "Done  validating LibraryObjects";
   LogIt(LogBuf);
