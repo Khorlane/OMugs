@@ -1051,21 +1051,18 @@ void Validate::ValidateRunningPlayers()
 
 void Validate::ValidateRunningPlayersPlayerEqu()
 {
-  CFileFind  FileList;
-  CString    FileName;
+  string     FileName;
   int        LineCount;
-  CString    LogBuf;
-  CString    Message;
-  CString    ObjectId;
-  CStdioFile ObjectIdFile;
-  CString    ObjectIdFileName;
-  CStdioFile PlayerEquFile;
-  CString    PlayerEquFileName;
-  CString    PlayerName;
-  BOOL       MoreFiles;
-  CString    Stuff;
-  int        Success;
-  CString    WearPosition;
+  string     LogBuf;
+  string     Message;
+  string     ObjectId;
+  ifstream   ObjectIdFile;
+  string     ObjectIdFileName;
+  ifstream   PlayerEquFile;
+  string     PlayerEquFileName;
+  string     PlayerName;
+  string     Stuff;
+  string     WearPosition;
 
   LogBuf = "Begin validation RunningPlayersPlayerEqu";
   LogIt(LogBuf);
@@ -1075,33 +1072,29 @@ void Validate::ValidateRunningPlayersPlayerEqu()
     _endthread();
   }
   // Get list of all RunningPlayersPlayerEqu files
-  MoreFiles = FileList.FindFile("*.*");
   if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateRunningPlayersPlayerEqu - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
   }
-  while (MoreFiles)
+  for (const auto &entry : fs::directory_iterator("./"))
   {
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
-    { // Skip directories
+    if (entry.is_directory())
+    {
       continue;
     }
     // Open player file
-    PlayerEquFileName = FileList.GetFileName();
+    PlayerEquFileName = entry.path().filename().string();
     PlayerName = StrLeft(PlayerEquFileName, StrGetLength(PlayerEquFileName) - 4);
     PlayerEquFileName = PLAYER_EQU_DIR + PlayerEquFileName;
-    Success = PlayerEquFile.Open(PlayerEquFileName,
-                      CFile::modeRead |
-                      CFile::typeText);
-    if (!Success)
+    PlayerEquFile.open(PlayerEquFileName);
+    if (!PlayerEquFile.is_open())
     { // File does not exist - Very bad!
       AfxMessageBox("Validate::ValidateRunningPlayersPlayerEqu - Open player file failed", MB_ICONSTOP);
       _endthread();
     }
     LineCount = 0;
-    PlayerEquFile.ReadString(Stuff);
+    getline(PlayerEquFile, Stuff);
     while (Stuff != "")
     { // For all lines
       LineCount++;
@@ -1128,12 +1121,10 @@ void Validate::ValidateRunningPlayersPlayerEqu()
       ObjectIdFileName = OBJECTS_DIR;
       ObjectIdFileName += ObjectId;
       ObjectIdFileName += ".txt";
-      Success = ObjectIdFile.Open(ObjectIdFileName,
-                       CFile::modeRead |
-                       CFile::typeText);
-      if (Success)
+      ObjectIdFile.open(ObjectIdFileName);
+      if (ObjectIdFile.is_open())
       { // RoomId file found, don't leave it open
-        ObjectIdFile.Close();
+        ObjectIdFile.close();
       }
       else
       { // ObjectId file not found
@@ -1145,9 +1136,9 @@ void Validate::ValidateRunningPlayersPlayerEqu()
         FileName = PlayerEquFileName;
         LogValErr(Message, FileName);
       }
-      PlayerEquFile.ReadString(Stuff);
+      getline(PlayerEquFile, Stuff);
     }
-    PlayerEquFile.Close();
+    PlayerEquFile.close();
   }
   LogBuf = "Done  validating RunningPlayersPlayerEqu";
   LogIt(LogBuf);
