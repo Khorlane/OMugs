@@ -171,9 +171,6 @@ bool Room::IsExit(string MudCmdIsExit)
   string   Stuff;
   string   TmpStr;
 
-  //string  sCmdStr;
-  //sCmdStr = ConvertCStringToString(CmdStr);
-
   Found = false;
   if (!OpenFile(pDnodeActor))
   { // If the file isn't there, then the Room does not exit, doh!

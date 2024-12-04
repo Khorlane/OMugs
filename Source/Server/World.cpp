@@ -188,7 +188,7 @@ void World::CheckSpawnMobileEvents()
   string     Stuff;
 
   sprintf(Buf, "%d", GetTimeSeconds());
-  CheckTime = ConvertStringToCString(Buf);
+  CheckTime = Buf;
   if (ChgDir(CONTROL_EVENTS_DIR))
   { // Change directory failed
     AfxMessageBox("World::CheckSpawnMobileEvents - Change directory to CONTROL_EVENTS_DIR failed", MB_ICONSTOP);
@@ -366,7 +366,7 @@ bool World::HealMobilesFightCheck(string Dir, string MobileId)
       TmpStr  = "World::HealMobilesFightCheck - Open ";
       TmpStr += Dir;
       TmpStr += " file failed";
-      AfxMessageBox(ConvertStringToCString(TmpStr), MB_ICONSTOP);
+      AfxMessageBox(TmpStr.c_str(), MB_ICONSTOP);
       _endthread();
     }
     getline(MobPlayerFile, Stuff);
@@ -491,7 +491,7 @@ void World::MakeMobilesMove1()
     if (StrFind(RoomMobFileName, "Spawn") == -1)
     { // Not a spawn room, Random position in list
       sprintf(Buf, "%05d",rand());
-      TmpStr = ConvertStringToCString(Buf);
+      TmpStr = Buf;
     }
     else
     { // Force 'spawn' rooms to be first in list
@@ -506,7 +506,7 @@ void World::MakeMobilesMove1()
   // Write em
   for (string item : RoomMobList)
   {
-    TmpStr = ConvertStringToCString(item);
+    TmpStr = item;
     TmpStr = StrGetWord(TmpStr, 2);
     TmpStr += "\n";
     RoomMobListFile << TmpStr << endl;
@@ -927,7 +927,7 @@ void World::SpawnMobile(string MobileId, string RoomId)
     AfxMessage += "\n";
     AfxMessage += "MobileId: ";
     AfxMessage += MobileId;
-    AfxMessageBox(ConvertStringToCString(AfxMessage), MB_ICONSTOP);
+    AfxMessageBox(AfxMessage.c_str(), MB_ICONSTOP);
     _endthread();
   }
   AddMobToRoom(RoomId, MobileId);

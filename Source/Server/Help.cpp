@@ -148,7 +148,7 @@ void Help::ShowHelp()
   while (TmpStr != "Related help:")
   {
     ReadLine();
-    pDnodeActor->PlayerOut += ConvertStringToCString(HelpText);
+    pDnodeActor->PlayerOut += HelpText;
     pDnodeActor->PlayerOut += "\r\n";
     TmpStr = StrLeft(HelpText, 13);
   }

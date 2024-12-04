@@ -262,8 +262,6 @@ int     CalcPlayerArmorClass();
 error_code ChgDir(string Dir);
 void    ClearDescriptor();
 void    CloseLogFile();
-string  ConvertCStringToString(CString Str1);
-CString ConvertStringToCString(string  Str1);
 int     CountMob(string MobileId);
 void    CreateMobPlayer(string PlayerName, string MobileId);
 void    CreateMobStatsFileWrite(string Directory, string MobileIdForFight, string Stuff);

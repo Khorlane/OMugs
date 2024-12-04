@@ -267,7 +267,7 @@ void Mobile::CreateMobStatsFileWrite(string Directory, string MobileIdForFight, 
     AfxMessage += " ";
     AfxMessage += MobileIdForFight;
     AfxMessage += " failed.";
-    AfxMessageBox(ConvertStringToCString(AfxMessage), MB_ICONSTOP);
+    AfxMessageBox(AfxMessage.c_str(), MB_ICONSTOP);
     _endthread();
   }
   MobStatsFile << Stuff << endl;
@@ -493,7 +493,7 @@ Mobile *Mobile::IsMobInRoom(string MobileName)
       }
       pMobile = new Mobile(MobileId);
       pMobile->Hurt   = MobileHurt;
-      pMobile->MobNbr = ConvertStringToCString(MobNbr);
+      pMobile->MobNbr = MobNbr;
       return pMobile;
     }
     getline(RoomMobFile, Stuff);
@@ -522,7 +522,7 @@ Mobile *Mobile::IsMobInRoom(string MobileName)
     }
     pMobile = new Mobile(MobileId);
     pMobile->Hurt    = MobileHurt;
-    pMobile->MobNbr  = ConvertStringToCString(MobNbr);
+    pMobile->MobNbr  = MobNbr;
     if (pMobile->Hurt)
     { // Mobile is hurt
       if (MobNbr == MobileName)
@@ -632,7 +632,7 @@ Mobile *Mobile::IsMobValid(string MobileId)
   ifstream    MobileFile;
 
   MobileFileName =  MOBILES_DIR;
-  MobileFileName += ConvertStringToCString(MobileId);
+  MobileFileName += MobileId;
   MobileFileName += ".txt";
   MobileFile.open(MobileFileName);
   if (MobileFile.is_open())
@@ -775,7 +775,7 @@ void Mobile::RemoveMobFromRoom(string RoomId, string MobileId)
       if (MobCount > 0)
       {
         sprintf(Buf, "%d", MobCount);
-        TmpStr = ConvertStringToCString(Buf);
+        TmpStr = Buf;
         MobileId = TmpStr + " " + MobileId;
         MobileId += "\n";
         RoomMobTmpFile << Stuff << endl;
@@ -853,13 +853,13 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
     }
     pMobile = new Mobile(MobileId);
     pMobile->Hurt   = MobileHurt;
-    pMobile->MobNbr = ConvertStringToCString(MobNbr);
+    pMobile->MobNbr = MobNbr;
     if (MobileHurt)
     { // Mobile is hurt
       pDnode->PlayerOut += "\r\n";
       pDnode->PlayerOut += "&W";
       pDnode->PlayerOut += "You see ";
-      pDnode->PlayerOut += ConvertStringToCString(pMobile->Desc1);
+      pDnode->PlayerOut += pMobile->Desc1;
       pDnode->PlayerOut += ", ";
       pDnode->PlayerOut += "&M";
       pDnode->PlayerOut += "wounded";
@@ -867,7 +867,7 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
       pDnode->PlayerOut +=  ", trying to hide.";
       pDnode->PlayerOut += "&B";
       pDnode->PlayerOut += " (";
-      pDnode->PlayerOut += ConvertStringToCString(MobileIdHurt);
+      pDnode->PlayerOut += MobileIdHurt;
       pDnode->PlayerOut += ")";
       pDnode->PlayerOut += "&N";
     }
@@ -875,8 +875,8 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
     { // Mobile is not hurt
       pDnode->PlayerOut += "\r\n";
       pDnode->PlayerOut += "&W";
-      pDnode->PlayerOut += "(" + ConvertStringToCString(MobileCount) + ") ";
-      pDnode->PlayerOut += ConvertStringToCString(pMobile->Desc2);
+      pDnode->PlayerOut += "(" + MobileCount + ") ";
+      pDnode->PlayerOut += pMobile->Desc2;
       pDnode->PlayerOut += "&N";
     }
     // Check for AGGRO mobs
@@ -935,8 +935,8 @@ string Mobile::MobAttacks(Mobile *pMobile)
   // Send message to player
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += "&R";
-  pDnodeActor->PlayerOut += ConvertStringToCString(pMobile->Desc1);
-  pDnodeActor->PlayerOut += ConvertStringToCString(PhrasePlayer);
+  pDnodeActor->PlayerOut += pMobile->Desc1;
+  pDnodeActor->PlayerOut += PhrasePlayer;
   pDnodeActor->PlayerOut += "&N";
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
@@ -1034,13 +1034,13 @@ void Mobile::WhereMob(string MobileIdSearch)
       }
       if (MobileId == MobileIdSearch)
       {
-        pDnodeActor->PlayerOut += ConvertStringToCString(RoomName);
+        pDnodeActor->PlayerOut += RoomName;
         pDnodeActor->PlayerOut += " ";
         if (MobileHurt)
         {
           pDnodeActor->PlayerOut += "&R";
         }
-        pDnodeActor->PlayerOut += ConvertStringToCString(Stuff);
+        pDnodeActor->PlayerOut += Stuff;
         pDnodeActor->PlayerOut += "&N";
         pDnodeActor->PlayerOut += "\r\n";
       }
@@ -1089,7 +1089,8 @@ void Mobile::UpdateMobInWorld(string MobileId, string AddRemove)
   MobInWorldFile.open(MobInWorldFileName, fstream::out);
   if (!MobInWorldFile.is_open())
   {
-    AfxMessageBox("Mobile::UpdateMobInWorld - Open Mobiles InWorld file failed for: " + ConvertStringToCString(MobInWorldFileName), MB_ICONSTOP);
+    string Msg = "Mobile::UpdateMobInWorld - Open Mobiles InWorld file failed for: " + MobInWorldFileName;
+    AfxMessageBox(Msg.c_str(), MB_ICONSTOP);
     _endthread();
   }
   if (AddRemove == "add")
@@ -1123,21 +1124,21 @@ void Mobile::CreateMobStatsFile(string RoomId)
   MobileIdForFight = MobileId + "." + MobNbr;
   // HitPoints
   sprintf(Buf, "%d", HitPoints);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   Stuff = TmpStr;
   Stuff += " ";
   Stuff += TmpStr;
   CreateMobStatsFileWrite(MOB_STATS_HPT_DIR, MobileIdForFight, Stuff);
   // Armor
   sprintf(Buf, "%d", Armor);
-  Stuff = ConvertStringToCString(Buf);
+  Stuff = Buf;
   CreateMobStatsFileWrite(MOB_STATS_ARM_DIR, MobileIdForFight, Stuff);
   // Attack
   Stuff= Attack;
   CreateMobStatsFileWrite(MOB_STATS_ATK_DIR, MobileIdForFight, Stuff);
   // Damage
   sprintf(Buf, "%d", Damage);
-  Stuff = ConvertStringToCString(Buf);
+  Stuff = Buf;
   CreateMobStatsFileWrite(MOB_STATS_DMG_DIR, MobileIdForFight, Stuff);
   // Desc1
   Stuff = Desc1;
@@ -1173,7 +1174,7 @@ void Mobile::ExamineMob(string MobileId)
   getline(MobileFile, Stuff); // Do not use ReadLine() here
   while (Stuff != "End Desc3")
   {
-    pDnodeActor->PlayerOut += ConvertStringToCString(Stuff);
+    pDnodeActor->PlayerOut += Stuff;
     pDnodeActor->PlayerOut += "\r\n";
     getline(MobileFile, Stuff); // Do not use ReadLine() here
   }
@@ -1223,7 +1224,7 @@ void Mobile::GetNextMobNbr()
   NextMobNbrFile << NextMobNbrString << endl;
   NextMobNbrFile.close();
   // Set mobile number
-  MobNbr = ConvertStringToCString(NextMobNbr);
+  MobNbr = NextMobNbr;
 }
 
 /***********************************************************

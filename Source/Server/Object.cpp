@@ -528,7 +528,7 @@ void Object::IsObjInPlayerInv(string ObjectName)
       pObject = new Object(ObjectId);
       if (pObject)
       { // Object exists
-        pObject->Count = ConvertStringToCString(StrGetWord(Stuff, 1));
+        pObject->Count = StrGetWord(Stuff, 1);
         return;
       }
       else
@@ -569,7 +569,7 @@ void Object::IsObjInPlayerInv(string ObjectName)
       pObject = NULL;
       return;
     }
-    pObject->Count = ConvertStringToCString(StrGetWord(Stuff, 1));
+    pObject->Count = StrGetWord(Stuff, 1);
     NamesCheck     = pObject->Names;
     NamesCheck = StrMakeLower(NamesCheck);
     if (StrIsWord(ObjectName, NamesCheck))
@@ -846,7 +846,7 @@ void Object::RemoveObjFromPlayerInv(string ObjectId, int Count)
       if (ObjCount > 0)
       {
         sprintf(Buf, "%d", ObjCount);
-        TmpStr = ConvertStringToCString(Buf);
+        TmpStr = Buf;
         ObjectId = TmpStr + " " + ObjectId;
         PlayerObjFileTmp << ObjectId << endl;
       }
@@ -1013,8 +1013,8 @@ void Object::ShowPlayerEqu(Dnode *pDnodeTgt1)
     WearPosition = TranslateWord(WearPosition);
     ObjectId = StrGetWord(Stuff, 2);
     pObject = new Object(ObjectId);
-    pDnodeActor->PlayerOut += ConvertStringToCString(WearPosition);
-    pDnodeActor->PlayerOut += ConvertStringToCString(pObject->Desc1);
+    pDnodeActor->PlayerOut += WearPosition;
+    pDnodeActor->PlayerOut += pObject->Desc1;
     pDnodeActor->PlayerOut += "\r\n";
     delete pObject;
     pObject = NULL;
@@ -1060,8 +1060,8 @@ void Object::ShowPlayerInv()
     ObjectCount = StrGetWord(Stuff, 1);
     ObjectId = StrGetWord(Stuff, 2);
     pObject = new Object(ObjectId);
-    pDnodeActor->PlayerOut += "(" + ConvertStringToCString(ObjectCount) + ") ";
-    pDnodeActor->PlayerOut += ConvertStringToCString(pObject->Desc1);
+    pDnodeActor->PlayerOut += "(" + ObjectCount + ") ";
+    pDnodeActor->PlayerOut += pObject->Desc1;
     pDnodeActor->PlayerOut += "\r\n";
     delete pObject;
     pObject = NULL;
@@ -1104,9 +1104,9 @@ void Object::ShowObjsInRoom(Dnode *pDnode)
     pDnode->PlayerOut += "\r\n";
     if (pObject->Type != "notake")
     { // Should be only 1 NoTake type object in a room, like signs or statues
-      pDnode->PlayerOut += "(" + ConvertStringToCString(ObjectCount) + ") ";
+      pDnode->PlayerOut += "(" + ObjectCount + ") ";
     }
-    pDnode->PlayerOut += ConvertStringToCString(pObject->Desc2);
+    pDnode->PlayerOut += pObject->Desc2;
     delete pObject;
     pObject = NULL;
     getline(RoomObjFile, Stuff);
@@ -1170,9 +1170,9 @@ void Object::WhereObjPlayerEqu(string ObjectIdSearch)
       ObjectId      = StrGetWord(Stuff, 2);
       if (ObjectId == ObjectIdSearch)
       {
-        pDnodeActor->PlayerOut += ConvertStringToCString(PlayerName);
+        pDnodeActor->PlayerOut += PlayerName;
         pDnodeActor->PlayerOut += " ";
-        pDnodeActor->PlayerOut += ConvertStringToCString(Stuff);
+        pDnodeActor->PlayerOut += Stuff;
         pDnodeActor->PlayerOut += "&N";
         pDnodeActor->PlayerOut += "\r\n";
       }
@@ -1232,9 +1232,9 @@ void Object::WhereObjPlayerObj(string ObjectIdSearch)
       ObjectId      = StrGetWord(Stuff, 2);
       if (ObjectId == ObjectIdSearch)
       {
-        pDnodeActor->PlayerOut += ConvertStringToCString(PlayerName);
+        pDnodeActor->PlayerOut += PlayerName;
         pDnodeActor->PlayerOut += " ";
-        pDnodeActor->PlayerOut += ConvertStringToCString(Stuff);
+        pDnodeActor->PlayerOut += Stuff;
         pDnodeActor->PlayerOut += "&N";
         pDnodeActor->PlayerOut += "\r\n";
       }
@@ -1294,9 +1294,9 @@ void Object::WhereObjRoomObj(string ObjectIdSearch)
       ObjectId = StrGetWord(Stuff, 2);
       if (ObjectId == ObjectIdSearch)
       { // Match
-        pDnodeActor->PlayerOut += ConvertStringToCString(RoomName);
+        pDnodeActor->PlayerOut += RoomName;
         pDnodeActor->PlayerOut += " ";
-        pDnodeActor->PlayerOut += ConvertStringToCString(Stuff);
+        pDnodeActor->PlayerOut += Stuff;
         pDnodeActor->PlayerOut += "&N";
         pDnodeActor->PlayerOut += "\r\n";
       }
@@ -1330,7 +1330,7 @@ void Object::ExamineObj(string ObjectId)
   getline(ObjectFile, Stuff); // Do not use ReadLine() here
   while (Stuff != "End Desc3")
   {
-    pDnodeActor->PlayerOut += ConvertStringToCString(Stuff);
+    pDnodeActor->PlayerOut += Stuff;
     pDnodeActor->PlayerOut += "\r\n";
     getline(ObjectFile, Stuff); // Do not use ReadLine() here
   }

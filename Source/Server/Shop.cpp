@@ -125,7 +125,7 @@ void Shop::IsShopObj(string RoomId, string ObjectName)
       pObject = new Object(ObjectId);
       if (pObject)
       { // Check for a match
-        NamesCheck = ConvertStringToCString(pObject->Names);
+        NamesCheck = pObject->Names;
         NamesCheck = StrMakeLower(NamesCheck);
         Result = StrFind(NamesCheck, ObjectName);
         if (Result != -1)

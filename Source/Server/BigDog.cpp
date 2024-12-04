@@ -204,20 +204,6 @@ error_code Remove(string File1)
 }
 
 //
-// String Coversions - temporary until CString is removed from codebase
-//
-
-string ConvertCStringToString(CString Str1)
-{
-  return (LPCTSTR)Str1;
-}
-
-CString ConvertStringToCString(string Str1)
-{
-  return Str1.c_str();
-}
-
-//
 // Misc Functions
 //
 

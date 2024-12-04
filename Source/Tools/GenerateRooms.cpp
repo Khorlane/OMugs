@@ -122,7 +122,7 @@ void GenerateRooms::Final()
   TmpStr = Buf;
   Message += "Rooms created = ";
   Message += TmpStr;
-  AfxMessageBox(ConvertStringToCString(Message), MB_ICONINFORMATION);
+  AfxMessageBox(Message.c_str(), MB_ICONINFORMATION);
 }
 
 /***********************************************************
@@ -201,10 +201,10 @@ void GenerateRooms::OpenRecordsets()
   //***********************
   //* Open RoomsRecordset *
   //***********************
-  SqlStmt1 = ConvertStringToCString(GetSqlStmt("GetRoomInfo"));
+  SqlStmt1 = GetSqlStmt("GetRoomInfo").c_str();
   try
   {
-    RoomsRecordset.Open(AFX_DAO_USE_DEFAULT_TYPE, ConvertStringToCString(SqlStmt1), 0);
+    RoomsRecordset.Open(AFX_DAO_USE_DEFAULT_TYPE, SqlStmt1.c_str(), 0);
   }
   catch(CDaoException* e)
   {
@@ -214,10 +214,10 @@ void GenerateRooms::OpenRecordsets()
   //***********************
   //* Open ExitsRecordset *
   //***********************
-  SqlStmt2 = ConvertStringToCString(GetSqlStmt("GetExitInfo"));
+  SqlStmt2 = GetSqlStmt("GetExitInfo").c_str();
   try
   {
-    ExitsRecordset.Open(AFX_DAO_USE_DEFAULT_TYPE, ConvertStringToCString(SqlStmt2), 0);
+    ExitsRecordset.Open(AFX_DAO_USE_DEFAULT_TYPE, SqlStmt2.c_str(), 0);
   }
   catch(CDaoException* e)
   {
@@ -243,7 +243,7 @@ void GenerateRooms::OpenRoomFile()
   {
     Message  = "GenerateRooms::OpenRoomFile - file failed to open";
     Message += RoomFileName;
-    AfxMessageBox(ConvertStringToCString(Message), MB_ICONSTOP);
+    AfxMessageBox(Message.c_str(), MB_ICONSTOP);
     _endthread();
   }
 }
@@ -266,7 +266,7 @@ void GenerateRooms::Parse1()
   //* RoomId *
   //**********
   sprintf(Buf, "%d", CurrentRoomNbr);
-  TmpStr = ConvertStringToCString(Buf);
+  TmpStr = Buf;
   oRoomId = oRoomName + TmpStr;
   oRoomId = StrRemove(oRoomId, ' ');
   //************

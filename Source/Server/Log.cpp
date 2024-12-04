@@ -70,11 +70,6 @@ void Log::LogIt(string LogBuf)
   LogFile.flush();
 }
 
-void Log::LogIt(CString LogBuf)
-{
-  LogIt(ConvertCStringToString(LogBuf));
-}
-
 /***********************************************************
 * Open log file                                            *
 ************************************************************/
