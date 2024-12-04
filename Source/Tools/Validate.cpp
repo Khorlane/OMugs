@@ -1150,20 +1150,17 @@ void Validate::ValidateRunningPlayersPlayerEqu()
 
 void Validate::ValidateRunningPlayersPlayerObj()
 {
-  CFileFind  FileList;
-  CString    FileName;
+  string     FileName;
   int        LineCount;
-  CString    LogBuf;
-  CString    Message;
-  CString    ObjectId;
-  CStdioFile ObjectIdFile;
-  CString    ObjectIdFileName;
-  CStdioFile PlayerObjFile;
-  CString    PlayerObjFileName;
-  CString    PlayerName;
-  BOOL       MoreFiles;
-  CString    Stuff;
-  int        Success;
+  string     LogBuf;
+  string     Message;
+  string     ObjectId;
+  ifstream   ObjectIdFile;
+  string     ObjectIdFileName;
+  ifstream   PlayerObjFile;
+  string     PlayerObjFileName;
+  string     PlayerName;
+  string     Stuff;
 
   LogBuf = "Begin validation RunningPlayersPlayerObj";
   LogIt(LogBuf);
@@ -1173,33 +1170,29 @@ void Validate::ValidateRunningPlayersPlayerObj()
     _endthread();
   }
   // Get list of all RunningPlayersPlayerObj files
-  MoreFiles = FileList.FindFile("*.*");
   if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateRunningPlayersPlayerObj - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
   }
-  while (MoreFiles)
+  for (const auto& entry : fs::directory_iterator("./"))
   {
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
-    { // Skip directories
+    if (entry.is_directory())
+    {
       continue;
     }
     // Open player file
-    PlayerObjFileName = FileList.GetFileName();
+    PlayerObjFileName = entry.path().filename().string();
     PlayerName = StrLeft(PlayerObjFileName, StrGetLength(PlayerObjFileName) - 4);
     PlayerObjFileName = PLAYER_OBJ_DIR + PlayerObjFileName;
-    Success = PlayerObjFile.Open(PlayerObjFileName,
-                      CFile::modeRead |
-                      CFile::typeText);
-    if (!Success)
+    PlayerObjFile.open(PlayerObjFileName);
+    if (!PlayerObjFile.is_open())
     { // File does not exist - Very bad!
       AfxMessageBox("Validate::ValidateRunningPlayersPlayerObj - Open player file failed", MB_ICONSTOP);
       _endthread();
     }
     LineCount = 0;
-    PlayerObjFile.ReadString(Stuff);
+    getline(PlayerObjFile, Stuff);
     while (Stuff != "")
     { // For all lines
       LineCount++;
@@ -1210,12 +1203,10 @@ void Validate::ValidateRunningPlayersPlayerObj()
       ObjectIdFileName = OBJECTS_DIR;
       ObjectIdFileName += ObjectId;
       ObjectIdFileName += ".txt";
-      Success = ObjectIdFile.Open(ObjectIdFileName,
-                       CFile::modeRead |
-                       CFile::typeText);
-      if (Success)
+      ObjectIdFile.open(ObjectIdFileName);
+      if (ObjectIdFile.is_open())
       { // RoomId file found, don't leave it open
-        ObjectIdFile.Close();
+        ObjectIdFile.close();
       }
       else
       { // ObjectId file not found
@@ -1227,9 +1218,9 @@ void Validate::ValidateRunningPlayersPlayerObj()
         FileName = PlayerObjFileName;
         LogValErr(Message, FileName);
       }
-      PlayerObjFile.ReadString(Stuff);
+      getline(PlayerObjFile, Stuff);
     }
-    PlayerObjFile.Close();
+    PlayerObjFile.close();
   }
   LogBuf = "Done  validating RunningPlayersPlayerObj";
   LogIt(LogBuf);
