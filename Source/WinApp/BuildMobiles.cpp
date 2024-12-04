@@ -579,8 +579,8 @@ void BuildMobiles::ParseStuff()
 void BuildMobiles::ReadLine()
 {
   MobileFile.ReadString(Stuff);
-  Stuff = StrTrimLeft(Stuff);
-  Stuff = StrTrimRight(Stuff);
+  Stuff = ConvertStringToCString(StrTrimLeft(ConvertCStringToString(Stuff)));
+  Stuff = ConvertStringToCString(StrTrimRight(ConvertCStringToString(Stuff)));
 }
 
 /***********************************************************
@@ -673,7 +673,7 @@ void BuildMobiles::WriteStuff()
   {
     Stuff += "Wimpy ";
   }
-  Stuff = StrTrimRight(Stuff);
+  Stuff = ConvertStringToCString(StrTrimRight(ConvertCStringToString(Stuff)));
   Stuff += "\n";
   // Faction
   Stuff += "Faction:   ";

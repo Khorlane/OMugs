@@ -389,7 +389,6 @@ CString StrSqueeze(CString Str1);
 string  StrSqueeze(string Str1);
 CString StrTrimLeft(CString Str1);
 string  StrTrimLeft(string Str1);
-CString StrTrimRight(CString Str1);
 string  StrTrimRight(string Str1);
 string  StrVectorGetAt(vector<string> &StrVector1, int Position);
 void    StrVectorSetAt(vector<string> &StrVector1, int Position, string Str1);

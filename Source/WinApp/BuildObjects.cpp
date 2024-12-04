@@ -495,8 +495,8 @@ void BuildObjects::ParseStuff()
 void BuildObjects::ReadLine()
 {
   ObjectFile.ReadString(Stuff);
-  Stuff = StrTrimLeft(Stuff);
-  Stuff = StrTrimRight(Stuff);
+  Stuff = ConvertStringToCString(StrTrimLeft(ConvertCStringToString(Stuff)));
+  Stuff = ConvertStringToCString(StrTrimRight(ConvertCStringToString(Stuff)));
 }
 
 /***********************************************************
