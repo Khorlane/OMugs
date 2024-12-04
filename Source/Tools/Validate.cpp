@@ -224,21 +224,18 @@ void Validate::ValidateLibraryLoot()
 
 void Validate::ValidateLibraryMobiles()
 {
-  CString    FieldName;
-  CString    FieldValue;
-  CFileFind  FileList;
-  CString    FileName;
+  string     FieldName;
+  string     FieldValue;
+  string     FileName;
   int        LineCount;
-  CString    LogBuf;
-  CStdioFile LootFile;
-  CString    LootFileName;
-  CString    Message;
-  CStdioFile MobileFile;
-  CString    MobileFileName;
-  CString    MobileId;
-  BOOL       MoreFiles;
-  CString    Stuff;
-  int        Success;
+  string     LogBuf;
+  ifstream   LootFile;
+  string     LootFileName;
+  string     Message;
+  ifstream   MobileFile;
+  string     MobileFileName;
+  string     MobileId;
+  string     Stuff;
 
   LogBuf = "Begin validation LibraryMobiles";
   LogIt(LogBuf);
@@ -248,33 +245,29 @@ void Validate::ValidateLibraryMobiles()
     _endthread();
   }
   // Get list of all LibraryMobiles files
-  MoreFiles = FileList.FindFile("*.*");
   if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("Validate::ValidateLibraryMobiles - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
   }
-  while (MoreFiles)
+  for (const auto &entry : fs::directory_iterator("./"))
   {
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
-    { // Skip directories
+    if (entry.is_directory())
+    {
       continue;
     }
     // Open mobile file
-    MobileFileName = FileList.GetFileName();
+    MobileFileName = entry.path().filename().string();
     MobileId = StrLeft(MobileFileName, StrGetLength(MobileFileName) - 4);
     MobileFileName = MOBILES_DIR + MobileFileName;
-    Success = MobileFile.Open(MobileFileName,
-                   CFile::modeRead |
-                   CFile::typeText);
-    if (!Success)
+    MobileFile.open(MobileFileName);
+    if (!MobileFile.is_open())
     { // File does not exist - Very bad!
       AfxMessageBox("Validate::ValidateLibraryMobiles - Open mobile file failed", MB_ICONSTOP);
       _endthread();
     }
     LineCount = 0;
-    MobileFile.ReadString(Stuff);
+    getline(MobileFile, Stuff);
     while (Stuff != "")
     { // For all lines
       LineCount++;
@@ -309,7 +302,7 @@ void Validate::ValidateLibraryMobiles()
       //********
       if (FieldName == "Sex:")
       { // Sex field validation
-        if (StrIsNotWord(ConvertCStringToString(FieldValue), "F M N"))
+        if (StrIsNotWord(FieldValue, "F M N"))
         { // Invalid mobile sex
           Message = "Mobile sex is invalid";
           FileName = MobileFileName;
@@ -321,7 +314,7 @@ void Validate::ValidateLibraryMobiles()
       //***********
       if (FieldName == "Action:")
       { // Sex field validation
-        if (StrIsNotWord(ConvertCStringToString(FieldValue), "None Aggro Faction Destroy Help NoMove Wimpy"))
+        if (StrIsNotWord(FieldValue, "None Aggro Faction Destroy Help NoMove Wimpy"))
         { // Invalid mobile action
           Message = "Mobile action is invalid";
           FileName = MobileFileName;
@@ -333,7 +326,7 @@ void Validate::ValidateLibraryMobiles()
       //************
       if (FieldName == "Faction:")
       { // Faction field validation
-        if (StrIsNotWord(ConvertCStringToString(FieldValue), "Evil Lawless Neutral Lawful Good"))
+        if (StrIsNotWord(FieldValue, "Evil Lawless Neutral Lawful Good"))
         { // Invalid mobile faction
           Message = "Mobile faction is invalid";
           FileName = MobileFileName;
@@ -346,7 +339,7 @@ void Validate::ValidateLibraryMobiles()
       if (FieldName == "Attack:")
       { // Faction field validation
         FieldValue = StrMakeLower(FieldValue);
-        if (StrIsNotWord(ConvertCStringToString(FieldValue), "bites claws crushes hits mauls pierces punches slashes stabs stings thrashes"))
+        if (StrIsNotWord(FieldValue, "bites claws crushes hits mauls pierces punches slashes stabs stings thrashes"))
         { // Invalid mobile attack
           Message = "Mobile attack is invalid";
           FileName = MobileFileName;
@@ -361,12 +354,10 @@ void Validate::ValidateLibraryMobiles()
         LootFileName = LOOT_DIR;
         LootFileName += FieldValue;
         LootFileName += ".txt";
-        Success = LootFile.Open(LootFileName,
-                     CFile::modeRead |
-                     CFile::typeText);
-        if (Success)
+        LootFile.open(LootFileName);
+        if (LootFile.is_open())
         { // Loot file found, don't leave it open
-          LootFile.Close();
+          LootFile.close();
         }
         else
         { // Loot file not found
@@ -375,9 +366,9 @@ void Validate::ValidateLibraryMobiles()
           LogValErr(Message, FileName);
         }
       }
-      MobileFile.ReadString(Stuff);
+      getline(MobileFile, Stuff);
     }
-    MobileFile.Close();
+    MobileFile.close();
   }
   LogBuf = "Done  validating LibraryMobiles";
   LogIt(LogBuf);
