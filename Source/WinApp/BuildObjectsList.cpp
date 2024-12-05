@@ -183,7 +183,6 @@ void BuildObjectsList::PopulateList()
     _endthread();
   }
   // Get a list of all Object files
-  MoreFiles = FileList.FindFile("*.*");
   if (ChgDir(HomeDir))
   { // Change to home directory failed
     AfxMessageBox("BuildObjectList::PopulateList - Change directory to HomeDir failed", MB_ICONSTOP);
@@ -192,15 +191,14 @@ void BuildObjectsList::PopulateList()
   //***************************
   //* Add objects to list box *
   //***************************
-  while (MoreFiles)
-  { // Process all rooms that have mobiles in them
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
+  for (const auto &entry : fs::directory_iterator("./"))
+  {
+    if (entry.is_directory())
     { // Skip directories
       continue;
     }
-    ObjectFileName = FileList.GetFileName();
-    ObjectId = StrLeft((LPCTSTR) ObjectFileName, StrGetLength((LPCTSTR) ObjectFileName)-4).c_str();
+    ObjectFileName = entry.path().filename().string();
+    ObjectId = StrLeft(ObjectFileName, StrGetLength(ObjectFileName)-4).c_str();
     if (PopulateListOk())
     { // Object passed through the filters, add it to the list
       ObjectsListBox.AddString(ObjectId);
@@ -221,10 +219,8 @@ bool BuildObjectsList::PopulateListOk()
   ObjectFileName =  OBJECTS_DIR;
   ObjectFileName += ObjectId;
   ObjectFileName += ".txt";
-  Success = ObjectFile.Open(ObjectFileName,
-                 CFile::modeRead |
-                 CFile::typeText);
-  if (!Success)
+  ObjectFile.open(ObjectFileName);
+  if (!ObjectFile.is_open())
   { // Mobile not found
     AfxMessageBox("BuildObjectsList::PopulateListOk - Object not found", MB_ICONSTOP);
     _endthread();
@@ -232,10 +228,10 @@ bool BuildObjectsList::PopulateListOk()
   ReadLine();
   while (Stuff != "")
   { // Read lines until EOF
-    if (StrLeft((LPCTSTR) Stuff, 5) == "type:")
+    if (StrLeft(Stuff, 5) == "type:")
     { // 'type:' is found
-      TmpStr = StrRight((LPCTSTR) Stuff, StrGetLength((LPCTSTR) Stuff) - 5).c_str();
-      TmpStr = StrTrimLeft((LPCTSTR) TmpStr).c_str();
+      TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 5);
+      TmpStr = StrTrimLeft(TmpStr);
       if (TmpStr == Type)
       { // Type selected matches type for this object
         //*********
@@ -245,21 +241,21 @@ bool BuildObjectsList::PopulateListOk()
         { // Type is armor
           if (ArmorWear == "all")
           { // List all armor, no more checking is needed
-            ObjectFile.Close();
+            ObjectFile.close();
             return true;
           }
           ReadLine(); // ArmorValue
           ReadLine(); // ArmorWear
-          TmpStr = StrRight((LPCTSTR) Stuff, StrGetLength((LPCTSTR) Stuff) - 10).c_str();
-          TmpStr = StrTrimLeft((LPCTSTR) TmpStr).c_str();
+          TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 10);
+          TmpStr = StrTrimLeft(TmpStr);
           if (TmpStr == ArmorWear)
           { // ArmorWear matches
-            ObjectFile.Close();
+            ObjectFile.close();
             return true;
           }
           else
           { // ArmorWear does not match, reject it
-            ObjectFile.Close();
+            ObjectFile.close();
             return false;
           }
         }
@@ -270,31 +266,31 @@ bool BuildObjectsList::PopulateListOk()
         { // Type is weapon
           if (WeaponType == "all")
           { // List all armor, no more checking is needed
-            ObjectFile.Close();
+            ObjectFile.close();
             return true;
           }
           ReadLine(); // WeaponType
-          TmpStr = StrRight((LPCTSTR) Stuff, StrGetLength((LPCTSTR) Stuff) - 11).c_str();
-          TmpStr = StrTrimLeft((LPCTSTR) TmpStr).c_str();
+          TmpStr = StrRight(Stuff, StrGetLength(Stuff) - 11);
+          TmpStr = StrTrimLeft(TmpStr);
           if (TmpStr == WeaponType)
           { // WeaponType matches
-            ObjectFile.Close();
+            ObjectFile.close();
             return true;
           }
           else
           { // WeaponType does not match, reject it
-            ObjectFile.Close();
+            ObjectFile.close();
             return false;
           }
         }
         // Type matched and it wasn't rejected
-        ObjectFile.Close();
+        ObjectFile.close();
         return true;
       }
     }
     ReadLine();
   }
-  ObjectFile.Close();
+  ObjectFile.close();
   return false;
 }
 
@@ -304,10 +300,10 @@ bool BuildObjectsList::PopulateListOk()
 
 void BuildObjectsList::ReadLine()
 {
-  ObjectFile.ReadString(Stuff);
-  Stuff = StrTrimLeft((LPCTSTR) Stuff).c_str();
-  Stuff = StrTrimRight((LPCTSTR) Stuff).c_str();
-  Stuff = StrMakeLower((LPCTSTR) Stuff).c_str();
+  getline(ObjectFile, Stuff);
+  Stuff = StrTrimLeft(Stuff);
+  Stuff = StrTrimRight(Stuff);
+  Stuff = StrMakeLower(Stuff);
 }
 
 /***********************************************************
@@ -362,7 +358,7 @@ void BuildObjectsList::SetFilter()
   {
     Type = "NotImplementedYet";
   }
-  Type = StrMakeLower((LPCTSTR) Type).c_str();
+  Type = StrMakeLower(Type);
   //*************
   //* ArmorWear *
   //*************
@@ -450,7 +446,7 @@ void BuildObjectsList::SetFilter()
   {
     ArmorWear = "Feet";
   }
-  ArmorWear = StrMakeLower((LPCTSTR) ArmorWear).c_str();
+  ArmorWear = StrMakeLower(ArmorWear);
   //***************
   //* Weapon Type *
   //***************
@@ -498,5 +494,5 @@ void BuildObjectsList::SetFilter()
   {
     WeaponType = "Sword";
   }
-  WeaponType = StrMakeLower((LPCTSTR) WeaponType).c_str();
+  WeaponType = StrMakeLower(WeaponType);
 }

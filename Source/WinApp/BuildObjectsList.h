@@ -74,17 +74,14 @@ class BuildObjectsList : public CDialog
     void            SetFilter();
 
 // Private variables
-    CString         ArmorWear;
-    CFileFind       FileList;
-    BOOL            MoreFiles;
+    string          ArmorWear;
     CString         ObjectId;
-    CStdioFile      ObjectFile;
-    CString         ObjectFileName;
-    CString         TmpStr;
-    CString         Type;
-    CString         Stuff;
-    int             Success;
-    CString         WeaponType;
+    ifstream        ObjectFile;
+    string          ObjectFileName;
+    string          TmpStr;
+    string          Type;
+    string          Stuff;
+    string          WeaponType;
 };
 
 inline BuildObjectsList *pBuildObjectsList;
