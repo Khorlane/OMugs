@@ -191,12 +191,7 @@ void Validate::ValidateLibraryLoot()
       ObjectIdFileName = OBJECTS_DIR;
       ObjectIdFileName += ObjectId;
       ObjectIdFileName += ".txt";
-      ObjectIdFile.open(ObjectIdFileName);
-      if (ObjectIdFile.is_open())
-      { // RoomId file found, don't leave it open
-        ObjectIdFile.close();
-      }
-      else
+      if (!FileExist(ObjectIdFileName))
       { // ObjectId file not found
         Message  = "Object file";
         Message += " '";
@@ -350,12 +345,7 @@ void Validate::ValidateLibraryMobiles()
         LootFileName = LOOT_DIR;
         LootFileName += FieldValue;
         LootFileName += ".txt";
-        LootFile.open(LootFileName);
-        if (LootFile.is_open())
-        { // Loot file found, don't leave it open
-          LootFile.close();
-        }
-        else
+        if (!FileExist(LootFileName))
         { // Loot file not found
           Message = "Loot file not found";
           FileName = MobileFileName;
@@ -681,12 +671,7 @@ void Validate::ValidateLibraryRooms()
         ExitToRoomIdFileName = ROOMS_DIR;
         ExitToRoomIdFileName += FieldValue;
         ExitToRoomIdFileName += ".txt";
-        ExitToRoomIdFile.open(ExitToRoomIdFileName);
-        if (ExitToRoomIdFile)
-        { // ExitToRoomId file found, don't leave it open
-          ExitToRoomIdFile.close();
-        }
-        else
+        if (!FileExist(ExitToRoomIdFileName))
         { // ExitToRoom file not found
           Message  = "Room file";
           Message += " '";
@@ -787,12 +772,7 @@ void Validate::ValidateLibraryShops()
       ObjectIdFileName = OBJECTS_DIR;
       ObjectIdFileName += ObjectId;
       ObjectIdFileName += ".txt";
-      ObjectIdFile.open(ObjectIdFileName);
-      if (ObjectIdFile.is_open())
-      { // RoomId file found, don't leave it open
-        ObjectIdFile.close();
-      }
-      else
+      if (!FileExist(ObjectIdFileName))
       { // ObjectId file not found
         Message  = "Object file";
         Message += " '";
@@ -872,12 +852,7 @@ void Validate::ValidateLibraryWorldMobiles()
     MobileIdFileName = MOBILES_DIR;
     MobileIdFileName += MobileId;
     MobileIdFileName += ".txt";
-    MobileIdFile.open(MobileIdFileName);
-    if (MobileIdFile.is_open())
-    { // MobileId file found, don't leave it open
-      MobileIdFile.close();
-    }
-    else
+    if (!FileExist(MobileIdFileName))
     { // MobileId file not found
       Message  = "Mobile file";
       Message += " '";
@@ -905,12 +880,7 @@ void Validate::ValidateLibraryWorldMobiles()
         RoomIdFileName = ROOMS_DIR;
         RoomIdFileName += FieldValue;
         RoomIdFileName += ".txt";
-        RoomIdFile.open(RoomIdFileName);
-        if (RoomIdFile)
-        { // RoomId file found, don't leave it open
-          RoomIdFile.close();
-        }
-        else
+        if (!FileExist(RoomIdFileName))
         { // RoomId file not found
           Message  = "Room file";
           Message += " '";
@@ -1017,12 +987,7 @@ void Validate::ValidateRunningPlayers()
         RoomIdFileName = ROOMS_DIR;
         RoomIdFileName += FieldValue;
         RoomIdFileName += ".txt";
-        RoomIdFile.open(RoomIdFileName);
-        if (RoomIdFile.is_open())
-        { // RoomId file found, don't leave it open
-          RoomIdFile.close();
-        }
-        else
+        if (!FileExist(RoomIdFileName))
         { // RoomId file not found
           Message  = "Room file";
           Message += " '";
@@ -1117,12 +1082,7 @@ void Validate::ValidateRunningPlayersPlayerEqu()
       ObjectIdFileName = OBJECTS_DIR;
       ObjectIdFileName += ObjectId;
       ObjectIdFileName += ".txt";
-      ObjectIdFile.open(ObjectIdFileName);
-      if (ObjectIdFile.is_open())
-      { // RoomId file found, don't leave it open
-        ObjectIdFile.close();
-      }
-      else
+      if (!FileExist(ObjectIdFileName))
       { // ObjectId file not found
         Message  = "Object file";
         Message += " '";
@@ -1199,12 +1159,7 @@ void Validate::ValidateRunningPlayersPlayerObj()
       ObjectIdFileName = OBJECTS_DIR;
       ObjectIdFileName += ObjectId;
       ObjectIdFileName += ".txt";
-      ObjectIdFile.open(ObjectIdFileName);
-      if (ObjectIdFile.is_open())
-      { // RoomId file found, don't leave it open
-        ObjectIdFile.close();
-      }
-      else
+      if (!FileExist(ObjectIdFileName))
       { // ObjectId file not found
         Message  = "Object file";
         Message += " '";
@@ -1282,12 +1237,7 @@ void Validate::ValidateRunningRoomMob()
     RoomIdFileName = ROOMS_DIR;
     RoomIdFileName += RoomId;
     RoomIdFileName += ".txt";
-    RoomIdFile.open(RoomIdFileName);
-    if (RoomIdFile.is_open())
-    { // RoomId file found, don't leave it open
-      RoomIdFile.close();
-    }
-    else
+    if (!FileExist(RoomIdFileName))
     { // RoomId file not found
       Message  = "Room file";
       Message += " '";
@@ -1318,12 +1268,7 @@ void Validate::ValidateRunningRoomMob()
       MobileIdFileName = MOBILES_DIR;
       MobileIdFileName += MobileId;
       MobileIdFileName += ".txt";
-      MobileIdFile.open(MobileIdFileName);
-      if (MobileIdFile.is_open())
-      { // MobileId file found, don't leave it open
-        MobileIdFile.close();
-      }
-      else
+      if (!FileExist(MobileIdFileName))
       { // MobileId file not found
         Message  = "Mobile file";
         Message += " '";
@@ -1400,12 +1345,7 @@ void Validate::ValidateRunningRoomObj()
     RoomIdFileName = ROOMS_DIR;
     RoomIdFileName += RoomId;
     RoomIdFileName += ".txt";
-    RoomIdFile.open(RoomIdFileName);
-    if (RoomIdFile.is_open())
-    { // RoomId file found, don't leave it open
-      RoomIdFile.close();
-    }
-    else
+    if (!FileExist(RoomIdFileName))
     { // RoomId file not found
       Message  = "Room file";
       Message += " '";
@@ -1430,12 +1370,7 @@ void Validate::ValidateRunningRoomObj()
       ObjectIdFileName = OBJECTS_DIR;
       ObjectIdFileName += ObjectId;
       ObjectIdFileName += ".txt";
-      ObjectIdFile.open(ObjectIdFileName);
-      if (ObjectIdFile.is_open())
-      { // ObjectId file found, don't leave it open
-        ObjectIdFile.close();
-      }
-      else
+      if (!FileExist(ObjectIdFileName))
       { // ObjectId file not found
         Message  = "Object file";
         Message += " '";

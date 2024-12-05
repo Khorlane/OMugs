@@ -165,11 +165,9 @@ bool Player::IsPlayer(string PlayerName)
   
   PlayerFileName = PLAYER_DIR;
   PlayerFileName += PlayerName + ".txt";
-  PlayerFile.open(PlayerFileName);
-  if (PlayerFile.is_open())
+  if (FileExist(PlayerFileName))
   {
     return true;
-    PlayerFile.close();
   }
   else
   {

@@ -634,10 +634,8 @@ Mobile *Mobile::IsMobValid(string MobileId)
   MobileFileName =  MOBILES_DIR;
   MobileFileName += MobileId;
   MobileFileName += ".txt";
-  MobileFile.open(MobileFileName);
-  if (MobileFile.is_open())
+  if (FileExist(MobileFileName))
   {
-    MobileFile.close();
     pMobile = new Mobile(MobileId);
     return pMobile;
   }

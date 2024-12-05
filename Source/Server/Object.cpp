@@ -696,10 +696,8 @@ void Object::IsObject(string ObjectId)
   ObjectFileName =  OBJECTS_DIR;
   ObjectFileName += ObjectId;
   ObjectFileName += ".txt";
-  ObjectFile.open(ObjectFileName);
-  if (ObjectFile.is_open())
+  if (FileExist(ObjectFileName))
   {
-    ObjectFile.close();
     pObject = new Object(ObjectId);
     return;
   }

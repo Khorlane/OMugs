@@ -36,11 +36,9 @@ bool Shop::IsShop(string RoomId)
   
   ShopFileName = SHOPS_DIR;
   ShopFileName += RoomId + ".txt";
-  ShopFile.open(ShopFileName);
-  if (!ShopFile.is_open())
+  if (FileExist(ShopFileName))
   {
     return true;
-    ShopFile.close();
   }
   else
   {

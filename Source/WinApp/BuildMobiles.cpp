@@ -239,13 +239,11 @@ void BuildMobiles::OnDelete()
   MobileFileName  = MOBILES_DIR;
   MobileFileName += MobileId;
   MobileFileName += ".txt";
-  MobileFile.open(MobileFileName, ios::in);
-  if (!MobileFile.is_open())
+  if (!FileExist(MobileFileName))
   {
     AfxMessageBox("Mobile not found", MB_ICONSTOP);
     return;
   }
-  MobileFile.close();
   AfxMsgBox = AfxMessageBox("Delete " + MobileId + "?", MB_YESNO);
   if (AfxMsgBox == IDNO)
   {

@@ -124,13 +124,11 @@ void BuildObjects::OnDelete()
   ObjectFileName  = OBJECTS_DIR;
   ObjectFileName += ObjectId;
   ObjectFileName += ".txt";
-  ObjectFile.open(ObjectFileName);
-  if (!ObjectFile.is_open())
+  if (!FileExist(ObjectFileName))
   {
     AfxMessageBox("Object not found", MB_ICONSTOP);
     return;
   }
-  ObjectFile.close();
   AfxMsgBox = AfxMessageBox("Delete " + ObjectId + "?", MB_YESNO);
   if (AfxMsgBox == IDNO)
   {
