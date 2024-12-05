@@ -32,7 +32,6 @@ class Log
     ~Log();
     void    static  CloseLogFile();
     void    static  LogIt(string LogBuf);
-    void    static  LogIt(CString LogBuf);
     void    static  OpenLogFile();
 };
 

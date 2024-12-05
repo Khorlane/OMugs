@@ -178,14 +178,14 @@ void CMainFrame::OnUpdateControlStartGame(CCmdUI *pCmdUI)
 
 void CMainFrame::OnControlStopGame() 
 {
-  CString GoGoGoFileName;
-  CString StopItFileName;
+  string GoGoGoFileName;
+  string StopItFileName;
 
   GoGoGoFileName  = CONTROL_DIR;
   GoGoGoFileName += "GoGoGo";
   StopItFileName  = CONTROL_DIR;
   StopItFileName += "StopIt";
-  CFile::Rename(GoGoGoFileName, StopItFileName);
+  Rename(GoGoGoFileName, StopItFileName);
 }
 
 /***********************************************************

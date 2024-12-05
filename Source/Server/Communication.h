@@ -45,13 +45,10 @@ class Communication
   public:
     Communication();
     ~Communication();
-    Dnode   static *GetTargetDnode(CString TargetName);
     Dnode   static *GetTargetDnode( string TargetName);
     bool    static  IsFighting();
     bool    static  IsSleeping();
     void    static  SendToAll( string PlayerMsg,  string AllMsg);
-    void    static  SendToRoom(CString TargetRoomId, CString MsgText);
-    void    static  SendToRoom(CString TargetRoomId,  string MsgText);
     void    static  SendToRoom( string TargetRoomId,  string MsgText);
     void    static  ShowPlayersInRoom(Dnode *pDnode);
     void    static  SockCheckForNewConnections();

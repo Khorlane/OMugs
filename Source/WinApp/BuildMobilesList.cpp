@@ -139,24 +139,20 @@ void BuildMobilesList::OnSelchangeMobilesList()
 
 void BuildMobilesList::PopulateList()
 {
-  CString MobFileName;
-  CString MobileId;
-  BOOL    MoreFiles;
-  CFileFind   FileList;
+  string MobFileName;
+  string MobileId;
 
   if (ChgDir(HomeDir))
   { // Change directory failed
     AfxMessageBox("BuildMobileList::PopulateList - Change directory to HomeDir failed", MB_ICONSTOP);
     _endthread();
   }
-
   if (ChgDir(MOBILES_DIR))
   { // Change directory failed
     AfxMessageBox("BuildMobileList::PopulateList - Change directory to MOB_DIR failed", MB_ICONSTOP);
     _endthread();
   }
   // Get a list of all Mobile files
-  MoreFiles = FileList.FindFile("*.*");
   if (ChgDir(HomeDir))
   { // Change to home directory failed
     AfxMessageBox("BuildMobileList::PopulateList - Change directory to HomeDir failed", MB_ICONSTOP);
@@ -165,15 +161,14 @@ void BuildMobilesList::PopulateList()
   //***************************
   //* Add mobiles to list box *
   //***************************
-  while (MoreFiles)
-  { // Process all rooms that have mobiles in them
-    MoreFiles = FileList.FindNextFile();
-    if (FileList.IsDirectory())
+  for (const auto &entry : fs::directory_iterator("./"))
+  {
+    if (entry.is_directory())
     { // Skip directories
       continue;
     }
-    MobFileName = FileList.GetFileName();
-    MobileId    = StrLeft((LPCTSTR) MobFileName, StrGetLength((LPCTSTR) MobFileName) - 4).c_str();
-    MobilesListBox.AddString(MobileId);
+    MobFileName = entry.path().filename().string();
+    MobileId    = StrLeft(MobFileName, StrGetLength(MobFileName) - 4).c_str();
+    MobilesListBox.AddString(MobileId.c_str());
   }
 }

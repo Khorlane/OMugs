@@ -50,9 +50,9 @@ class BuildObjects : public CDialog
 	CString	Weight;
 	CString	WeaponDamage;
 	CString	ArmorValue;
-	int		ArmorWearDropList;
-	int		TypeDropList;
-	int		WeaponTypeDropList;
+	int		  ArmorWearDropList;
+	int		  TypeDropList;
+	int	  	WeaponTypeDropList;
 	//}}AFX_DATA
 
 // Overrides
@@ -86,13 +86,12 @@ class BuildObjects : public CDialog
 // Private variables
   private:
     int             AfxMsgBox;
-    CString         ArmorWear;
-    CStdioFile      ObjectFile;
-    CString         ObjectFileName;
-    CString         Stuff;
-    int             Success;
-    CString         Type;
-    CString         WeaponType;
+    string          ArmorWear;
+    fstream         ObjectFile;
+    string          ObjectFileName;
+    string          Stuff;
+    string          Type;
+    string          WeaponType;
 };
 
 inline BuildObjects *pBuildObjects;
