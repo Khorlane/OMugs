@@ -4662,12 +4662,12 @@ void Communication::DoPlayed()
   sprintf(Buffer, "You've played: %d days, %d hours, %d minutes, %d seconds", Days, Hours, Minutes, Seconds);
   TimePlayed = Buffer;
 
-  pDnodeActor->PlayerOut += PlayerAge.c_str();
+  pDnodeActor->PlayerOut += PlayerAge;
   pDnodeActor->PlayerOut += "\r\n";
-  pDnodeActor->PlayerOut += TimePlayed.c_str();
+  pDnodeActor->PlayerOut += TimePlayed;
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += "Your birthday is: ";
-  pDnodeActor->PlayerOut += BirthDay.c_str();
+  pDnodeActor->PlayerOut += BirthDay;
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();

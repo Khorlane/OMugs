@@ -1377,7 +1377,7 @@ void Player::PlayerRoomStringWrite()
   BitsetFileName += Name;
   BitsetFileName += ".txt";
 
-  ofstream BitsetFile(BitsetFileName.c_str(), ios::out | ios::binary);
+  ofstream BitsetFile(BitsetFileName, ios::out | ios::binary);
   BitsetFile.write((const char*)&PlayerRoomVector[0], PlayerRoomVector.size());
   BitsetFile.close();
 }

@@ -201,7 +201,7 @@ void GenerateRooms::OpenRecordsets()
   //***********************
   //* Open RoomsRecordset *
   //***********************
-  SqlStmt1 = GetSqlStmt("GetRoomInfo").c_str();
+  SqlStmt1 = GetSqlStmt("GetRoomInfo");
   try
   {
     RoomsRecordset.Open(AFX_DAO_USE_DEFAULT_TYPE, SqlStmt1.c_str(), 0);
@@ -214,7 +214,7 @@ void GenerateRooms::OpenRecordsets()
   //***********************
   //* Open ExitsRecordset *
   //***********************
-  SqlStmt2 = GetSqlStmt("GetExitInfo").c_str();
+  SqlStmt2 = GetSqlStmt("GetExitInfo");
   try
   {
     ExitsRecordset.Open(AFX_DAO_USE_DEFAULT_TYPE, SqlStmt2.c_str(), 0);
