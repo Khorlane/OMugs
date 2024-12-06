@@ -15,13 +15,3 @@ WebSite/
 HomeDir.txt
 ReadMe.txt
 zNotes.txt
-*.aps
-*.clw
-*.dsp
-*.dsw
-*.ncb
-*.opt
-*.plg
-*.rc
-*.sln
-*.vcxproj*

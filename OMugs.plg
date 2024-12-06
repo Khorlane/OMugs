@@ -1,0 +1,199 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: OMugs - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x409 /fo"Debug/OMugs.res" /i "Source\WinApp" /d "_DEBUG" /d "_AFXDLL" "C:\OMugs\Source\WinApp\OMugs.rc"" 
+Creating temporary file "C:\Users\Steve\AppData\Local\Temp\RSP2697.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /Zi /Od /I "C:\OMugs\Source\WinApp" /I "C:\OMugs\Source\Server" /I "C:\OMugs\Source\Osi" /I "C:\OMugs\Source\Tools" /I "C:\OMugs\Source\Sqlite3" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Fr"Debug/" /Fp"Debug/OMugs.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\OMugs\Source\Server\BigDog.cpp"
+"C:\OMugs\Source\Server\Calendar.cpp"
+"C:\OMugs\Source\Server\Communication.cpp"
+"C:\OMugs\Source\Server\Descriptor.cpp"
+"C:\OMugs\Source\Server\Dnode.cpp"
+"C:\OMugs\Source\Server\Help.cpp"
+"C:\OMugs\Source\Server\Log.cpp"
+"C:\OMugs\Source\Server\Mobile.cpp"
+"C:\OMugs\Source\Server\Object.cpp"
+"C:\OMugs\Source\Server\Player.cpp"
+"C:\OMugs\Source\Server\Room.cpp"
+"C:\OMugs\Source\Server\Shop.cpp"
+"C:\OMugs\Source\Server\Social.cpp"
+"C:\OMugs\Source\Server\Utility.cpp"
+"C:\OMugs\Source\Server\Violence.cpp"
+"C:\OMugs\Source\Server\World.cpp"
+"C:\OMugs\Source\WinApp\BuildMobiles.cpp"
+"C:\OMugs\Source\WinApp\BuildMobilesList.cpp"
+"C:\OMugs\Source\WinApp\BuildObjects.cpp"
+"C:\OMugs\Source\WinApp\BuildObjectsList.cpp"
+"C:\OMugs\Source\WinApp\ChildFrm.cpp"
+"C:\OMugs\Source\WinApp\MainFrm.cpp"
+"C:\OMugs\Source\WinApp\OMugs.cpp"
+"C:\OMugs\Source\WinApp\OMugsDoc.cpp"
+"C:\OMugs\Source\WinApp\OMugsView.cpp"
+"C:\OMugs\Source\Tools\GenerateRooms.cpp"
+"C:\OMugs\Source\Tools\LineCount.cpp"
+"C:\OMugs\Source\Tools\Validate.cpp"
+"C:\OMugs\Source\Tools\WhoIsOnline.cpp"
+"C:\OMugs\Source\Osi\Buffer.cpp"
+"C:\OMugs\Source\Osi\Executor.cpp"
+"C:\OMugs\Source\Osi\Icode.cpp"
+"C:\OMugs\Source\Osi\Parser.cpp"
+"C:\OMugs\Source\Osi\RunStack.cpp"
+"C:\OMugs\Source\Osi\Scanner.cpp"
+"C:\OMugs\Source\Osi\Symbol.cpp"
+"C:\OMugs\Source\Osi\Token.cpp"
+]
+Creating command line "cl.exe @C:\Users\Steve\AppData\Local\Temp\RSP2697.tmp" 
+Creating temporary file "C:\Users\Steve\AppData\Local\Temp\RSP2698.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /Zi /Od /I "C:\OMugs\Source\WinApp" /I "C:\OMugs\Source\Server" /I "C:\OMugs\Source\Osi" /I "C:\OMugs\Source\Tools" /I "C:\OMugs\Source\Sqlite3" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Fr"Debug/" /Fp"Debug/OMugs.pch" /Yc"StdAfx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\OMugs\Source\WinApp\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\Users\Steve\AppData\Local\Temp\RSP2698.tmp" 
+Creating temporary file "C:\Users\Steve\AppData\Local\Temp\RSP2699.tmp" with contents
+[
+sqlite3.lib /nologo /subsystem:windows /incremental:no /pdb:"Debug/OMugs.pdb" /debug /machine:I386 /out:"Debug/OMugs.exe" /pdbtype:sept /libpath:"C:\Omugs\Source\Sqlite3" 
+.\Debug\BigDog.obj
+.\Debug\Calendar.obj
+.\Debug\Communication.obj
+.\Debug\Descriptor.obj
+.\Debug\Dnode.obj
+.\Debug\Help.obj
+.\Debug\Log.obj
+.\Debug\Mobile.obj
+.\Debug\Object.obj
+.\Debug\Player.obj
+.\Debug\Room.obj
+.\Debug\Shop.obj
+.\Debug\Social.obj
+.\Debug\Utility.obj
+.\Debug\Violence.obj
+.\Debug\World.obj
+.\Debug\BuildMobiles.obj
+.\Debug\BuildMobilesList.obj
+.\Debug\BuildObjects.obj
+.\Debug\BuildObjectsList.obj
+.\Debug\ChildFrm.obj
+.\Debug\MainFrm.obj
+.\Debug\OMugs.obj
+.\Debug\OMugsDoc.obj
+.\Debug\OMugsView.obj
+.\Debug\StdAfx.obj
+.\Debug\GenerateRooms.obj
+.\Debug\LineCount.obj
+.\Debug\Validate.obj
+.\Debug\WhoIsOnline.obj
+.\Debug\Buffer.obj
+.\Debug\Executor.obj
+.\Debug\Icode.obj
+.\Debug\Parser.obj
+.\Debug\RunStack.obj
+.\Debug\Scanner.obj
+.\Debug\Symbol.obj
+.\Debug\Token.obj
+.\Debug\OMugs.res
+]
+Creating command line "link.exe @C:\Users\Steve\AppData\Local\Temp\RSP2699.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+BigDog.cpp
+Calendar.cpp
+Communication.cpp
+Descriptor.cpp
+Dnode.cpp
+Help.cpp
+Log.cpp
+Mobile.cpp
+Object.cpp
+Player.cpp
+Room.cpp
+Shop.cpp
+Social.cpp
+Utility.cpp
+Violence.cpp
+World.cpp
+BuildMobiles.cpp
+BuildMobilesList.cpp
+BuildObjects.cpp
+BuildObjectsList.cpp
+Generating Code...
+Compiling...
+ChildFrm.cpp
+MainFrm.cpp
+OMugs.cpp
+OMugsDoc.cpp
+OMugsView.cpp
+GenerateRooms.cpp
+LineCount.cpp
+Validate.cpp
+WhoIsOnline.cpp
+Buffer.cpp
+Executor.cpp
+Icode.cpp
+Parser.cpp
+RunStack.cpp
+Scanner.cpp
+Symbol.cpp
+Token.cpp
+Generating Code...
+Linking...
+Creating temporary file "C:\Users\Steve\AppData\Local\Temp\RSP3956.tmp" with contents
+[
+/nologo /o"Debug/OMugs.bsc" 
+.\Debug\StdAfx.sbr
+.\Debug\BigDog.sbr
+.\Debug\Calendar.sbr
+.\Debug\Communication.sbr
+.\Debug\Descriptor.sbr
+.\Debug\Dnode.sbr
+.\Debug\Help.sbr
+.\Debug\Log.sbr
+.\Debug\Mobile.sbr
+.\Debug\Object.sbr
+.\Debug\Player.sbr
+.\Debug\Room.sbr
+.\Debug\Shop.sbr
+.\Debug\Social.sbr
+.\Debug\Utility.sbr
+.\Debug\Violence.sbr
+.\Debug\World.sbr
+.\Debug\BuildMobiles.sbr
+.\Debug\BuildMobilesList.sbr
+.\Debug\BuildObjects.sbr
+.\Debug\BuildObjectsList.sbr
+.\Debug\ChildFrm.sbr
+.\Debug\MainFrm.sbr
+.\Debug\OMugs.sbr
+.\Debug\OMugsDoc.sbr
+.\Debug\OMugsView.sbr
+.\Debug\GenerateRooms.sbr
+.\Debug\LineCount.sbr
+.\Debug\Validate.sbr
+.\Debug\WhoIsOnline.sbr
+.\Debug\Buffer.sbr
+.\Debug\Executor.sbr
+.\Debug\Icode.sbr
+.\Debug\Parser.sbr
+.\Debug\RunStack.sbr
+.\Debug\Scanner.sbr
+.\Debug\Symbol.sbr
+.\Debug\Token.sbr]
+Creating command line "bscmake.exe @C:\Users\Steve\AppData\Local\Temp\RSP3956.tmp"
+Creating browse info file...
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+OMugs.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

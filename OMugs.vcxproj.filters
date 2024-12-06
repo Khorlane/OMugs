@@ -1,0 +1,317 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Server Source Files">
+      <UniqueIdentifier>{13d25d0e-8d24-4a05-9fb0-3c9405d83e05}</UniqueIdentifier>
+      <Extensions>cpp</Extensions>
+    </Filter>
+    <Filter Include="Server Header Files">
+      <UniqueIdentifier>{fec91e1e-832f-4e73-a655-246adb33f355}</UniqueIdentifier>
+      <Extensions>h</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{5c40b44b-7daa-45dd-b77b-b7cca5ee9ead}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="WinApp Source Files">
+      <UniqueIdentifier>{54615491-cf98-457b-bd94-8530938786a4}</UniqueIdentifier>
+      <Extensions>cpp</Extensions>
+    </Filter>
+    <Filter Include="WinApp Header Files">
+      <UniqueIdentifier>{422759fb-5d04-4655-88bc-d47b292d6cef}</UniqueIdentifier>
+      <Extensions>h</Extensions>
+    </Filter>
+    <Filter Include="Tools Source Files">
+      <UniqueIdentifier>{ac35ffea-fb81-4e4a-9705-568a46a8dfd1}</UniqueIdentifier>
+      <Extensions>cpp</Extensions>
+    </Filter>
+    <Filter Include="Tools Header Files">
+      <UniqueIdentifier>{ded4a480-b70f-4d20-8a7a-aa70e9d9f328}</UniqueIdentifier>
+      <Extensions>h</Extensions>
+    </Filter>
+    <Filter Include="Osi Source Files">
+      <UniqueIdentifier>{c2ac64b9-8345-47b0-ba0b-eb1959be521a}</UniqueIdentifier>
+      <Extensions>cpp</Extensions>
+    </Filter>
+    <Filter Include="Osi Header Files">
+      <UniqueIdentifier>{115a2130-277b-4dde-b59d-03554d52af1d}</UniqueIdentifier>
+      <Extensions>h</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Server\BigDog.cpp">
+      <Filter>Server Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Server\Calendar.cpp">
+      <Filter>Server Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Server\Communication.cpp">
+      <Filter>Server Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Server\Descriptor.cpp">
+      <Filter>Server Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Server\Dnode.cpp">
+      <Filter>Server Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Server\Help.cpp">
+      <Filter>Server Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Server\Log.cpp">
+      <Filter>Server Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Server\Mobile.cpp">
+      <Filter>Server Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Server\Object.cpp">
+      <Filter>Server Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Server\Player.cpp">
+      <Filter>Server Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Server\Room.cpp">
+      <Filter>Server Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Server\Shop.cpp">
+      <Filter>Server Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Server\Social.cpp">
+      <Filter>Server Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Server\Utility.cpp">
+      <Filter>Server Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Server\Violence.cpp">
+      <Filter>Server Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Server\World.cpp">
+      <Filter>Server Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WinApp\BuildMobiles.cpp">
+      <Filter>WinApp Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WinApp\BuildMobilesList.cpp">
+      <Filter>WinApp Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WinApp\BuildObjects.cpp">
+      <Filter>WinApp Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WinApp\BuildObjectsList.cpp">
+      <Filter>WinApp Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WinApp\ChildFrm.cpp">
+      <Filter>WinApp Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WinApp\MainFrm.cpp">
+      <Filter>WinApp Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WinApp\OMugs.cpp">
+      <Filter>WinApp Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WinApp\OMugsDoc.cpp">
+      <Filter>WinApp Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WinApp\OMugsView.cpp">
+      <Filter>WinApp Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WinApp\StdAfx.cpp">
+      <Filter>WinApp Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tools\GenerateRooms.cpp">
+      <Filter>Tools Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tools\LineCount.cpp">
+      <Filter>Tools Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tools\Validate.cpp">
+      <Filter>Tools Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tools\WhoIsOnline.cpp">
+      <Filter>Tools Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Osi\Buffer.cpp">
+      <Filter>Osi Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Osi\Executor.cpp">
+      <Filter>Osi Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Osi\Icode.cpp">
+      <Filter>Osi Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Osi\Parser.cpp">
+      <Filter>Osi Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Osi\RunStack.cpp">
+      <Filter>Osi Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Osi\Scanner.cpp">
+      <Filter>Osi Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Osi\Symbol.cpp">
+      <Filter>Osi Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Osi\Token.cpp">
+      <Filter>Osi Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Server\BigDog.h">
+      <Filter>Server Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Server\Calendar.h">
+      <Filter>Server Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Server\Color.h">
+      <Filter>Server Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Server\Communication.h">
+      <Filter>Server Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Server\Config.h">
+      <Filter>Server Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Server\Descriptor.h">
+      <Filter>Server Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Server\Dnode.h">
+      <Filter>Server Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Server\Help.h">
+      <Filter>Server Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Server\Log.h">
+      <Filter>Server Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Server\Mobile.h">
+      <Filter>Server Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Server\Object.h">
+      <Filter>Server Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Server\Player.h">
+      <Filter>Server Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Server\Room.h">
+      <Filter>Server Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Server\Shop.h">
+      <Filter>Server Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Server\Social.h">
+      <Filter>Server Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Server\Utility.h">
+      <Filter>Server Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Server\Violence.h">
+      <Filter>Server Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Server\World.h">
+      <Filter>Server Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WinApp\BuildMobiles.h">
+      <Filter>WinApp Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WinApp\BuildMobilesList.h">
+      <Filter>WinApp Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WinApp\BuildObjects.h">
+      <Filter>WinApp Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WinApp\BuildObjectsList.h">
+      <Filter>WinApp Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WinApp\ChildFrm.h">
+      <Filter>WinApp Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WinApp\MainFrm.h">
+      <Filter>WinApp Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WinApp\OMugs.h">
+      <Filter>WinApp Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WinApp\OMugsDoc.h">
+      <Filter>WinApp Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WinApp\OMugsView.h">
+      <Filter>WinApp Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WinApp\Resource.h">
+      <Filter>WinApp Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WinApp\StdAfx.h">
+      <Filter>WinApp Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tools\GenerateRooms.h">
+      <Filter>Tools Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tools\LineCount.h">
+      <Filter>Tools Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tools\Validate.h">
+      <Filter>Tools Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tools\WhoIsOnline.h">
+      <Filter>Tools Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Osi\Buffer.h">
+      <Filter>Osi Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Osi\Executor.h">
+      <Filter>Osi Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Osi\Icode.h">
+      <Filter>Osi Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Osi\Parser.h">
+      <Filter>Osi Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Osi\RunStack.h">
+      <Filter>Osi Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Osi\Scanner.h">
+      <Filter>Osi Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Osi\Symbol.h">
+      <Filter>Osi Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Osi\Token.h">
+      <Filter>Osi Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\OMugs.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\OMugsDoc.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Toolbar.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Source\WinApp\OMugs.rc">
+      <Filter>WinApp Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+    <Text Include="HomeDir.txt" />
+    <Text Include="zNotes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Res\cursor1.cur">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Res\cursor2.cur">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Res\cursor3.cur">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\OMugs.rc2">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

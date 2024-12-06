@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <Keyword>MFCProj</Keyword>
+    <ProjectGuid>{A4C8FDCC-B161-4F4B-9767-6402359E92B8}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\Release\</OutDir>
+    <IntDir>.\Release\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\Debug\</OutDir>
+    <IntDir>.\Debug\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
+      <PrecompiledHeaderOutputFile>.\Release\OMugs.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <ObjectFileName>.\Release\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
+      <AdditionalIncludeDirectories>C:\OMugs\Source\WinApp;C:\OMugs\Source\Server;C:\OMugs\Source\Osi;C:\OMugs\Source\Tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>26493;26440;26400;26409;26455;26432;26447;26446;26482;26496;26485;26429;26481;6011;6273;26467;26451;26461;6284;26497;26401;26426;26462;26459;26433;26434;26495;26812;6385;6386;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Release\OMugs.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release\OMugs.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>.\Release\OMugs.exe</OutputFile>
+      <AdditionalOptions>/NODEFAULTLIB:LIBCMT %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>Disabled</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <MinimalRebuild>false</MinimalRebuild>
+      <AdditionalIncludeDirectories>C:\OMugs\Source\WinApp;C:\OMugs\Source\Server;C:\OMugs\Source\Osi;C:\OMugs\Source\Tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Debug\OMugs.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <ObjectFileName>.\Debug\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug\</ProgramDataBaseFileName>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <DisableSpecificWarnings>26493;26440;26400;26409;26455;26432;26447;26446;26482;26496;26485;26429;26481;6011;6273;26467;26451;26461;6284;26497;26401;26426;26462;26459;26433;26434;26495;26812;6385;6386;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Debug\OMugs.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug\OMugs.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>.\Debug\OMugs.exe</OutputFile>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/NODEFAULTLIB:LIBCMT %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Osi\Buffer.cpp" />
+    <ClCompile Include="Source\Osi\Executor.cpp" />
+    <ClCompile Include="Source\Osi\Icode.cpp" />
+    <ClCompile Include="Source\Osi\Parser.cpp" />
+    <ClCompile Include="Source\Osi\RunStack.cpp" />
+    <ClCompile Include="Source\Osi\Scanner.cpp" />
+    <ClCompile Include="Source\Osi\Symbol.cpp" />
+    <ClCompile Include="Source\Osi\Token.cpp" />
+    <ClCompile Include="Source\Server\BigDog.cpp" />
+    <ClCompile Include="Source\Server\Calendar.cpp" />
+    <ClCompile Include="Source\Server\Communication.cpp" />
+    <ClCompile Include="Source\Server\Descriptor.cpp" />
+    <ClCompile Include="Source\Server\Dnode.cpp" />
+    <ClCompile Include="Source\Server\Help.cpp" />
+    <ClCompile Include="Source\Server\Log.cpp" />
+    <ClCompile Include="Source\Server\Mobile.cpp" />
+    <ClCompile Include="Source\Server\Object.cpp" />
+    <ClCompile Include="Source\Server\Player.cpp" />
+    <ClCompile Include="Source\Server\Room.cpp" />
+    <ClCompile Include="Source\Server\Shop.cpp" />
+    <ClCompile Include="Source\Server\Social.cpp" />
+    <ClCompile Include="Source\Server\Utility.cpp" />
+    <ClCompile Include="Source\Server\Violence.cpp" />
+    <ClCompile Include="Source\Server\World.cpp" />
+    <ClCompile Include="Source\Tools\GenerateRooms.cpp" />
+    <ClCompile Include="Source\Tools\LineCount.cpp" />
+    <ClCompile Include="Source\Tools\Validate.cpp" />
+    <ClCompile Include="Source\Tools\WhoIsOnline.cpp" />
+    <ClCompile Include="Source\WinApp\BuildMobiles.cpp" />
+    <ClCompile Include="Source\WinApp\BuildMobilesList.cpp" />
+    <ClCompile Include="Source\WinApp\BuildObjects.cpp" />
+    <ClCompile Include="Source\WinApp\BuildObjectsList.cpp" />
+    <ClCompile Include="Source\WinApp\ChildFrm.cpp" />
+    <ClCompile Include="Source\WinApp\MainFrm.cpp" />
+    <ClCompile Include="Source\WinApp\OMugs.cpp" />
+    <ClCompile Include="Source\WinApp\OMugsDoc.cpp" />
+    <ClCompile Include="Source\WinApp\OMugsView.cpp" />
+    <ClCompile Include="Source\WinApp\StdAfx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdAfx.h</PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Osi\Buffer.h" />
+    <ClInclude Include="Source\Osi\Executor.h" />
+    <ClInclude Include="Source\Osi\Icode.h" />
+    <ClInclude Include="Source\Osi\Parser.h" />
+    <ClInclude Include="Source\Osi\RunStack.h" />
+    <ClInclude Include="Source\Osi\Scanner.h" />
+    <ClInclude Include="Source\Osi\Symbol.h" />
+    <ClInclude Include="Source\Osi\Token.h" />
+    <ClInclude Include="Source\Server\BigDog.h" />
+    <ClInclude Include="Source\Server\Calendar.h" />
+    <ClInclude Include="Source\Server\Color.h" />
+    <ClInclude Include="Source\Server\Communication.h" />
+    <ClInclude Include="Source\Server\Config.h" />
+    <ClInclude Include="Source\Server\Descriptor.h" />
+    <ClInclude Include="Source\Server\Dnode.h" />
+    <ClInclude Include="Source\Server\Help.h" />
+    <ClInclude Include="Source\Server\Log.h" />
+    <ClInclude Include="Source\Server\Mobile.h" />
+    <ClInclude Include="Source\Server\Object.h" />
+    <ClInclude Include="Source\Server\Player.h" />
+    <ClInclude Include="Source\Server\Room.h" />
+    <ClInclude Include="Source\Server\Shop.h" />
+    <ClInclude Include="Source\Server\Social.h" />
+    <ClInclude Include="Source\Server\Utility.h" />
+    <ClInclude Include="Source\Server\Violence.h" />
+    <ClInclude Include="Source\Server\World.h" />
+    <ClInclude Include="Source\Tools\GenerateRooms.h" />
+    <ClInclude Include="Source\Tools\LineCount.h" />
+    <ClInclude Include="Source\Tools\Validate.h" />
+    <ClInclude Include="Source\Tools\WhoIsOnline.h" />
+    <ClInclude Include="Source\WinApp\BuildMobiles.h" />
+    <ClInclude Include="Source\WinApp\BuildMobilesList.h" />
+    <ClInclude Include="Source\WinApp\BuildObjects.h" />
+    <ClInclude Include="Source\WinApp\BuildObjectsList.h" />
+    <ClInclude Include="Source\WinApp\ChildFrm.h" />
+    <ClInclude Include="Source\WinApp\MainFrm.h" />
+    <ClInclude Include="Source\WinApp\OMugs.h" />
+    <ClInclude Include="Source\WinApp\OMugsDoc.h" />
+    <ClInclude Include="Source\WinApp\OMugsView.h" />
+    <ClInclude Include="Source\WinApp\Resource.h" />
+    <ClInclude Include="Source\WinApp\StdAfx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Res\cursor1.cur" />
+    <CustomBuild Include="Res\cursor2.cur" />
+    <CustomBuild Include="Res\cursor3.cur" />
+    <CustomBuild Include="res\OMugs.rc2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\OMugs.ico" />
+    <Image Include="res\OMugsDoc.ico" />
+    <Image Include="res\Toolbar.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Source\WinApp\OMugs.rc">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Source\WinApp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Source\WinApp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="HomeDir.txt" />
+    <Text Include="ReadMe.txt" />
+    <Text Include="zNotes.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
