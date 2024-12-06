@@ -29,6 +29,7 @@
 #include <process.h>        // _endthread()
 #include <sstream>          // String 'stream' functions (see StrGetWord)
 #include <string>           // std::string
+#include <thread>           // only used for Sleep() - pause the game
 #include <time.h>           // Time functions
 #include <vector>           // Vector stuff
 
@@ -325,6 +326,7 @@ void    SendToRoom(string TargetRoomId, string MsgText);
 void    SetpDnodeCursorFirst();
 void    SetpDnodeCursorNext();
 void    ShowPlayerInv();
+void    Sleep(int MilliSeconds);
 void    SockCheckForNewConnections();
 void    SockClosePort(int PortNbr);
 void    SockOpenPort(int PortNbr);

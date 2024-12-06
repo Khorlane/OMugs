@@ -207,6 +207,7 @@ error_code Remove(string File1)
 // Misc Functions
 //
 
+// Return number of seconds since epoch
 int GetTimeSeconds()
 {
   const auto now     = std::chrono::system_clock::now();                        // Get the current time
@@ -216,10 +217,17 @@ int GetTimeSeconds()
   return Seconds;
 }
 
+// Print a message to stdout
 void PrintIt(string Message)
 {
   Message = "\r\n" + Message + "\r\n";
   cout << Message;
+}
+
+// Sleep for specified Milliseconds
+void Sleep(int MilliSeconds)
+{
+  this_thread::sleep_for(chrono::milliseconds(MilliSeconds));
 }
 
 //
