@@ -19,6 +19,7 @@
 
 #include "Config.h"
 #include "Utility.h"
+#include <afxdao.h>         // Allows access to ACCESS databases
 
 /***********************************************************
 * Define GenerateRooms class                               *

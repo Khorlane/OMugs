@@ -22,7 +22,6 @@
 #include <process.h>        // _endthread()
 #include <bitset>           // Allows bit manipulation
 #include <math.h>           // Math functions like pow, ceil, floor
-#include <afxdao.h>         // Allows access to ACCESS databases
 #include <iostream>         // std::getline
 #include <fstream>          // std::fstream
 #include <string>           // std::string
