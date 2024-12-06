@@ -17,20 +17,20 @@
 * Includes                                                 *
 ************************************************************/
 
+#include <algorithm>        // Functions used on ranges of elements (see StrMakeLower)
+#include <bitset>           // Allows bit manipulation
+#include <cctype>           // String functions like tolower, toupper
 #include <chrono>           // clocks, time points, durations (see GetTimeSeconds)
 #include <direct.h>         // _chdir()
-#include <process.h>        // _endthread()
-#include <bitset>           // Allows bit manipulation
-#include <math.h>           // Math functions like pow, ceil, floor
-#include <iostream>         // std::getline
+#include <filesystem>       // Read/Write files, reanme/delete files, get all files in a directory
 #include <fstream>          // std::fstream
-#include <string>           // std::string
-#include <algorithm>        // Functions used on ranges of elements (see StrMakeLower)
-#include <cctype>           // String functions like tolower, toupper
+#include <iostream>         // std::getline
+#include <math.h>           // Math functions like pow, ceil, floor
+#include <process.h>        // _endthread()
 #include <sstream>          // String 'stream' functions (see StrGetWord)
+#include <string>           // std::string
 #include <time.h>           // Time functions
 #include <vector>           // Vector stuff
-#include <filesystem>       // Read/Write files, reanme/delete files, get all files in a directory
 
 using namespace std;
 namespace fs = filesystem;
