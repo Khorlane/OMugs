@@ -52,7 +52,6 @@ bool Shop::IsShop(string RoomId)
 
 void Shop::IsShopObj(string RoomId, string ObjectName)
 {
-  string      LogBuf;
   string      NamesCheck;
   string      ObjectId;
   int         Result;
@@ -161,7 +160,6 @@ void Shop::ListObjects()
 {
   int         i;
   int         j;
-  string      LogBuf;
   string      ObjectId;
   string      ShopFileName;
   ifstream    ShopFile;

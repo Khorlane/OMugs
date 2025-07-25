@@ -349,7 +349,6 @@ void Player::Eat(int Percent)
 void Player::GainExperience(Dnode *pDnode, int ExperienceToBeGained)
 {
   float   LevelExperience;
-  string  LogBuf;
 
   Experience += ExperienceToBeGained;
   LevelExperience = CalcLevelExperience(Level+1);
@@ -433,7 +432,6 @@ int Player::GetWeaponSkill()
 void Player::ParsePlayerStuff()
 {
   int     Amount;
-  string  LogBuf;
   string  Name;
 
   Name = pDnodeActor->PlayerName;

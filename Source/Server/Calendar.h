@@ -63,7 +63,6 @@ class Calendar
     vector<string>  HourNames;
     ifstream        HourNamesFile;
     string          HourNamesFileName;
-    string          LogBuf;
     int             Month;
     vector<string>  MonthNames;
     ifstream        MonthNamesFile;

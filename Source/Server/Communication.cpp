@@ -332,7 +332,6 @@ void Communication::ShowPlayersInRoom(Dnode *pDnode)
 
 void Communication::SockCheckForNewConnections()
 {
-  string                LogBuf;
   int                   SocketCount;
   static struct timeval TimeOut{};
 
@@ -373,8 +372,7 @@ void Communication::SockCheckForNewConnections()
  ***********************************************************/
 
 void Communication::SockClosePort(int Port)
-{ 
-  string  LogBuf;
+{
   int     Result;
 
   DEBUGIT(1);
@@ -399,7 +397,6 @@ void Communication::SockOpenPort(int Port)
 {
   unsigned long FionbioParm;
   struct        linger      ld{};
-  string        LogBuf;
   int           OptionValue;
   int           Result;
   struct        sockaddr_in sa{};
@@ -515,7 +512,6 @@ void Communication::SockRecv()
   int      DnodeFdSave;
   char     InpStr[MAX_INPUT_LENGTH];
   int      LineFeedPosition;
-  string   LogBuf;
   int      RecvByteCount;
 
   DEBUGIT(5);
@@ -892,7 +888,6 @@ void Communication::CommandParse()
   string   BadCommandMsg;
   int      CmdStrLength;
   string   CommandCheckResult;
-  string   LogBuf;
   string   MudCmdChk;
   bool     MudCmdOk;
   int      PositionOfNewline;
@@ -1483,7 +1478,6 @@ void Communication::DoAdvance()
 {
   int      Level;
   string   LevelString;
-  string   LogBuf;
   string   PlayerName;
   string   PlayerNameSave;
   string   TargetName;
@@ -2084,7 +2078,6 @@ void Communication::DoConsider()
 void Communication::DoDelete()
 {
   string   AllMsg;
-  string   LogBuf;
   string   Name;
   string   Password;
   string   Phrase;
@@ -2178,7 +2171,7 @@ void Communication::DoDelete()
   error_code ErrorCode = Remove(PlayerFileName);
   if (ErrorCode.value() != 0)
   {
-    string LogBuf = "Communication::DoDelete - Failed to remove Player file: " + PlayerFileName + ". Error: " + ErrorCode.message();
+    LogBuf = "Communication::DoDelete - Failed to remove Player file: " + PlayerFileName + ". Error: " + ErrorCode.message();
     LogIt(LogBuf);
     _endthread();
   }
@@ -4632,7 +4625,6 @@ void Communication::DoPlayed()
 void Communication::DoQuit()
 {
   string  AllMsg;
-  string  LogBuf;
   string  PlayerMsg;
 
   DEBUGIT(1);
@@ -5386,7 +5378,6 @@ void Communication::DoStatus()
 
 void Communication::DoStop()
 {
-  string  LogBuf;
   string  GoGoGoFileName;
   string  StopItFileName;
 
@@ -6543,7 +6534,6 @@ void Communication::LogonGreeting()
 void Communication::LogonWaitMaleFemale()
 {
   string   AllMsg;
-  string   LogBuf;
   string   PlayerMsg;
 
   CmdStr = StrMakeUpper(CmdStr);
@@ -6733,7 +6723,6 @@ void Communication::LogonWaitNewCharacter()
 void Communication::LogonWaitPassword()
 {
   string   AllMsg;
-  string   LogBuf;
   string   PlayerMsg;
 
   if (pDnodeActor->PlayerPassword == CmdStr)
@@ -6910,7 +6899,6 @@ void Communication::RepositionDnodeCursor()
 void Communication::SockNewConnection()
 {
   unsigned long       FionbioParm;
-  string              LogBuf;
   int                 Result;
   struct sockaddr_in  Sock{};
   int                 SocketHandle;
@@ -7292,7 +7280,6 @@ bool Communication::ViolenceMobileLootHandOut(string Loot)
   int      Count;
   bool     GotLoot;
   int      i;
-  string   LogBuf;
   string   ObjectId;
   int      Percent;
 

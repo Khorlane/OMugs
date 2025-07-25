@@ -410,7 +410,6 @@ void Executor::ExecuteSimpleExpression()
 void Executor::ExecuteTerm()
 { //                |   |             
   // Result = 5 + 4 * 3 / (2 + 1) == 9
-  string        LogBuf;
   EnumTokenCode MultiplyDivideOperator;
   float         Operand1;
   float         Operand2;
