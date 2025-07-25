@@ -46,9 +46,6 @@ Validate::~Validate()
  ***********************************************************/
 void Validate::LogValErr(string Message, string FileName)
 {
-  string LogBuf;
-  string TmpStr;
-
   if (StrGetLength(Message) > 50)
   { // Message is too long, chop it off
     Message = StrLeft(Message, 50);
@@ -72,8 +69,6 @@ void Validate::LogValErr(string Message, string FileName)
 
 bool Validate::ValidateIt(string ValidationType)
 {
-  string LogBuf;
-
   ValErr = false;
   ValidationType = StrMakeLower(ValidationType);
   if (ValidationType == "all")
@@ -140,7 +135,6 @@ void Validate::ValidateLibraryLoot()
 {
   string     FileName;
   int        LineCount;
-  string     LogBuf;
   string     Message;
   string     ObjectId;
   ifstream   ObjectIdFile;
@@ -148,7 +142,6 @@ void Validate::ValidateLibraryLoot()
   ifstream   LootFile;
   string     LootFileName;
   string     PlayerName;
-  string     Stuff;
 
   LogBuf = "Begin validation LibraryLoot";
   LogIt(LogBuf);
@@ -219,14 +212,12 @@ void Validate::ValidateLibraryMobiles()
   string     FieldValue;
   string     FileName;
   int        LineCount;
-  string     LogBuf;
   ifstream   LootFile;
   string     LootFileName;
   string     Message;
   ifstream   MobileFile;
   string     MobileFileName;
   string     MobileId;
-  string     Stuff;
 
   LogBuf = "Begin validation LibraryMobiles";
   LogIt(LogBuf);
@@ -370,14 +361,12 @@ void Validate::ValidateLibraryObjects()
   string     FieldValue;
   string     FileName;
   int        LineCount;
-  string     LogBuf;
   ifstream   LootFile;
   string     LootFileName;
   string     Message;
   ifstream   ObjectFile;
   string     ObjectFileName;
   string     ObjectId;
-  string     Stuff;
 
   LogBuf = "Begin validation LibraryObjects";
   LogIt(LogBuf);
@@ -553,14 +542,11 @@ void Validate::ValidateLibraryRooms()
   int        i;
   int        j;
   int        LineCount;
-  string     LogBuf;
   string     Message;
   ifstream   RoomFile;
   string     RoomFileName;
   string     RoomId;
   bool       RoomTypeError;
-  string     Stuff;
-  string     TmpStr;
 
   LogBuf = "Begin validation LibraryRooms";
   LogIt(LogBuf);
@@ -704,7 +690,6 @@ void Validate::ValidateLibraryShops()
   string     FieldValue;
   string     FileName;
   int        LineCount;
-  string     LogBuf;
   string     Message;
   string     ObjectId;
   ifstream   ObjectIdFile;
@@ -712,7 +697,6 @@ void Validate::ValidateLibraryShops()
   ifstream   ShopFile;
   string     ShopFileName;
   string     PlayerName;
-  string     Stuff;
 
   LogBuf = "Begin validation LibraryShops";
   LogIt(LogBuf);
@@ -800,14 +784,12 @@ void Validate::ValidateLibraryWorldMobiles()
   string     FieldValue;
   string     FileName;
   int        LineCount;
-  string     LogBuf;
   string     Message;
   string     MobileId;
   ifstream   MobileIdFile;
   string     MobileIdFileName;
   ifstream   RoomIdFile;
   string     RoomIdFileName;
-  string     Stuff;
   ifstream   WorldMobileFile;
   string     WorldMobileFileName;
   string     WorldMobileName;
@@ -909,14 +891,12 @@ void Validate::ValidateRunningPlayers()
   string     FieldValue;
   string     FileName;
   int        LineCount;
-  string     LogBuf;
   string     Message;
   ifstream   PlayerFile;
   string     PlayerFileName;
   string     PlayerName;
   ifstream   RoomIdFile;
   string     RoomIdFileName;
-  string     Stuff;
 
   LogBuf = "Begin validation RunningPlayers";
   LogIt(LogBuf);
@@ -1014,7 +994,6 @@ void Validate::ValidateRunningPlayersPlayerEqu()
 {
   string     FileName;
   int        LineCount;
-  string     LogBuf;
   string     Message;
   string     ObjectId;
   ifstream   ObjectIdFile;
@@ -1022,7 +1001,6 @@ void Validate::ValidateRunningPlayersPlayerEqu()
   ifstream   PlayerEquFile;
   string     PlayerEquFileName;
   string     PlayerName;
-  string     Stuff;
   string     WearPosition;
 
   LogBuf = "Begin validation RunningPlayersPlayerEqu";
@@ -1108,7 +1086,6 @@ void Validate::ValidateRunningPlayersPlayerObj()
 {
   string     FileName;
   int        LineCount;
-  string     LogBuf;
   string     Message;
   string     ObjectId;
   ifstream   ObjectIdFile;
@@ -1116,7 +1093,6 @@ void Validate::ValidateRunningPlayersPlayerObj()
   ifstream   PlayerObjFile;
   string     PlayerObjFileName;
   string     PlayerName;
-  string     Stuff;
 
   LogBuf = "Begin validation RunningPlayersPlayerObj";
   LogIt(LogBuf);
@@ -1185,7 +1161,6 @@ void Validate::ValidateRunningRoomMob()
 {
   string     FileName;
   int        LineCount;
-  string     LogBuf;
   string     Message;
   string     MobileId;
   ifstream   MobileIdFile;
@@ -1194,7 +1169,6 @@ void Validate::ValidateRunningRoomMob()
   string     RoomId;
   ifstream   RoomIdFile;
   string     RoomIdFileName;
-  string     Stuff;
   ifstream   RoomMobFile;
   string     RoomMobFileName;
 
@@ -1294,7 +1268,6 @@ void Validate::ValidateRunningRoomObj()
 {
   string     FileName;
   int        LineCount;
-  string     LogBuf;
   string     Message;
   string     ObjectId;
   ifstream   ObjectIdFile;
@@ -1302,7 +1275,6 @@ void Validate::ValidateRunningRoomObj()
   string     RoomId;
   ifstream   RoomIdFile;
   string     RoomIdFileName;
-  string     Stuff;
   ifstream   RoomObjFile;
   string     RoomObjFileName;
 

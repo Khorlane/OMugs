@@ -65,10 +65,8 @@ class GenerateRooms
     int             n;
     int             RoomCount;
     string          RoomFileName;
-    string          Stuff;
     string          ToRoomName;
     string          ToRoomNbr;
-    string          TmpStr;
 
     // Dao stuff
     COleVariant     OleVar;

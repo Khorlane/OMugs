@@ -51,7 +51,6 @@ Help::~Help()
 bool Help::IsHelp()
 {
   bool    Found;
-  string  TmpStr;
   string  HelpLookup;
 
   Found = false;
@@ -142,8 +141,6 @@ void Help::ReadLine()
 
 void Help::ShowHelp()
 {
-  string TmpStr;
-
   TmpStr = StrLeft(HelpText, 13);
   while (TmpStr != "Related help:")
   {

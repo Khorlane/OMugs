@@ -48,8 +48,6 @@ void World::CreateSpawnMobileEvents()
   int        Months;
   string     RoomId;
   int        Seconds;
-  string     Stuff;
-  string     TmpStr;
   int        Weeks;
   ifstream   WorldMobileFile;
   string     WorldMobileFileName;
@@ -185,7 +183,6 @@ void World::CheckSpawnMobileEvents()
   string     EventTime;
   string     MobileId;
   string     RoomId;
-  string     Stuff;
 
   sprintf(Buf, "%d", GetTimeSeconds());
   CheckTime = Buf;
@@ -268,7 +265,6 @@ void World::HealMobiles()
   string     MobStatsHitPointsFileName;
   int        PositionOfDot;
   string     RoomId;
-  string     Stuff;
 
   if (ChgDir(MOB_STATS_HPT_DIR))
   { // Change directory failed
@@ -323,8 +319,6 @@ bool World::HealMobilesFightCheck(string Dir, string MobileId)
   ifstream   MobPlayerFile;
   string     MobPlayerFileName;
   bool       MobFighting;
-  string     Stuff;
-  string     TmpStr;
 
   MobFighting = false;
   if (Dir == "MobPlayer")
@@ -464,7 +458,6 @@ void World::MakeMobilesMove1()
   string         RoomMobFileName;
   ofstream       RoomMobListFile;
   string         RoomMobListFileName;
-  string         TmpStr;
 
   // Open MakeMobList file
   RoomMobListFileName =  CONTROL_DIR;
@@ -550,10 +543,8 @@ void World::MakeMobilesMove2()
   string     RoomMobListTempFileName;
   ofstream   RoomMobMoveFile;
   string     RoomMobMoveFileName;
-  string     Stuff;
   clock_t    TimerStart;
   clock_t    TimerStop;
-  string     TmpStr;
   string     ValidMobRoomExits;
 
   // Open MakeMobList file
@@ -729,7 +720,6 @@ void World::MakeMobilesMove3()
   string     RoomMobMoveFileName;
   ofstream   RoomMobMoveTempFile;
   string     RoomMobMoveTempFileName;
-  string     Stuff;
   clock_t    TimerStart;
   clock_t    TimerStop;
 

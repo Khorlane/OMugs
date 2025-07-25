@@ -230,8 +230,6 @@ bool Player::IsNameValid(string Name)
 
 void Player::CreatePrompt()
 {
-  string TmpStr;
-
   Output  = "\r\n";
   sprintf(Buf, "%d", HitPoints);
   TmpStr = Buf;
@@ -352,7 +350,6 @@ void Player::GainExperience(Dnode *pDnode, int ExperienceToBeGained)
 {
   float   LevelExperience;
   string  LogBuf;
-  string  TmpStr;
 
   Experience += ExperienceToBeGained;
   LevelExperience = CalcLevelExperience(Level+1);
@@ -438,7 +435,6 @@ void Player::ParsePlayerStuff()
   int     Amount;
   string  LogBuf;
   string  Name;
-  string  TmpStr;
 
   Name = pDnodeActor->PlayerName;
   if (!OpenFile(Name, "Read"))
@@ -776,8 +772,6 @@ void Player::ParsePlayerStuff()
 
 void Player::Save()
 {
-  string TmpStr;
-
   if (!OpenFile(Name, "Write"))
   {
     AfxMessageBox("Player::Save - Error opening player file for write, Players directory may not exist", MB_ICONSTOP);
@@ -1032,8 +1026,6 @@ void Player::SetMoney(char PlusMinus, int Amount, string Metal)
 
 void Player::ShowMoney()
 {
-  string TmpStr;
-
   sprintf(Buf, "%d", Silver);
   TmpStr = Buf;
   Output = "Silver: " + TmpStr + "\r\n";
@@ -1047,7 +1039,6 @@ void Player::ShowStatus()
 {
   string Exp1; // Current Experience
   string Exp2; // Experience needed for next level
-  string TmpStr;
 
   Output = "\r\n";
   // Name

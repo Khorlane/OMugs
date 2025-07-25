@@ -68,7 +68,6 @@ class Calendar
     vector<string>  MonthNames;
     ifstream        MonthNamesFile;
     string          MonthNamesFileName;
-    string          Stuff;
     int             Success;
     time_t          TimeToAdvanceHour;
     int             Year;

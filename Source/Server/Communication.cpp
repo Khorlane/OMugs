@@ -801,8 +801,6 @@ void Communication::Color()
 
 void Communication::CommandArrayLoad()
 {
-  string     LogBuf;
-  string     Stuff;
   ifstream   ValidCmdsFile;
   string     ValidCmdsFileName;
 
@@ -1490,7 +1488,6 @@ void Communication::DoAdvance()
   string   PlayerNameSave;
   string   TargetName;
   string   TargetNameSave;
-  string   TmpStr;
 
   DEBUGIT(1);
   PlayerName      = pDnodeActor->PlayerName;
@@ -1770,7 +1767,6 @@ void Communication::DoBuy()
   string   ObjectId;
   string   ObjectName;
   string   RoomId;
-  string   TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -1902,8 +1898,6 @@ void Communication::DoChat()
 
 void Communication::DoColor()
 {
-  string TmpStr;
-
   DEBUGIT(1);
   TmpStr = StrGetWord(CmdStr, 2);
   TmpStr = StrMakeLower(TmpStr);
@@ -2229,7 +2223,6 @@ void Communication::DoDelete()
 void Communication::DoDestroy()
 {
   string   ObjectName;
-  string   TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -2290,7 +2283,6 @@ void Communication::DoDrink()
   string   RoomId;
   string   RoomName;
   string   RoomType;
-  string   TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -2410,7 +2402,6 @@ void Communication::DoDrop()
 {
   string   DropMsg;
   string   ObjectName;
-  string   TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -2478,7 +2469,6 @@ void Communication::DoEat()
 {
   string   EatMsg;
   string   ObjectName;
-  string   TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -2561,7 +2551,6 @@ void Communication::DoEat()
 void Communication::DoEmote()
 {
   string  EmoteMsg;
-  string  TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -2625,7 +2614,6 @@ void Communication::DoExamine()
   bool     ObjectFound;
   string   ObjectName;
   string   ObjectType;
-  string   TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -2734,7 +2722,6 @@ void Communication::DoFlee()
   string      PlayerName2;
   string      RoomIdBeforeFleeing;
   string      Target;
-  string      TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -2862,7 +2849,6 @@ void Communication::DoFollow(Dnode *pDnode, string CmdStr1)
   int      j;
   string   Target;
   bool     TargetInGroup;
-  string   TmpStr;
 
   DEBUGIT(1);
   CmdStr = CmdStr1;
@@ -3072,7 +3058,6 @@ void Communication::DoGet()
 {
   string   GetMsg;
   string   ObjectName;
-  string   TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -3152,7 +3137,6 @@ void Communication::DoGive()
   string   PlayerName;
   string   TargetName;
   bool     TargetNotHere;
-  string   TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -3287,7 +3271,6 @@ void Communication::DoGive()
 void Communication::DoGo()
 {
   string  MudCmdIsExit;
-  string  TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -3388,7 +3371,6 @@ void Communication::DoGoTo()
 void Communication::DoGoToArrive()
 {
   string  GoToArrive;
-  string  TmpStr;
 
   DEBUGIT(1);
   TmpStr = StrGetWord(CmdStr, 2);
@@ -3465,7 +3447,6 @@ void Communication::DoGoToArrive()
 void Communication::DoGoToDepart()
 {
   string  GoToDepart;
-  string  TmpStr;
 
   DEBUGIT(1);
   TmpStr = StrGetWord(CmdStr, 2);
@@ -3548,7 +3529,6 @@ void Communication::DoGroup()
   string   PlayerNameCheck;
   string   TargetNameCheck;
   string   TargetNameSave;
-  string   TmpStr;
 
   DEBUGIT(1);
   if (IsSleeping())
@@ -3976,8 +3956,6 @@ void Communication::DoInventory()
 
 void Communication::DoInvisible()
 {
-  string  TmpStr;
-
   DEBUGIT(1);
   TmpStr = StrGetWord(CmdStr, 2);
   TmpStr = StrMakeLower(TmpStr);
@@ -4228,7 +4206,6 @@ void Communication::DoLoad()
   string   LoadMsg;
   string   MobileId;
   string   ObjectId;
-  string   TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -4364,7 +4341,6 @@ void Communication::DoLook(string CmdStr1)
   bool     IsPlayer;
   string   MudCmdIsExit;
   string   TargetName;
-  string   TmpStr;
 
   DEBUGIT(1);
   CmdStr = CmdStr1;
@@ -4459,10 +4435,8 @@ void Communication::DoMoney()
 
 void Communication::DoMotd()
 {
-  string     LogBuf;
   ifstream   MotdFile;
   string     MotdFileName;
-  string     Stuff;
 
   DEBUGIT(1);
   // Read Motd file
@@ -4497,8 +4471,6 @@ void Communication::DoMotd()
 
 void Communication::DoOneWhack()
 {
-  string  TmpStr;
-
   DEBUGIT(1);
   TmpStr = StrGetWord(CmdStr, 2);
   TmpStr = StrMakeLower(TmpStr);
@@ -4695,8 +4667,6 @@ void Communication::DoQuit()
 
 void Communication::DoRefresh()
 {
-  string  TmpStr;
-
   DEBUGIT(1);
   if (StrCountWords(CmdStr) > 2)
   { // Invalid command format
@@ -4740,7 +4710,6 @@ void Communication::DoRemove()
 {
   string   ObjectName;
   string   RemoveMsg;
-  string   TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -4893,8 +4862,6 @@ void Communication::DoRestore(string CmdStr)
 
 void Communication::DoRoomInfo()
 {
-  string  TmpStr;
-
   DEBUGIT(1);
   TmpStr = StrGetWord(CmdStr, 2);
   TmpStr = StrMakeLower(TmpStr);
@@ -4940,7 +4907,6 @@ void Communication::DoSave()
 void Communication::DoSay()
 {
   string  SayMsg;
-  string  TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -5002,7 +4968,6 @@ void Communication::DoSell()
   string   RoomId;
   int      SellCountInt;
   string   SellCountStr;
-  string   TmpStr;
 
   DEBUGIT(1);
   //********************
@@ -5140,7 +5105,6 @@ void Communication::DoShow()
   ifstream   SocialFile;
   string     SocialFileName;
   string     SocialText;
-  string     TmpStr;
   string     MudCmdChk;
   string     ValCmdInfo;
 
@@ -5554,7 +5518,6 @@ void Communication::DoTime()
 void Communication::DoTitle()
 {
   string  Title;
-  string  TmpStr;
 
   DEBUGIT(1);
   TmpStr = StrGetWord(CmdStr, 2);
@@ -5635,7 +5598,6 @@ void Communication::DoTrain()
   string  MinusSign;
   int     SkillPointsUsed;
   int     SkillPointsRemaining;
-  string  TmpStr;
   string  UnTrainCost;
   string  WeaponType;
 
@@ -5991,7 +5953,6 @@ void Communication::DoWake()
 void Communication::DoWear()
 {
   string   ObjectName;
-  string   TmpStr;
   bool     WearFailed;
   string   WearMsg;
   string   WearPosition;
@@ -6215,7 +6176,6 @@ void Communication::DoWho()
 void Communication::DoWield()
 {
   string   ObjectName;
-  string   TmpStr;
   string   WearPosition;
   bool     WieldFailed;
   string   WieldMsg;
@@ -6325,7 +6285,6 @@ void Communication::GrpExperience(int MobileExpPoints, int MobileLevel)
   int      i;
   double   LevelTotal;
   int      PlayerExpPct;
-  string   TmpStr;
 
   // Count group members
   GrpMemberCount = 0;
@@ -6552,8 +6511,6 @@ void Communication::LogonGreeting()
 {
   ifstream   GreetingFile;
   string     GreetingFileName;
-  string     LogBuf;
-  string     Stuff;
 
   // Read greeting file
   GreetingFileName = GREETING_DIR;
@@ -6959,7 +6916,6 @@ void Communication::SockNewConnection()
   int                 SocketHandle;
   int                 SocketSize;
   string              IpAddress;
-  string              TmpStr;
     
   FionbioParm = 1;
   SocketSize  = sizeof(Sock);
@@ -7100,7 +7056,6 @@ void Communication::ViolenceMobile()
   string  MobileIdCheck;
   int     PAC;
   string  PlayerBeenWhacked;
-  string  TmpStr;
 
   i = 0;
   i++;
@@ -7152,7 +7107,6 @@ void Communication::ViolenceMobileDied(string MobileBeenWhacked,
   string   MobileIdCheck;
   int      MobileLevel;
   string   MobileLoot;
-  string   TmpStr;
 
   MobileExpPointsLevel = (MobileId);
   MobileExpPoints      = stoi(StrGetWord(MobileExpPointsLevel, 1));
@@ -7258,12 +7212,10 @@ void Communication::ViolenceMobileLoot(string Loot)
   Dnode      *pDnodeGrpMem;
   Player     *pPlayerGrpLdr;
   int         i;
-  string      LogBuf;
   bool        LootFlag;
   ifstream    MobileLootFile;
   string      MobileLootFileName;
   bool        NoLoot;
-  string      Stuff;
 
   MobileLootFileName  = LOOT_DIR;
   MobileLootFileName += Loot;
@@ -7471,7 +7423,6 @@ void Communication::ViolencePlayerDied(string MobileDesc1)
   string   MobileIdSave;
   string   RoomIdBeforeDying;
   string   Target;
-  string   TmpStr;
 
   pDnodeActor->pPlayer->HitPoints = 0;
   // Tell player of their demise

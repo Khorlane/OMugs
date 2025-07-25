@@ -107,7 +107,6 @@ class BuildMobiles : public CDialog
     fstream         MobileFile;
     string          MobileFileName;
     string          Sex;
-    string          Stuff;
 };
 
 inline BuildMobiles *pBuildMobiles;

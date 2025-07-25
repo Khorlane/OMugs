@@ -84,7 +84,6 @@ class Mobile
     string          MobileId;
     string          MobNbr;
     string          Names;
-    string          Stuff;
     string          Talk;
 };
 

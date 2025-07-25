@@ -78,9 +78,7 @@ class BuildObjectsList : public CDialog
     CString         ObjectId;
     ifstream        ObjectFile;
     string          ObjectFileName;
-    string          TmpStr;
     string          Type;
-    string          Stuff;
     string          WeaponType;
 };
 

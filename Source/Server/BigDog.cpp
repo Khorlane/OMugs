@@ -14,7 +14,6 @@
 * Includes                                                 *
 ************************************************************/
 
-#include "stdafx.h" // This is only here to speed up compiles
 #include "BigDog.h"
 
 /***********************************************************
@@ -26,7 +25,6 @@ void BigDog()
   WhoIsOnline *pWhoIsOnline;
   int          EventTick;
   string       GoGoGoFileName;
-  string       LogBuf;
   int          MobHealTick;
   string       StopItFileName;
   int          WhoIsOnlineTick;

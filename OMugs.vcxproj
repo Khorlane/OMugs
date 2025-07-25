@@ -150,7 +150,9 @@
     <ClCompile Include="Source\Osi\Scanner.cpp" />
     <ClCompile Include="Source\Osi\Symbol.cpp" />
     <ClCompile Include="Source\Osi\Token.cpp" />
-    <ClCompile Include="Source\Server\BigDog.cpp" />
+    <ClCompile Include="Source\Server\BigDog.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="Source\Server\Calendar.cpp" />
     <ClCompile Include="Source\Server\Communication.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>

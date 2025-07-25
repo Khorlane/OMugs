@@ -37,7 +37,6 @@ class RunStack
 // Private variables
   private:
     float          *TopOfStack;
-    string          LogBuf;
     float           Stack[RUN_STACK_SIZE];
 };
 

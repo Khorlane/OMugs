@@ -84,7 +84,6 @@ class Player
     Dnode          *pDnode;
     string          Output;
     fstream         PlayerFile;
-    string          Stuff;
 
     // Exploration tracking variables
     int             PlayerRoomBitPos;

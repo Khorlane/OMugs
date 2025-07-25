@@ -89,7 +89,6 @@ class BuildObjects : public CDialog
     string          ArmorWear;
     fstream         ObjectFile;
     string          ObjectFileName;
-    string          Stuff;
     string          Type;
     string          WeaponType;
 };

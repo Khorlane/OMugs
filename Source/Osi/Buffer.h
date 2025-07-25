@@ -44,9 +44,7 @@ class Buffer
   private:
     char            ch;
     int             InputPosition;
-    string          LogBuf;
     ifstream        ScriptFile;
-    string          Stuff;
     int             Success;
 };
 

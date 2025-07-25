@@ -61,8 +61,6 @@ void Mobile::AddMobToRoom(string RoomId, string MobileId)
   string     RoomMobFileName;
   ofstream   RoomMobTmpFile;
   string     RoomMobTmpFileName;
-  string     Stuff;
-  string     TmpStr;
 
   UpdateMobInWorld(MobileId, "add");
   MobileId = StrMakeLower(MobileId);
@@ -178,8 +176,6 @@ int Mobile::CountMob(string MobileId)
   int        MobInWorldCount;
   ifstream   MobInWorldFile;
   string     MobInWorldFileName;
-  string     Stuff;
-  string     TmpStr;
   
   // Open Mobile InWorld file
   MobInWorldFileName =  CONTROL_MOB_INWORLD_DIR;
@@ -309,8 +305,6 @@ void Mobile::DeleteMobPlayer(string PlayerName, string MobileId)
   string     MobPlayerFileNameTmp;
   ifstream   MobPlayerFile;
   ofstream   MobPlayerFileTmp;
-  string     Stuff;
-  string     TmpStr;
 
   MobileId = StrMakeLower(MobileId);
   // Open MobPlayer file
@@ -461,7 +455,6 @@ Mobile *Mobile::IsMobInRoom(string MobileName)
   int         PositionOfDot;
   ifstream    RoomMobFile;
   string      RoomMobFileName;
-  string      Stuff;
 
   // Open RoomMob file
   RoomMobFileName =  ROOM_MOB_DIR;
@@ -558,7 +551,6 @@ string Mobile::GetMobDesc1(string MobileId)
   ifstream   MobileFile;
   string     MobileFileName;
   int        PositionOfDot;
-  string     Stuff;
 
   PositionOfDot = StrFindFirstChar(MobileId, '.');
   if (PositionOfDot > 1)
@@ -594,7 +586,6 @@ bool Mobile::IsMobileIdInRoom(string RoomId, string MobileId)
   string     MobileIdCheck;
   ifstream   RoomMobFile;
   string     RoomMobFileName;
-  string     Stuff;
 
   // Open RoomMob file
   RoomMobFileName =  ROOM_MOB_DIR;
@@ -659,8 +650,6 @@ void Mobile::PutMobBackInRoom(string PlayerName, string RoomIdBeforeFleeing)
   ifstream   MobStatsHitPointsFile;
   string     MobStatsHitPointsFileName;
   int        PositionOfDot;
-  string     Stuff;
-  string     TmpStr;
 
   // Open MobPlayer file
   MobPlayerFileName =  MOB_PLAYER_DIR;
@@ -722,8 +711,6 @@ void Mobile::RemoveMobFromRoom(string RoomId, string MobileId)
   string     RoomMobTmpFileName;
   ifstream   RoomMobFile;
   ofstream   RoomMobTmpFile;
-  string     Stuff;
-  string     TmpStr;
 
   UpdateMobInWorld(MobileId, "remove");
   MobileId = StrMakeLower(MobileId);
@@ -824,7 +811,6 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
   int         RemoveMobCount;
   ifstream    RoomMobFile;
   string      RoomMobFileName;
-  string      Stuff;
 
   // Open RoomMob file
   RoomMobFileName =  ROOM_MOB_DIR;
@@ -991,7 +977,6 @@ void Mobile::WhereMob(string MobileIdSearch)
   string     RoomMobFileName;
   ifstream   RoomMobFile;
   string     RoomName;
-  string     Stuff;
 
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += "Mobiles";
@@ -1063,8 +1048,6 @@ void Mobile::UpdateMobInWorld(string MobileId, string AddRemove)
   fstream    MobInWorldFile;
   string     MobInWorldFileName;
   int        PositionOfDot;
-  string     Stuff;
-  string     TmpStr;
   
   MobInWorldCount = 0;
   PositionOfDot = StrFindFirstChar(MobileId, '.');
@@ -1116,8 +1099,6 @@ void Mobile::UpdateMobInWorld(string MobileId, string AddRemove)
 void Mobile::CreateMobStatsFile(string RoomId)
 {
   string MobileIdForFight;
-  string Stuff;
-  string TmpStr;
 
   MobileIdForFight = MobileId + "." + MobNbr;
   // HitPoints
@@ -1190,7 +1171,6 @@ void Mobile::GetNextMobNbr()
   string     NextMobNbrFileName;
   int        NextMobNbrInteger;
   string     NextMobNbrString;
-  string     Stuff;
 
   // Read next mobile number file
   NextMobNbrFileName = CONTROL_DIR;
@@ -1231,14 +1211,11 @@ void Mobile::GetNextMobNbr()
 
 string Mobile::MobTalk()
 {
-  string     LogBuf;
   ifstream   MobTalkFile;
   string     MobTalkFileName;
   string     MobileMsg;
   int        MsgCount;
   int        RndMsgNbr;
-  string     Stuff;
-  string    TmpStr;
 
   //******************************
   //* Open and read message file *

@@ -59,7 +59,6 @@ class Token
     int             DigitCount;
     bool            DigitCountError;
     int             i;
-    string          LogBuf;
     EnumTokenCode   TokenCode;      // tcBraceL, tcBraceR, tcElse, etc.....
     EnumDataType    TokenDataType;  // tyInteger, tyFloat, tyCharacter, tyString
     EnumDataValue   TokenDataValue; //   .Integer, .Real,   .Character, .pString

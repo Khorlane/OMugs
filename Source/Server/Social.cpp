@@ -54,7 +54,6 @@ bool Social::IsSocial()
   bool     Found;
   string   MinPos;
   string   MsgText;
-  string   TmpStr;
 
   Found = false;
   if (!OpenFile())

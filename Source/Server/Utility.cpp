@@ -128,7 +128,6 @@ string Utility::GetSqlStmt(string SqlStmtId)
   string     SqlStmt;
   ifstream   SqlStmtFile;
   string     SqlStmtFileName;
-  string     Stuff;
 
   RipOutMoreSpaces = 0;
   // Read mobile stats Desc1 file

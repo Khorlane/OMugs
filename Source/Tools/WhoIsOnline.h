@@ -50,7 +50,6 @@ class WhoIsOnline
     string          PlayerFileName;
     ofstream        StatsWhoFile;
     string          StatsWhoFileName;
-    string          Stuff;
     string          Title;
 };
 

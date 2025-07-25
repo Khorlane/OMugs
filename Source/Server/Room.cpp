@@ -55,7 +55,6 @@ Room::~Room()
 string Room::GetRoomId(string RoomId)
 {
   string    RoomFileName;
-  string    Stuff;
 
   RoomFileName =  ROOMS_DIR;
   RoomFileName += RoomId;
@@ -86,7 +85,6 @@ string Room::GetRoomName(string RoomId)
 {
   string     RoomFileName;
   string     RoomName;
-  string     Stuff;
 
   RoomFileName =  ROOMS_DIR;
   RoomFileName += RoomId;
@@ -123,7 +121,6 @@ string Room::GetValidMobRoomExits(string RoomId)
 {
   string    ExitToRoomId;
   string    RoomFileName;
-  string    Stuff;
   string    ValidMobExits;
 
   RoomFileName = ROOMS_DIR;
@@ -168,8 +165,6 @@ bool Room::IsExit(string MudCmdIsExit)
   string   ExitLookup;
   string   ExitName;
   string   ExitToRoomId;
-  string   Stuff;
-  string   TmpStr;
 
   Found = false;
   if (!OpenFile(pDnodeActor))
@@ -273,7 +268,6 @@ bool Room::IsExit(string MudCmdIsExit)
 bool Room::IsRoom(string RoomId)
 {
   string     RoomFileName;
-  string     Stuff;
 
   RoomFileName =  ROOMS_DIR;
   RoomFileName += RoomId;
@@ -305,7 +299,6 @@ bool Room::IsRoomType(string RoomId, string RoomType)
 {
   ifstream   RoomFile;
   string     RoomFileName;
-  string     Stuff;
 
   RoomFileName = ROOMS_DIR;
   RoomFileName += RoomId;
@@ -410,7 +403,6 @@ void Room::MoveFollowers(Dnode *pDnode, string ExitToRoomId)
 
 void Room::MovePlayer(Dnode *pDnode, string ExitToRoomId)
 {
-  string  TmpStr;
   string  MoveMsg;
 
   pDnodeSrc = pDnode;
@@ -459,8 +451,6 @@ bool Room::OpenFile(Dnode *pDnode)
 
 void Room::ShowRoomDesc(Dnode *pDnode)
 {
-  string Stuff;
-
   // RoomDesc
   getline(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "RoomDesc:")
@@ -484,8 +474,6 @@ void Room::ShowRoomDesc(Dnode *pDnode)
 
 void Room::ShowRoomExitDesc()
 {
-  string  Stuff;
-
   // ExitDesc
   getline(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "ExitDesc:")
@@ -512,7 +500,6 @@ void Room::ShowRoomExitDesc()
 void Room::ShowRoomExits(Dnode *pDnode)
 {
   bool    NoExits;
-  string  Stuff;
 
   NoExits = true;
   pDnode->PlayerOut += "&C";
@@ -543,7 +530,6 @@ void Room::ShowRoomName(Dnode *pDnode)
 {
   string  RoomId;
   string  RoomType;
-  string  Stuff;
   string  Terrain;
   string  RoomName;
 

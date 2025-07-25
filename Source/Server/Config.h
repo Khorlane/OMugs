@@ -386,6 +386,8 @@ inline string         ScriptFileName;
 inline bool           StateConnections;
 inline bool           StateRunning;
 inline bool           StateStopping;
+inline string         Stuff;
+inline string         TmpStr;
 inline bool           ValErr;
 
 #endif

@@ -69,7 +69,6 @@ string Violence::CalcHealthPct(int HitPoints, int HitPointsMax)
 {
   string  HealthPct;
   int     Percent;
-  string  TmpStr;
 
   if (HitPoints < 1)
   { // Skip percent calculation
@@ -113,7 +112,6 @@ int Violence::GetMobileArmor(string MobileId)
   int        MobileArmor;
   ifstream   MobStatsArmorFile;
   string     MobStatsArmorFileName;
-  string     Stuff;
 
   // Read mobile stats Armor file
   MobStatsArmorFileName = MOB_STATS_ARM_DIR;
@@ -147,7 +145,6 @@ string Violence::GetMobileAttack(string MobileId)
   string     MobileAttack;
   ifstream   MobStatsAttackFile;
   string     MobStatsAttackFileName;
-  string     Stuff;
 
   // Read mobile stats Attack file
   MobStatsAttackFileName = MOB_STATS_ATK_DIR;
@@ -177,7 +174,6 @@ int Violence::GetMobileDamage(string MobileId)
   int        MobileDamage;
   ifstream   MobStatsDamageFile;
   string     MobStatsDamageFileName;
-  string     Stuff;
 
   // Read mobile stats Damage file
   MobStatsDamageFileName = MOB_STATS_DMG_DIR;
@@ -207,7 +203,6 @@ string Violence::GetMobileDesc1(string MobileId)
   string     MobileDesc1;
   ifstream   MobStatsDesc1File;
   string     MobStatsDesc1FileName;
-  string     Stuff;
 
   // Read mobile stats Desc1 file
   MobStatsDesc1FileName = MOB_STATS_DSC_DIR;
@@ -236,7 +231,6 @@ string Violence::GetMobileExpPointsLevel(string MobileId)
 {
   ifstream   MobStatsExpPointsFile;
   string     MobStatsExpPointsFileName;
-  string     Stuff;
 
   // Read mobile stats ExpPoints and Level file
   MobStatsExpPointsFileName = MOB_STATS_EXP_DIR;
@@ -265,7 +259,6 @@ string Violence::GetMobileHitPoints(string MobileId)
   ifstream   MobStatsHitPointsFile;
   string     MobStatsHitPointsFileName;
   string     MobHitPoints;
-  string     Stuff;
 
   // Read mobile stats hit points file
   MobStatsHitPointsFileName = MOB_STATS_HPT_DIR;
@@ -292,7 +285,6 @@ string Violence::GetMobileLoot(string MobileId)
   string     MobileLoot;
   ifstream   MobStatsLootFile;
   string     MobStatsLootFileName;
-  string     Stuff;
 
   // Read mobile stats Loot file
   MobStatsLootFileName = MOB_STATS_LOOT_DIR;
@@ -322,7 +314,6 @@ string Violence::GetMobileRoom(string MobileId)
   string     MobileRoom;
   ifstream   MobStatsRoomFile;
   string     MobStatsRoomFileName;
-  string     Stuff;
 
   // Read mobile stats Loot file
   MobStatsRoomFileName = MOB_STATS_ROOM_DIR;
@@ -421,8 +412,6 @@ string Violence::WhackMobile(string MobileId, int DamageToMobile, string MobileD
   int        MobHitPointsTotal;
   ofstream   MobStatsHitPointsFile;
   string     MobStatsHitPointsFileName;
-  string     Stuff;
-  string     TmpStr;
   string     WeaponAction;
 
   // Get mobile's total hit points and hit points left
@@ -571,7 +560,6 @@ string Violence::WhackMobile(string MobileId, int DamageToMobile, string MobileD
 string Violence::WhackPlayer(string MobileDesc1, string MobileAttack, int DamageToPlayer)
 {
   string PlayerBeenWhacked;
-  string TmpStr;
 
   // Capitalize first leter of first word of MobileDesc1
   MobileDesc1 = StrMakeFirstUpper(MobileDesc1);

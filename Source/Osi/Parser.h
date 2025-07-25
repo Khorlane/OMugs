@@ -65,7 +65,6 @@ class Parser
     Symbol         *pSymbolInsert;
     Symbol         *pSymbolRoot;
     Token          *pToken;
-    string          LogBuf;
     EnumTokenCode   TokenCode;
 };
 

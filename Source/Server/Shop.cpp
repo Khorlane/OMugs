@@ -59,7 +59,6 @@ void Shop::IsShopObj(string RoomId, string ObjectName)
   string      ShopFileName;
   ifstream    ShopFile;
   string      ShopText;
-  string      Stuff;
 
   ShopFileName = SHOPS_DIR;
   ShopFileName += RoomId + ".txt";
@@ -167,8 +166,6 @@ void Shop::ListObjects()
   string      ShopFileName;
   ifstream    ShopFile;
   string      ShopText;
-  string      Stuff;
-  string      TmpStr;
   
   ShopFileName = SHOPS_DIR;
   ShopFileName += pDnodeActor->pPlayer->RoomId + ".txt";

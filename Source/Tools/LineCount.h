@@ -50,8 +50,6 @@ class LineCount
     string          SourceCodeFileExtension;
     string          SourceCodeFileName;
     string          SourceCodeFileNameSave;
-    string          Stuff;
-    string          TmpStr;
 };
 
 #endif

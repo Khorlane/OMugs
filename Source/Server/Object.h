@@ -77,7 +77,6 @@ class Object
     ifstream        ObjectFile;
     string          ObjectId;
     string          Names;
-    string          Stuff;
     string          Type;
     string          WeaponType;
     int             WeaponDamage;
