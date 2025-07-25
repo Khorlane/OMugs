@@ -62,14 +62,14 @@ string Room::GetRoomId(string RoomId)
   RoomFile.open(RoomFileName);
   if (!RoomFile.is_open())
   { // No such file???, But there should be, This is bad!
-    AfxMessageBox("Room::GetRoomId - Room does not exist", MB_ICONSTOP);
+    LogIt("Room::GetRoomId - Room does not exist");
     _endthread();
   }
   // RoomId
   getline(RoomFile, Stuff);
   if (StrLeft(Stuff, 7) != "RoomId:")
   { // Very bad, where did the RoomId go anyway?
-    AfxMessageBox("Room::GetRoomId - RoomId: not found", MB_ICONSTOP);
+    LogIt("Room::GetRoomId - RoomId: not found");
     _endthread();
   }
   RoomId = StrGetWord(Stuff, 2);
@@ -92,7 +92,7 @@ string Room::GetRoomName(string RoomId)
   RoomFile.open(RoomFileName);
   if (!RoomFile.is_open())
   { // No such file???, But there should be, This is bad!
-    AfxMessageBox("Room::GetRoomName - Room does not exist", MB_ICONSTOP);
+    LogIt("Room::GetRoomName - Room does not exist");
     _endthread();
   }
 
@@ -103,7 +103,7 @@ string Room::GetRoomName(string RoomId)
   getline(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "RoomName:")
   { // Very bad, where did the RoomName go anyway?
-    AfxMessageBox("Room::GetRoomName - RoomName: not found", MB_ICONSTOP);
+    LogIt("Room::GetRoomName - RoomName: not found");
     _endthread();
   }
   RoomName = StrGetWords(Stuff, 2);
@@ -129,7 +129,7 @@ string Room::GetValidMobRoomExits(string RoomId)
   RoomFile.open(RoomFileName);
   if (!RoomFile.is_open())
   { // No such file???, But there should be, This is bad!
-    AfxMessageBox("Room::GetValidMobRoomExits - Room does not exist", MB_ICONSTOP);
+    LogIt("Room::GetValidMobRoomExits - Room does not exist");
     _endthread();
   }
   ValidMobExits = "";
@@ -169,7 +169,7 @@ bool Room::IsExit(string MudCmdIsExit)
   Found = false;
   if (!OpenFile(pDnodeActor))
   { // If the file isn't there, then the Room does not exit, doh!
-    AfxMessageBox("Room::IsExit - Room does not exist", MB_ICONSTOP);
+    LogIt("Room::IsExit - Room does not exist");
     _endthread();
   }
   ExitLookup = StrGetWord(CmdStr, 2);
@@ -279,7 +279,7 @@ bool Room::IsRoom(string RoomId)
     RoomFile.close();
     if (StrLeft(Stuff, 7) != "RoomId:")
     {
-      AfxMessageBox("Room::IsRoom - RoomId: not found", MB_ICONSTOP);
+      LogIt("Room::IsRoom - RoomId: not found");
       _endthread();
     }
     Stuff = StrGetWord(Stuff, 2);
@@ -306,7 +306,7 @@ bool Room::IsRoomType(string RoomId, string RoomType)
   RoomFile.open(RoomFileName);
   if (!RoomFile.is_open())
   { // No such file???, But there should be, This is bad!
-    AfxMessageBox("Room::IsRoomType - Room does not exist", MB_ICONSTOP);
+    LogIt("Room::IsRoomType - Room does not exist");
     _endthread();
   }
   // RoomType
@@ -314,7 +314,7 @@ bool Room::IsRoomType(string RoomId, string RoomType)
   getline(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "RoomType:")
   { // Very bad, where did the RoomType go anyway?
-    AfxMessageBox("Room::IsRoomType - RoomType: not found", MB_ICONSTOP);
+    LogIt("Room::IsRoomType - RoomType: not found");
     _endthread();
   }
   Stuff = StrGetWords(Stuff, 2);
@@ -339,7 +339,7 @@ void Room::ShowRoom(Dnode *pDnode)
 {
   if (!OpenFile(pDnode))
   { // If the file isn't there, then the Room does not exit, doh!
-    AfxMessageBox("Room::ShowRoom - Room does not exist", MB_ICONSTOP);
+    LogIt("Room::ShowRoom - Room does not exist");
     _endthread();
   }
   ShowRoomName(pDnode);
@@ -380,7 +380,7 @@ void Room::MoveFollowers(Dnode *pDnode, string ExitToRoomId)
   {
     if (!pDnode->pPlayer->pPlayerFollowers[i])
     { // No followers or no more followers
-     return;
+      return;
     }
     pDnodeGrpMem = GetTargetDnode(pDnode->pPlayer->pPlayerFollowers[i]->Name);
     if (!pDnodeGrpMem)
@@ -455,7 +455,7 @@ void Room::ShowRoomDesc(Dnode *pDnode)
   getline(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "RoomDesc:")
   {
-    AfxMessageBox("Room::ShowRoomDesc - RoomDesc: not found", MB_ICONSTOP);
+    LogIt("Room::ShowRoomDesc - RoomDesc: not found");
     _endthread();
   }
   // Room Description
@@ -478,7 +478,7 @@ void Room::ShowRoomExitDesc()
   getline(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "ExitDesc:")
   {
-    AfxMessageBox("Room::ShowRoomExitDesc - ExitDesc: not found", MB_ICONSTOP);
+    LogIt("Room::ShowRoomExitDesc - ExitDesc: not found");
     _endthread();
   }
   // Exit Description
@@ -537,20 +537,20 @@ void Room::ShowRoomName(Dnode *pDnode)
   getline(RoomFile, Stuff);
   if (StrLeft(Stuff, 7) != "RoomId:")
   {
-    AfxMessageBox("Room::ShowRoomName - RoomId: not found", MB_ICONSTOP);
+    LogIt("Room::ShowRoomName - RoomId: not found");
     _endthread();
   }
   RoomId = StrGetWord(Stuff, 2);
   if (RoomId != pDnode->pPlayer->RoomId)
   {
-    AfxMessageBox("Room::ShowRoomName - RoomId mis-match", MB_ICONSTOP);
+    LogIt("Room::ShowRoomName - RoomId mis-match");
     _endthread();
   }
   // RoomType
   getline(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "RoomType:")
   {
-    AfxMessageBox("Room::ShowRoomName - RoomType: not found", MB_ICONSTOP);
+    LogIt("Room::ShowRoomName - RoomType: not found");
     _endthread();
   }
   RoomType = StrGetWords(Stuff, 2);
@@ -558,7 +558,7 @@ void Room::ShowRoomName(Dnode *pDnode)
   getline(RoomFile, Stuff);
   if (StrLeft(Stuff, 8) != "Terrain:")
   {
-    AfxMessageBox("Room::ShowRoomName - Terrain: not found", MB_ICONSTOP);
+    LogIt("Room::ShowRoomName - Terrain: not found");
     _endthread();
   }
   Terrain = StrGetWord(Stuff, 2);
@@ -566,7 +566,7 @@ void Room::ShowRoomName(Dnode *pDnode)
   getline(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "RoomName:")
   {
-    AfxMessageBox("Room::ShowRoomName - RoomName: not found", MB_ICONSTOP);
+    LogIt("Room::ShowRoomName - RoomName: not found");
     _endthread();
   }
   RoomName = StrGetWords(Stuff, 2);

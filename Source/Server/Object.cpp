@@ -97,7 +97,8 @@ bool Object::AddObjToPlayerEqu(string WearPosition, string ObjectId)
   PlayerEquFileTmp.open(PlayerEquFileNameTmp);
   if (!PlayerEquFileTmp.is_open())
   {
-    AfxMessageBox("Object::AddObjToPlayerEqu - Open PlayerEqu temp file failed", MB_ICONSTOP);
+    LogBuf = "Object::AddObjToPlayerEqu - Open PlayerEqu temp file failed";
+    LogIt(LogBuf);
     _endthread();
   }
   WearPosition = TranslateWord(WearPosition);
@@ -189,7 +190,8 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId)
   PlayerObjFileTmp.open(PlayerObjFileNameTmp);
   if (!PlayerObjFileTmp.is_open())
   {
-    AfxMessageBox("Object::AddObjToPlayerInv - Open PlayerObj temp file failed", MB_ICONSTOP);
+    LogBuf = "Object::AddObjToPlayerInv - Open PlayerObj temp file failed";
+    LogIt(LogBuf);
     _endthread();
   }
   if (NewPlayerObjFile)
@@ -282,7 +284,8 @@ void Object::AddObjToRoom(string RoomId, string ObjectId)
   RoomObjFileTmp.open(RoomObjFileNameTmp);
   if (!RoomObjFileTmp.is_open())
   {
-    AfxMessageBox("Object::AddObjToRoom - Open RoomObj temp file failed", MB_ICONSTOP);
+    LogBuf = "Object::AddObjToRoom - Open RoomObj temp file failed";
+    LogIt(LogBuf);
     _endthread();
   }
   if (NewRoomObjFile)
@@ -717,7 +720,8 @@ void Object::RemoveObjFromPlayerEqu(string ObjectId)
   PlayerEquFile.open(PlayerEquFileName);
   if (!PlayerEquFile.is_open())
   {
-    AfxMessageBox("Object::RemoveObjFromPlayerEqu - Open PlayerEqu file failed", MB_ICONSTOP);
+    LogBuf = "Object::RemoveObjFromPlayerEqu - Open PlayerEqu file failed";
+    LogIt(LogBuf);
     _endthread();
   }
   // Open temp PlayerEqu file
@@ -727,7 +731,8 @@ void Object::RemoveObjFromPlayerEqu(string ObjectId)
   PlayerEquFileTmp.open(PlayerEquFileNameTmp);
   if (!PlayerEquFileTmp.is_open())
   {
-    AfxMessageBox("Object::RemoveObjFromPlayerEqu - Open PlayerEqu temp file failed", MB_ICONSTOP);
+    LogBuf = "Object::RemoveObjFromPlayerEqu - Open PlayerEqu temp file failed";
+    LogIt(LogBuf);
     _endthread();
   }
   // Write temp PlayerEqu file
@@ -754,7 +759,8 @@ void Object::RemoveObjFromPlayerEqu(string ObjectId)
   }
   if (!ObjectIdRemoved)
   { // Object not removed, this is definitely BAD!
-    AfxMessageBox("Object::RemoveObjFromPlayerEqu - Object not removed", MB_ICONSTOP);
+    LogBuf = "Object::RemoveObjFromPlayerEqu - Object not removed";
+    LogIt(LogBuf);
     _endthread();
   }
   BytesInFile = (int)PlayerEquFileTmp.tellp();
@@ -794,7 +800,8 @@ void Object::RemoveObjFromPlayerInv(string ObjectId, int Count)
   PlayerObjFile.open(PlayerObjFileName);
   if (!PlayerObjFile.is_open())
   {
-    AfxMessageBox("Object::RemoveObjFromPlayerInv - Open PlayerObj file failed", MB_ICONSTOP);
+    LogBuf = "Object::RemoveObjFromPlayerInv - Open PlayerObj file failed";
+    LogIt(LogBuf);
     _endthread();
   }
   // Open temp PlayerObj file
@@ -804,7 +811,8 @@ void Object::RemoveObjFromPlayerInv(string ObjectId, int Count)
   PlayerObjFileTmp.open(PlayerObjFileNameTmp);
   if (!PlayerObjFileTmp.is_open())
   {
-    AfxMessageBox("Object::RemoveObjFromPlayerInv - Open PlayerObj temp file failed", MB_ICONSTOP);
+    LogBuf = "Object::RemoveObjFromPlayerInv - Open PlayerObj temp file failed";
+    LogIt(LogBuf);
     _endthread();
   }
   // Write temp PlayerObj file
@@ -840,7 +848,8 @@ void Object::RemoveObjFromPlayerInv(string ObjectId, int Count)
   }
   if (!ObjectIdRemoved)
   { // Object not removed, this is definitely BAD!
-    AfxMessageBox("Object::RemoveObjFromPlayerInv - Object not removed", MB_ICONSTOP);
+    LogBuf = "Object::RemoveObjFromPlayerInv - Object not removed";
+    LogIt(LogBuf);
     _endthread();
   }
   BytesInFile = (int) PlayerObjFileTmp.tellp();
@@ -880,7 +889,8 @@ void Object::RemoveObjFromRoom(string ObjectId)
   RoomObjFile.open(RoomObjFileName);
   if (!RoomObjFile.is_open())
   {
-    AfxMessageBox("Object::RemoveObjFromRoom - Open RoomObj file failed", MB_ICONSTOP);
+    LogBuf = "Object::RemoveObjFromRoom - Open RoomObj file failed";
+    LogIt(LogBuf);
     _endthread();
   }
   // Open temp RoomObj file
@@ -890,7 +900,8 @@ void Object::RemoveObjFromRoom(string ObjectId)
   RoomObjFileTmp.open(RoomObjFileNameTmp);
   if (!RoomObjFileTmp.is_open())
   {
-    AfxMessageBox("Object::RemoveObjFromRoom - Open RoomObj temp file failed", MB_ICONSTOP);
+    LogBuf = "Object::RemoveObjFromRoom - Open RoomObj temp file failed";
+    LogIt(LogBuf);
     _endthread();
   }
   // Write temp RoomObj file
@@ -926,7 +937,8 @@ void Object::RemoveObjFromRoom(string ObjectId)
   }
   if (!ObjectIdRemoved)
   { // Object not removed, this is definitely BAD!
-    AfxMessageBox("Object::RemoveObjFromRoom - Object not removed", MB_ICONSTOP);
+    LogBuf = "Object::RemoveObjFromRoom - Object not removed";
+    LogIt(LogBuf);
     _endthread();
   }
   BytesInFile = (int) RoomObjFileTmp.tellp();
@@ -1120,7 +1132,8 @@ void Object::WhereObjPlayerEqu(string ObjectIdSearch)
   pDnodeActor->PlayerOut += "\r\n";
   if (ChgDir(PLAYER_EQU_DIR))
   { // Change directory failed
-    AfxMessageBox("Object::WhereObjPlayerEqu - Change directory to PLAYER_EQU_DIR failed", MB_ICONSTOP);
+    LogBuf = "Object::WhereObjPlayerEqu - Change directory to PLAYER_EQU_DIR failed";
+    LogIt(LogBuf);
     _endthread();
   }
   for (const auto &entry : fs::directory_iterator("./"))
@@ -1135,7 +1148,8 @@ void Object::WhereObjPlayerEqu(string ObjectIdSearch)
     PlayerEquFile.open(PlayerEquFileName);
     if (!PlayerEquFile.is_open())
     { // File does not exist - Very bad!
-      AfxMessageBox("Object::WhereObjPlayerEqu - Open PlayerEqu file failed", MB_ICONSTOP);
+      LogBuf = "Object::WhereObjPlayerEqu - Open PlayerEqu file failed";
+      LogIt(LogBuf);
       _endthread();
     }
     PlayerName = StrLeft(FileName, StrGetLength(FileName) - 4);
@@ -1157,7 +1171,8 @@ void Object::WhereObjPlayerEqu(string ObjectIdSearch)
   }
   if (ChgDir(HomeDir))
   { // Change directory failed
-    AfxMessageBox("Object::WhereObjPlayerEqu - Change directory to HomeDir failed", MB_ICONSTOP);
+    LogBuf = "Object::WhereObjPlayerEqu - Change directory to HomeDir failed";
+    LogIt(LogBuf);
     _endthread();
   }
 }
@@ -1181,7 +1196,8 @@ void Object::WhereObjPlayerObj(string ObjectIdSearch)
   pDnodeActor->PlayerOut += "\r\n";
   if (ChgDir(PLAYER_OBJ_DIR))
   { // Change directory failed
-    AfxMessageBox("Object::WhereObjPlayerObj - Change directory to PLAYER_OBJ_DIR failed", MB_ICONSTOP);
+    LogBuf = "Object::WhereObjPlayerObj - Change directory to PLAYER_OBJ_DIR failed";
+    LogIt(LogBuf);
     _endthread();
   }
   for (const auto &entry : fs::directory_iterator("./"))
@@ -1196,7 +1212,8 @@ void Object::WhereObjPlayerObj(string ObjectIdSearch)
     PlayerObjFile.open(PlayerObjFileName);
     if (!PlayerObjFile.is_open())
     { // File does not exist - Very bad!
-      AfxMessageBox("Object::WhereObjPlayerObj - Open PlayerObj file failed", MB_ICONSTOP);
+      LogBuf = "Object::WhereObjPlayerObj - Open PlayerObj file failed";
+      LogIt(LogBuf);
       _endthread();
     }
     PlayerName = StrLeft(FileName, StrGetLength(FileName) - 4);
@@ -1218,7 +1235,8 @@ void Object::WhereObjPlayerObj(string ObjectIdSearch)
   }
   if (ChgDir(HomeDir))
   { // Change directory failed
-    AfxMessageBox("Object::WhereObjPlayerObj - Change directory to HomeDir failed", MB_ICONSTOP);
+    LogBuf = "Object::WhereObjPlayerObj - Change directory to HomeDir failed";
+    LogIt(LogBuf);
     _endthread();
   }
 }
@@ -1242,7 +1260,8 @@ void Object::WhereObjRoomObj(string ObjectIdSearch)
   pDnodeActor->PlayerOut += "\r\n";
   if (ChgDir(ROOM_OBJ_DIR))
   { // Change directory failed
-    AfxMessageBox("Object::WhereObjRoomObj - Change directory to ROOM_OBJ_DIR failed", MB_ICONSTOP);
+    LogBuf = "Object::WhereObjRoomObj - Change directory to ROOM_OBJ_DIR failed";
+    LogIt(LogBuf);
     _endthread();
   }
   for (const auto &entry : fs::directory_iterator("./"))
@@ -1257,7 +1276,8 @@ void Object::WhereObjRoomObj(string ObjectIdSearch)
     RoomObjFile.open(RoomObjFileName);
     if (!RoomObjFile.is_open())
     { // File does not exist - Very bad!
-      AfxMessageBox("Object::WhereObj - Open RoomObj file failed", MB_ICONSTOP);
+      LogBuf = "Object::WhereObj - Open RoomObj file failed";
+      LogIt(LogBuf);
       _endthread();
     }
     RoomName = StrLeft(FileName, StrGetLength(FileName) - 4);
@@ -1279,7 +1299,8 @@ void Object::WhereObjRoomObj(string ObjectIdSearch)
   }
   if (ChgDir(HomeDir))
   { // Change directory failed
-    AfxMessageBox("Object::WhereObj - Change directory to HomeDir failed", MB_ICONSTOP);
+    LogBuf = "Object::WhereObj - Change directory to HomeDir failed";
+    LogIt(LogBuf);
     _endthread();
   }
 }
@@ -1338,7 +1359,8 @@ void Object::OpenFile(string ObjectId)
   ObjectFile.open(ObjectFileName);
   if (ObjectFile.is_open())
   {
-    AfxMessageBox("Object::OpenFile - Object does not exist!", MB_ICONSTOP);
+    LogBuf = "Object::OpenFile - Object does not exist!";
+    LogIt(LogBuf);
     _endthread();
   }
 }

@@ -26,8 +26,8 @@
 ////////////////////////////////////////////////////////////
 
 /***********************************************************
- * Calculate damage to mobile                              *
- ***********************************************************/
+* Calculate damage to mobile                              *
+***********************************************************/
 
 int Violence::CalcDamageToMobile(int Damage, int WeaponSkill)    
 {
@@ -40,13 +40,13 @@ int Violence::CalcDamageToMobile(int Damage, int WeaponSkill)
   Percent      = GetRandomNumber(PLAYER_DMG_PCT-SkillFactor);
   Deduction    = int(ceil(Damage*(Percent/100.0)));
   CalcDamage   = Damage - Deduction;
-  
+
   return CalcDamage;
 }
 
 /***********************************************************
- * Calculate damage to player                              *
- ***********************************************************/
+* Calculate damage to player                              *
+***********************************************************/
 
 int Violence::CalcDamageToPlayer(int Damage, int PAC)
 {
@@ -62,8 +62,8 @@ int Violence::CalcDamageToPlayer(int Damage, int PAC)
 }
 
 /***********************************************************
- * Calculate damage to player                              *
- ***********************************************************/
+* Calculate damage to player                              *
+***********************************************************/
 
 string Violence::CalcHealthPct(int HitPoints, int HitPointsMax)
 {
@@ -83,19 +83,19 @@ string Violence::CalcHealthPct(int HitPoints, int HitPointsMax)
     HealthPct = "&C";
   }
   else
-  if (Percent > 50)
-  {
-    HealthPct = "&Y";
-  }
-  else
-  if (Percent > 25)
-  {
-    HealthPct = "&M";
-  }
-  else
-  {
-    HealthPct = "&R";
-  }
+    if (Percent > 50)
+    {
+      HealthPct = "&Y";
+    }
+    else
+      if (Percent > 25)
+      {
+        HealthPct = "&M";
+      }
+      else
+      {
+        HealthPct = "&R";
+      }
   sprintf(Buf, "%3d", int(Percent));
   TmpStr = Buf;
   HealthPct += TmpStr;
@@ -104,8 +104,8 @@ string Violence::CalcHealthPct(int HitPoints, int HitPointsMax)
 }
 
 /***********************************************************
- * Get mobile Armor                                        *
- ***********************************************************/
+* Get mobile Armor                                        *
+***********************************************************/
 
 int Violence::GetMobileArmor(string MobileId)
 {
@@ -124,7 +124,7 @@ int Violence::GetMobileArmor(string MobileId)
     MobileArmor = 0;
     return MobileArmor;
     // This code is currently unreachable, on purpose.
-    AfxMessageBox("Violence::GetArmor - Open MobStatsArmorFile file failed (read)", MB_ICONSTOP);
+    LogIt("Violence::GetArmor - Open MobStatsArmorFile file failed (read)");
     _endthread();
   }
   getline(MobStatsArmorFile, Stuff);;
@@ -137,8 +137,8 @@ int Violence::GetMobileArmor(string MobileId)
 }
 
 /***********************************************************
- * Get mobile Attack                                       *
- ***********************************************************/
+* Get mobile Attack                                       *
+***********************************************************/
 
 string Violence::GetMobileAttack(string MobileId)
 {
@@ -153,7 +153,7 @@ string Violence::GetMobileAttack(string MobileId)
   MobStatsAttackFile.open(MobStatsAttackFileName);
   if (!MobStatsAttackFile.is_open())
   {
-    AfxMessageBox("Violence::GetMobileAttack - Open MobStatsAttack file failed (read)", MB_ICONSTOP);
+    LogIt("Violence::GetMobileAttack - Open MobStatsAttack file failed (read)");
     _endthread();
   }
   getline(MobStatsAttackFile, Stuff);
@@ -166,8 +166,8 @@ string Violence::GetMobileAttack(string MobileId)
 }
 
 /***********************************************************
- * Get mobile Damage                                       *
- ***********************************************************/
+* Get mobile Damage                                       *
+***********************************************************/
 
 int Violence::GetMobileDamage(string MobileId)
 {
@@ -182,7 +182,7 @@ int Violence::GetMobileDamage(string MobileId)
   MobStatsDamageFile.open(MobStatsDamageFileName);
   if (!MobStatsDamageFile.is_open())
   {
-    AfxMessageBox("Violence::GetMobileDamage - Open MobStatsDamageFile file failed (read)", MB_ICONSTOP);
+    LogIt("Violence::GetMobileDamage - Open MobStatsDamageFile file failed (read)");
     _endthread();
   }
   getline(MobStatsDamageFile, Stuff);
@@ -195,8 +195,8 @@ int Violence::GetMobileDamage(string MobileId)
 }
 
 /***********************************************************
- * Get mobile Desc1                                        *
- ***********************************************************/
+* Get mobile Desc1                                        *
+***********************************************************/
 
 string Violence::GetMobileDesc1(string MobileId)
 {
@@ -211,7 +211,7 @@ string Violence::GetMobileDesc1(string MobileId)
   MobStatsDesc1File.open(MobStatsDesc1FileName);
   if (!MobStatsDesc1File.is_open())
   {
-    AfxMessageBox("Violence::GetMobileDesc1 - Open MobStatsDesc1 file failed (read)", MB_ICONSTOP);
+    LogIt("Violence::GetMobileDesc1 - Open MobStatsDesc1 file failed (read)");
     _endthread();
   }
   getline(MobStatsDesc1File, Stuff);
@@ -224,8 +224,8 @@ string Violence::GetMobileDesc1(string MobileId)
 }
 
 /***********************************************************
- * Get mobile Experience Points                            *
- ***********************************************************/
+* Get mobile Experience Points                            *
+***********************************************************/
 
 string Violence::GetMobileExpPointsLevel(string MobileId)
 {
@@ -239,7 +239,7 @@ string Violence::GetMobileExpPointsLevel(string MobileId)
   MobStatsExpPointsFile.open(MobStatsExpPointsFileName);
   if (!MobStatsExpPointsFile.is_open())
   {
-    AfxMessageBox("Violence::GetMobileExpPointsLevel - Open MobStatsExpPointsFile file failed (read)", MB_ICONSTOP);
+    LogIt("Violence::GetMobileExpPointsLevel - Open MobStatsExpPointsFile file failed (read)");
     _endthread();
   }
   getline(MobStatsExpPointsFile, Stuff);
@@ -251,8 +251,8 @@ string Violence::GetMobileExpPointsLevel(string MobileId)
 }
 
 /***********************************************************
- * Get mobile Hit Points                                   *
- ***********************************************************/
+* Get mobile Hit Points                                   *
+***********************************************************/
 
 string Violence::GetMobileHitPoints(string MobileId)
 {
@@ -267,7 +267,7 @@ string Violence::GetMobileHitPoints(string MobileId)
   MobStatsHitPointsFile.open(MobStatsHitPointsFileName);
   if (!MobStatsHitPointsFile.is_open())
   {
-    AfxMessageBox("Violence::WhackMobile - Open MobStatsHitPointsFile file failed (read)", MB_ICONSTOP);
+    LogIt("Violence::WhackMobile - Open MobStatsHitPointsFile file failed (read)");
     _endthread();
   }
   getline(MobStatsHitPointsFile, Stuff);
@@ -277,8 +277,8 @@ string Violence::GetMobileHitPoints(string MobileId)
 }
 
 /***********************************************************
- * Get mobile Loot                                         *
- ***********************************************************/
+* Get mobile Loot                                         *
+***********************************************************/
 
 string Violence::GetMobileLoot(string MobileId)
 {
@@ -293,7 +293,7 @@ string Violence::GetMobileLoot(string MobileId)
   MobStatsLootFile.open(MobStatsLootFileName);
   if (!MobStatsLootFile.is_open())
   {
-    AfxMessageBox("Violence::GetMobileLoot - Open MobStatsLoot file failed (read)", MB_ICONSTOP);
+    LogIt("Violence::GetMobileLoot - Open MobStatsLoot file failed (read)");
     _endthread();
   }
   getline(MobStatsLootFile, Stuff);
@@ -306,8 +306,8 @@ string Violence::GetMobileLoot(string MobileId)
 }
 
 /***********************************************************
- * Get mobile Room                                         *
- ***********************************************************/
+* Get mobile Room                                         *
+***********************************************************/
 
 string Violence::GetMobileRoom(string MobileId)
 {
@@ -322,7 +322,7 @@ string Violence::GetMobileRoom(string MobileId)
   MobStatsRoomFile.open(MobStatsRoomFileName);
   if (!MobStatsRoomFile.is_open())
   {
-    AfxMessageBox("Violence::GetMobileRoom - Open MobStatsRoom file failed (read)", MB_ICONSTOP);
+    LogIt("Violence::GetMobileRoom - Open MobStatsRoom file failed (read)");
     _endthread();
   }
   getline(MobStatsRoomFile, Stuff);
@@ -335,8 +335,8 @@ string Violence::GetMobileRoom(string MobileId)
 }
 
 /***********************************************************
- * Get MobPlayer MobileId                                  *
- ***********************************************************/
+* Get MobPlayer MobileId                                  *
+***********************************************************/
 
 string Violence::GetMobPlayerMobileId(string PlayerName, int i)
 {
@@ -369,8 +369,8 @@ string Violence::GetMobPlayerMobileId(string PlayerName, int i)
 }
 
 /***********************************************************
- * Get PlayerMob MobileId                                  *
- ***********************************************************/
+* Get PlayerMob MobileId                                  *
+***********************************************************/
 
 string Violence::GetPlayerMobMobileId(string PlayerName)
 {
@@ -384,7 +384,7 @@ string Violence::GetPlayerMobMobileId(string PlayerName)
   PlayerMobFile.open(PlayerMobFileName);
   if (!PlayerMobFile.is_open())
   {
-    AfxMessageBox("Violence::GetPlayerMobMobileId - Open PlayerMob file failed", MB_ICONSTOP);
+    LogIt("Violence::GetPlayerMobMobileId - Open PlayerMob file failed");
     _endthread();
   }
   getline(PlayerMobFile, MobileId);
@@ -395,8 +395,8 @@ string Violence::GetPlayerMobMobileId(string PlayerName)
 }
 
 /***********************************************************
- * Whack the mobile - do some damage!                      *
- ***********************************************************/
+* Whack the mobile - do some damage!                      *
+***********************************************************/
 
 string Violence::WhackMobile(string MobileId, int DamageToMobile, string MobileDesc1, string WeaponType)
 {
@@ -431,7 +431,7 @@ string Violence::WhackMobile(string MobileId, int DamageToMobile, string MobileD
   MobStatsHitPointsFile.open(MobStatsHitPointsFileName);
   if (!MobStatsHitPointsFile.is_open())
   { // Open failed - very bad
-    AfxMessageBox("Violence::WhackMobile - Open MobStatsHitPointsFile file failed (write)", MB_ICONSTOP);
+    LogIt("Violence::WhackMobile - Open MobStatsHitPointsFile file failed (write)");
     _endthread();
   }
   sprintf(Buf, "%d", MobHitPointsTotal);
@@ -456,20 +456,20 @@ string Violence::WhackMobile(string MobileId, int DamageToMobile, string MobileD
     ExtraDamageMsg = "&RALMOST OBLITERATE&N";
   }
   else
-  if (DamageMagnitude > 60)
-  {
-    ExtraDamageMsg = "&RSMACK DOWN&N";
-  }
-  else
-  if (DamageMagnitude > 50)
-  {
-    ExtraDamageMsg = "&MSEVERLY WOUND&N";
-  }
-  else
-  if (DamageMagnitude > 40)
-  {
-    ExtraDamageMsg = "&YREALLY HURT&N";
-  }
+    if (DamageMagnitude > 60)
+    {
+      ExtraDamageMsg = "&RSMACK DOWN&N";
+    }
+    else
+      if (DamageMagnitude > 50)
+      {
+        ExtraDamageMsg = "&MSEVERLY WOUND&N";
+      }
+      else
+        if (DamageMagnitude > 40)
+        {
+          ExtraDamageMsg = "&YREALLY HURT&N";
+        }
   if (MobHitPointsLeft > 0)
   { // Mobile is still alive
     MobileBeenWhacked  = "alive";
@@ -554,8 +554,8 @@ string Violence::WhackMobile(string MobileId, int DamageToMobile, string MobileD
 }
 
 /***********************************************************
- * Whack the player - do some damage!                      *
- ***********************************************************/
+* Whack the player - do some damage!                      *
+***********************************************************/
 
 string Violence::WhackPlayer(string MobileDesc1, string MobileAttack, int DamageToPlayer)
 {

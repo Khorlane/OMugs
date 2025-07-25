@@ -55,7 +55,7 @@ void World::CreateSpawnMobileEvents()
 
   if (ChgDir(WORLD_MOBILES_DIR))
   { // Change directory failed
-    AfxMessageBox("World::CreateSpawnMobileEvents - Change directory to WORLD_MOBILES_DIR failed", MB_ICONSTOP);
+    LogIt("World::CreateSpawnMobileEvents - Change directory to WORLD_MOBILES_DIR failed");
     _endthread();
   }
   for (const auto &entry : fs::directory_iterator("./"))
@@ -84,13 +84,13 @@ void World::CreateSpawnMobileEvents()
     WorldMobileFile.open(WorldMobileFileName);
     if (!WorldMobileFile.is_open())
     { // File does not exist - Very bad!
-      AfxMessageBox("World::CreateSpawnMobileEvents - Open World Mobile file failed", MB_ICONSTOP);
+      LogIt("World::CreateSpawnMobileEvents - Open World Mobile file failed");
       _endthread();
     }
     getline(WorldMobileFile, Stuff);
     if (StrGetWord(Stuff, 1) != "MaxInWorld:")
     { // World mobile file format error MaxInWorld
-      AfxMessageBox("World::CreateSpawnMobileEvents - World mobile file format error MaxInWorld", MB_ICONSTOP);
+      LogIt("World::CreateSpawnMobileEvents - World mobile file format error MaxInWorld");
       _endthread();
     }
     Count    = CountMob(MobileId);
@@ -106,14 +106,14 @@ void World::CreateSpawnMobileEvents()
     getline(WorldMobileFile, Stuff);
     if (StrGetWord(Stuff, 1) != "RoomId:")
     { // World mobile file format error RoomId
-      AfxMessageBox("World::CreateSpawnMobileEvents - World mobile file format error RoomId", MB_ICONSTOP);
+      LogIt("World::CreateSpawnMobileEvents - World mobile file format error RoomId");
       _endthread();
     }
     RoomId = StrGetWord(Stuff, 2);
     getline(WorldMobileFile, Stuff);
     if (StrGetWord(Stuff, 1) != "Interval:")
     { // World mobile file format error Interval
-      AfxMessageBox("World::CreateSpawnMobileEvents - World mobile file format error Interval", MB_ICONSTOP);
+      LogIt("World::CreateSpawnMobileEvents - World mobile file format error Interval");
       _endthread();
     }
     Seconds = stoi(StrGetWord(Stuff, 2)) * 1;
@@ -140,8 +140,8 @@ void World::CreateSpawnMobileEvents()
     EventFile.open(EventFileName, ios_base::app);
     if (!EventFile.is_open())
     { // Open for append failed
-        AfxMessageBox("World::CreateSpawnMobileEvents - Open Events file failed - append", MB_ICONSTOP);
-        _endthread();
+      LogIt("World::CreateSpawnMobileEvents - Open Events file failed - append");
+      _endthread();
     }
     while (Count < Limit)
     {
@@ -158,14 +158,14 @@ void World::CreateSpawnMobileEvents()
     ControlMobSpawnFile.open(ControlMobSpawnFileName);
     if (!ControlMobSpawnFile.is_open())
     { // Create file failed
-      AfxMessageBox("World::CreateSpawnMobileEvents - Create Control Mobile Spawn file failed", MB_ICONSTOP);
+      LogIt("World::CreateSpawnMobileEvents - Create Control Mobile Spawn file failed");
       _endthread();
     }
     ControlMobSpawnFile.close();
   }
   if (ChgDir(HomeDir))
   { // Change directory failed
-    AfxMessageBox("World::CreateSpawnMobileEvents - Change directory to HomeDir failed", MB_ICONSTOP);
+    LogIt("World::CreateSpawnMobileEvents - Change directory to HomeDir failed");
     _endthread();
   }
 }
@@ -188,7 +188,7 @@ void World::CheckSpawnMobileEvents()
   CheckTime = Buf;
   if (ChgDir(CONTROL_EVENTS_DIR))
   { // Change directory failed
-    AfxMessageBox("World::CheckSpawnMobileEvents - Change directory to CONTROL_EVENTS_DIR failed", MB_ICONSTOP);
+    LogIt("World::CheckSpawnMobileEvents - Change directory to CONTROL_EVENTS_DIR failed");
     _endthread();
   }
   for (const auto &entry : fs::directory_iterator("./"))
@@ -214,7 +214,7 @@ void World::CheckSpawnMobileEvents()
     EventFile.open(EventFileName);
     if (!EventFile.is_open())
     { // File does not exist - Very bad!
-      AfxMessageBox("World::CheckSpawnMobileEvents - Open Events file failed", MB_ICONSTOP);
+      LogIt("World::CheckSpawnMobileEvents - Open Events file failed");
       _endthread();
     }
     getline(EventFile, Stuff);
@@ -236,7 +236,7 @@ void World::CheckSpawnMobileEvents()
   }
   if (ChgDir(HomeDir))
   { // Change directory failed
-    AfxMessageBox("World::CheckSpawnMobileEvents - Change directory to HomeDir failed", MB_ICONSTOP);
+    LogIt("World::CheckSpawnMobileEvents - Change directory to HomeDir failed");
     _endthread();
   }
 }
@@ -268,7 +268,7 @@ void World::HealMobiles()
 
   if (ChgDir(MOB_STATS_HPT_DIR))
   { // Change directory failed
-    AfxMessageBox("World::HealMobiles - Change directory to MOB_STATS_HPT_DIR failed", MB_ICONSTOP);
+    LogIt("World::HealMobiles - Change directory to MOB_STATS_HPT_DIR failed");
     _endthread();
   }
   //*************************
@@ -305,7 +305,7 @@ void World::HealMobiles()
   }
   if (ChgDir(HomeDir))
   { // Change directory failed
-    AfxMessageBox("World::HealMobiles - Change directory to HomeDir failed", MB_ICONSTOP);
+    LogIt("World::HealMobiles - Change directory to HomeDir failed");
     _endthread();
   }
 }
@@ -325,7 +325,7 @@ bool World::HealMobilesFightCheck(string Dir, string MobileId)
   { // Checking MobPlayer
     if (ChgDir(MOB_PLAYER_DIR))
     { // Change directory failed
-      AfxMessageBox("World::HealMobilesFightCheck - Change directory to MOB_PLAYER_DIR failed", MB_ICONSTOP);
+      LogIt("World::HealMobilesFightCheck - Change directory to MOB_PLAYER_DIR failed");
       _endthread();
     }
   }
@@ -333,7 +333,7 @@ bool World::HealMobilesFightCheck(string Dir, string MobileId)
   { // Checking PlayerMob
     if (ChgDir(PLAYER_MOB_DIR))
     { // Change directory failed
-      AfxMessageBox("World::HealMobilesFightCheck - Change directory to PLAYER_MOB_DIR failed", MB_ICONSTOP);
+      LogIt("World::HealMobilesFightCheck - Change directory to PLAYER_MOB_DIR failed");
       _endthread();
     }
   }
@@ -360,7 +360,7 @@ bool World::HealMobilesFightCheck(string Dir, string MobileId)
       TmpStr  = "World::HealMobilesFightCheck - Open ";
       TmpStr += Dir;
       TmpStr += " file failed";
-      AfxMessageBox(TmpStr.c_str(), MB_ICONSTOP);
+      LogIt(TmpStr);
       _endthread();
     }
     getline(MobPlayerFile, Stuff);
@@ -376,7 +376,7 @@ bool World::HealMobilesFightCheck(string Dir, string MobileId)
   }  
   if (ChgDir(HomeDir))
   { // Change directory failed
-    AfxMessageBox("World::HealMobilesFightCheck - Change directory to HomeDir failed", MB_ICONSTOP);
+    LogIt("World::HealMobilesFightCheck - Change directory to HomeDir failed");
     _endthread();
   }
   return MobFighting;
@@ -465,12 +465,12 @@ void World::MakeMobilesMove1()
   RoomMobListFile.open(RoomMobListFileName);
   if (!RoomMobListFile.is_open())
   { // Failed to open RoomMobMove file
-    AfxMessageBox("World::MakeMobilesMove1 - Create RoomMobList file failed", MB_ICONSTOP);
+    LogIt("World::MakeMobilesMove1 - Create RoomMobList file failed");
     _endthread();
   }
   if (ChgDir(ROOM_MOB_DIR))
   { // Change directory failed
-    AfxMessageBox("World::MakeMobilesMove1 - Change directory to ROOM_MOB_DIR failed", MB_ICONSTOP);
+    LogIt("World::MakeMobilesMove1 - Change directory to ROOM_MOB_DIR failed");
     _endthread();
   }
   // Get a list of all RoomMob files
@@ -495,7 +495,7 @@ void World::MakeMobilesMove1()
     RoomMobList.push_back(TmpStr);
   }
   // sort em
-   sort(RoomMobList.begin(), RoomMobList.end());
+  sort(RoomMobList.begin(), RoomMobList.end());
   // Write em
   for (string item : RoomMobList)
   {
@@ -511,7 +511,7 @@ void World::MakeMobilesMove1()
   }
   if (ChgDir(HomeDir))
   { // Change to home directory failed
-    AfxMessageBox("World::MakeMobilesMove1 - Change directory to HomeDir failed", MB_ICONSTOP);
+    LogIt("World::MakeMobilesMove1 - Change directory to HomeDir failed");
     _endthread();
   }
 }
@@ -553,7 +553,7 @@ void World::MakeMobilesMove2()
   RoomMobListFile.open(RoomMobListFileName);
   if (!RoomMobListFile.is_open())
   { // Failed to open RoomMobList file
-    AfxMessageBox("World::MakeMobilesMove1 - Create RoomMobList file failed", MB_ICONSTOP);
+    LogIt("World::MakeMobilesMove1 - Create RoomMobList file failed");
     _endthread();
   }
   // Open MakeMobListTemp file
@@ -562,7 +562,7 @@ void World::MakeMobilesMove2()
   RoomMobListTempFile.open(RoomMobListTempFileName);
   if (!RoomMobListTempFile.is_open())
   { // Failed to open RoomMobListTemp file
-    AfxMessageBox("World::MakeMobilesMove2 - Create RoomMobListTemp file failed", MB_ICONSTOP);
+    LogIt("World::MakeMobilesMove2 - Create RoomMobListTemp file failed");
     _endthread();
   }
   // Open RoomMobMove file
@@ -571,7 +571,7 @@ void World::MakeMobilesMove2()
   RoomMobMoveFile.open(RoomMobMoveFileName);
   if (!RoomMobMoveFile.is_open())
   { // Failed to open RoomMobMove file
-    AfxMessageBox("World::MakeMobilesMove2 - Create RoomMobMove file failed", MB_ICONSTOP);
+    LogIt("World::MakeMobilesMove2 - Create RoomMobMove file failed");
     _endthread();
   }
   //***************************
@@ -640,7 +640,7 @@ void World::MakeMobilesMove2()
               ExitToRoomId      = StrGetWord(ValidMobRoomExits, ExitNumber);
               if (ExitToRoomId == "")
               { //  Blow up for now, but we should LogThis, not blow up??
-                AfxMessageBox("ExitToRoomId is blank zz", MB_ICONSTOP);
+                LogIt("ExitToRoomId is blank zz");
                 _endthread();
               }
               TmpStr  = MobileId;
@@ -667,38 +667,38 @@ void World::MakeMobilesMove2()
   { // Done with RoomMobList file, get rid of it
     Remove(RoomMobListFileName);
   }
-  CATCH (CFileException, e)
+    CATCH (CFileException, e)
   { // If file remove fails, something is bad wrong!
-    AfxMessageBox("World::MakeMobilesMove2 - Remove RoomMobList file failed", MB_ICONSTOP);
+    LogIt("World::MakeMobilesMove2 - Remove RoomMobList file failed");
     _endthread();
   }
   END_CATCH
-  if (MobListNotCompleted)
-  { // Time ran out before MobList was completely processed
-    TRY
-    { // Rename temp file
-      Rename(RoomMobListTempFileName, RoomMobListFileName);
+    if (MobListNotCompleted)
+    { // Time ran out before MobList was completely processed
+      TRY
+      { // Rename temp file
+        Rename(RoomMobListTempFileName, RoomMobListFileName);
+      }
+        CATCH (CFileException, e)
+      { // If rename fails, something is bad wrong!
+        LogIt("World::MakeMobilesMove2 - Rename RoomMobListTemp file failed");
+        _endthread();
+      }
+      END_CATCH
     }
-    CATCH (CFileException, e)
-    { // If rename fails, something is bad wrong!
-      AfxMessageBox("World::MakeMobilesMove2 - Rename RoomMobListTemp file failed", MB_ICONSTOP);
-      _endthread();
+    else
+    { // MobList was completely processed
+      TRY
+      { // delete temp file
+        Remove(RoomMobListTempFileName);
+      }
+        CATCH (CFileException, e)
+      { // If delete fails, something is bad wrong!
+        LogIt("World::MakeMobilesMove2 - Rename RoomMobListTemp file failed");
+        _endthread();
+      }
+      END_CATCH
     }
-    END_CATCH
-  }
-  else
-  { // MobList was completely processed
-    TRY
-    { // delete temp file
-      Remove(RoomMobListTempFileName);
-    }
-    CATCH (CFileException, e)
-    { // If delete fails, something is bad wrong!
-      AfxMessageBox("World::MakeMobilesMove2 - Rename RoomMobListTemp file failed", MB_ICONSTOP);
-      _endthread();
-    }
-    END_CATCH
-  }
 }
 
 /***********************************************************
@@ -732,7 +732,7 @@ void World::MakeMobilesMove3()
   RoomMobMoveFile.open(RoomMobMoveFileName);
   if (!RoomMobMoveFile.is_open())
   { // No RoomMobMove file, Ok, who delete the file when I wasn't looking?
-    AfxMessageBox("World::MakeMobilesMove3 - Open RoomMobMove failed", MB_ICONSTOP);
+    LogIt("World::MakeMobilesMove3 - Open RoomMobMove failed");
     _endthread();
   }
   RoomMobMoveTempFileName =  CONTROL_DIR;
@@ -740,7 +740,7 @@ void World::MakeMobilesMove3()
   RoomMobMoveTempFile.open(RoomMobMoveTempFileName);
   if (!RoomMobMoveTempFile.is_open())
   { // RoomMobMoveTemp file failed to open
-    AfxMessageBox("World::MakeMobilesMove3 - Open RoomMobMoveTemp failed", MB_ICONSTOP);
+    LogIt("World::MakeMobilesMove3 - Open RoomMobMoveTemp failed");
     _endthread();
   }
   //****************************
@@ -788,14 +788,14 @@ void World::MakeMobilesMove3()
       {
         Remove(MobStatsFileName);
       }
-      CATCH (CFileException, e)
+        CATCH (CFileException, e)
       { // If file remove fails, something is bad wrong!
-        AfxMessageBox("World::MakeMobilesMove - Remove MobStats Room file failed", MB_ICONSTOP);
+        LogIt("World::MakeMobilesMove - Remove MobStats Room file failed");
         _endthread();
       }
       END_CATCH
-      // Write new RoomId into MobStats Room file
-      CreateMobStatsFileWrite(MOB_STATS_ROOM_DIR, MobileId, ExitToRoomId);
+        // Write new RoomId into MobStats Room file
+        CreateMobStatsFileWrite(MOB_STATS_ROOM_DIR, MobileId, ExitToRoomId);
     }
     // Read next line
     getline(RoomMobMoveFile, Stuff);
@@ -808,39 +808,39 @@ void World::MakeMobilesMove3()
   {
     Remove(RoomMobMoveFileName);
   }
-  CATCH (CFileException, e)
+    CATCH (CFileException, e)
   { // If file remove fails, something is bad wrong!
-    AfxMessageBox("World::MakeMobilesMove3 - Remove RoomMobMove file failed", MB_ICONSTOP);
+    LogIt("World::MakeMobilesMove3 - Remove RoomMobMove file failed");
     _endthread();
   }
   END_CATCH
-  // Check whether or not mobs got moved
-  if (MobMoveNotCompleted)
-  { // Time ran out before all the mobs got moved, so moved the rest of them later
-    TRY
-    {
-      Rename(RoomMobMoveTempFileName, RoomMobMoveFileName);
+    // Check whether or not mobs got moved
+    if (MobMoveNotCompleted)
+    { // Time ran out before all the mobs got moved, so moved the rest of them later
+      TRY
+      {
+        Rename(RoomMobMoveTempFileName, RoomMobMoveFileName);
+      }
+        CATCH (CFileException, e)
+      { // If file rename fails, something is bad wrong!
+        LogIt("World::MakeMobilesMove3 - Rename RoomMobMoveTemp file failed");
+        _endthread();
+      }
+      END_CATCH
     }
-    CATCH (CFileException, e)
-    { // If file rename fails, something is bad wrong!
-      AfxMessageBox("World::MakeMobilesMove3 - Rename RoomMobMoveTemp file failed", MB_ICONSTOP);
-      _endthread();
+    else
+    { // All mobs got moved, delete the temp file
+      TRY
+      {
+        Remove(RoomMobMoveTempFileName);
+      }
+        CATCH (CFileException, e)
+      { // If file rename fails, something is bad wrong!
+        LogIt("World::MakeMobilesMove3 - Rename RoomMobMoveTemp file failed");
+        _endthread();
+      }
+      END_CATCH
     }
-    END_CATCH
-  }
-  else
-  { // All mobs got moved, delete the temp file
-    TRY
-    {
-      Remove(RoomMobMoveTempFileName);
-    }
-    CATCH (CFileException, e)
-    { // If file rename fails, something is bad wrong!
-      AfxMessageBox("World::MakeMobilesMove3 - Rename RoomMobMoveTemp file failed", MB_ICONSTOP);
-      _endthread();
-    }
-    END_CATCH
-  }
 }
 
 /***********************************************************
@@ -903,7 +903,7 @@ void World::Osi(string ScriptType, string ScriptId)
 void World::SpawnMobile(string MobileId, string RoomId)
 {
   Mobile  *pMobile;
-  string   AfxMessage;
+  string   LogMessage;
   string   MobileAction;
   string   SpawnMsg;
 
@@ -913,11 +913,11 @@ void World::SpawnMobile(string MobileId, string RoomId)
   pMobile = IsMobValid(MobileId);
   if (!pMobile)
   { // Very bad, no such mobile
-    AfxMessage  = "World::SpawnMobile - Mobile not found.";
-    AfxMessage += "\n";
-    AfxMessage += "MobileId: ";
-    AfxMessage += MobileId;
-    AfxMessageBox(AfxMessage.c_str(), MB_ICONSTOP);
+    LogMessage  = "World::SpawnMobile - Mobile not found.";
+    LogMessage += "\n";
+    LogMessage += "MobileId: ";
+    LogMessage += MobileId;
+    LogIt(LogMessage);
     _endthread();
   }
   AddMobToRoom(RoomId, MobileId);
@@ -948,7 +948,7 @@ void World::SpawnMobileNoMove(string MobileId)
   ControlMobNoMoveFile.open(ControlMobNoMoveFileName);
   if (!ControlMobNoMoveFile.is_open())
   { // Create file failed
-    AfxMessageBox("World::SpawnMobile - Create Control Mobile NoMove file failed", MB_ICONSTOP);
+    LogIt("World::SpawnMobile - Create Control Mobile NoMove file failed");
     _endthread();
   }
   ControlMobNoMoveFile.close();

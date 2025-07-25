@@ -151,7 +151,7 @@ void LineCount::OpenLineCount()
   LineCountFile.open(LineCountFileName);
   if (!LineCountFile.is_open())
   { // Create file failed
-    AfxMessageBox("LineCount::OpenLineCount - OpenLineCount - Create LineCount file failed");
+    LogIt("LineCount::OpenLineCount - OpenLineCount - Create LineCount file failed");
     _endthread();;
   }
   Stuff  = "OMugs Source Code Line Count Report";

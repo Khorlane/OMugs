@@ -200,7 +200,8 @@ bool Player::IsNameValid(string Name)
   ValidNameFile.open(ValidNamesFileName);
   if (!ValidNameFile.is_open())
   { // Ok, who deleted the valid names file?
-    AfxMessageBox("Player::IsNameValid - Error opening valid name file, it may not exist", MB_ICONSTOP);
+    LogBuf = "Player::IsNameValid - Error opening valid name file, it may not exist";
+    LogIt(LogBuf);
     _endthread();
   }
   Name = StrMakeLower(Name);
@@ -437,7 +438,8 @@ void Player::ParsePlayerStuff()
   Name = pDnodeActor->PlayerName;
   if (!OpenFile(Name, "Read"))
   {
-    AfxMessageBox("Player::Save - Error opening player file for read, Players directory may not exist", MB_ICONSTOP);
+    LogBuf = "Player::Save - Error opening player file for read, Players directory may not exist";
+    LogIt(LogBuf);
     _endthread();
   }
   ReadLine();
@@ -772,7 +774,8 @@ void Player::Save()
 {
   if (!OpenFile(Name, "Write"))
   {
-    AfxMessageBox("Player::Save - Error opening player file for write, Players directory may not exist", MB_ICONSTOP);
+    LogBuf = "Player::Save - Error opening player file for write, Players directory may not exist";
+    LogIt(LogBuf);
     _endthread();
   }
   // Name
@@ -1207,7 +1210,8 @@ bool Player::OpenFile(string Name, string Mode)
   }
   else
   {
-    AfxMessageBox("Player::OpenFile - Mode is not 'Read' or 'Write'", MB_ICONSTOP);
+    LogBuf = "Player::OpenFile - Mode is not 'Read' or 'Write'";
+    LogIt(LogBuf);
     _endthread();
     return false; // Never will execute this return, but stops warning message
   }

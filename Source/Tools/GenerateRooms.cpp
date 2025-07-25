@@ -68,7 +68,7 @@ void GenerateRooms::CloseRecordsets()
   }
   catch(CDaoException* e)
   {
-    AfxMessageBox(e->m_pErrorInfo->m_strDescription, MB_ICONSTOP);
+    LogIt(string(CT2A(e->m_pErrorInfo->m_strDescription)));
     _endthread();
   }
   //************************
@@ -80,7 +80,7 @@ void GenerateRooms::CloseRecordsets()
   }
   catch(CDaoException* e)
   {
-    AfxMessageBox(e->m_pErrorInfo->m_strDescription, MB_ICONSTOP);
+    LogIt(string(CT2A(e->m_pErrorInfo->m_strDescription)));
     _endthread();
   }
   //************************
@@ -92,7 +92,7 @@ void GenerateRooms::CloseRecordsets()
   }
   catch(CDaoException* e)
   {
-    AfxMessageBox(e->m_pErrorInfo->m_strDescription, MB_ICONSTOP);
+    LogIt(string(CT2A(e->m_pErrorInfo->m_strDescription)));
     _endthread();
   }
 }
@@ -122,7 +122,7 @@ void GenerateRooms::Final()
   TmpStr = Buf;
   Message += "Rooms created = ";
   Message += TmpStr;
-  AfxMessageBox(Message.c_str(), MB_ICONINFORMATION);
+  LogIt(Message);
 }
 
 /***********************************************************
@@ -143,13 +143,13 @@ void GenerateRooms::Init()
   // Change to home directory
   if (ChgDir(HomeDir))
   { // Change directory failed
-    AfxMessageBox("GenerateRooms::Init - Change to home directory failed (1)");
+    LogIt("GenerateRooms::Init - Change to home directory failed (1)");
     _endthread();
   }
   // Change to rooms directory
   if (ChgDir(ROOMS_DIR))
   { // Change directory failed
-    AfxMessageBox("GenerateRooms::Init - Change to rooms directory failed");
+    LogIt("GenerateRooms::Init - Change to rooms directory failed");
     _endthread();
   }
   for (const auto &entry : fs::directory_iterator("./"))
@@ -164,7 +164,7 @@ void GenerateRooms::Init()
   // Change back to home directory
   if (ChgDir(HomeDir))
   { // Change directory failed
-    AfxMessageBox("GenerateRooms::Init - Change to home directory failed (2)");
+    LogIt("GenerateRooms::Init - Change to home directory failed (2)");
     _endthread();
   }
 }
@@ -184,7 +184,7 @@ void GenerateRooms::OpenRecordsets()
   // Change to home directory
   if (ChgDir(HomeDir))
   { // Change directory failed
-    AfxMessageBox("GenerateRooms::OpenRecordsets - Change to home directory failed");
+    LogIt("GenerateRooms::OpenRecordsets - Change to home directory failed");
     _endthread();;
   }
   DatabaseName  = WORLD_MAP_DIR;
@@ -195,7 +195,7 @@ void GenerateRooms::OpenRecordsets()
   }
   catch(CDaoException* e)
   {
-    AfxMessageBox(e->m_pErrorInfo->m_strDescription, MB_ICONSTOP);
+    LogIt(string(CT2A(e->m_pErrorInfo->m_strDescription)));
     _endthread();
   }
   //***********************
@@ -208,7 +208,7 @@ void GenerateRooms::OpenRecordsets()
   }
   catch(CDaoException* e)
   {
-    AfxMessageBox(e->m_pErrorInfo->m_strDescription, MB_ICONSTOP);
+    LogIt(string(CT2A(e->m_pErrorInfo->m_strDescription)));
     _endthread();
   }
   //***********************
@@ -221,7 +221,7 @@ void GenerateRooms::OpenRecordsets()
   }
   catch(CDaoException* e)
   {
-    AfxMessageBox(e->m_pErrorInfo->m_strDescription, MB_ICONSTOP);
+    LogIt(string(CT2A(e->m_pErrorInfo->m_strDescription)));
     _endthread();
   }
 }
@@ -243,7 +243,7 @@ void GenerateRooms::OpenRoomFile()
   {
     Message  = "GenerateRooms::OpenRoomFile - file failed to open";
     Message += RoomFileName;
-    AfxMessageBox(Message.c_str(), MB_ICONSTOP);
+    LogIt(Message);
     _endthread();
   }
 }
@@ -276,7 +276,7 @@ void GenerateRooms::Parse1()
   n = StrFind(Stuff, "RoomType:");
   if (n != 0)
   { // Sanity check
-    AfxMessageBox("GenerateRooms::Parse1 - RoomType: not where it should be", MB_ICONSTOP);
+    LogIt("GenerateRooms::Parse1 - RoomType: not where it should be");
     _endthread();
   }
   TmpStr = "RoomType:";
@@ -292,7 +292,7 @@ void GenerateRooms::Parse1()
   n = StrFind(Stuff, "Terrain:");
   if (n == 0)
   { // Sanity check
-    AfxMessageBox("GenerateRooms::Parse1 - Terrain: not where it should be", MB_ICONSTOP);
+    LogIt("GenerateRooms::Parse1 - Terrain: not where it should be");
     _endthread();
   }
   TmpStr = "Terrain:";
@@ -395,55 +395,55 @@ void GenerateRooms::Parse2()
     oExitName = "North";
   }
   else
-  if (iDirection == 1)
-  {
-    oExitName = "NorthEast";
-  }
-  else
-  if (iDirection == 2)
-  {
-    oExitName = "East";
-  }
-  else
-  if (iDirection == 3)
-  {
-    oExitName = "SouthEast";
-  }
-  else
-  if (iDirection == 4)
-  {
-    oExitName = "South";
-  }
-  else
-  if (iDirection == 5)
-  {
-    oExitName = "SouthWest";
-  }
-  else
-  if (iDirection == 6)
-  {
-    oExitName = "West";
-  }
-  else
-  if (iDirection == 7)
-  {
-    oExitName = "NorthWest";
-  }
-  else
-  if (iDirection == 8)
-  {
-    oExitName = "Up";
-  }
-  else
-  if (iDirection == 9)
-  {
-    oExitName = "Down";
-  }
-  else
-  if (iDirection == 10)
-  {
-    oExitName = AlternateExit;
-  }
+    if (iDirection == 1)
+    {
+      oExitName = "NorthEast";
+    }
+    else
+      if (iDirection == 2)
+      {
+        oExitName = "East";
+      }
+      else
+        if (iDirection == 3)
+        {
+          oExitName = "SouthEast";
+        }
+        else
+          if (iDirection == 4)
+          {
+            oExitName = "South";
+          }
+          else
+            if (iDirection == 5)
+            {
+              oExitName = "SouthWest";
+            }
+            else
+              if (iDirection == 6)
+              {
+                oExitName = "West";
+              }
+              else
+                if (iDirection == 7)
+                {
+                  oExitName = "NorthWest";
+                }
+                else
+                  if (iDirection == 8)
+                  {
+                    oExitName = "Up";
+                  }
+                  else
+                    if (iDirection == 9)
+                    {
+                      oExitName = "Down";
+                    }
+                    else
+                      if (iDirection == 10)
+                      {
+                        oExitName = AlternateExit;
+                      }
   //************
   //* ExitDesc *
   //************

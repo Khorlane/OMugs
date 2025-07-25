@@ -61,7 +61,7 @@ void WhoIsOnline::OpenStatsWho()
   StatsWhoFile.open(StatsWhoFileName);
   if (!StatsWhoFile.is_open())
   { // Create file failed
-    AfxMessageBox("WhoIsOnline::OpenStatsWho - Create StatsWho file failed", MB_ICONSTOP);
+    LogIt("WhoIsOnline::OpenStatsWho - Create StatsWho file failed");
     _endthread();
   }
   // Write first line of xml

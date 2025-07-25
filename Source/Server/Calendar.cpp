@@ -228,8 +228,8 @@ void Calendar::LoadDayNamesArray()
   DayNamesFile.open(DayNamesFileName);
   if (!DayNamesFile.is_open())
   { // Open failed
-    AfxMessageBox("Calendar::LoadDayNamesArray - Open Day Names file failed (read)", MB_ICONSTOP);
-    _endthread();
+    LogBuf = "Calendar::LoadDayNamesArray - Open Day Names file failed (read)";
+    LogIt(LogBuf);
   }
   DayNames.clear();
   getline(DayNamesFile, Stuff);
@@ -256,7 +256,8 @@ void Calendar::LoadDayOfMonthArray()
   DayOfMonthFile.open(DayOfMonthFileName);
   if (!DayOfMonthFile.is_open())
   { // Open failed
-    AfxMessageBox("Calendar::LoadDayOfMonthArray - Open Day Of Month file failed (read)", MB_ICONSTOP);
+    LogBuf = "Calendar::LoadDayOfMonthArray - Open Day Of Month file failed (read)";
+    LogIt(LogBuf);
     _endthread();
   }
   DayOfMonth.clear();
@@ -284,7 +285,8 @@ void Calendar::LoadHourNamesArray()
   HourNamesFile.open(HourNamesFileName);
   if (!HourNamesFile.is_open())
   { // Open failed
-    AfxMessageBox("Calendar::LoadHourNamesArray - Open Hour Names file failed (read)", MB_ICONSTOP);
+    LogBuf = "Calendar::LoadHourNamesArray - Open Hour Names file failed (read)";
+    LogIt(LogBuf);
     _endthread();
   }
   HourNames.clear();
@@ -312,7 +314,8 @@ void Calendar::LoadMonthNamesArray()
   MonthNamesFile.open(MonthNamesFileName);
   if (!MonthNamesFile.is_open())
   { // Open failed
-    AfxMessageBox("Calendar::LoadMonthNamesArray - Open Month Names file failed (read)", MB_ICONSTOP);
+    LogBuf = "Calendar::LoadMonthNamesArray - Open Month Names file failed (read)";
+    LogIt(LogBuf);
     _endthread();
   }
   MonthNames.clear();

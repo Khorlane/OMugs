@@ -26,8 +26,8 @@
 ////////////////////////////////////////////////////////////
 
 /***********************************************************
- * Calculate a percentage                                  *
- ***********************************************************/
+* Calculate a percentage                                  *
+***********************************************************/
 
 int Utility::CalcPct(int Dividend, int Divisor)
 {
@@ -42,8 +42,8 @@ int Utility::CalcPct(int Dividend, int Divisor)
 }
 
 /***********************************************************
- * Insert commas into a nueric string                      *
- ***********************************************************/
+* Insert commas into a nueric string                      *
+***********************************************************/
 
 string Utility::FormatCommas(string String)
 {
@@ -74,8 +74,8 @@ string Utility::FormatCommas(string String)
 }
 
 /***********************************************************
- * Get home directory                                      *
- ***********************************************************/
+* Get home directory                                      *
+***********************************************************/
 
 string Utility::GetHomeDir()
 {
@@ -89,7 +89,7 @@ string Utility::GetHomeDir()
   HomeDirFile.open(HomeDirFileName);
   if (!HomeDirFile.is_open())
   {
-    AfxMessageBox("Utility::GetHomeDir - Open HomeDir file failed (read)", MB_ICONSTOP);
+    LogIt("Utility::GetHomeDir - Open HomeDir file failed (read)");
     _endthread();
   }
   getline(HomeDirFile, Buffer);
@@ -99,15 +99,15 @@ string Utility::GetHomeDir()
 }
 
 /***********************************************************
- * Get a random number                                     *
- ***********************************************************/
+* Get a random number                                     *
+***********************************************************/
 
 int Utility::GetRandomNumber(int Limit)
 {
   int RandomNumber1;
   int RandomNumber2;
   int RandomNumber3;
-  
+
   RandomNumber1 = rand();
   RandomNumber2 = int((RAND_MAX/Limit));
   RandomNumber3 = int(RandomNumber1 / RandomNumber2) + 1;
@@ -119,8 +119,8 @@ int Utility::GetRandomNumber(int Limit)
 }
 
 /***********************************************************
- * Get a SQL statement                                     *
- ***********************************************************/
+* Get a SQL statement                                     *
+***********************************************************/
 
 string Utility::GetSqlStmt(string SqlStmtId)
 {
@@ -137,7 +137,7 @@ string Utility::GetSqlStmt(string SqlStmtId)
   SqlStmtFile.open(SqlStmtFileName);
   if (!SqlStmtFile.is_open())
   {
-    AfxMessageBox("Utility::GetSqlStmt - Open SqlStmt file failed", MB_ICONSTOP);
+    LogIt("Utility::GetSqlStmt - Open SqlStmt file failed");
     _endthread();
   }
   getline(SqlStmtFile, Stuff);
@@ -210,8 +210,8 @@ string Utility::PronounSubstitute(string MsgText)
 }
 
 /***********************************************************
- * Translate a word                                        *
- ***********************************************************/
+* Translate a word                                        *
+***********************************************************/
 
 string Utility::TranslateWord(string Word)
 {

@@ -42,8 +42,8 @@ Validate::~Validate()
 ////////////////////////////////////////////////////////////
 
 /***********************************************************
- * Log Validation Error                                    *
- ***********************************************************/
+* Log Validation Error                                    *
+***********************************************************/
 void Validate::LogValErr(string Message, string FileName)
 {
   if (StrGetLength(Message) > 50)
@@ -64,8 +64,8 @@ void Validate::LogValErr(string Message, string FileName)
 }
 
 /***********************************************************
- * ValidateIt                                              *
- ***********************************************************/
+* ValidateIt                                              *
+***********************************************************/
 
 bool Validate::ValidateIt(string ValidationType)
 {
@@ -76,25 +76,25 @@ bool Validate::ValidateIt(string ValidationType)
     Validate::ValidateAll();
   }
   else
-  if (ValidationType == "mobiles")
-  {
-    Validate::ValidateLibraryMobiles();
-    Validate::ValidateLibraryWorldMobiles();
-  }
-  else
-  if (ValidationType == "objects")
-  {
-    Validate::ValidateLibraryObjects();
-    Validate::ValidateLibraryLoot();
-    Validate::ValidateLibraryShops();
-  }
-  else
-  if (ValidationType == "rooms")
-  {
-    Validate::ValidateLibraryRooms();
-    Validate::ValidateLibraryShops();
-    Validate::ValidateLibraryWorldMobiles();
-  }
+    if (ValidationType == "mobiles")
+    {
+      Validate::ValidateLibraryMobiles();
+      Validate::ValidateLibraryWorldMobiles();
+    }
+    else
+      if (ValidationType == "objects")
+      {
+        Validate::ValidateLibraryObjects();
+        Validate::ValidateLibraryLoot();
+        Validate::ValidateLibraryShops();
+      }
+      else
+        if (ValidationType == "rooms")
+        {
+          Validate::ValidateLibraryRooms();
+          Validate::ValidateLibraryShops();
+          Validate::ValidateLibraryWorldMobiles();
+        }
   if (ValErr)
   {
     LogBuf  = "ValErr - Validation failed!!";
@@ -109,8 +109,8 @@ bool Validate::ValidateIt(string ValidationType)
 }
 
 /***********************************************************
- * Validate all                                            *
- ***********************************************************/
+* Validate all                                            *
+***********************************************************/
 
 void Validate::ValidateAll()
 {
@@ -128,8 +128,8 @@ void Validate::ValidateAll()
 }
 
 /***********************************************************
- * Validate LibraryLoot                                    *
- ***********************************************************/
+* Validate LibraryLoot                                    *
+***********************************************************/
 
 void Validate::ValidateLibraryLoot()
 {
@@ -147,13 +147,13 @@ void Validate::ValidateLibraryLoot()
   LogIt(LogBuf);
   if (ChgDir(LOOT_DIR))
   { // Change directory failed
-    AfxMessageBox("Validate::ValidateLibraryLoot - Change directory to LOOT_DIR failed", MB_ICONSTOP);
+    LogIt("Validate::ValidateLibraryLoot - Change directory to LOOT_DIR failed");
     _endthread();
   }
   // Get list of all LibraryLoot files
   if (ChgDir(HomeDir))
   { // Change directory failed
-    AfxMessageBox("Validate::ValidateLibraryLoot - Change directory to HomeDir failed", MB_ICONSTOP);
+    LogIt("Validate::ValidateLibraryLoot - Change directory to HomeDir failed");
     _endthread();
   }
   for (const auto &entry : fs::directory_iterator("./"))
@@ -169,7 +169,7 @@ void Validate::ValidateLibraryLoot()
     LootFile.open(LootFileName);
     if (!LootFile.is_open())
     { // File does not exist - Very bad!
-      AfxMessageBox("Validate::ValidateLibraryLoot - Open loot file failed", MB_ICONSTOP);
+      LogIt("Validate::ValidateLibraryLoot - Open loot file failed");
       _endthread();
     }
     LineCount = 0;
@@ -203,8 +203,8 @@ void Validate::ValidateLibraryLoot()
 }
 
 /***********************************************************
- * Validate LibraryMobiles                                 *
- ***********************************************************/
+* Validate LibraryMobiles                                 *
+***********************************************************/
 
 void Validate::ValidateLibraryMobiles()
 {
@@ -223,13 +223,13 @@ void Validate::ValidateLibraryMobiles()
   LogIt(LogBuf);
   if (ChgDir(MOBILES_DIR))
   { // Change directory failed
-    AfxMessageBox("Validate::ValidateLibraryMobiles - Change directory to MOBILES_DIR failed", MB_ICONSTOP);
+    LogIt("Validate::ValidateLibraryMobiles - Change directory to MOBILES_DIR failed");
     _endthread();
   }
   // Get list of all LibraryMobiles files
   if (ChgDir(HomeDir))
   { // Change directory failed
-    AfxMessageBox("Validate::ValidateLibraryMobiles - Change directory to HomeDir failed", MB_ICONSTOP);
+    LogIt("Validate::ValidateLibraryMobiles - Change directory to HomeDir failed");
     _endthread();
   }
   for (const auto &entry : fs::directory_iterator("./"))
@@ -245,7 +245,7 @@ void Validate::ValidateLibraryMobiles()
     MobileFile.open(MobileFileName);
     if (!MobileFile.is_open())
     { // File does not exist - Very bad!
-      AfxMessageBox("Validate::ValidateLibraryMobiles - Open mobile file failed", MB_ICONSTOP);
+      LogIt("Validate::ValidateLibraryMobiles - Open mobile file failed");
       _endthread();
     }
     LineCount = 0;
@@ -352,8 +352,8 @@ void Validate::ValidateLibraryMobiles()
 }
 
 /***********************************************************
- * Validate LibraryObjects                                 *
- ***********************************************************/
+* Validate LibraryObjects                                 *
+***********************************************************/
 
 void Validate::ValidateLibraryObjects()
 {
@@ -372,13 +372,13 @@ void Validate::ValidateLibraryObjects()
   LogIt(LogBuf);
   if (ChgDir(OBJECTS_DIR))
   { // Change directory failed
-    AfxMessageBox("Validate::ValidateLibraryObjects - Change directory to OBJECTS_DIR failed", MB_ICONSTOP);
+    LogIt("Validate::ValidateLibraryObjects - Change directory to OBJECTS_DIR failed");
     _endthread();
   }
   // Get list of all LibarryObjects files
   if (ChgDir(HomeDir))
   { // Change directory failed
-    AfxMessageBox("Validate::ValidateLibraryObjects - Change directory to HomeDir failed", MB_ICONSTOP);
+    LogIt("Validate::ValidateLibraryObjects - Change directory to HomeDir failed");
     _endthread();
   }
   for (const auto &entry : fs::directory_iterator("./"))
@@ -394,7 +394,7 @@ void Validate::ValidateLibraryObjects()
     ObjectFile.open(ObjectFileName);
     if (!ObjectFile.is_open())
     { // File does not exist - Very bad!
-      AfxMessageBox("Validate::ValidateLibraryObjects - Open object file failed", MB_ICONSTOP);
+      LogIt("Validate::ValidateLibraryObjects - Open object file failed");
       _endthread();
     }
     LineCount = 0;
@@ -529,8 +529,8 @@ void Validate::ValidateLibraryObjects()
 }
 
 /***********************************************************
- * Validate LibraryRooms                                          *
- ***********************************************************/
+* Validate LibraryRooms                                          *
+***********************************************************/
 
 void Validate::ValidateLibraryRooms()
 {
@@ -552,13 +552,13 @@ void Validate::ValidateLibraryRooms()
   LogIt(LogBuf);
   if (ChgDir(ROOMS_DIR))
   { // Change directory failed
-    AfxMessageBox("Validate::ValidateLibraryRooms - Change directory to ROOMS_DIR failed", MB_ICONSTOP);
+    LogIt("Validate::ValidateLibraryRooms - Change directory to ROOMS_DIR failed");
     _endthread();
   }
   // Get list of all LibraryRooms files
   if (ChgDir(HomeDir))
   { // Change directory failed
-    AfxMessageBox("Validate::ValidateRooms - Change directory to HomeDir failed", MB_ICONSTOP);
+    LogIt("Validate::ValidateRooms - Change directory to HomeDir failed");
     _endthread();
   }
   for (const auto &entry : fs::directory_iterator("./"))
@@ -574,7 +574,7 @@ void Validate::ValidateLibraryRooms()
     RoomFile.open(RoomFileName);
     if (!RoomFile.is_open())
     { // File does not exist - Very bad!
-      AfxMessageBox("Validate::ValidateLibraryRooms - Open room file failed", MB_ICONSTOP);
+      LogIt("Validate::ValidateLibraryRooms - Open room file failed");
       _endthread();
     }
     LineCount = 0;
@@ -681,8 +681,8 @@ void Validate::ValidateLibraryRooms()
 }
 
 /***********************************************************
- * Validate LibraryShops                                          *
- ***********************************************************/
+* Validate LibraryShops                                          *
+***********************************************************/
 
 void Validate::ValidateLibraryShops()
 {
@@ -702,13 +702,13 @@ void Validate::ValidateLibraryShops()
   LogIt(LogBuf);
   if (ChgDir(SHOPS_DIR))
   { // Change directory failed
-    AfxMessageBox("Validate::ValidateLibraryShops - Change directory to SHOPS_DIR failed", MB_ICONSTOP);
+    LogIt("Validate::ValidateLibraryShops - Change directory to SHOPS_DIR failed");
     _endthread();
   }
   // Get list of all LibraryShops files
   if (ChgDir(HomeDir))
   { // Change directory failed
-    AfxMessageBox("Validate::ValidateLibraryShops - Change directory to HomeDir failed", MB_ICONSTOP);
+    LogIt("Validate::ValidateLibraryShops - Change directory to HomeDir failed");
     _endthread();
   }
   for (const auto &entry : fs::directory_iterator("./"))
@@ -724,7 +724,7 @@ void Validate::ValidateLibraryShops()
     ShopFile.open(ShopFileName);
     if (!ShopFile.is_open())
     { // File does not exist - Very bad!
-      AfxMessageBox("Validate::ValidateLibraryShops - Open shop file failed", MB_ICONSTOP);
+      LogIt("Validate::ValidateLibraryShops - Open shop file failed");
       _endthread();
     }
     LineCount = 0;
@@ -775,8 +775,8 @@ void Validate::ValidateLibraryShops()
 }
 
 /***********************************************************
- * Validate LibraryWorldMobiles                            *
- ***********************************************************/
+* Validate LibraryWorldMobiles                            *
+***********************************************************/
 
 void Validate::ValidateLibraryWorldMobiles()
 {
@@ -798,13 +798,13 @@ void Validate::ValidateLibraryWorldMobiles()
   LogIt(LogBuf);
   if (ChgDir(WORLD_MOBILES_DIR))
   { // Change directory failed
-    AfxMessageBox("Validate::ValidateLibraryWorldMobiles - Change directory to WORLD_MOBILES_DIR failed", MB_ICONSTOP);
+    LogIt("Validate::ValidateLibraryWorldMobiles - Change directory to WORLD_MOBILES_DIR failed");
     _endthread();
   }
   // Get list of all LibraryWorldMobiles files
   if (ChgDir(HomeDir))
   { // Change directory failed
-    AfxMessageBox("Validate::ValidateLibraryWorldMobiles - Change directory to HomeDir failed", MB_ICONSTOP);
+    LogIt("Validate::ValidateLibraryWorldMobiles - Change directory to HomeDir failed");
     _endthread();
   }
   for (const auto& entry : fs::directory_iterator("./"))
@@ -825,7 +825,7 @@ void Validate::ValidateLibraryWorldMobiles()
     WorldMobileFile.open(WorldMobileFileName);
     if (!WorldMobileFile.is_open())
     { // File does not exist - Very bad!
-      AfxMessageBox("Validate::ValidateLibraryWorldMobiles - Open world mobile file failed", MB_ICONSTOP);
+      LogIt("Validate::ValidateLibraryWorldMobiles - Open world mobile file failed");
       _endthread();
     }
     //************
@@ -882,8 +882,8 @@ void Validate::ValidateLibraryWorldMobiles()
 }
 
 /***********************************************************
- * Validate RunningPlayers                                 *
- ***********************************************************/
+* Validate RunningPlayers                                 *
+***********************************************************/
 
 void Validate::ValidateRunningPlayers()
 {
@@ -902,13 +902,13 @@ void Validate::ValidateRunningPlayers()
   LogIt(LogBuf);
   if (ChgDir(PLAYER_DIR))
   { // Change directory failed
-    AfxMessageBox("Validate::ValidateRunningPlayers - Change directory to PLAYER_DIR failed", MB_ICONSTOP);
+    LogIt("Validate::ValidateRunningPlayers - Change directory to PLAYER_DIR failed");
     _endthread();
   }
   // Get list of all RunningPlayers files
   if (ChgDir(HomeDir))
   { // Change directory failed
-    AfxMessageBox("Validate::ValidateRunningPlayers - Change directory to HomeDir failed", MB_ICONSTOP);
+    LogIt("Validate::ValidateRunningPlayers - Change directory to HomeDir failed");
     _endthread();
   }
   for (const auto &entry : fs::directory_iterator("./"))
@@ -924,7 +924,7 @@ void Validate::ValidateRunningPlayers()
     PlayerFile.open(PlayerFileName);
     if (!PlayerFile.is_open())
     { // File does not exist - Very bad!
-      AfxMessageBox("Validate::ValidateRunningPlayers - Open player file failed", MB_ICONSTOP);
+      LogIt("Validate::ValidateRunningPlayers - Open player file failed");
       _endthread();
     }
     LineCount = 0;
@@ -987,8 +987,8 @@ void Validate::ValidateRunningPlayers()
 }
 
 /***********************************************************
- * Validate RunningPlayersPlayerEqu                        *
- ***********************************************************/
+* Validate RunningPlayersPlayerEqu                        *
+***********************************************************/
 
 void Validate::ValidateRunningPlayersPlayerEqu()
 {
@@ -1007,13 +1007,13 @@ void Validate::ValidateRunningPlayersPlayerEqu()
   LogIt(LogBuf);
   if (ChgDir(PLAYER_EQU_DIR))
   { // Change directory failed
-    AfxMessageBox("Validate::ValidateRunningPlayersPlayerEqu - Change directory to PLAYER_EQU_DIR failed", MB_ICONSTOP);
+    LogIt("Validate::ValidateRunningPlayersPlayerEqu - Change directory to PLAYER_EQU_DIR failed");
     _endthread();
   }
   // Get list of all RunningPlayersPlayerEqu files
   if (ChgDir(HomeDir))
   { // Change directory failed
-    AfxMessageBox("Validate::ValidateRunningPlayersPlayerEqu - Change directory to HomeDir failed", MB_ICONSTOP);
+    LogIt("Validate::ValidateRunningPlayersPlayerEqu - Change directory to HomeDir failed");
     _endthread();
   }
   for (const auto &entry : fs::directory_iterator("./"))
@@ -1029,7 +1029,7 @@ void Validate::ValidateRunningPlayersPlayerEqu()
     PlayerEquFile.open(PlayerEquFileName);
     if (!PlayerEquFile.is_open())
     { // File does not exist - Very bad!
-      AfxMessageBox("Validate::ValidateRunningPlayersPlayerEqu - Open player file failed", MB_ICONSTOP);
+      LogIt("Validate::ValidateRunningPlayersPlayerEqu - Open player file failed");
       _endthread();
     }
     LineCount = 0;
@@ -1079,8 +1079,8 @@ void Validate::ValidateRunningPlayersPlayerEqu()
 }
 
 /***********************************************************
- * Validate RunningPlayersPlayerObj                        *
- ***********************************************************/
+* Validate RunningPlayersPlayerObj                        *
+***********************************************************/
 
 void Validate::ValidateRunningPlayersPlayerObj()
 {
@@ -1098,13 +1098,13 @@ void Validate::ValidateRunningPlayersPlayerObj()
   LogIt(LogBuf);
   if (ChgDir(PLAYER_OBJ_DIR))
   { // Change directory failed
-    AfxMessageBox("Validate::ValidateRunningPlayersPlayerObj - Change directory to PLAYER_OBJ_DIR failed", MB_ICONSTOP);
+    LogIt("Validate::ValidateRunningPlayersPlayerObj - Change directory to PLAYER_OBJ_DIR failed");
     _endthread();
   }
   // Get list of all RunningPlayersPlayerObj files
   if (ChgDir(HomeDir))
   { // Change directory failed
-    AfxMessageBox("Validate::ValidateRunningPlayersPlayerObj - Change directory to HomeDir failed", MB_ICONSTOP);
+    LogIt("Validate::ValidateRunningPlayersPlayerObj - Change directory to HomeDir failed");
     _endthread();
   }
   for (const auto& entry : fs::directory_iterator("./"))
@@ -1120,7 +1120,7 @@ void Validate::ValidateRunningPlayersPlayerObj()
     PlayerObjFile.open(PlayerObjFileName);
     if (!PlayerObjFile.is_open())
     { // File does not exist - Very bad!
-      AfxMessageBox("Validate::ValidateRunningPlayersPlayerObj - Open player file failed", MB_ICONSTOP);
+      LogIt("Validate::ValidateRunningPlayersPlayerObj - Open player file failed");
       _endthread();
     }
     LineCount = 0;
@@ -1154,8 +1154,8 @@ void Validate::ValidateRunningPlayersPlayerObj()
 }
 
 /***********************************************************
- * Validate ValidateRunningRoomMob                         *
- ***********************************************************/
+* Validate ValidateRunningRoomMob                         *
+***********************************************************/
 
 void Validate::ValidateRunningRoomMob()
 {
@@ -1176,13 +1176,13 @@ void Validate::ValidateRunningRoomMob()
   LogIt(LogBuf);
   if (ChgDir(ROOM_MOB_DIR))
   { // Change directory failed
-    AfxMessageBox("Validate::ValidateRunningRoomMob - Change directory to ROOM_MOB_DIR failed", MB_ICONSTOP);
+    LogIt("Validate::ValidateRunningRoomMob - Change directory to ROOM_MOB_DIR failed");
     _endthread();
   }
   // Get list of all RunningRoomMob files
   if (ChgDir(HomeDir))
   { // Change directory failed
-    AfxMessageBox("Validate::ValidateRunningRoomMob - Change directory to HomeDir failed", MB_ICONSTOP);
+    LogIt("Validate::ValidateRunningRoomMob - Change directory to HomeDir failed");
     _endthread();
   }
   for (const auto &entry : fs::directory_iterator("./"))
@@ -1202,7 +1202,7 @@ void Validate::ValidateRunningRoomMob()
     RoomMobFile.open(RoomMobFileName);
     if (!RoomMobFile.is_open())
     { // File does not exist - Very bad!
-      AfxMessageBox("Validate::ValidateRunningRoomMob - Open world mobile file failed", MB_ICONSTOP);
+      LogIt("Validate::ValidateRunningRoomMob - Open world mobile file failed");
       _endthread();
     }
     //**********
@@ -1261,8 +1261,8 @@ void Validate::ValidateRunningRoomMob()
 }
 
 /***********************************************************
- * Validate ValidateRunningRoomObj                         *
- ***********************************************************/
+* Validate ValidateRunningRoomObj                         *
+***********************************************************/
 
 void Validate::ValidateRunningRoomObj()
 {
@@ -1282,13 +1282,13 @@ void Validate::ValidateRunningRoomObj()
   LogIt(LogBuf);
   if (ChgDir(ROOM_OBJ_DIR))
   { // Change directory failed
-    AfxMessageBox("Validate::ValidateRunningRoomObj - Change directory to ROOM_OBJ_DIR failed", MB_ICONSTOP);
+    LogIt("Validate::ValidateRunningRoomObj - Change directory to ROOM_OBJ_DIR failed");
     _endthread();
   }
   // Get list of all RunningRoomObj files
   if (ChgDir(HomeDir))
   { // Change directory failed
-    AfxMessageBox("Validate::ValidateRunningRoomObj - Change directory to HomeDir failed", MB_ICONSTOP);
+    LogIt("Validate::ValidateRunningRoomObj - Change directory to HomeDir failed");
     _endthread();
   }
   for (const auto &entry : fs::directory_iterator("./"))
@@ -1308,7 +1308,7 @@ void Validate::ValidateRunningRoomObj()
     RoomObjFile.open(RoomObjFileName);
     if (!RoomObjFile.is_open())
     { // File does not exist - Very bad!
-      AfxMessageBox("Validate::ValidateRunningRoomObj - Open world mobile file failed", MB_ICONSTOP);
+      LogIt("Validate::ValidateRunningRoomObj - Open world mobile file failed");
       _endthread();
     }
     //**********

@@ -79,14 +79,16 @@ void Mobile::AddMobToRoom(string RoomId, string MobileId)
   RoomMobTmpFileName += RoomId;
   if (RoomId == "")
   {
-    AfxMessageBox("RoomId is blank 1", MB_ICONSTOP);
+    LogBuf = "Mobile::AddMobToRoom - RoomId is blank";
+    LogIt(LogBuf);
     _endthread();
   }
   RoomMobTmpFileName += ".tmp.txt";
   RoomMobTmpFile.open(RoomMobTmpFileName);
   if (!RoomMobTmpFile.is_open())
   {
-    AfxMessageBox("Mobile::AddMobToRoom - Open RoomMob temp file failed", MB_ICONSTOP);
+    LogBuf = "Mobile::AddMobToRoom - Open RoomMob temp file failed";
+    LogIt(LogBuf);
     _endthread();
   }
   if (NewRoomMobFile)
@@ -162,7 +164,8 @@ void Mobile::AddMobToRoom(string RoomId, string MobileId)
   else
   { // If the file is empty, delete it for and abort ... it should never be empty
     Remove(RoomMobTmpFileName);
-    AfxMessageBox("Mobile::AddMobToRoom RoomMob file size is not > 0!!", MB_ICONSTOP);
+    LogBuf = "Mobile::AddMobToRoom - RoomMob file size is not > 0!!";
+    LogIt(LogBuf);
     _endthread();
   }
 }
@@ -220,7 +223,8 @@ void Mobile::CreateMobPlayer(string PlayerName, string MobileId)
     MobPlayerFile.open(MobPlayerFileName);
     if (!MobPlayerFile.is_open())
     {
-      AfxMessageBox("Mobile::CreateMobPlayer - Open MobPlayerile file failed 1", MB_ICONSTOP);
+      LogBuf = "Mobile::CreateMobPlayer - Open MobPlayerile file failed 1";
+      LogIt(LogBuf);
       _endthread();
     }
   }
@@ -229,7 +233,8 @@ void Mobile::CreateMobPlayer(string PlayerName, string MobileId)
     MobPlayerFile.open(MobPlayerFileName);
     if (!MobPlayerFile.is_open())
     {
-      AfxMessageBox("Mobile::CreateMobPlayer - Open MobPlayerile file failed 2", MB_ICONSTOP);
+      LogBuf = "Mobile::CreateMobPlayer - Open MobPlayerile file failed 2";
+      LogIt(LogBuf);
       _endthread();
     }
   }
@@ -258,12 +263,8 @@ void Mobile::CreateMobStatsFileWrite(string Directory, string MobileIdForFight, 
   MobStatsFile.open(MobStatsFileName);
   if (!MobStatsFile.is_open())
   { // Open file failed
-    AfxMessage = "Mobile::CreateMobStatsFileWrite - Open for ";
-    AfxMessage += Directory;
-    AfxMessage += " ";
-    AfxMessage += MobileIdForFight;
-    AfxMessage += " failed.";
-    AfxMessageBox(AfxMessage.c_str(), MB_ICONSTOP);
+    LogBuf = "Mobile::CreateMobStatsFileWrite - Open for " + Directory + " " + MobileIdForFight + " failed.";
+    LogIt(LogBuf);
     _endthread();
   }
   MobStatsFile << Stuff << endl;
@@ -285,7 +286,8 @@ void Mobile::CreatePlayerMob(string PlayerName, string MobileId)
   PlayerMobFile.open(PlayerMobFileName);
   if (!PlayerMobFile.is_open())
   {
-    AfxMessageBox("Mobile::CreatePlayerMob - Open PlayerMob file failed", MB_ICONSTOP);
+    LogBuf = "Mobile::CreatePlayerMob - Open PlayerMob file failed";
+    LogIt(LogBuf);
     _endthread();
   }
   PlayerMobFile << MobileId << endl;
@@ -329,7 +331,8 @@ void Mobile::DeleteMobPlayer(string PlayerName, string MobileId)
   MobPlayerFileTmp.open(MobPlayerFileNameTmp);
   if (!MobPlayerFileTmp.is_open())
   {
-    AfxMessageBox("Mobile::DeleteMobPlayer - Open MobPlayer temp file failed", MB_ICONSTOP);
+    LogBuf = "Mobile::DeleteMobPlayer - Open MobPlayer temp file failed";
+    LogIt(LogBuf);
     _endthread();
   }
   // Write temp MobPlayer file
@@ -563,7 +566,8 @@ string Mobile::GetMobDesc1(string MobileId)
   MobileFile.open(MobileFileName);
   if (!MobileFile.is_open())
   {
-    AfxMessageBox("Mobile::GetMobDesc1 - Mobile does not exist!", MB_ICONSTOP);
+    LogBuf = "Mobile::GetMobDesc1 - Mobile does not exist!";
+    LogIt(LogBuf);
     _endthread();
   }
   Stuff = "";
@@ -673,7 +677,8 @@ void Mobile::PutMobBackInRoom(string PlayerName, string RoomIdBeforeFleeing)
     MobStatsHitPointsFile.open(MobStatsHitPointsFileName);
     if (!MobStatsHitPointsFile.is_open())
     {
-      AfxMessageBox("Mobile::PutMobBackInRoom - Open MobStatsHitPointsFile file failed (read)", MB_ICONSTOP);
+      LogBuf = "Mobile::PutMobBackInRoom - Open MobStatsHitPointsFile file failed (read)";
+      LogIt(LogBuf);
       _endthread();
     }
     getline(MobStatsHitPointsFile, Stuff);
@@ -721,7 +726,8 @@ void Mobile::RemoveMobFromRoom(string RoomId, string MobileId)
   RoomMobFile.open(RoomMobFileName);
   if (!RoomMobFile.is_open())
   {
-    AfxMessageBox("Mobile::RemoveMobFromRoom - Open RoomMob file failed", MB_ICONSTOP);
+    LogBuf = "Mobile::RemoveMobFromRoom - Open RoomMob file failed";
+    LogIt(LogBuf);
     _endthread();
   }
   // Open temp RoomMob file
@@ -729,14 +735,16 @@ void Mobile::RemoveMobFromRoom(string RoomId, string MobileId)
   RoomMobTmpFileName += RoomId;
   if (RoomId == "")
   {
-    AfxMessageBox("RoomId is blank 2", MB_ICONSTOP);
+    LogBuf = "RoomId is blank 2";
+    LogIt(LogBuf);
     _endthread();
   }
   RoomMobTmpFileName += ".tmp.txt";
   RoomMobTmpFile.open(RoomMobTmpFileName);
   if (!RoomMobTmpFile.is_open())
   {
-    AfxMessageBox("Mobile::RemoveMobFromRoom - Open RoomMob temp file failed", MB_ICONSTOP);
+    LogBuf = "Mobile::RemoveMobFromRoom - Open RoomMob temp file failed";
+    LogIt(LogBuf);
     _endthread();
   }
   // Write temp RoomMob file
@@ -775,7 +783,8 @@ void Mobile::RemoveMobFromRoom(string RoomId, string MobileId)
   }
   if (!MobileIdRemoved)
   { // Mobile not removed, this is definitely BAD!
-    AfxMessageBox("Mobile::RemoveMobFromRoom - Mobile not removed", MB_ICONSTOP);
+    LogBuf = "Mobile::RemoveMobFromRoom - Mobile not removed";
+    LogIt(LogBuf);
     _endthread();
   }
   BytesInFile = RoomMobTmpFile.tellp();
@@ -985,7 +994,8 @@ void Mobile::WhereMob(string MobileIdSearch)
   pDnodeActor->PlayerOut += "\r\n";
   if (ChgDir(ROOM_MOB_DIR))
   { // Change directory failed
-    AfxMessageBox("Mobile::WhereMob - Change directory to ROOM_MOB_DIR failed", MB_ICONSTOP);
+    LogBuf = "Mobile::WhereMob - Change directory to ROOM_MOB_DIR failed";
+    LogIt(LogBuf);
     _endthread();
   }
   for (const auto &entry : fs::directory_iterator("./"))
@@ -1000,7 +1010,8 @@ void Mobile::WhereMob(string MobileIdSearch)
     RoomMobFile.open(RoomMobFileName);
     if (!RoomMobFile.is_open())
     { // File does not exist - Very bad!
-      AfxMessageBox("Mobile::WhereMob - Open RoomMob file failed", MB_ICONSTOP);
+      LogBuf = "Mobile::WhereMob - Open RoomMob file failed";
+      LogIt(LogBuf);
       _endthread();
     }
     RoomName = StrLeft(FileName, StrGetLength(FileName) - 4);
@@ -1033,7 +1044,8 @@ void Mobile::WhereMob(string MobileIdSearch)
   }
   if (ChgDir(HomeDir))
   { // Change directory failed
-    AfxMessageBox("Mobile::WhereMob - Change directory to HomeDir failed", MB_ICONSTOP);
+    LogBuf = "Mobile::WhereMob - Change directory to HomeDir failed";
+    LogIt(LogBuf);
     _endthread();
   }
 }
@@ -1070,8 +1082,8 @@ void Mobile::UpdateMobInWorld(string MobileId, string AddRemove)
   MobInWorldFile.open(MobInWorldFileName, fstream::out);
   if (!MobInWorldFile.is_open())
   {
-    string Msg = "Mobile::UpdateMobInWorld - Open Mobiles InWorld file failed for: " + MobInWorldFileName;
-    AfxMessageBox(Msg.c_str(), MB_ICONSTOP);
+    LogBuf = "Mobile::UpdateMobInWorld - Open Mobiles InWorld file failed for: " + MobInWorldFileName;
+    LogIt(LogBuf);
     _endthread();
   }
   if (AddRemove == "add")
@@ -1179,7 +1191,8 @@ void Mobile::GetNextMobNbr()
   NextMobNbrFile.open(NextMobNbrFileName, fstream::in);
   if (!NextMobNbrFile.is_open())
   {
-    AfxMessageBox("Mobile::GetNextMobNbr - Open NextMobileNumber file failed (read)", MB_ICONSTOP);
+    LogBuf = "Mobile::GetNextMobNbr - Open NextMobileNumber file failed (read)";
+    LogIt(LogBuf);
     _endthread();
   }
   getline(NextMobNbrFile, Stuff);
@@ -1196,7 +1209,8 @@ void Mobile::GetNextMobNbr()
   NextMobNbrFile.open(NextMobNbrFileName, fstream::out);
   if (!NextMobNbrFile.is_open())
   {
-    AfxMessageBox("Mobile::GetNextMobNbr - Open NextMobileNumber file failed (write)", MB_ICONSTOP);
+    LogBuf = "Mobile::GetNextMobNbr - Open NextMobileNumber file failed (write)";
+    LogIt(LogBuf);
     _endthread();
   }
   NextMobNbrFile << NextMobNbrString << endl;
@@ -1316,7 +1330,8 @@ void Mobile::OpenFile(string MobileId)
   MobileFile.open(MobileFileName);
   if (!MobileFile.is_open())
   {
-    AfxMessageBox("Mobile::OpenFile - Mobile does not exist!", MB_ICONSTOP);
+    LogBuf = "Mobile::OpenFile - Mobile does not exist!";
+    LogIt(LogBuf);
     _endthread();
   }
 }

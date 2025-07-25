@@ -26,14 +26,14 @@
 ////////////////////////////////////////////////////////////
 
 /***********************************************************
- * Is a valid shop?                                        *
- ***********************************************************/
+* Is a valid shop?                                        *
+***********************************************************/
 
 bool Shop::IsShop(string RoomId)
 {
   string     ShopFileName;
   ifstream   ShopFile;
-  
+
   ShopFileName = SHOPS_DIR;
   ShopFileName += RoomId + ".txt";
   if (FileExist(ShopFileName))
@@ -47,8 +47,8 @@ bool Shop::IsShop(string RoomId)
 }
 
 /***********************************************************
- * Is this shop buying and selling this object?            *
- ***********************************************************/
+* Is this shop buying and selling this object?            *
+***********************************************************/
 
 void Shop::IsShopObj(string RoomId, string ObjectName)
 {
@@ -64,7 +64,7 @@ void Shop::IsShopObj(string RoomId, string ObjectName)
   ShopFile.open(ShopFileName);
   if (!ShopFile.is_open())
   { // No such file???, But there should be, This is bad!
-    AfxMessageBox("Shop::IsShopObj - Shop does not exist", MB_ICONSTOP);
+    LogIt("Shop::IsShopObj - Shop does not exist");
     _endthread();
   }
   getline(ShopFile, Stuff);
@@ -106,7 +106,7 @@ void Shop::IsShopObj(string RoomId, string ObjectName)
   ShopFile.open(ShopFileName);
   if (!ShopFile.is_open())
   { // No such file???, But there should be, This is bad!
-    AfxMessageBox("Shop::IsShopObj - Shop does not exist", MB_ICONSTOP);
+    LogIt("Shop::IsShopObj - Shop does not exist");
     _endthread();
   }
   getline(ShopFile, Stuff);
@@ -153,8 +153,8 @@ void Shop::IsShopObj(string RoomId, string ObjectName)
 }
 
 /***********************************************************
- * List objects that can be bought and sold                *
- ***********************************************************/
+* List objects that can be bought and sold                *
+***********************************************************/
 
 void Shop::ListObjects()
 {
@@ -164,13 +164,13 @@ void Shop::ListObjects()
   string      ShopFileName;
   ifstream    ShopFile;
   string      ShopText;
-  
+
   ShopFileName = SHOPS_DIR;
   ShopFileName += pDnodeActor->pPlayer->RoomId + ".txt";
   ShopFile.open(ShopFileName);
   if (!ShopFile.is_open())
   { // No such file???, But there should be, This is bad!
-    AfxMessageBox("Shop::ListObjects - Shop does not exist", MB_ICONSTOP);
+    LogIt("Shop::ListObjects - Shop does not exist");
     _endthread();
   }
   // Shop welcome message
