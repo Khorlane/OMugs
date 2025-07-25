@@ -14,7 +14,7 @@
 * Includes                                                 *
 ************************************************************/
 
-#include "stdafx.h" // This is only here to speed up compiles
+#include "Winsock2.h"
 #include "Communication.h"
 
 /***********************************************************
@@ -360,7 +360,6 @@ void Communication::SockCheckForNewConnections()
     sprintf(Buf,"%s", strerror(errno));
     LogBuf = "Communication::SockCheckForNewConnections: select: " + (string)Buf;
     LogIt(LogBuf);
-    AfxMessageBox("Communication::SockCheckForNewConnections - Error: select", MB_ICONSTOP);
     _endthread();
   }
   if (FD_ISSET(ListenSocket, &InpSet))
@@ -383,7 +382,8 @@ void Communication::SockClosePort(int Port)
   Result = ::closesocket(ListenSocket);
   if (Result!= 0)
   {
-    AfxMessageBox("Communication::~Communication - Error: closesocket", MB_ICONSTOP);
+    LogBuf = "Communication::~Communication - Error: closesocket";
+    LogIt(LogBuf);
     _endthread();
   }
   sprintf(Buf, "%d", Port);
@@ -811,7 +811,8 @@ void Communication::CommandArrayLoad()
   ValidCmdsFile.open(ValidCmdsFileName);
   if (!ValidCmdsFile.is_open())
   { // Open failed
-    AfxMessageBox("Communication::CommandArrayLoad - Open Valid Commands file failed (read)", MB_ICONSTOP);
+    LogBuf = "Communication::CommandArrayLoad - Open Valid Commands file failed (read)";
+    LogIt(LogBuf);
     _endthread();
   }
   ValidCmds.clear();
@@ -877,7 +878,8 @@ string Communication::CommandCheck(string MudCmdChk)
   }
   if (CommandCheckResult == "")
   { // This should never be true
-    AfxMessageBox("Communication::CommandCheck - Broke!", MB_ICONSTOP);
+    LogBuf = "Communication::CommandCheck - Broke!";
+    LogIt(LogBuf);
     _endthread();
   }
   return CommandCheckResult;
@@ -2179,52 +2181,28 @@ void Communication::DoDelete()
   PlayerFileName =  PLAYER_DIR;
   PlayerFileName += pDnodeActor->PlayerName;
   PlayerFileName += ".txt";
-  TRY
+  error_code ErrorCode = Remove(PlayerFileName);
+  if (ErrorCode.value() != 0)
   {
-    Remove(PlayerFileName);
-  }
-  CATCH (CFileException, e)
-  { // It should be impossible for this delete to fail
-    AfxMessageBox("Communication::DoDelete - Remove Player file failed", MB_ICONSTOP);
+    string LogBuf = "Communication::DoDelete - Failed to remove Player file: " + PlayerFileName + ". Error: " + ErrorCode.message();
+    LogIt(LogBuf);
     _endthread();
   }
-  END_CATCH
   // Delete PlayerEqu file
   PlayerFileName =  PLAYER_EQU_DIR;
   PlayerFileName += pDnodeActor->PlayerName;
   PlayerFileName += ".txt";
-  TRY
-  {
-    Remove(PlayerFileName);
-  }
-  CATCH (CFileException, e)
-  { // Don't care if delete fails
-  }
-  END_CATCH
+  Remove(PlayerFileName);
   // Delete PlayerObj file
   PlayerFileName =  PLAYER_OBJ_DIR;
   PlayerFileName += pDnodeActor->PlayerName;
   PlayerFileName += ".txt";
-  TRY
-  {
-    Remove(PlayerFileName);
-  }
-  CATCH (CFileException, e)
-  { // Don't care if delete fails
-  }
-  END_CATCH
+  Remove(PlayerFileName);
   // Delete PlayerRoom file
   PlayerFileName =  PLAYER_ROOM_DIR;
   PlayerFileName += pDnodeActor->PlayerName;
   PlayerFileName += ".txt";
-  TRY
-  {
-    Remove(PlayerFileName);
-  }
-  CATCH (CFileException, e)
-  { // Don't care if delete fails
-  }
-  END_CATCH
+  Remove(PlayerFileName);
   // Send messages
   pDnodeSrc = pDnodeActor;
   pDnodeTgt = NULL;
@@ -4481,6 +4459,7 @@ void Communication::DoMoney()
 
 void Communication::DoMotd()
 {
+  string     LogBuf;
   ifstream   MotdFile;
   string     MotdFileName;
   string     Stuff;
@@ -4493,7 +4472,8 @@ void Communication::DoMotd()
   MotdFile.open(MotdFileName);
   if (!MotdFile.is_open())
   {
-    AfxMessageBox("Communication::DoMotd - Open Motd file failed (read)", MB_ICONSTOP);
+    LogBuf = "Communication::DoMotd - Open Motd file failed (read)";
+    LogIt(LogBuf);
     _endthread();
   }
   getline(MotdFile, Stuff);
@@ -6572,6 +6552,7 @@ void Communication::LogonGreeting()
 {
   ifstream   GreetingFile;
   string     GreetingFileName;
+  string     LogBuf;
   string     Stuff;
 
   // Read greeting file
@@ -6581,7 +6562,8 @@ void Communication::LogonGreeting()
   GreetingFile.open(GreetingFileName);
   if (!GreetingFile.is_open())
   {
-    AfxMessageBox("Communication::LogonGreeting - Open Greeting file failed (read)", MB_ICONSTOP);
+    LogBuf = "Communication::LogonGreeting - Open Greeting file failed (read)";
+    LogIt(LogBuf);
     _endthread();
   }
   pDnodeActor->PlayerOut += "Version ";
@@ -6988,7 +6970,6 @@ void Communication::SockNewConnection()
     sprintf(Buf, "%s", strerror(errno));
     LogBuf = "Communication::SockNewConnection - Error: accept: " + (string)Buf;
     LogIt(LogBuf);
-    AfxMessageBox("Communication::SockNewConnection - Error: accept", MB_ICONSTOP);
     _endthread();
   }
   IpAddress = inet_ntoa(Sock.sin_addr);
@@ -6999,7 +6980,6 @@ void Communication::SockNewConnection()
     sprintf(Buf, "%s", strerror(errno));
     LogBuf = "Communication::SockNewConnection - Error: ioctlsocket " + (string)Buf;
     LogIt(LogBuf);
-    AfxMessageBox("Communication::NewConection - Error: ioctlsocket", MB_ICONSTOP);
     _endthread();
   }
   sprintf(Buf, "%d", SocketHandle);
@@ -7278,6 +7258,7 @@ void Communication::ViolenceMobileLoot(string Loot)
   Dnode      *pDnodeGrpMem;
   Player     *pPlayerGrpLdr;
   int         i;
+  string      LogBuf;
   bool        LootFlag;
   ifstream    MobileLootFile;
   string      MobileLootFileName;
@@ -7291,7 +7272,8 @@ void Communication::ViolenceMobileLoot(string Loot)
   MobileLootFile.open(MobileLootFileName);
   if (!MobileLootFile.is_open())
   {
-    AfxMessageBox("Communication::ViolenceMobileLoot - Error opening mobile loot file, it may not exist", MB_ICONSTOP);
+    LogBuf = "Communication::ViolenceMobileLoot - Error opening mobile loot file, it may not exist";
+    LogIt(LogBuf);
     _endthread();
   }
   NoLoot = true;

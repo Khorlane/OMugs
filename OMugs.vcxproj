@@ -152,7 +152,9 @@
     <ClCompile Include="Source\Osi\Token.cpp" />
     <ClCompile Include="Source\Server\BigDog.cpp" />
     <ClCompile Include="Source\Server\Calendar.cpp" />
-    <ClCompile Include="Source\Server\Communication.cpp" />
+    <ClCompile Include="Source\Server\Communication.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="Source\Server\Descriptor.cpp" />
     <ClCompile Include="Source\Server\Dnode.cpp" />
     <ClCompile Include="Source\Server\Help.cpp" />
