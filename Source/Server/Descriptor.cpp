@@ -14,7 +14,7 @@
 * Includes                                                 *
 ************************************************************/
 
-#include "stdafx.h" // This is only here to speed up compiles
+#include "WinSock2.h"
 #include "Descriptor.h"
 
 /***********************************************************

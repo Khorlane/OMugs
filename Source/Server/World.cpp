@@ -14,7 +14,6 @@
 * Includes                                                 *
 ************************************************************/
 
-#include "stdafx.h" // This is only here to speed up compiles
 #include "World.h"
 
 /***********************************************************
@@ -663,42 +662,32 @@ void World::MakeMobilesMove2()
   RoomMobMoveFile.close();
   RoomMobListFile.close();
   RoomMobListTempFile.close();
-  TRY
-  { // Done with RoomMobList file, get rid of it
-    Remove(RoomMobListFileName);
-  }
-    CATCH (CFileException, e)
-  { // If file remove fails, something is bad wrong!
+  // Done with RoomMobList file, get rid of it
+  ErrorCode = Remove(RoomMobListFileName);
+  if (ErrorCode.value() != 0) 
+  {
+    // If file remove fails, log the error and stop execution
     LogIt("World::MakeMobilesMove2 - Remove RoomMobList file failed");
     _endthread();
   }
-  END_CATCH
-    if (MobListNotCompleted)
-    { // Time ran out before MobList was completely processed
-      TRY
-      { // Rename temp file
-        Rename(RoomMobListTempFileName, RoomMobListFileName);
-      }
-        CATCH (CFileException, e)
-      { // If rename fails, something is bad wrong!
-        LogIt("World::MakeMobilesMove2 - Rename RoomMobListTemp file failed");
-        _endthread();
-      }
-      END_CATCH
+  if (MobListNotCompleted)
+  { // Time ran out before MobList was completely processed
+    ErrorCode = Rename(RoomMobListTempFileName, RoomMobListFileName);
+    if (ErrorCode.value() != 0)
+    { // If rename fails, log the error and stop execution
+      LogIt("World::MakeMobilesMove2 - Rename RoomMobListTemp file failed");
+      _endthread();
     }
-    else
-    { // MobList was completely processed
-      TRY
-      { // delete temp file
-        Remove(RoomMobListTempFileName);
-      }
-        CATCH (CFileException, e)
-      { // If delete fails, something is bad wrong!
-        LogIt("World::MakeMobilesMove2 - Rename RoomMobListTemp file failed");
-        _endthread();
-      }
-      END_CATCH
+  }
+  else
+  { // MobList was completely processed
+    ErrorCode = Remove(RoomMobListTempFileName);
+    if (ErrorCode.value() != 0)
+    { // If delete fails, log the error and stop execution
+      LogIt("World::MakeMobilesMove2 - Remove RoomMobListTemp file failed");
+      _endthread();
     }
+  }
 }
 
 /***********************************************************
@@ -784,18 +773,14 @@ void World::MakeMobilesMove3()
       MobStatsFileName = MOB_STATS_ROOM_DIR;
       MobStatsFileName += MobileId;
       MobStatsFileName += ".txt";
-      TRY
-      {
-        Remove(MobStatsFileName);
-      }
-        CATCH (CFileException, e)
-      { // If file remove fails, something is bad wrong!
+      ErrorCode = Remove(MobStatsFileName);
+      if (ErrorCode.value() != 0)
+      { // If file remove fails, log the error and stop execution
         LogIt("World::MakeMobilesMove - Remove MobStats Room file failed");
         _endthread();
       }
-      END_CATCH
-        // Write new RoomId into MobStats Room file
-        CreateMobStatsFileWrite(MOB_STATS_ROOM_DIR, MobileId, ExitToRoomId);
+      // Write new RoomId into MobStats Room file
+      CreateMobStatsFileWrite(MOB_STATS_ROOM_DIR, MobileId, ExitToRoomId);
     }
     // Read next line
     getline(RoomMobMoveFile, Stuff);
@@ -804,43 +789,31 @@ void World::MakeMobilesMove3()
   RoomMobMoveFile.close();
   RoomMobMoveTempFile.close();
   // Done with RoomMobMove file, get rid of it
-  TRY
-  {
-    Remove(RoomMobMoveFileName);
-  }
-    CATCH (CFileException, e)
-  { // If file remove fails, something is bad wrong!
+  ErrorCode = Remove(RoomMobMoveFileName);
+  if (ErrorCode.value() != 0)
+  { // If file remove fails, log the error and stop execution
     LogIt("World::MakeMobilesMove3 - Remove RoomMobMove file failed");
     _endthread();
   }
-  END_CATCH
-    // Check whether or not mobs got moved
-    if (MobMoveNotCompleted)
-    { // Time ran out before all the mobs got moved, so moved the rest of them later
-      TRY
-      {
-        Rename(RoomMobMoveTempFileName, RoomMobMoveFileName);
-      }
-        CATCH (CFileException, e)
-      { // If file rename fails, something is bad wrong!
-        LogIt("World::MakeMobilesMove3 - Rename RoomMobMoveTemp file failed");
-        _endthread();
-      }
-      END_CATCH
+  // Check whether or not mobs got moved
+  if (MobMoveNotCompleted)
+  { // Time ran out before all the mobs got moved, so moved the rest of them later
+    ErrorCode = Rename(RoomMobMoveTempFileName, RoomMobMoveFileName);
+    if (ErrorCode.value() != 0)
+    { // If rename fails, log the error and stop execution
+      LogIt("World::MakeMobilesMove3 - Rename RoomMobMoveTemp file failed");
+      _endthread();
     }
-    else
-    { // All mobs got moved, delete the temp file
-      TRY
-      {
-        Remove(RoomMobMoveTempFileName);
-      }
-        CATCH (CFileException, e)
-      { // If file rename fails, something is bad wrong!
-        LogIt("World::MakeMobilesMove3 - Rename RoomMobMoveTemp file failed");
-        _endthread();
-      }
-      END_CATCH
+  }
+  else
+  { // All mobs got moved, delete the temp file
+    ErrorCode = Remove(RoomMobMoveTempFileName);
+    if (ErrorCode.value() != 0)
+    { // If delete fails, log the error and stop execution
+      LogIt("World::MakeMobilesMove3 - Remove RoomMobMoveTemp file failed");
+      _endthread();
     }
+  }
 }
 
 /***********************************************************
