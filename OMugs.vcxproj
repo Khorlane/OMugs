@@ -253,10 +253,6 @@
     <ClCompile Include="Source\WinApp\OMugsView.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Source\WinApp\StdAfx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">StdAfx.h</PrecompiledHeaderFile>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Osi\Buffer.h" />
@@ -299,7 +295,6 @@
     <ClInclude Include="Source\WinApp\OMugsDoc.h" />
     <ClInclude Include="Source\WinApp\OMugsView.h" />
     <ClInclude Include="Source\WinApp\Resource.h" />
-    <ClInclude Include="Source\WinApp\StdAfx.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Res\cursor1.cur" />

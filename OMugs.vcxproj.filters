@@ -114,9 +114,6 @@
     <ClCompile Include="Source\WinApp\OMugsView.cpp">
       <Filter>WinApp Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\WinApp\StdAfx.cpp">
-      <Filter>WinApp Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Tools\GenerateRooms.cpp">
       <Filter>Tools Source Files</Filter>
     </ClCompile>
@@ -237,9 +234,6 @@
       <Filter>WinApp Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\WinApp\Resource.h">
-      <Filter>WinApp Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\WinApp\StdAfx.h">
       <Filter>WinApp Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Tools\GenerateRooms.h">
