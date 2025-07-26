@@ -14,7 +14,6 @@
 * Includes                                                 *
 ************************************************************/
 
-#include "stdafx.h" // This is only here to speed up compiles
 #include "Token.h"
 
 /***********************************************************
@@ -69,8 +68,8 @@ void Token::GetErrorToken(Buffer *pBuffer, Token *pToken)
   ch          = pBuffer->GetCurrentChar();
   TokenString = ch;
   pBuffer->GetNextChar();
-  printf("\r\nUnrecognized token\r\n\r\n");
-  exit(15);
+  LogIt("Osi - Unrecognized token");
+  _endthread();
 }
 
 /***********************************************************

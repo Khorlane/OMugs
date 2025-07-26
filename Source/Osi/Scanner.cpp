@@ -14,8 +14,6 @@
 * Includes                                                 *
 ************************************************************/
 
-#include "stdafx.h" // This is only here to speed up compiles
-#include "Config.h"
 #include "Scanner.h"
 
 /***********************************************************
