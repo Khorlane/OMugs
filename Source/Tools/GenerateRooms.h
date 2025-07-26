@@ -2,12 +2,7 @@
 * OMugs - Online Multi-User Game Server                    *
 * File:   GenerateRooms.h                                  *
 * Usage:  Define the GenerateRooms class                   *
-* Author: Stephen L Bryant                                 *
-*                                                          *
-* This program belongs to Stephen L Bryant.                *
-* It is considered a trade secret and is not to be         *
-* divulged or used by parties who have not received        *
-* written authorization from the owner.                    *
+* Author: Steve Bryant                                     *
 ************************************************************/
 
 #ifndef GENERATE_ROOMS_H
@@ -17,9 +12,14 @@
 * Includes                                                 *
 ************************************************************/
 
+#include <afxdao.h>         // For DAO database access
+#include <afx.h>            // For MFC core components
+#include <string>           // For std::string
+#include <fstream>          // For file operations
+#include <filesystem>       // For std::filesystem
+#include <thread>           // For _endthread
 #include "Config.h"
 #include "Utility.h"
-#include <afxdao.h>         // Allows access to ACCESS databases
 
 /***********************************************************
 * Define GenerateRooms class                               *

@@ -2,12 +2,7 @@
 * OMugs - Online Multi-User Game Server                    *
 * File:   OMugs.h                                          *
 * Usage:  Define COMugsApp class                           *
-* Author: Stephen L Bryant                                 *
-*                                                          *
-* This program belongs to Stephen L Bryant.                *
-* It is considered a trade secret and is not to be         *
-* divulged or used by parties who have not received        *
-* written authorization from the owner.                    *
+* Author: Steve Bryant                                     *
 ************************************************************/
 
 #ifndef OMUGS_H
@@ -17,11 +12,14 @@
 * Includes                                                 *
 ************************************************************/
 
-#ifndef __AFXWIN_H__
-	#error include 'stdafx.h' before including this file for PCH
-#endif
-
-#include "resource.h"
+#include <afxwin.h>    // For MFC core components like CWinApp
+#include <afxext.h>    // For extended MFC components
+#include <afxcmn.h>    // For common controls
+#include <afxdlgs.h>   // For MFC dialog classes
+#include <afxsock.h>   // For MFC socket classes
+#include <tchar.h>     // For _T macro and TCHAR types
+#include <string>      // For std::string
+#include "resource.h"  // For resource definitions
 #include "MainFrm.h"
 #include "ChildFrm.h"
 #include "OMugsDoc.h"

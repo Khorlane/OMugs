@@ -2,12 +2,7 @@
 * OMugs - Online Multi-User Game Server                    *
 * File:   Scanner.cpp                                      *
 * Usage:  Scans for tokens                                 *
-* Author: Stephen L Bryant                                 *
-*                                                          *
-* This program belongs to Stephen L Bryant.                *
-* It is considered a trade secret and is not to be         *
-* divulged or used by parties who have not received        *
-* written authorization from the owner.                    *
+* Author: Steve Bryant                                     *
 ************************************************************/
 
 /***********************************************************

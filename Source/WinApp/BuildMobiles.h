@@ -2,12 +2,7 @@
 * OMugs - Online Multi-User Game Server                    *
 * File:   BuildMobiles.h                                   *
 * Usage:  Define BuildMobiles class                        *
-* Author: Stephen L Bryant                                 *
-*                                                          *
-* This program belongs to Stephen L Bryant.                *
-* It is considered a trade secret and is not to be         *
-* divulged or used by parties who have not received        *
-* written authorization from the owner.                    *
+* Author: Steve Bryant                                     *
 ************************************************************/
 
 #ifndef BUILD_MOBILES_H
@@ -16,6 +11,13 @@
 /***********************************************************
 * Includes                                                 *
 ************************************************************/
+#include <afxwin.h>    // MFC core and standard components
+#include <afxext.h>    // MFC extensions
+#include <afxcmn.h>    // MFC support for common controls
+#include <string>      // For std::string
+#include <fstream>     // For file operations
+#include <iostream>    // For std::cout
+#include <tchar.h>     // For _T macro and TCHAR types
 
 #include "Config.h"
 #include "OMugs.h"

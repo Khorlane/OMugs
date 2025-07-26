@@ -2,19 +2,13 @@
 * OMugs - Online Multi-User Game Server                    *
 * File:   LineCount.cpp                                    *
 * Usage:  Read OMugs source code and count lines           *
-* Author: Stephen L Bryant                                 *
-*                                                          *
-* This program belongs to Stephen L Bryant.                *
-* It is considered a trade secret and is not to be         *
-* divulged or used by parties who have not received        *
-* written authorization from the owner.                    *
+* Author: Steve Bryant                                     *
 ************************************************************/
 
 /***********************************************************
 * Includes                                                 *
 ************************************************************/
 
-#include "stdafx.h" // This is only here to speed up compiles
 #include "LineCount.h"
 
 /***********************************************************

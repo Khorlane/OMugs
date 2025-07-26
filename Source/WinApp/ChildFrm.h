@@ -2,16 +2,17 @@
 * OMugs - Online Multi-User Game Server                    *
 * File:   ChildFrm.h                                       *
 * Usage:  Define CChildFrame class                         *
-* Author: Stephen L Bryant                                 *
-*                                                          *
-* This program belongs to Stephen L Bryant.                *
-* It is considered a trade secret and is not to be         *
-* divulged or used by parties who have not received        *
-* written authorization from the owner.                    *
+* Author: Steve Bryant                                     *
 ************************************************************/
 
 #ifndef CHILD_FRAME_H
 #define CHILD_FRAME_H
+
+#include <afxwin.h>    // For MFC core components like CMDIChildWnd
+#include <afxext.h>    // For extended MFC components
+#include <afxcmn.h>    // For common controls
+#include <afxdlgs.h>   // For MFC dialog classes
+#include <tchar.h>     // For _T macro and TCHAR types
 
 /***********************************************************
 * Define CChildFrame class                                 *

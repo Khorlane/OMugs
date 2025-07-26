@@ -2,16 +2,22 @@
 * OMugs - Online Multi-User Game Server                    *
 * File:   OMugsDoc.h                                       *
 * Usage:  Define COMugsDoc class                           *
-* Author: Stephen L Bryant                                 *
-*                                                          *
-* This program belongs to Stephen L Bryant.                *
-* It is considered a trade secret and is not to be         *
-* divulged or used by parties who have not received        *
-* written authorization from the owner.                    *
+* Author: Steve Bryant                                     *
 ************************************************************/
 
 #ifndef OMUGS_DOC_H
 #define OMUGS_DOC_H
+
+/***********************************************************
+* Includes                                                 *
+************************************************************/
+
+#include <afxwin.h>    // For MFC core components like CDocument
+#include <afxext.h>    // For extended MFC components
+#include <afxcmn.h>    // For common controls
+#include <tchar.h>     // For _T macro and TCHAR types
+#include <string>      // For std::string
+#include <afx.h>       // For CArchive and serialization support
 
 /***********************************************************
 * Define COMugsDoc class                                   *

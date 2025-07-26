@@ -2,12 +2,7 @@
 * OMugs - Online Multi-User Game Server                    *
 * File:   MainFrm.h                                        *
 * Usage:  Define CMainFrame class                          *
-* Author: Stephen L Bryant                                 *
-*                                                          *
-* This program belongs to Stephen L Bryant.                *
-* It is considered a trade secret and is not to be         *
-* divulged or used by parties who have not received        *
-* written authorization from the owner.                    *
+* Author: Steve Bryant                                     *
 ************************************************************/
 
 #ifndef MAIN_FRAME_H
@@ -17,6 +12,11 @@
 * Includes                                                 *
 ************************************************************/
 
+#include <afxwin.h>    // For MFC core components like CMDIFrameWnd, CStatusBar, CToolBar
+#include <afxext.h>    // For extended MFC components
+#include <afxcmn.h>    // For common controls
+#include <tchar.h>     // For _T macro and TCHAR types
+#include <string>      // For std::string
 #include "OMugs.h"
 #include "BuildMobiles.h"
 #include "BuildMobilesList.h"

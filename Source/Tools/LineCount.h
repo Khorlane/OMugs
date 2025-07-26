@@ -2,12 +2,7 @@
 * OMugs - Online Multi-User Game Server                    *
 * File:   LineCount.h                                      *
 * Usage:  Read OMugs source code and count lines           *
-* Author: Stephen L Bryant                                 *
-*                                                          *
-* This program belongs to Stephen L Bryant.                *
-* It is considered a trade secret and is not to be         *
-* divulged or used by parties who have not received        *
-* written authorization from the owner.                    *
+* Author: Steve Bryant                                     *
 ************************************************************/
 
 #ifndef LINE_COUNT_H
@@ -17,6 +12,13 @@
 * Includes                                                 *
 ************************************************************/
 
+#include <string>           // For std::string
+#include <fstream>          // For file operations (ifstream, ofstream)
+#include <filesystem>       // For std::filesystem
+#include <thread>           // For _endthread
+#include <cstring>          // For strlen
+#include <algorithm>        // For std::copy
+#include <cstdio>           // For sprintf
 #include "Config.h"
 
 /***********************************************************

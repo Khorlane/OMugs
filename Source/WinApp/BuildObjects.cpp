@@ -2,19 +2,13 @@
 * OMugs - Online Multi-User Game Server                    *
 * File:   BuildObjects.cpp                                 *
 * Usage:  CRUD dialog for objects                          *
-* Author: Stephen L Bryant                                 *
-*                                                          *
-* This program belongs to Stephen L Bryant.                *
-* It is considered a trade secret and is not to be         *
-* divulged or used by parties who have not received        *
-* written authorization from the owner.                    *
+* Author: Steve Bryant                                     *
 ************************************************************/
 
 /***********************************************************
 * Includes                                                 *
 ************************************************************/
 
-#include "stdafx.h" // This is only here to speed up compiles
 #include "BuildObjects.h"
 
 /***********************************************************

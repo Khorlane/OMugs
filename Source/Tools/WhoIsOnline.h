@@ -2,12 +2,7 @@
 * OMugs - Online Multi-User Game Server                    *
 * File:   WhoIsOnline.h                                    *
 * Usage:  Read Player files and create statswho.xml        *
-* Author: Stephen L Bryant                                 *
-*                                                          *
-* This program belongs to Stephen L Bryant.                *
-* It is considered a trade secret and is not to be         *
-* divulged or used by parties who have not received        *
-* written authorization from the owner.                    *
+* Author: Steve Bryant                                     *
 ************************************************************/
 
 #ifndef WHO_IS_ONLINE_H
@@ -17,6 +12,12 @@
 * Includes                                                 *
 ************************************************************/
 
+#include <string>           // For std::string
+#include <fstream>          // For file operations (ifstream, ofstream)
+#include <filesystem>       // For std::filesystem
+#include <thread>           // For _endthread
+#include <algorithm>        // For std::copy
+#include <cstring>          // For strlen
 #include "Config.h"
 
 /***********************************************************
