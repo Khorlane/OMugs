@@ -135,19 +135,18 @@ void Validate::ValidateLibraryLoot()
   string     ObjectIdFileName;
   ifstream   LootFile;
   string     LootFileName;
-  string     PlayerName;
 
   LogBuf = "Begin validation LibraryLoot";
   LogIt(LogBuf);
-  if (ChgDir(LOOT_DIR))
-  { // Change directory failed
-    LogIt("Validate::ValidateLibraryLoot - Change directory to LOOT_DIR failed");
-    _endthread();
-  }
   // Get list of all LibraryLoot files
   if (ChgDir(HomeDir))
   { // Change directory failed
     LogIt("Validate::ValidateLibraryLoot - Change directory to HomeDir failed");
+    _endthread();
+  }
+  if (ChgDir(LOOT_DIR))
+  { // Change directory failed
+    LogIt("Validate::ValidateLibraryLoot - Change directory to LOOT_DIR failed");
     _endthread();
   }
   for (const auto &entry : fs::directory_iterator("./"))
@@ -156,14 +155,12 @@ void Validate::ValidateLibraryLoot()
     {
       continue;
     }
-    // Open player file
+    // Open loot file
     LootFileName = entry.path().filename().string();
-    PlayerName = StrLeft(LootFileName, StrGetLength(LootFileName) - 4);
-    LootFileName = LOOT_DIR + LootFileName;
     LootFile.open(LootFileName);
     if (!LootFile.is_open())
     { // File does not exist - Very bad!
-      LogIt("Validate::ValidateLibraryLoot - Open loot file failed");
+      LogIt("Validate::ValidateLibraryLoot - Open loot file failed: " + LootFileName);
       _endthread();
     }
     LineCount = 0;
