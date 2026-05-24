@@ -225,11 +225,6 @@ void Validate::ValidateLibraryMobiles()
     _endthread();
   }
   // Get list of all LibraryMobiles files
-  if (ChgDir(HomeDir))
-  { // Change directory failed
-    LogIt("Validate::ValidateLibraryMobiles - Change directory to HomeDir failed");
-    _endthread();
-  }
   for (const auto &entry : fs::directory_iterator("./"))
   {
     if (entry.is_directory())
@@ -239,7 +234,7 @@ void Validate::ValidateLibraryMobiles()
     // Open mobile file
     MobileFileName = entry.path().filename().string();
     MobileId = StrLeft(MobileFileName, StrGetLength(MobileFileName) - 4);
-    MobileFileName = MOBILES_DIR + MobileFileName;
+    MobileFileName = HomeDir + MOBILES_DIR + MobileFileName;
     MobileFile.open(MobileFileName);
     if (!MobileFile.is_open())
     { // File does not exist - Very bad!
@@ -331,7 +326,8 @@ void Validate::ValidateLibraryMobiles()
       //*********
       if (FieldName == "Loot:")
       { // Loot field validation
-        LootFileName = LOOT_DIR;
+        LootFileName  = HomeDir;
+        LootFileName += LOOT_DIR;
         LootFileName += FieldValue;
         LootFileName += ".txt";
         if (!FileExist(LootFileName))
@@ -341,6 +337,7 @@ void Validate::ValidateLibraryMobiles()
           LogValErr(Message, FileName);
         }
       }
+      Stuff = "";
       getline(MobileFile, Stuff);
     }
     MobileFile.close();
