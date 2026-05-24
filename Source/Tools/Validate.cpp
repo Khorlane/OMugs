@@ -546,15 +546,15 @@ void Validate::ValidateLibraryRooms()
 
   LogBuf = "Begin validation LibraryRooms";
   LogIt(LogBuf);
-  if (ChgDir(ROOMS_DIR))
-  { // Change directory failed
-    LogIt("Validate::ValidateLibraryRooms - Change directory to ROOMS_DIR failed");
-    _endthread();
-  }
-  // Get list of all LibraryRooms files
   if (ChgDir(HomeDir))
   { // Change directory failed
     LogIt("Validate::ValidateRooms - Change directory to HomeDir failed");
+    _endthread();
+  }
+  // Get list of all LibraryRooms files
+  if (ChgDir(ROOMS_DIR))
+  { // Change directory failed
+    LogIt("Validate::ValidateLibraryRooms - Change directory to ROOMS_DIR failed");
     _endthread();
   }
   for (const auto &entry : fs::directory_iterator("./"))
@@ -566,7 +566,7 @@ void Validate::ValidateLibraryRooms()
     // Open room file
     RoomFileName = entry.path().filename().string();;
     RoomId = StrLeft(RoomFileName, StrGetLength(RoomFileName) - 4);
-    RoomFileName = ROOMS_DIR + RoomFileName;
+    RoomFileName = HomeDir + ROOMS_DIR + RoomFileName;
     RoomFile.open(RoomFileName);
     if (!RoomFile.is_open())
     { // File does not exist - Very bad!
@@ -650,7 +650,8 @@ void Validate::ValidateLibraryRooms()
       //*****************
       if (FieldName == "ExitToRoomId:")
       { // ExitToRoomId field validation
-        ExitToRoomIdFileName = ROOMS_DIR;
+        ExitToRoomIdFileName  = HomeDir;
+        ExitToRoomIdFileName += ROOMS_DIR;
         ExitToRoomIdFileName += FieldValue;
         ExitToRoomIdFileName += ".txt";
         if (!FileExist(ExitToRoomIdFileName))
@@ -664,6 +665,7 @@ void Validate::ValidateLibraryRooms()
           LogValErr(Message, FileName);
         }
       }
+      Stuff = "";
       getline(RoomFile, Stuff);
       if (RoomFile.eof())
       { // End of file reached
