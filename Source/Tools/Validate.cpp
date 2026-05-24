@@ -904,15 +904,15 @@ void Validate::ValidateRunningPlayers()
 
   LogBuf = "Begin validation RunningPlayers";
   LogIt(LogBuf);
-  if (ChgDir(PLAYER_DIR))
-  { // Change directory failed
-    LogIt("Validate::ValidateRunningPlayers - Change directory to PLAYER_DIR failed");
-    _endthread();
-  }
-  // Get list of all RunningPlayers files
   if (ChgDir(HomeDir))
   { // Change directory failed
     LogIt("Validate::ValidateRunningPlayers - Change directory to HomeDir failed");
+    _endthread();
+  }
+  // Get list of all RunningPlayers files
+  if (ChgDir(PLAYER_DIR))
+  { // Change directory failed
+    LogIt("Validate::ValidateRunningPlayers - Change directory to PLAYER_DIR failed");
     _endthread();
   }
   for (const auto &entry : fs::directory_iterator("./"))
@@ -924,7 +924,7 @@ void Validate::ValidateRunningPlayers()
     // Open player file
     PlayerFileName = entry.path().filename().string();
     PlayerName = StrLeft(PlayerFileName, StrGetLength(PlayerFileName) - 4);
-    PlayerFileName = PLAYER_DIR + PlayerFileName;
+    PlayerFileName = HomeDir + PLAYER_DIR + PlayerFileName;
     PlayerFile.open(PlayerFileName);
     if (!PlayerFile.is_open())
     { // File does not exist - Very bad!
@@ -968,7 +968,8 @@ void Validate::ValidateRunningPlayers()
       //**********
       if (FieldName == "RoomId")
       { // RoomId field validation
-        RoomIdFileName = ROOMS_DIR;
+        RoomIdFileName  = HomeDir;
+        RoomIdFileName += ROOMS_DIR;
         RoomIdFileName += FieldValue;
         RoomIdFileName += ".txt";
         if (!FileExist(RoomIdFileName))
@@ -982,6 +983,7 @@ void Validate::ValidateRunningPlayers()
           LogValErr(Message, FileName);
         }
       }
+      Stuff = "";
       getline(PlayerFile, Stuff);
     }
     PlayerFile.close();
