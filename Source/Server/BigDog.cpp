@@ -73,6 +73,7 @@ void BigDog()
     return;
   }
   // Validation was ok, so open port, init, play on
+  ChgDir(HomeDir);
   SockOpenPort(PORT_NBR);
   InitDescriptor();
   pCalendar = new Calendar;
