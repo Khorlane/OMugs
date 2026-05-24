@@ -365,17 +365,17 @@ void Validate::ValidateLibraryObjects()
 
   LogBuf = "Begin validation LibraryObjects";
   LogIt(LogBuf);
+  if (ChgDir(HomeDir))
+  { // Change directory failed
+    LogIt("Validate::ValidateLibraryObjects - Change directory to HomeDir failed");
+    _endthread();
+  }
   if (ChgDir(OBJECTS_DIR))
   { // Change directory failed
     LogIt("Validate::ValidateLibraryObjects - Change directory to OBJECTS_DIR failed");
     _endthread();
   }
   // Get list of all LibarryObjects files
-  if (ChgDir(HomeDir))
-  { // Change directory failed
-    LogIt("Validate::ValidateLibraryObjects - Change directory to HomeDir failed");
-    _endthread();
-  }
   for (const auto &entry : fs::directory_iterator("./"))
   {
     if (entry.is_directory())
@@ -385,7 +385,7 @@ void Validate::ValidateLibraryObjects()
     // Open object file
     ObjectFileName = entry.path().filename().string();
     ObjectId = StrLeft(ObjectFileName, StrGetLength(ObjectFileName) - 4);
-    ObjectFileName = OBJECTS_DIR + ObjectFileName;
+    ObjectFileName = HomeDir + OBJECTS_DIR + ObjectFileName;
     ObjectFile.open(ObjectFileName);
     if (!ObjectFile.is_open())
     { // File does not exist - Very bad!
@@ -515,6 +515,7 @@ void Validate::ValidateLibraryObjects()
           }
         }
       }
+      Stuff = "";
       getline(ObjectFile, Stuff);
     }
     ObjectFile.close();
