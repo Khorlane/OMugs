@@ -797,15 +797,15 @@ void Validate::ValidateLibraryWorldMobiles()
 
   LogBuf = "Begin validation LibraryWorldMobiles";
   LogIt(LogBuf);
-  if (ChgDir(WORLD_MOBILES_DIR))
-  { // Change directory failed
-    LogIt("Validate::ValidateLibraryWorldMobiles - Change directory to WORLD_MOBILES_DIR failed");
-    _endthread();
-  }
-  // Get list of all LibraryWorldMobiles files
   if (ChgDir(HomeDir))
   { // Change directory failed
     LogIt("Validate::ValidateLibraryWorldMobiles - Change directory to HomeDir failed");
+    _endthread();
+  }
+  // Get list of all LibraryWorldMobiles files
+  if (ChgDir(WORLD_MOBILES_DIR))
+  { // Change directory failed
+    LogIt("Validate::ValidateLibraryWorldMobiles - Change directory to WORLD_MOBILES_DIR failed");
     _endthread();
   }
   for (const auto& entry : fs::directory_iterator("./"))
@@ -822,7 +822,7 @@ void Validate::ValidateLibraryWorldMobiles()
     }
     WorldMobileName = StrLeft(WorldMobileFileName, StrGetLength(WorldMobileFileName) - 4);
     MobileId = WorldMobileName;
-    WorldMobileFileName = WORLD_MOBILES_DIR + WorldMobileFileName;
+    WorldMobileFileName = HomeDir + WORLD_MOBILES_DIR + WorldMobileFileName;
     WorldMobileFile.open(WorldMobileFileName);
     if (!WorldMobileFile.is_open())
     { // File does not exist - Very bad!
@@ -832,7 +832,8 @@ void Validate::ValidateLibraryWorldMobiles()
     //************
     //* MobileId *
     //************
-    MobileIdFileName = MOBILES_DIR;
+    MobileIdFileName  = HomeDir;
+    MobileIdFileName += MOBILES_DIR;
     MobileIdFileName += MobileId;
     MobileIdFileName += ".txt";
     if (!FileExist(MobileIdFileName))
@@ -860,7 +861,8 @@ void Validate::ValidateLibraryWorldMobiles()
       //**********
       if (FieldName == "RoomId:")
       { // RoomId field validation
-        RoomIdFileName = ROOMS_DIR;
+        RoomIdFileName  = HomeDir;
+        RoomIdFileName += ROOMS_DIR;
         RoomIdFileName += FieldValue;
         RoomIdFileName += ".txt";
         if (!FileExist(RoomIdFileName))
@@ -874,6 +876,7 @@ void Validate::ValidateLibraryWorldMobiles()
           LogValErr(Message, FileName);
         }
       }
+      Stuff = "";
       getline(WorldMobileFile, Stuff);
     }
     WorldMobileFile.close();
