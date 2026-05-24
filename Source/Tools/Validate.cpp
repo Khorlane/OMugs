@@ -698,15 +698,15 @@ void Validate::ValidateLibraryShops()
 
   LogBuf = "Begin validation LibraryShops";
   LogIt(LogBuf);
-  if (ChgDir(SHOPS_DIR))
-  { // Change directory failed
-    LogIt("Validate::ValidateLibraryShops - Change directory to SHOPS_DIR failed");
-    _endthread();
-  }
-  // Get list of all LibraryShops files
   if (ChgDir(HomeDir))
   { // Change directory failed
     LogIt("Validate::ValidateLibraryShops - Change directory to HomeDir failed");
+    _endthread();
+  }
+  // Get list of all LibraryShops files
+  if (ChgDir(SHOPS_DIR))
+  { // Change directory failed
+    LogIt("Validate::ValidateLibraryShops - Change directory to SHOPS_DIR failed");
     _endthread();
   }
   for (const auto &entry : fs::directory_iterator("./"))
@@ -718,7 +718,7 @@ void Validate::ValidateLibraryShops()
     // Open player file
     ShopFileName = entry.path().filename().string();
     PlayerName = StrLeft(ShopFileName, StrGetLength(ShopFileName) - 4);
-    ShopFileName = SHOPS_DIR + ShopFileName;
+    ShopFileName = HomeDir + SHOPS_DIR + ShopFileName;
     ShopFile.open(ShopFileName);
     if (!ShopFile.is_open())
     { // File does not exist - Very bad!
@@ -734,6 +734,7 @@ void Validate::ValidateLibraryShops()
       FieldValue = StrGetWord(Stuff, 2);
       if (FieldName != "Item:")
       { // Not an item line
+        Stuff = "";
         getline(ShopFile, Stuff);
         if (ShopFile.eof())
         { // ObjectId file not found
@@ -751,7 +752,8 @@ void Validate::ValidateLibraryShops()
       //* Item *
       //********
       ObjectId = FieldValue;
-      ObjectIdFileName = OBJECTS_DIR;
+      ObjectIdFileName  = HomeDir;
+      ObjectIdFileName += OBJECTS_DIR;
       ObjectIdFileName += ObjectId;
       ObjectIdFileName += ".txt";
       if (!FileExist(ObjectIdFileName))
@@ -764,6 +766,7 @@ void Validate::ValidateLibraryShops()
         FileName = ShopFileName;
         LogValErr(Message, FileName);
       }
+      Stuff = "";
       getline(ShopFile, Stuff);
     }
     ShopFile.close();
