@@ -172,7 +172,8 @@ void Validate::ValidateLibraryLoot()
       //************
       //* ObjectId *
       //************
-      ObjectIdFileName = OBJECTS_DIR;
+      ObjectIdFileName  = HomeDir;
+      ObjectIdFileName += OBJECTS_DIR;
       ObjectIdFileName += ObjectId;
       ObjectIdFileName += ".txt";
       if (!FileExist(ObjectIdFileName))
@@ -185,6 +186,7 @@ void Validate::ValidateLibraryLoot()
         FileName = LootFileName;
         LogValErr(Message, FileName);
       }
+      Stuff = "";
       getline(LootFile, Stuff);
     }
     LootFile.close();
@@ -212,6 +214,11 @@ void Validate::ValidateLibraryMobiles()
 
   LogBuf = "Begin validation LibraryMobiles";
   LogIt(LogBuf);
+  if (ChgDir(HomeDir))
+  { // Change directory failed
+    LogIt("Validate::ValidateLibraryMobiles - Change directory to HomeDir failed");
+    _endthread();
+  }
   if (ChgDir(MOBILES_DIR))
   { // Change directory failed
     LogIt("Validate::ValidateLibraryMobiles - Change directory to MOBILES_DIR failed");
