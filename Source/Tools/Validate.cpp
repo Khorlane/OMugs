@@ -1104,15 +1104,15 @@ void Validate::ValidateRunningPlayersPlayerObj()
 
   LogBuf = "Begin validation RunningPlayersPlayerObj";
   LogIt(LogBuf);
-  if (ChgDir(PLAYER_OBJ_DIR))
-  { // Change directory failed
-    LogIt("Validate::ValidateRunningPlayersPlayerObj - Change directory to PLAYER_OBJ_DIR failed");
-    _endthread();
-  }
-  // Get list of all RunningPlayersPlayerObj files
   if (ChgDir(HomeDir))
   { // Change directory failed
     LogIt("Validate::ValidateRunningPlayersPlayerObj - Change directory to HomeDir failed");
+    _endthread();
+  }
+  // Get list of all RunningPlayersPlayerObj files
+  if (ChgDir(PLAYER_OBJ_DIR))
+  { // Change directory failed
+    LogIt("Validate::ValidateRunningPlayersPlayerObj - Change directory to PLAYER_OBJ_DIR failed");
     _endthread();
   }
   for (const auto& entry : fs::directory_iterator("./"))
@@ -1124,7 +1124,7 @@ void Validate::ValidateRunningPlayersPlayerObj()
     // Open player file
     PlayerObjFileName = entry.path().filename().string();
     PlayerName = StrLeft(PlayerObjFileName, StrGetLength(PlayerObjFileName) - 4);
-    PlayerObjFileName = PLAYER_OBJ_DIR + PlayerObjFileName;
+    PlayerObjFileName = HomeDir + PLAYER_OBJ_DIR + PlayerObjFileName;
     PlayerObjFile.open(PlayerObjFileName);
     if (!PlayerObjFile.is_open())
     { // File does not exist - Very bad!
@@ -1140,7 +1140,8 @@ void Validate::ValidateRunningPlayersPlayerObj()
       //************
       //* ObjectId *
       //************
-      ObjectIdFileName = OBJECTS_DIR;
+      ObjectIdFileName  = HomeDir;
+      ObjectIdFileName += OBJECTS_DIR;
       ObjectIdFileName += ObjectId;
       ObjectIdFileName += ".txt";
       if (!FileExist(ObjectIdFileName))
@@ -1153,6 +1154,7 @@ void Validate::ValidateRunningPlayersPlayerObj()
         FileName = PlayerObjFileName;
         LogValErr(Message, FileName);
       }
+      Stuff = "";
       getline(PlayerObjFile, Stuff);
     }
     PlayerObjFile.close();
