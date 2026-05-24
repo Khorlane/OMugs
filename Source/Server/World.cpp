@@ -47,6 +47,11 @@ void World::CreateSpawnMobileEvents()
   string     WorldMobileFileName;
   int        Years;
 
+  if (ChgDir(HomeDir))
+  { // Change directory failed
+    LogIt("World::CreateSpawnMobileEvents - Change directory to HomeDir failed");
+    _endthread();
+  }
   if (ChgDir(WORLD_MOBILES_DIR))
   { // Change directory failed
     LogIt("World::CreateSpawnMobileEvents - Change directory to WORLD_MOBILES_DIR failed");
@@ -65,7 +70,8 @@ void World::CreateSpawnMobileEvents()
       continue;
     }
     //* Have we already created a spawn event for this MobileId?
-    ControlMobSpawnFileName =  CONTROL_MOB_SPAWN_DIR;
+    ControlMobSpawnFileName =  HomeDir;
+    ControlMobSpawnFileName += CONTROL_MOB_SPAWN_DIR;
     ControlMobSpawnFileName += MobileId;
     ControlMobSpawnFile.open(ControlMobSpawnFileName);
     if (ControlMobSpawnFile.is_open())
@@ -74,7 +80,7 @@ void World::CreateSpawnMobileEvents()
       continue;
     }
     //* Check MaxInWorld against actual 'in world' count
-    WorldMobileFileName = WORLD_MOBILES_DIR + WorldMobileFileName;
+    WorldMobileFileName = HomeDir + WORLD_MOBILES_DIR + WorldMobileFileName;
     WorldMobileFile.open(WorldMobileFileName);
     if (!WorldMobileFile.is_open())
     { // File does not exist - Very bad!
@@ -127,7 +133,8 @@ void World::CreateSpawnMobileEvents()
     CurrentTime += Years;
     sprintf(Buf, "%d", CurrentTime);
     EventTime = Buf;
-    EventFileName =  CONTROL_EVENTS_DIR;
+    EventFileName =  HomeDir;
+    EventFileName += CONTROL_EVENTS_DIR;
     EventFileName += "M";
     EventFileName += EventTime;
     EventFileName += ".txt";
@@ -394,14 +401,16 @@ void World::MakeMobilesMove()
   //********************************
   Success1 = false;
   Success2 = false;
-  RoomMobListFileName  = CONTROL_DIR;
+  RoomMobListFileName  = HomeDir;
+  RoomMobListFileName += CONTROL_DIR;
   RoomMobListFileName += "RoomMobList.txt";
   RoomMobListFile.open(RoomMobListFileName);
   if (RoomMobListFile.is_open())
   {
     Success1 = true;
   }
-  RoomMobMoveFileName  = CONTROL_DIR;
+  RoomMobMoveFileName  = HomeDir;
+  RoomMobMoveFileName += CONTROL_DIR;
   RoomMobMoveFileName += "RoomMobMove.txt";
   RoomMobMoveFile.open(RoomMobMoveFileName);
   if (RoomMobMoveFile.is_open())
@@ -422,6 +431,7 @@ void World::MakeMobilesMove()
     if (RoomMobMoveFile.peek() == ifstream::traits_type::eof())
     { // Nothing in the MobMove file
       Success2 = false;
+      RoomMobMoveFile.close();
       Remove(RoomMobMoveFileName);
     }
   }
@@ -430,11 +440,21 @@ void World::MakeMobilesMove()
   //***********************************
   if (Success2)
   { // Process RoomMobMove until empty
+    if (RoomMobListFile.is_open())
+    {
+      RoomMobListFile.close();
+    }
+    RoomMobMoveFile.close();
     MakeMobilesMove3();
     return;
   }
   if (Success1)
   { // Process RoomMobList until empty, creates RoomMoveMove
+    RoomMobListFile.close();
+    if (RoomMobMoveFile.is_open())
+    {
+      RoomMobMoveFile.close();
+    }
     MakeMobilesMove2();
     return;
   }
@@ -711,7 +731,8 @@ void World::MakeMobilesMove3()
   //* Initization and open files *
   //******************************
   MobMoveNotCompleted = false;
-  RoomMobMoveFileName =  CONTROL_DIR;
+  RoomMobMoveFileName =  HomeDir;
+  RoomMobMoveFileName += CONTROL_DIR;
   RoomMobMoveFileName += "RoomMobMove.txt";
   RoomMobMoveFile.open(RoomMobMoveFileName);
   if (!RoomMobMoveFile.is_open())
@@ -719,7 +740,8 @@ void World::MakeMobilesMove3()
     LogIt("World::MakeMobilesMove3 - Open RoomMobMove failed");
     _endthread();
   }
-  RoomMobMoveTempFileName =  CONTROL_DIR;
+  RoomMobMoveTempFileName =  HomeDir;
+  RoomMobMoveTempFileName += CONTROL_DIR;
   RoomMobMoveTempFileName += "RoomMobMoveTemp.txt";
   RoomMobMoveTempFile.open(RoomMobMoveTempFileName);
   if (!RoomMobMoveTempFile.is_open())
@@ -732,6 +754,7 @@ void World::MakeMobilesMove3()
   //****************************
   TimerStart = clock();
   TimerStop  = TimerStart + 100;
+  Stuff = "";
   getline(RoomMobMoveFile, Stuff);
   while (Stuff != "")
   { // For each mob to be moved
@@ -740,6 +763,7 @@ void World::MakeMobilesMove3()
       MobMoveNotCompleted = true;
       Stuff += "\n";
       RoomMobMoveTempFile << Stuff << endl;
+      Stuff = "";
       getline(RoomMobMoveFile, Stuff);
       continue;
     }
@@ -748,6 +772,7 @@ void World::MakeMobilesMove3()
     ExitToRoomId = StrGetWord(Stuff, 3);
     if (!IsMobileIdInRoom(RoomId, MobileId))
     { // Mob not in room anymore, prolly get itself killed, so can't be moved
+      Stuff = "";
       getline(RoomMobMoveFile, Stuff);
       continue;
     }
@@ -765,7 +790,8 @@ void World::MakeMobilesMove3()
     PositionOfDot = StrFindFirstChar(MobileId, '.');
     if (PositionOfDot > 1)
     { // Delete 'MobStats' Room file
-      MobStatsFileName = MOB_STATS_ROOM_DIR;
+      MobStatsFileName = HomeDir;
+      MobStatsFileName += MOB_STATS_ROOM_DIR;
       MobStatsFileName += MobileId;
       MobStatsFileName += ".txt";
       ErrorCode = Remove(MobStatsFileName);
@@ -778,6 +804,7 @@ void World::MakeMobilesMove3()
       CreateMobStatsFileWrite(MOB_STATS_ROOM_DIR, MobileId, ExitToRoomId);
     }
     // Read next line
+    Stuff = "";
     getline(RoomMobMoveFile, Stuff);
   }
   // Close RoomMobMove files
