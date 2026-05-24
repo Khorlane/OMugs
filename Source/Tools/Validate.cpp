@@ -1184,15 +1184,15 @@ void Validate::ValidateRunningRoomMob()
 
   LogBuf = "Begin validation RunningRoomMob";
   LogIt(LogBuf);
-  if (ChgDir(ROOM_MOB_DIR))
-  { // Change directory failed
-    LogIt("Validate::ValidateRunningRoomMob - Change directory to ROOM_MOB_DIR failed");
-    _endthread();
-  }
-  // Get list of all RunningRoomMob files
   if (ChgDir(HomeDir))
   { // Change directory failed
     LogIt("Validate::ValidateRunningRoomMob - Change directory to HomeDir failed");
+    _endthread();
+  }
+  // Get list of all RunningRoomMob files
+  if (ChgDir(ROOM_MOB_DIR))
+  { // Change directory failed
+    LogIt("Validate::ValidateRunningRoomMob - Change directory to ROOM_MOB_DIR failed");
     _endthread();
   }
   for (const auto &entry : fs::directory_iterator("./"))
@@ -1208,7 +1208,7 @@ void Validate::ValidateRunningRoomMob()
       continue;
     }
     RoomId = StrLeft(RoomMobFileName, StrGetLength(RoomMobFileName) - 4);
-    RoomMobFileName = ROOM_MOB_DIR + RoomMobFileName;
+    RoomMobFileName = HomeDir + ROOM_MOB_DIR + RoomMobFileName;
     RoomMobFile.open(RoomMobFileName);
     if (!RoomMobFile.is_open())
     { // File does not exist - Very bad!
@@ -1218,7 +1218,8 @@ void Validate::ValidateRunningRoomMob()
     //**********
     //* RoomId *
     //**********
-    RoomIdFileName = ROOMS_DIR;
+    RoomIdFileName  = HomeDir;
+    RoomIdFileName += ROOMS_DIR;
     RoomIdFileName += RoomId;
     RoomIdFileName += ".txt";
     if (!FileExist(RoomIdFileName))
@@ -1249,7 +1250,8 @@ void Validate::ValidateRunningRoomMob()
       //************
       //* MobileId *
       //************
-      MobileIdFileName = MOBILES_DIR;
+      MobileIdFileName  = HomeDir;
+      MobileIdFileName += MOBILES_DIR;
       MobileIdFileName += MobileId;
       MobileIdFileName += ".txt";
       if (!FileExist(MobileIdFileName))
@@ -1262,6 +1264,7 @@ void Validate::ValidateRunningRoomMob()
         FileName = RoomMobFileName;
         LogValErr(Message, FileName);
       }
+      Stuff = "";
       getline(RoomMobFile, Stuff);
     }
     RoomMobFile.close();
