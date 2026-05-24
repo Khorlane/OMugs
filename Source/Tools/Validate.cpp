@@ -1293,15 +1293,15 @@ void Validate::ValidateRunningRoomObj()
 
   LogBuf = "Begin validation RunningRoomObj";
   LogIt(LogBuf);
-  if (ChgDir(ROOM_OBJ_DIR))
-  { // Change directory failed
-    LogIt("Validate::ValidateRunningRoomObj - Change directory to ROOM_OBJ_DIR failed");
-    _endthread();
-  }
-  // Get list of all RunningRoomObj files
   if (ChgDir(HomeDir))
   { // Change directory failed
     LogIt("Validate::ValidateRunningRoomObj - Change directory to HomeDir failed");
+    _endthread();
+  }
+  // Get list of all RunningRoomObj files
+  if (ChgDir(ROOM_OBJ_DIR))
+  { // Change directory failed
+    LogIt("Validate::ValidateRunningRoomObj - Change directory to ROOM_OBJ_DIR failed");
     _endthread();
   }
   for (const auto &entry : fs::directory_iterator("./"))
@@ -1317,7 +1317,7 @@ void Validate::ValidateRunningRoomObj()
       continue;
     }
     RoomId = StrLeft(RoomObjFileName, StrGetLength(RoomObjFileName) - 4);
-    RoomObjFileName = ROOM_OBJ_DIR + RoomObjFileName;
+    RoomObjFileName = HomeDir + ROOM_OBJ_DIR + RoomObjFileName;
     RoomObjFile.open(RoomObjFileName);
     if (!RoomObjFile.is_open())
     { // File does not exist - Very bad!
@@ -1327,7 +1327,8 @@ void Validate::ValidateRunningRoomObj()
     //**********
     //* RoomId *
     //**********
-    RoomIdFileName = ROOMS_DIR;
+    RoomIdFileName  = HomeDir;
+    RoomIdFileName += ROOMS_DIR;
     RoomIdFileName += RoomId;
     RoomIdFileName += ".txt";
     if (!FileExist(RoomIdFileName))
@@ -1352,7 +1353,8 @@ void Validate::ValidateRunningRoomObj()
       //************
       //* ObjectId *
       //************
-      ObjectIdFileName = OBJECTS_DIR;
+      ObjectIdFileName  = HomeDir;
+      ObjectIdFileName += OBJECTS_DIR;
       ObjectIdFileName += ObjectId;
       ObjectIdFileName += ".txt";
       if (!FileExist(ObjectIdFileName))
@@ -1365,6 +1367,7 @@ void Validate::ValidateRunningRoomObj()
         FileName = RoomObjFileName;
         LogValErr(Message, FileName);
       }
+      Stuff = "";
       getline(RoomObjFile, Stuff);
     }
     RoomObjFile.close();
