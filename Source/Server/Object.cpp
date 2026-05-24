@@ -1351,7 +1351,7 @@ void Object::OpenFile(string ObjectId)
   ObjectFileName += ObjectId;
   ObjectFileName += ".txt";
   ObjectFile.open(ObjectFileName);
-  if (ObjectFile.is_open())
+  if (!ObjectFile.is_open())
   {
     LogBuf = "Object::OpenFile - Object does not exist!";
     LogIt(LogBuf);
