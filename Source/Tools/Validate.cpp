@@ -1011,15 +1011,15 @@ void Validate::ValidateRunningPlayersPlayerEqu()
 
   LogBuf = "Begin validation RunningPlayersPlayerEqu";
   LogIt(LogBuf);
-  if (ChgDir(PLAYER_EQU_DIR))
-  { // Change directory failed
-    LogIt("Validate::ValidateRunningPlayersPlayerEqu - Change directory to PLAYER_EQU_DIR failed");
-    _endthread();
-  }
-  // Get list of all RunningPlayersPlayerEqu files
   if (ChgDir(HomeDir))
   { // Change directory failed
     LogIt("Validate::ValidateRunningPlayersPlayerEqu - Change directory to HomeDir failed");
+    _endthread();
+  }
+  // Get list of all RunningPlayersPlayerEqu files
+  if (ChgDir(PLAYER_EQU_DIR))
+  { // Change directory failed
+    LogIt("Validate::ValidateRunningPlayersPlayerEqu - Change directory to PLAYER_EQU_DIR failed");
     _endthread();
   }
   for (const auto &entry : fs::directory_iterator("./"))
@@ -1031,7 +1031,7 @@ void Validate::ValidateRunningPlayersPlayerEqu()
     // Open player file
     PlayerEquFileName = entry.path().filename().string();
     PlayerName = StrLeft(PlayerEquFileName, StrGetLength(PlayerEquFileName) - 4);
-    PlayerEquFileName = PLAYER_EQU_DIR + PlayerEquFileName;
+    PlayerEquFileName = HomeDir + PLAYER_EQU_DIR + PlayerEquFileName;
     PlayerEquFile.open(PlayerEquFileName);
     if (!PlayerEquFile.is_open())
     { // File does not exist - Very bad!
@@ -1063,7 +1063,8 @@ void Validate::ValidateRunningPlayersPlayerEqu()
       //************
       //* ObjectId *
       //************
-      ObjectIdFileName = OBJECTS_DIR;
+      ObjectIdFileName  = HomeDir;
+      ObjectIdFileName += OBJECTS_DIR;
       ObjectIdFileName += ObjectId;
       ObjectIdFileName += ".txt";
       if (!FileExist(ObjectIdFileName))
@@ -1076,6 +1077,7 @@ void Validate::ValidateRunningPlayersPlayerEqu()
         FileName = PlayerEquFileName;
         LogValErr(Message, FileName);
       }
+      Stuff = "";
       getline(PlayerEquFile, Stuff);
     }
     PlayerEquFile.close();
