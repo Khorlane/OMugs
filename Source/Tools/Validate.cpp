@@ -164,6 +164,7 @@ void Validate::ValidateLibraryLoot()
       _endthread();
     }
     LineCount = 0;
+    Stuff = "";
     getline(LootFile, Stuff);
     while (Stuff != "")
     { // For all lines
@@ -242,6 +243,7 @@ void Validate::ValidateLibraryMobiles()
       _endthread();
     }
     LineCount = 0;
+    Stuff = "";
     getline(MobileFile, Stuff);
     while (Stuff != "")
     { // For all lines
@@ -393,6 +395,7 @@ void Validate::ValidateLibraryObjects()
       _endthread();
     }
     LineCount = 0;
+    Stuff = "";
     getline(ObjectFile, Stuff);
     while (Stuff != "")
     { // For all lines
@@ -441,6 +444,7 @@ void Validate::ValidateLibraryObjects()
         { //***************
           //* ArmorValue: *
           //***************
+          Stuff = "";
           getline(ObjectFile, Stuff);
           LineCount++;
           FieldName  = StrGetWord(Stuff, 1);
@@ -454,6 +458,7 @@ void Validate::ValidateLibraryObjects()
           //**************
           //* ArmorWear: *
           //**************
+          Stuff = "";
           getline(ObjectFile, Stuff);
           LineCount++;
           FieldName  = StrGetWord(Stuff, 1);
@@ -481,6 +486,7 @@ void Validate::ValidateLibraryObjects()
         { //***************
           //* WeaponType: *
           //***************
+          Stuff = "";
           getline(ObjectFile, Stuff);
           LineCount++;
           FieldName  = StrGetWord(Stuff, 1);
@@ -503,6 +509,7 @@ void Validate::ValidateLibraryObjects()
           //*****************
           //* WeaponDamage: *
           //*****************
+          Stuff = "";
           getline(ObjectFile, Stuff);
           LineCount++;
           FieldName  = StrGetWord(Stuff, 1);
@@ -574,6 +581,7 @@ void Validate::ValidateLibraryRooms()
       _endthread();
     }
     LineCount = 0;
+    Stuff = "";
     getline(RoomFile, Stuff);
     while (Stuff != "End of Room")
     { // For all lines
@@ -726,6 +734,7 @@ void Validate::ValidateLibraryShops()
       _endthread();
     }
     LineCount = 0;
+    Stuff = "";
     getline(ShopFile, Stuff);
     while (Stuff != "End of Shop")
     { // For all lines
@@ -850,6 +859,7 @@ void Validate::ValidateLibraryWorldMobiles()
     //* Check file contents *
     //***********************
     LineCount = 0;
+    Stuff = "";
     getline(WorldMobileFile, Stuff);
     while (Stuff != "")
     { // For all lines
@@ -932,6 +942,7 @@ void Validate::ValidateRunningPlayers()
       _endthread();
     }
     LineCount = 0;
+    Stuff = "";
     getline(PlayerFile, Stuff);
     while (Stuff != "")
     { // For all lines
@@ -1039,6 +1050,7 @@ void Validate::ValidateRunningPlayersPlayerEqu()
       _endthread();
     }
     LineCount = 0;
+    Stuff = "";
     getline(PlayerEquFile, Stuff);
     while (Stuff != "")
     { // For all lines
@@ -1132,6 +1144,7 @@ void Validate::ValidateRunningPlayersPlayerObj()
       _endthread();
     }
     LineCount = 0;
+    Stuff = "";
     getline(PlayerObjFile, Stuff);
     while (Stuff != "")
     { // For all lines
@@ -1236,6 +1249,7 @@ void Validate::ValidateRunningRoomMob()
     //* Check file contents *
     //***********************
     LineCount = 0;
+    Stuff = "";
     getline(RoomMobFile, Stuff);
     while (Stuff != "")
     { // For all lines
@@ -1345,6 +1359,7 @@ void Validate::ValidateRunningRoomObj()
     //* Check file contents *
     //***********************
     LineCount = 0;
+    Stuff = "";
     getline(RoomObjFile, Stuff);
     while (Stuff != "")
     { // For all lines

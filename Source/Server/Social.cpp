@@ -174,7 +174,7 @@ int Social::PosNbr(string Position)
 string Social::ReadLine()
 {
   string MsgText;
-
+  MsgText = "";
   getline(SocialFile, MsgText);
   return MsgText;
 }

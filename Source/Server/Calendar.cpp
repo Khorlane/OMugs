@@ -143,6 +143,7 @@ void Calendar::CloseCalendarFile()
 void Calendar::GetStartTime()
 {
   DEBUGIT(1);
+  Stuff = "";
   getline(CalendarFileInp, Stuff);
   CloseCalendarFile();
   Year      = stoi(StrGetWord(Stuff, 1));
@@ -226,10 +227,12 @@ void Calendar::LoadDayNamesArray()
     LogIt(LogBuf);
   }
   DayNames.clear();
+  Stuff = "";
   getline(DayNamesFile, Stuff);
   while (DayNamesFile.peek() != EOF)
   { // Read all day names
     DayNames.push_back(Stuff);
+    Stuff = "";
     getline(DayNamesFile, Stuff);
   }
   DayNames.push_back(Stuff);
@@ -255,10 +258,12 @@ void Calendar::LoadDayOfMonthArray()
     _endthread();
   }
   DayOfMonth.clear();
+  Stuff = "";
   getline(DayOfMonthFile, Stuff);
   while (DayOfMonthFile.peek() != EOF)
   { // Read all day of month
     DayOfMonth.push_back(Stuff);
+    Stuff = "";
     getline(DayOfMonthFile, Stuff);
   }
   DayOfMonth.push_back(Stuff);
@@ -284,10 +289,12 @@ void Calendar::LoadHourNamesArray()
     _endthread();
   }
   HourNames.clear();
+  Stuff = "";
   getline(HourNamesFile, Stuff);
   while (HourNamesFile.peek() != EOF)
   { // Read all hour names
     HourNames.push_back(Stuff);
+    Stuff = "";
     getline(HourNamesFile, Stuff);
   }
   HourNames.push_back(Stuff);
@@ -313,10 +320,12 @@ void Calendar::LoadMonthNamesArray()
     _endthread();
   }
   MonthNames.clear();
+  Stuff = "";
   getline(MonthNamesFile, Stuff);
   while (MonthNamesFile.peek() != EOF)
   { // Read all month names
     MonthNames.push_back(Stuff);
+    Stuff = "";
     getline(MonthNamesFile, Stuff);
   }
   MonthNames.push_back(Stuff);

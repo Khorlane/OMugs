@@ -807,6 +807,7 @@ void Communication::CommandArrayLoad()
   ValidCmds.clear();
   while (ValidCmdsFile.peek() != EOF)
   {
+    Stuff = "";
     getline(ValidCmdsFile, Stuff);
     ValidCmds.push_back(Stuff);
   }
@@ -4438,11 +4439,13 @@ void Communication::DoMotd()
     LogIt(LogBuf);
     _endthread();
   }
+  Stuff = "";
   getline(MotdFile, Stuff);
   while (Stuff != "End of Motd")
   {
     Stuff += "\r\n";
     pDnodeActor->PlayerOut += Stuff;
+    Stuff = "";
     getline(MotdFile, Stuff);
   }
   MotdFile.close();
@@ -5174,7 +5177,9 @@ void Communication::DoShow()
     }
     else
     { // Help file is open
+      HelpText = "";
       getline(HelpFile, HelpText);    // Skip first line
+      HelpText = "";
       getline(HelpFile, HelpText);
       while (HelpText != "End of Help")
       { // Read the whole file
@@ -5183,6 +5188,7 @@ void Communication::DoShow()
           pDnodeActor->PlayerOut += StrRight(HelpText, StrGetLength(HelpText) - 5);
           pDnodeActor->PlayerOut += "\r\n";
         }
+        HelpText = "";
         getline(HelpFile, HelpText);
       }
       HelpFile.close();
@@ -5207,6 +5213,7 @@ void Communication::DoShow()
     }
     else
     { // Social file is open
+      SocialText = "";
       getline(SocialFile, SocialText);
       while (SocialText != "End of Socials")
       { // Read the whole file
@@ -5215,6 +5222,7 @@ void Communication::DoShow()
           pDnodeActor->PlayerOut += StrRight(SocialText, StrGetLength(SocialText) - 9);
           pDnodeActor->PlayerOut += "\r\n";
         }
+        SocialText = "";
         getline(SocialFile, SocialText);
       }
       SocialFile.close();
@@ -6512,11 +6520,13 @@ void Communication::LogonGreeting()
   pDnodeActor->PlayerOut += "Version ";
   pDnodeActor->PlayerOut += VERSION;
   pDnodeActor->PlayerOut += "\r\n";
+  Stuff = "";
   getline(GreetingFile, Stuff);
   while (Stuff != "End of Greeting")
   {
     Stuff += "\r\n";
     pDnodeActor->PlayerOut += Stuff;
+    Stuff = "";
     getline(GreetingFile, Stuff);
   }
   GreetingFile.close();
@@ -7212,6 +7222,7 @@ void Communication::ViolenceMobileLoot(string Loot)
     _endthread();
   }
   NoLoot = true;
+  Stuff = "";
   getline(MobileLootFile, Stuff);
   while (Stuff != "")
   {
@@ -7220,6 +7231,7 @@ void Communication::ViolenceMobileLoot(string Loot)
     { // Ok, player got some loot, so set NoLoot to false
       NoLoot = false;
     }
+    Stuff = "";
     getline(MobileLootFile, Stuff);
   }
   MobileLootFile.close();

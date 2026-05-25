@@ -61,6 +61,7 @@ void Shop::IsShopObj(string RoomId, string ObjectName)
     LogIt("Shop::IsShopObj - Shop does not exist");
     _endthread();
   }
+  Stuff = "";
   getline(ShopFile, Stuff);
   while (Stuff != "End of Items")
   { // Read 'item' lines in ShopFile
@@ -90,6 +91,7 @@ void Shop::IsShopObj(string RoomId, string ObjectName)
         }
       }
     }
+    Stuff = "";
     getline(ShopFile, Stuff);;
   }
   // Object not found in shop item list
@@ -103,6 +105,7 @@ void Shop::IsShopObj(string RoomId, string ObjectName)
     LogIt("Shop::IsShopObj - Shop does not exist");
     _endthread();
   }
+  Stuff = "";
   getline(ShopFile, Stuff);
   while (Stuff != "End of Items")
   { // Read 'item' lines in ShopFile
@@ -139,6 +142,7 @@ void Shop::IsShopObj(string RoomId, string ObjectName)
         pObject = NULL;
       }
     }
+    Stuff = "";
     getline(ShopFile, Stuff);
   }
   ShopFile.close();
@@ -168,6 +172,7 @@ void Shop::ListObjects()
     _endthread();
   }
   // Shop welcome message
+  Stuff = "";
   getline(ShopFile, Stuff);
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += "&W";
@@ -197,6 +202,7 @@ void Shop::ListObjects()
   pDnodeActor->PlayerOut += ShopText;
   pDnodeActor->PlayerOut += "\r\n";
   // List items for trade
+  Stuff = "";
   getline(ShopFile, Stuff);
   while (Stuff != "End of Items")
   { // Read 'item' lines in ShopFile
@@ -237,6 +243,7 @@ void Shop::ListObjects()
         LogIt(LogBuf);
       }
     }
+    Stuff = "";
     getline(ShopFile, Stuff);
   }
   ShopFile.close();

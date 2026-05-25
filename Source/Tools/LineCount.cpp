@@ -75,10 +75,12 @@ void LineCount::CountLines(string SourceCodeDir, string SourceCodeFileName)
   { // We don't care, just return
     return;
   }
+  Stuff = "";
   getline(SourceCodeFile, Stuff);
   while (Stuff != "End of Source")
   {
     LineCountTotal1++;
+    Stuff = "";
     getline(SourceCodeFile, Stuff);
     if (SourceCodeFile.peek() == EOF)
     { // End of file reached

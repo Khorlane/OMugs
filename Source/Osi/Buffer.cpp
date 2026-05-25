@@ -88,6 +88,7 @@ void Buffer::GetScriptLine()
     LogBuf += ScriptFileName;
     LogIt(LogBuf);
   }
+  Stuff = "";
   getline(ScriptFile, Stuff);
   CurrentLineNumber++;
   while (ScriptFile.peek() != EOF)
@@ -96,6 +97,7 @@ void Buffer::GetScriptLine()
     {
       break;
     }
+    Stuff = "";
     getline(ScriptFile, Stuff);
     CurrentLineNumber++;
   }

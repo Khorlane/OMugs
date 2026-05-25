@@ -86,6 +86,7 @@ string Utility::GetHomeDir()
     LogIt("Utility::GetHomeDir - Open HomeDir file failed (read)");
     _endthread();
   }
+  Buffer = "";
   getline(HomeDirFile, Buffer);
   HomeDir = Buffer;
   HomeDirFile.close();
@@ -134,11 +135,13 @@ string Utility::GetSqlStmt(string SqlStmtId)
     LogIt("Utility::GetSqlStmt - Open SqlStmt file failed");
     _endthread();
   }
+  Stuff = "";
   getline(SqlStmtFile, Stuff);
   while (Stuff != "")
   { // Read SQL statement
     SqlStmt += Stuff;
     SqlStmt += " ";
+    Stuff = "";
     getline(SqlStmtFile, Stuff);
   }
   SqlStmtFile.close();

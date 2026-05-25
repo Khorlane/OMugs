@@ -124,7 +124,7 @@ bool Help::OpenFile()
 void Help::ReadLine()
 {
   string Buffer;
-
+  Buffer = "";
   getline (HelpFile, Buffer);
   HelpText = Buffer;
 }

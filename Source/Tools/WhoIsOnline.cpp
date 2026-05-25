@@ -100,6 +100,7 @@ void WhoIsOnline::ParsePlayer()
   Level     = "";
   Online    = "";
   Title     = "";
+  Stuff = "";
   getline(PlayerFile, Stuff);
   while (PlayerFile.peek() != EOF)
   { // Name
@@ -137,6 +138,7 @@ void WhoIsOnline::ParsePlayer()
     {
       Title = StrRight(Stuff, StrGetLength(Stuff) - 6);
     }
+    Stuff = "";
     getline(PlayerFile, Stuff);
   }
   PlayerFile.close();
