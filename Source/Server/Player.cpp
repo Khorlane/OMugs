@@ -1229,7 +1229,6 @@ void Player::ReadLine()
 
 void Player::WriteLine(string Stuff)
 {
-  Stuff = Stuff + "\n";
   PlayerFile << Stuff << endl;
   PlayerFile.flush();
 }
