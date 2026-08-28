@@ -1,0 +1,16 @@
+* text=auto
+
+.gitattributes text eol=crlf
+
+*.c     text eol=crlf
+*.cpp   text eol=crlf
+*.h     text eol=crlf
+*.hpp   text eol=crlf
+*.rc    text eol=crlf
+*.slnx  text eol=crlf
+*.vcxproj text eol=crlf
+*.filters text eol=crlf
+*.user  text eol=crlf
+*.txt   text eol=crlf
+*.md    text eol=crlf
+*.xml   text eol=crlf
