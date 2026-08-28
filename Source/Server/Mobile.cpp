@@ -253,7 +253,6 @@ void Mobile::CreateMobPlayer(string PlayerName, string MobileId)
 
 void Mobile::CreateMobStatsFileWrite(string Directory, string MobileIdForFight, string Stuff)
 {
-  string     AfxMessage;
   ofstream   MobStatsFile;
   string     MobStatsFileName;
 
