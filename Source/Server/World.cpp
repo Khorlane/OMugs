@@ -834,7 +834,7 @@ void World::Osi(string ScriptType, string ScriptId)
   // Build script file name
   ScriptFileName  = SCRIPTS_DIR;
   ScriptFileName += ScriptType;
-  ScriptFileName += "\\";
+  ScriptFileName += "/";
   ScriptFileName += ScriptId;
   ScriptFileName += ".txt";
   // Does the script file exist?

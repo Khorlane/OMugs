@@ -111,7 +111,7 @@ void LineCount::GetSourceCodeFiles(string ParentDir, string SourceCodeDir, strin
   copy(Stuff.begin(), Stuff.end(), Buffer);
   Buffer[Stuff.size()] = '\0';
   LineCountFile.write(Buffer, strlen(Buffer));
-  SourceCodeDir  = ParentDir + SourceCodeDir + "\\";
+  SourceCodeDir  = ParentDir + SourceCodeDir + "/";
   for (const auto &entry : filesystem::directory_iterator(SourceCodeDir))
   { // For each source code file
     SourceCodeFileExtension = entry.path().extension().string();
