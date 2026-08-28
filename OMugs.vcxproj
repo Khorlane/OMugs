@@ -61,7 +61,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <ObjectFileName>.\Release\</ObjectFileName>
       <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
-      <AdditionalIncludeDirectories>C:\OMugs\Source\Server;C:\OMugs\Source\Osi;C:\OMugs\Source\Tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source\Server;Source\Osi;Source\Tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>26493;26440;26400;26409;26455;26432;26447;26446;26482;26496;26485;26429;26481;6011;6273;26467;26451;26461;6284;26497;26401;26426;26462;26459;26433;26434;26495;26812;6385;6386;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
@@ -98,7 +98,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
       <MinimalRebuild>false</MinimalRebuild>
-      <AdditionalIncludeDirectories>C:\OMugs\Source\Server;C:\OMugs\Source\Osi;C:\OMugs\Source\Tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source\Server;Source\Osi;Source\Tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
       <BrowseInformation>true</BrowseInformation>
