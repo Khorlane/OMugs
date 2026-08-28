@@ -29,8 +29,6 @@ LineCount::LineCount()
   GetSourceCodeFiles(SOURCE_DIR,  "Osi",    ".h");
   GetSourceCodeFiles(SOURCE_DIR,  "Tools",  ".cpp");
   GetSourceCodeFiles(SOURCE_DIR,  "Tools",  ".h");
-  GetSourceCodeFiles(SOURCE_DIR,  "WinApp", ".cpp");
-  GetSourceCodeFiles(SOURCE_DIR,  "WinApp", ".h");
   // Write grand total
   sprintf(Buffer, "%5d", LineCountTotal3);
   Stuff = Buffer;

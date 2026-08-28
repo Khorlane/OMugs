@@ -39,22 +39,18 @@ Library\
     'world'.
     
 Res\
-    Contains OMugs.ico which is used as the application's icon. This
-    icon is included by the main resource file OMugs.rc. Also, the
-    OMugs.rc2 file contains resources that are not edited by Visual Studio.
+    Contains legacy application icon and cursor resources that are no
+    longer part of the active command-line server build.
 
 Running\
     Contains files created and maintained by OMugs.
 
 Source\Server
-    Contains the source code for the Online Multi-User Game Server.
+    Contains the source code for the Online Multi-User Game Server,
+    including the command-line entry point.
 
 Source\Tools
-    Contains the source code for tools, like validation.
-
-Source\WinApp
-    Contains the source code for the OMugs application and various
-	dialogs used in 'world building'.
+    Contains the source code for non-UI tools, like validation.
 
 Tmp\
     Temporary stuff, should be empty most of the time.

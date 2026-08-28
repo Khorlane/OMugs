@@ -56,14 +56,12 @@
       <Optimization>MaxSpeed</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
-      <PrecompiledHeaderOutputFile>.\Release\OMugs.pch</PrecompiledHeaderOutputFile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <ObjectFileName>.\Release\</ObjectFileName>
       <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
-      <AdditionalIncludeDirectories>C:\OMugs\Source\WinApp;C:\OMugs\Source\Server;C:\OMugs\Source\Osi;C:\OMugs\Source\Tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\OMugs\Source\Server;C:\OMugs\Source\Osi;C:\OMugs\Source\Tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>26493;26440;26400;26409;26455;26432;26447;26446;26482;26496;26485;26429;26481;6011;6273;26467;26451;26461;6284;26497;26401;26426;26462;26459;26433;26434;26495;26812;6385;6386;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
@@ -86,9 +84,10 @@
     </Bscmake>
     <Link>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <OutputFile>.\Release\OMugs.exe</OutputFile>
-      <AdditionalOptions>/NODEFAULTLIB:LIBCMT %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -99,20 +98,18 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
       <MinimalRebuild>false</MinimalRebuild>
-      <AdditionalIncludeDirectories>C:\OMugs\Source\WinApp;C:\OMugs\Source\Server;C:\OMugs\Source\Osi;C:\OMugs\Source\Tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\OMugs\Source\Server;C:\OMugs\Source\Osi;C:\OMugs\Source\Tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
       <BrowseInformation>true</BrowseInformation>
-      <PrecompiledHeaderOutputFile>.\Debug\OMugs.pch</PrecompiledHeaderOutputFile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <ObjectFileName>.\Debug\</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug\</ProgramDataBaseFileName>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <DisableSpecificWarnings>26493;26440;26400;26409;26455;26432;26447;26446;26482;26496;26485;26429;26481;6011;6273;26467;26451;26461;6284;26497;26401;26426;26462;26459;26433;26434;26495;26812;6385;6386;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -132,11 +129,11 @@
     <Link>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <OutputFile>.\Debug\OMugs.exe</OutputFile>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/NODEFAULTLIB:LIBCMT %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -185,6 +182,9 @@
     <ClCompile Include="Source\Server\Log.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\Server\Main.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="Source\Server\Mobile.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -212,9 +212,6 @@
     <ClCompile Include="Source\Server\World.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Source\Tools\GenerateRooms.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="Source\Tools\LineCount.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -222,33 +219,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\Tools\WhoIsOnline.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Source\WinApp\BuildMobiles.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Source\WinApp\BuildMobilesList.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Source\WinApp\BuildObjects.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Source\WinApp\BuildObjectsList.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Source\WinApp\ChildFrm.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Source\WinApp\MainFrm.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Source\WinApp\OMugs.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Source\WinApp\OMugsDoc.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Source\WinApp\OMugsView.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
@@ -279,37 +249,9 @@
     <ClInclude Include="Source\Server\Utility.h" />
     <ClInclude Include="Source\Server\Violence.h" />
     <ClInclude Include="Source\Server\World.h" />
-    <ClInclude Include="Source\Tools\GenerateRooms.h" />
     <ClInclude Include="Source\Tools\LineCount.h" />
     <ClInclude Include="Source\Tools\Validate.h" />
     <ClInclude Include="Source\Tools\WhoIsOnline.h" />
-    <ClInclude Include="Source\WinApp\BuildMobiles.h" />
-    <ClInclude Include="Source\WinApp\BuildMobilesList.h" />
-    <ClInclude Include="Source\WinApp\BuildObjects.h" />
-    <ClInclude Include="Source\WinApp\BuildObjectsList.h" />
-    <ClInclude Include="Source\WinApp\ChildFrm.h" />
-    <ClInclude Include="Source\WinApp\MainFrm.h" />
-    <ClInclude Include="Source\WinApp\OMugs.h" />
-    <ClInclude Include="Source\WinApp\OMugsDoc.h" />
-    <ClInclude Include="Source\WinApp\OMugsView.h" />
-    <ClInclude Include="Source\WinApp\Resource.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="Res\cursor1.cur" />
-    <CustomBuild Include="Res\cursor2.cur" />
-    <CustomBuild Include="Res\cursor3.cur" />
-    <CustomBuild Include="res\OMugs.rc2" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="res\OMugs.ico" />
-    <Image Include="res\OMugsDoc.ico" />
-    <Image Include="res\Toolbar.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Source\WinApp\OMugs.rc">
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Source\WinApp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Source\WinApp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="HomeDir.txt" />
