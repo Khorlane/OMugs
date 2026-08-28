@@ -145,8 +145,7 @@ void LineCount::OpenLineCount()
   LineCountFile.open(LineCountFileName);
   if (!LineCountFile.is_open())
   { // Create file failed
-    LogIt("LineCount::OpenLineCount - OpenLineCount - Create LineCount file failed");
-    _endthread();;
+    FatalError("LineCount::OpenLineCount - OpenLineCount - Create LineCount file failed");
   }
   Stuff  = "OMugs Source Code Line Count Report";
   Stuff += "\n";

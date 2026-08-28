@@ -94,7 +94,6 @@ void Log::OpenLogFile()
     PrintIt("Log::OpenLogFile() - Failed");
     PrintIt("Hard Exit!");
     exit(1);
-    _endthread();
   }
   PrintIt("Log File is Open");
 }

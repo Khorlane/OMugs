@@ -92,8 +92,7 @@ bool Object::AddObjToPlayerEqu(string WearPosition, string ObjectId)
   if (!PlayerEquFileTmp.is_open())
   {
     LogBuf = "Object::AddObjToPlayerEqu - Open PlayerEqu temp file failed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   WearPosition = TranslateWord(WearPosition);
   if (NewPlayerEquFile)
@@ -190,8 +189,7 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId)
   if (!PlayerObjFileTmp.is_open())
   {
     LogBuf = "Object::AddObjToPlayerInv - Open PlayerObj temp file failed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   if (NewPlayerObjFile)
   { // New player inventory file, write the object and return
@@ -289,8 +287,7 @@ void Object::AddObjToRoom(string RoomId, string ObjectId)
   if (!RoomObjFileTmp.is_open())
   {
     LogBuf = "Object::AddObjToRoom - Open RoomObj temp file failed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   if (NewRoomObjFile)
   { // New room object file, write the object and return
@@ -744,8 +741,7 @@ void Object::RemoveObjFromPlayerEqu(string ObjectId)
   if (!PlayerEquFile.is_open())
   {
     LogBuf = "Object::RemoveObjFromPlayerEqu - Open PlayerEqu file failed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   // Open temp PlayerEqu file
   PlayerEquFileNameTmp =  PLAYER_EQU_DIR;
@@ -755,8 +751,7 @@ void Object::RemoveObjFromPlayerEqu(string ObjectId)
   if (!PlayerEquFileTmp.is_open())
   {
     LogBuf = "Object::RemoveObjFromPlayerEqu - Open PlayerEqu temp file failed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   // Write temp PlayerEqu file
   ObjectIdRemoved = false;
@@ -787,8 +782,7 @@ void Object::RemoveObjFromPlayerEqu(string ObjectId)
   if (!ObjectIdRemoved)
   { // Object not removed, this is definitely BAD!
     LogBuf = "Object::RemoveObjFromPlayerEqu - Object not removed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   BytesInFile = (int)PlayerEquFileTmp.tellp();
   PlayerEquFile.close();
@@ -828,8 +822,7 @@ void Object::RemoveObjFromPlayerInv(string ObjectId, int Count)
   if (!PlayerObjFile.is_open())
   {
     LogBuf = "Object::RemoveObjFromPlayerInv - Open PlayerObj file failed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   // Open temp PlayerObj file
   PlayerObjFileNameTmp =  PLAYER_OBJ_DIR;
@@ -839,8 +832,7 @@ void Object::RemoveObjFromPlayerInv(string ObjectId, int Count)
   if (!PlayerObjFileTmp.is_open())
   {
     LogBuf = "Object::RemoveObjFromPlayerInv - Open PlayerObj temp file failed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   // Write temp PlayerObj file
   ObjectIdRemoved = false;
@@ -880,8 +872,7 @@ void Object::RemoveObjFromPlayerInv(string ObjectId, int Count)
   if (!ObjectIdRemoved)
   { // Object not removed, this is definitely BAD!
     LogBuf = "Object::RemoveObjFromPlayerInv - Object not removed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   BytesInFile = (int) PlayerObjFileTmp.tellp();
   PlayerObjFile.close();
@@ -921,8 +912,7 @@ void Object::RemoveObjFromRoom(string ObjectId)
   if (!RoomObjFile.is_open())
   {
     LogBuf = "Object::RemoveObjFromRoom - Open RoomObj file failed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   // Open temp RoomObj file
   RoomObjFileNameTmp =  ROOM_OBJ_DIR;
@@ -932,8 +922,7 @@ void Object::RemoveObjFromRoom(string ObjectId)
   if (!RoomObjFileTmp.is_open())
   {
     LogBuf = "Object::RemoveObjFromRoom - Open RoomObj temp file failed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   // Write temp RoomObj file
   ObjectIdRemoved = false;
@@ -973,8 +962,7 @@ void Object::RemoveObjFromRoom(string ObjectId)
   if (!ObjectIdRemoved)
   { // Object not removed, this is definitely BAD!
     LogBuf = "Object::RemoveObjFromRoom - Object not removed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   BytesInFile = (int) RoomObjFileTmp.tellp();
   RoomObjFile.close();
@@ -1174,8 +1162,7 @@ void Object::WhereObjPlayerEqu(string ObjectIdSearch)
   if (ChgDir(PLAYER_EQU_DIR))
   { // Change directory failed
     LogBuf = "Object::WhereObjPlayerEqu - Change directory to PLAYER_EQU_DIR failed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   for (const auto &entry : fs::directory_iterator("./"))
   {
@@ -1190,8 +1177,7 @@ void Object::WhereObjPlayerEqu(string ObjectIdSearch)
     if (!PlayerEquFile.is_open())
     { // File does not exist - Very bad!
       LogBuf = "Object::WhereObjPlayerEqu - Open PlayerEqu file failed";
-      LogIt(LogBuf);
-      _endthread();
+      FatalError(LogBuf);
     }
     PlayerName = StrLeft(FileName, StrGetLength(FileName) - 4);
     Stuff = "";
@@ -1215,8 +1201,7 @@ void Object::WhereObjPlayerEqu(string ObjectIdSearch)
   if (ChgDir(HomeDir))
   { // Change directory failed
     LogBuf = "Object::WhereObjPlayerEqu - Change directory to HomeDir failed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
 }
 
@@ -1240,8 +1225,7 @@ void Object::WhereObjPlayerObj(string ObjectIdSearch)
   if (ChgDir(PLAYER_OBJ_DIR))
   { // Change directory failed
     LogBuf = "Object::WhereObjPlayerObj - Change directory to PLAYER_OBJ_DIR failed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   for (const auto &entry : fs::directory_iterator("./"))
   {
@@ -1256,8 +1240,7 @@ void Object::WhereObjPlayerObj(string ObjectIdSearch)
     if (!PlayerObjFile.is_open())
     { // File does not exist - Very bad!
       LogBuf = "Object::WhereObjPlayerObj - Open PlayerObj file failed";
-      LogIt(LogBuf);
-      _endthread();
+      FatalError(LogBuf);
     }
     PlayerName = StrLeft(FileName, StrGetLength(FileName) - 4);
     Stuff = "";
@@ -1281,8 +1264,7 @@ void Object::WhereObjPlayerObj(string ObjectIdSearch)
   if (ChgDir(HomeDir))
   { // Change directory failed
     LogBuf = "Object::WhereObjPlayerObj - Change directory to HomeDir failed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
 }
 
@@ -1306,8 +1288,7 @@ void Object::WhereObjRoomObj(string ObjectIdSearch)
   if (ChgDir(ROOM_OBJ_DIR))
   { // Change directory failed
     LogBuf = "Object::WhereObjRoomObj - Change directory to ROOM_OBJ_DIR failed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   for (const auto &entry : fs::directory_iterator("./"))
   {
@@ -1322,8 +1303,7 @@ void Object::WhereObjRoomObj(string ObjectIdSearch)
     if (!RoomObjFile.is_open())
     { // File does not exist - Very bad!
       LogBuf = "Object::WhereObj - Open RoomObj file failed";
-      LogIt(LogBuf);
-      _endthread();
+      FatalError(LogBuf);
     }
     RoomName = StrLeft(FileName, StrGetLength(FileName) - 4);
     Stuff = "";
@@ -1347,8 +1327,7 @@ void Object::WhereObjRoomObj(string ObjectIdSearch)
   if (ChgDir(HomeDir))
   { // Change directory failed
     LogBuf = "Object::WhereObj - Change directory to HomeDir failed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
 }
 
@@ -1410,8 +1389,7 @@ void Object::OpenFile(string ObjectId)
   if (!ObjectFile.is_open())
   {
     LogBuf = "Object::OpenFile - Object does not exist!";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
 }
 

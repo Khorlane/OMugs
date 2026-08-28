@@ -353,8 +353,7 @@ void Communication::SockCheckForNewConnections()
   { // Something is wrong
     sprintf(Buf,"%s", strerror(errno));
     LogBuf = "Communication::SockCheckForNewConnections: select: " + (string)Buf;
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   if (FD_ISSET(ListenSocket, &InpSet))
   { // Process new connection
@@ -376,8 +375,7 @@ void Communication::SockClosePort(int Port)
   if (Result!= 0)
   {
     LogBuf = "Communication::~Communication - Error: closesocket";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   sprintf(Buf, "%d", Port);
   LogBuf = "Closed port " + (string)Buf;;
@@ -801,8 +799,7 @@ void Communication::CommandArrayLoad()
   if (!ValidCmdsFile.is_open())
   { // Open failed
     LogBuf = "Communication::CommandArrayLoad - Open Valid Commands file failed (read)";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   ValidCmds.clear();
   while (ValidCmdsFile.peek() != EOF)
@@ -869,8 +866,7 @@ string Communication::CommandCheck(string MudCmdChk)
   if (CommandCheckResult == "")
   { // This should never be true
     LogBuf = "Communication::CommandCheck - Broke!";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   return CommandCheckResult;
 }
@@ -2168,8 +2164,7 @@ void Communication::DoDelete()
   if (ErrorCode.value() != 0)
   {
     LogBuf = "Communication::DoDelete - Failed to remove Player file: " + PlayerFileName + ". Error: " + ErrorCode.message();
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   // Delete PlayerEqu file
   PlayerFileName =  PLAYER_EQU_DIR;
@@ -4436,8 +4431,7 @@ void Communication::DoMotd()
   if (!MotdFile.is_open())
   {
     LogBuf = "Communication::DoMotd - Open Motd file failed (read)";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   Stuff = "";
   getline(MotdFile, Stuff);
@@ -6514,8 +6508,7 @@ void Communication::LogonGreeting()
   if (!GreetingFile.is_open())
   {
     LogBuf = "Communication::LogonGreeting - Open Greeting file failed (read)";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   pDnodeActor->PlayerOut += "Version ";
   pDnodeActor->PlayerOut += VERSION;
@@ -6918,8 +6911,7 @@ void Communication::SockNewConnection()
   {
     sprintf(Buf, "%s", strerror(errno));
     LogBuf = "Communication::SockNewConnection - Error: accept: " + (string)Buf;
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   IpAddress = inet_ntoa(Sock.sin_addr);
   // Make socket nonblocking (pg 286)
@@ -6928,8 +6920,7 @@ void Communication::SockNewConnection()
   {
     sprintf(Buf, "%s", strerror(errno));
     LogBuf = "Communication::SockNewConnection - Error: ioctlsocket " + (string)Buf;
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   sprintf(Buf, "%d", SocketHandle);
   TmpStr = (string)Buf;
@@ -7218,8 +7209,7 @@ void Communication::ViolenceMobileLoot(string Loot)
   if (!MobileLootFile.is_open())
   {
     LogBuf = "Communication::ViolenceMobileLoot - Error opening mobile loot file, it may not exist";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   NoLoot = true;
   Stuff = "";

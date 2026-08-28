@@ -195,8 +195,7 @@ bool Player::IsNameValid(string Name)
   if (!ValidNameFile.is_open())
   { // Ok, who deleted the valid names file?
     LogBuf = "Player::IsNameValid - Error opening valid name file, it may not exist";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   Name = StrMakeLower(Name);
   NameIn = "";
@@ -435,8 +434,7 @@ void Player::ParsePlayerStuff()
   if (!OpenFile(Name, "Read"))
   {
     LogBuf = "Player::Save - Error opening player file for read, Players directory may not exist";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   ReadLine();
   while (Stuff != "")
@@ -771,8 +769,7 @@ void Player::Save()
   if (!OpenFile(Name, "Write"))
   {
     LogBuf = "Player::Save - Error opening player file for write, Players directory may not exist";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   // Name
   Stuff = "Name:" + Name;
@@ -1207,8 +1204,7 @@ bool Player::OpenFile(string Name, string Mode)
   else
   {
     LogBuf = "Player::OpenFile - Mode is not 'Read' or 'Write'";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
     return false; // Never will execute this return, but stops warning message
   }
 }

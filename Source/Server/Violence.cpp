@@ -118,8 +118,7 @@ int Violence::GetMobileArmor(string MobileId)
     MobileArmor = 0;
     return MobileArmor;
     // This code is currently unreachable, on purpose.
-    LogIt("Violence::GetArmor - Open MobStatsArmorFile file failed (read)");
-    _endthread();
+    FatalError("Violence::GetArmor - Open MobStatsArmorFile file failed (read)");
   }
   Stuff = "";
   getline(MobStatsArmorFile, Stuff);;
@@ -148,8 +147,7 @@ string Violence::GetMobileAttack(string MobileId)
   MobStatsAttackFile.open(MobStatsAttackFileName);
   if (!MobStatsAttackFile.is_open())
   {
-    LogIt("Violence::GetMobileAttack - Open MobStatsAttack file failed (read)");
-    _endthread();
+    FatalError("Violence::GetMobileAttack - Open MobStatsAttack file failed (read)");
   }
   Stuff = "";
   getline(MobStatsAttackFile, Stuff);
@@ -178,8 +176,7 @@ int Violence::GetMobileDamage(string MobileId)
   MobStatsDamageFile.open(MobStatsDamageFileName);
   if (!MobStatsDamageFile.is_open())
   {
-    LogIt("Violence::GetMobileDamage - Open MobStatsDamageFile file failed (read)");
-    _endthread();
+    FatalError("Violence::GetMobileDamage - Open MobStatsDamageFile file failed (read)");
   }
   Stuff = "";
   getline(MobStatsDamageFile, Stuff);
@@ -208,8 +205,7 @@ string Violence::GetMobileDesc1(string MobileId)
   MobStatsDesc1File.open(MobStatsDesc1FileName);
   if (!MobStatsDesc1File.is_open())
   {
-    LogIt("Violence::GetMobileDesc1 - Open MobStatsDesc1 file failed (read)");
-    _endthread();
+    FatalError("Violence::GetMobileDesc1 - Open MobStatsDesc1 file failed (read)");
   }
   Stuff = "";
   getline(MobStatsDesc1File, Stuff);
@@ -237,8 +233,7 @@ string Violence::GetMobileExpPointsLevel(string MobileId)
   MobStatsExpPointsFile.open(MobStatsExpPointsFileName);
   if (!MobStatsExpPointsFile.is_open())
   {
-    LogIt("Violence::GetMobileExpPointsLevel - Open MobStatsExpPointsFile file failed (read)");
-    _endthread();
+    FatalError("Violence::GetMobileExpPointsLevel - Open MobStatsExpPointsFile file failed (read)");
   }
   Stuff = "";
   getline(MobStatsExpPointsFile, Stuff);
@@ -266,8 +261,7 @@ string Violence::GetMobileHitPoints(string MobileId)
   MobStatsHitPointsFile.open(MobStatsHitPointsFileName);
   if (!MobStatsHitPointsFile.is_open())
   {
-    LogIt("Violence::WhackMobile - Open MobStatsHitPointsFile file failed (read)");
-    _endthread();
+    FatalError("Violence::WhackMobile - Open MobStatsHitPointsFile file failed (read)");
   }
   Stuff = "";
   getline(MobStatsHitPointsFile, Stuff);
@@ -293,8 +287,7 @@ string Violence::GetMobileLoot(string MobileId)
   MobStatsLootFile.open(MobStatsLootFileName);
   if (!MobStatsLootFile.is_open())
   {
-    LogIt("Violence::GetMobileLoot - Open MobStatsLoot file failed (read)");
-    _endthread();
+    FatalError("Violence::GetMobileLoot - Open MobStatsLoot file failed (read)");
   }
   Stuff = "";
   getline(MobStatsLootFile, Stuff);
@@ -323,8 +316,7 @@ string Violence::GetMobileRoom(string MobileId)
   MobStatsRoomFile.open(MobStatsRoomFileName);
   if (!MobStatsRoomFile.is_open())
   {
-    LogIt("Violence::GetMobileRoom - Open MobStatsRoom file failed (read)");
-    _endthread();
+    FatalError("Violence::GetMobileRoom - Open MobStatsRoom file failed (read)");
   }
   Stuff = "";
   getline(MobStatsRoomFile, Stuff);
@@ -387,8 +379,7 @@ string Violence::GetPlayerMobMobileId(string PlayerName)
   PlayerMobFile.open(PlayerMobFileName);
   if (!PlayerMobFile.is_open())
   {
-    LogIt("Violence::GetPlayerMobMobileId - Open PlayerMob file failed");
-    _endthread();
+    FatalError("Violence::GetPlayerMobMobileId - Open PlayerMob file failed");
   }
   MobileId = "";
   getline(PlayerMobFile, MobileId);
@@ -435,8 +426,7 @@ string Violence::WhackMobile(string MobileId, int DamageToMobile, string MobileD
   MobStatsHitPointsFile.open(MobStatsHitPointsFileName);
   if (!MobStatsHitPointsFile.is_open())
   { // Open failed - very bad
-    LogIt("Violence::WhackMobile - Open MobStatsHitPointsFile file failed (write)");
-    _endthread();
+    FatalError("Violence::WhackMobile - Open MobStatsHitPointsFile file failed (write)");
   }
   sprintf(Buf, "%d", MobHitPointsTotal);
   TmpStr = Buf;

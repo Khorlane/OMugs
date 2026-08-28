@@ -15,7 +15,6 @@
 #include <string>           // For std::string
 #include <fstream>          // For file operations (ifstream, ofstream)
 #include <filesystem>       // For std::filesystem
-#include <thread>           // For _endthread
 #include <algorithm>        // For std::copy
 #include <cstring>          // For strlen
 #include "Config.h"

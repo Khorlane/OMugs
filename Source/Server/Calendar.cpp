@@ -254,8 +254,7 @@ void Calendar::LoadDayOfMonthArray()
   if (!DayOfMonthFile.is_open())
   { // Open failed
     LogBuf = "Calendar::LoadDayOfMonthArray - Open Day Of Month file failed (read)";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   DayOfMonth.clear();
   Stuff = "";
@@ -285,8 +284,7 @@ void Calendar::LoadHourNamesArray()
   if (!HourNamesFile.is_open())
   { // Open failed
     LogBuf = "Calendar::LoadHourNamesArray - Open Hour Names file failed (read)";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   HourNames.clear();
   Stuff = "";
@@ -316,8 +314,7 @@ void Calendar::LoadMonthNamesArray()
   if (!MonthNamesFile.is_open())
   { // Open failed
     LogBuf = "Calendar::LoadMonthNamesArray - Open Month Names file failed (read)";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   MonthNames.clear();
   Stuff = "";
@@ -347,8 +344,7 @@ void Calendar::SaveTime()
   if (!CalendarFileOut.is_open())
   { // Open failed
     LogBuf = "Calendar::SaveTime - Open calendar file - Failed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   sprintf(Buffer, "%d %d %d %d %d", Year, Month, Day, Hour, DayOfWeek);
   CalendarFileOut.write(Buffer, strlen(Buffer));

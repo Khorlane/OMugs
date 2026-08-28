@@ -83,8 +83,7 @@ string Utility::GetHomeDir()
   HomeDirFile.open(HomeDirFileName);
   if (!HomeDirFile.is_open())
   {
-    LogIt("Utility::GetHomeDir - Open HomeDir file failed (read)");
-    _endthread();
+    FatalError("Utility::GetHomeDir - Open HomeDir file failed");
   }
   Buffer = "";
   getline(HomeDirFile, Buffer);
@@ -132,8 +131,7 @@ string Utility::GetSqlStmt(string SqlStmtId)
   SqlStmtFile.open(SqlStmtFileName);
   if (!SqlStmtFile.is_open())
   {
-    LogIt("Utility::GetSqlStmt - Open SqlStmt file failed");
-    _endthread();
+    FatalError("Utility::GetSqlStmt - Open SqlStmt file failed");
   }
   Stuff = "";
   getline(SqlStmtFile, Stuff);

@@ -58,8 +58,7 @@ void Shop::IsShopObj(string RoomId, string ObjectName)
   ShopFile.open(ShopFileName);
   if (!ShopFile.is_open())
   { // No such file???, But there should be, This is bad!
-    LogIt("Shop::IsShopObj - Shop does not exist");
-    _endthread();
+    FatalError("Shop::IsShopObj - Shop does not exist");
   }
   Stuff = "";
   getline(ShopFile, Stuff);
@@ -102,8 +101,7 @@ void Shop::IsShopObj(string RoomId, string ObjectName)
   ShopFile.open(ShopFileName);
   if (!ShopFile.is_open())
   { // No such file???, But there should be, This is bad!
-    LogIt("Shop::IsShopObj - Shop does not exist");
-    _endthread();
+    FatalError("Shop::IsShopObj - Shop does not exist");
   }
   Stuff = "";
   getline(ShopFile, Stuff);
@@ -168,8 +166,7 @@ void Shop::ListObjects()
   ShopFile.open(ShopFileName);
   if (!ShopFile.is_open())
   { // No such file???, But there should be, This is bad!
-    LogIt("Shop::ListObjects - Shop does not exist");
-    _endthread();
+    FatalError("Shop::ListObjects - Shop does not exist");
   }
   // Shop welcome message
   Stuff = "";

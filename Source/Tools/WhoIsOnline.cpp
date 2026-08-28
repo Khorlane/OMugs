@@ -55,8 +55,7 @@ void WhoIsOnline::OpenStatsWho()
   StatsWhoFile.open(StatsWhoFileName);
   if (!StatsWhoFile.is_open())
   { // Create file failed
-    LogIt("WhoIsOnline::OpenStatsWho - Create StatsWho file failed");
-    _endthread();
+    FatalError("WhoIsOnline::OpenStatsWho - Create StatsWho file failed");
   }
   // Write first line of xml
   Stuff = "<webstats>";

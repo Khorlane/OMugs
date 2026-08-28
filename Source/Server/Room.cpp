@@ -56,16 +56,14 @@ string Room::GetRoomId(string RoomId)
   RoomFile.open(RoomFileName);
   if (!RoomFile.is_open())
   { // No such file???, But there should be, This is bad!
-    LogIt("Room::GetRoomId - Room does not exist");
-    _endthread();
+    FatalError("Room::GetRoomId - Room does not exist");
   }
   // RoomId
   Stuff = "";
   getline(RoomFile, Stuff);
   if (StrLeft(Stuff, 7) != "RoomId:")
   { // Very bad, where did the RoomId go anyway?
-    LogIt("Room::GetRoomId - RoomId: not found");
-    _endthread();
+    FatalError("Room::GetRoomId - RoomId: not found");
   }
   RoomId = StrGetWord(Stuff, 2);
   RoomFile.close();
@@ -87,8 +85,7 @@ string Room::GetRoomName(string RoomId)
   RoomFile.open(RoomFileName);
   if (!RoomFile.is_open())
   { // No such file???, But there should be, This is bad!
-    LogIt("Room::GetRoomName - Room does not exist");
-    _endthread();
+    FatalError("Room::GetRoomName - Room does not exist");
   }
 
   // RoomName
@@ -102,8 +99,7 @@ string Room::GetRoomName(string RoomId)
   getline(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "RoomName:")
   { // Very bad, where did the RoomName go anyway?
-    LogIt("Room::GetRoomName - RoomName: not found");
-    _endthread();
+    FatalError("Room::GetRoomName - RoomName: not found");
   }
   RoomName = StrGetWords(Stuff, 2);
   StrTrimLeft(RoomName);
@@ -128,8 +124,7 @@ string Room::GetValidMobRoomExits(string RoomId)
   RoomFile.open(RoomFileName);
   if (!RoomFile.is_open())
   { // No such file???, But there should be, This is bad!
-    LogIt("Room::GetValidMobRoomExits - Room does not exist");
-    _endthread();
+    FatalError("Room::GetValidMobRoomExits - Room does not exist");
   }
   ValidMobExits = "";
   Stuff = "Not Done";
@@ -169,8 +164,7 @@ bool Room::IsExit(string MudCmdIsExit)
   Found = false;
   if (!OpenFile(pDnodeActor))
   { // If the file isn't there, then the Room does not exit, doh!
-    LogIt("Room::IsExit - Room does not exist");
-    _endthread();
+    FatalError("Room::IsExit - Room does not exist");
   }
   ExitLookup = StrGetWord(CmdStr, 2);
   ExitLookup = StrMakeLower(ExitLookup);
@@ -282,8 +276,7 @@ bool Room::IsRoom(string RoomId)
     RoomFile.close();
     if (StrLeft(Stuff, 7) != "RoomId:")
     {
-      LogIt("Room::IsRoom - RoomId: not found");
-      _endthread();
+      FatalError("Room::IsRoom - RoomId: not found");
     }
     Stuff = StrGetWord(Stuff, 2);
     if (Stuff != RoomId)
@@ -309,8 +302,7 @@ bool Room::IsRoomType(string RoomId, string RoomType)
   RoomFile.open(RoomFileName);
   if (!RoomFile.is_open())
   { // No such file???, But there should be, This is bad!
-    LogIt("Room::IsRoomType - Room does not exist");
-    _endthread();
+    FatalError("Room::IsRoomType - Room does not exist");
   }
   // RoomType
   Stuff = "";
@@ -319,8 +311,7 @@ bool Room::IsRoomType(string RoomId, string RoomType)
   getline(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "RoomType:")
   { // Very bad, where did the RoomType go anyway?
-    LogIt("Room::IsRoomType - RoomType: not found");
-    _endthread();
+    FatalError("Room::IsRoomType - RoomType: not found");
   }
   Stuff = StrGetWords(Stuff, 2);
   StrTrimLeft(Stuff);
@@ -344,8 +335,7 @@ void Room::ShowRoom(Dnode *pDnode)
 {
   if (!OpenFile(pDnode))
   { // If the file isn't there, then the Room does not exit, doh!
-    LogIt("Room::ShowRoom - Room does not exist");
-    _endthread();
+    FatalError("Room::ShowRoom - Room does not exist");
   }
   ShowRoomName(pDnode);
   ShowRoomDesc(pDnode);
@@ -461,8 +451,7 @@ void Room::ShowRoomDesc(Dnode *pDnode)
   getline(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "RoomDesc:")
   {
-    LogIt("Room::ShowRoomDesc - RoomDesc: not found");
-    _endthread();
+    FatalError("Room::ShowRoomDesc - RoomDesc: not found");
   }
   // Room Description
   Stuff = "";
@@ -487,8 +476,7 @@ void Room::ShowRoomExitDesc()
   getline(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "ExitDesc:")
   {
-    LogIt("Room::ShowRoomExitDesc - ExitDesc: not found");
-    _endthread();
+    FatalError("Room::ShowRoomExitDesc - ExitDesc: not found");
   }
   // Exit Description
   Stuff = "";
@@ -550,22 +538,19 @@ void Room::ShowRoomName(Dnode *pDnode)
   getline(RoomFile, Stuff);
   if (StrLeft(Stuff, 7) != "RoomId:")
   {
-    LogIt("Room::ShowRoomName - RoomId: not found");
-    _endthread();
+    FatalError("Room::ShowRoomName - RoomId: not found");
   }
   RoomId = StrGetWord(Stuff, 2);
   if (RoomId != pDnode->pPlayer->RoomId)
   {
-    LogIt("Room::ShowRoomName - RoomId mis-match");
-    _endthread();
+    FatalError("Room::ShowRoomName - RoomId mis-match");
   }
   // RoomType
   Stuff = "";
   getline(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "RoomType:")
   {
-    LogIt("Room::ShowRoomName - RoomType: not found");
-    _endthread();
+    FatalError("Room::ShowRoomName - RoomType: not found");
   }
   RoomType = StrGetWords(Stuff, 2);
   // Terrain
@@ -573,8 +558,7 @@ void Room::ShowRoomName(Dnode *pDnode)
   getline(RoomFile, Stuff);
   if (StrLeft(Stuff, 8) != "Terrain:")
   {
-    LogIt("Room::ShowRoomName - Terrain: not found");
-    _endthread();
+    FatalError("Room::ShowRoomName - Terrain: not found");
   }
   Terrain = StrGetWord(Stuff, 2);
   // RoomName
@@ -582,8 +566,7 @@ void Room::ShowRoomName(Dnode *pDnode)
   getline(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "RoomName:")
   {
-    LogIt("Room::ShowRoomName - RoomName: not found");
-    _endthread();
+    FatalError("Room::ShowRoomName - RoomName: not found");
   }
   RoomName = StrGetWords(Stuff, 2);
   StrTrimLeft(RoomName);

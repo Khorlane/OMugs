@@ -141,13 +141,11 @@ void Validate::ValidateLibraryLoot()
   // Get list of all LibraryLoot files
   if (ChgDir(HomeDir))
   { // Change directory failed
-    LogIt("Validate::ValidateLibraryLoot - Change directory to HomeDir failed");
-    _endthread();
+    FatalError("Validate::ValidateLibraryLoot - Change directory to HomeDir failed");
   }
   if (ChgDir(LOOT_DIR))
   { // Change directory failed
-    LogIt("Validate::ValidateLibraryLoot - Change directory to LOOT_DIR failed");
-    _endthread();
+    FatalError("Validate::ValidateLibraryLoot - Change directory to LOOT_DIR failed");
   }
   for (const auto &entry : fs::directory_iterator("./"))
   {
@@ -160,8 +158,7 @@ void Validate::ValidateLibraryLoot()
     LootFile.open(LootFileName);
     if (!LootFile.is_open())
     { // File does not exist - Very bad!
-      LogIt("Validate::ValidateLibraryLoot - Open loot file failed: " + LootFileName);
-      _endthread();
+      FatalError("Validate::ValidateLibraryLoot - Open loot file failed: " + LootFileName);
     }
     LineCount = 0;
     Stuff = "";
@@ -217,13 +214,11 @@ void Validate::ValidateLibraryMobiles()
   LogIt(LogBuf);
   if (ChgDir(HomeDir))
   { // Change directory failed
-    LogIt("Validate::ValidateLibraryMobiles - Change directory to HomeDir failed");
-    _endthread();
+    FatalError("Validate::ValidateLibraryMobiles - Change directory to HomeDir failed");
   }
   if (ChgDir(MOBILES_DIR))
   { // Change directory failed
-    LogIt("Validate::ValidateLibraryMobiles - Change directory to MOBILES_DIR failed");
-    _endthread();
+    FatalError("Validate::ValidateLibraryMobiles - Change directory to MOBILES_DIR failed");
   }
   // Get list of all LibraryMobiles files
   for (const auto &entry : fs::directory_iterator("./"))
@@ -239,8 +234,7 @@ void Validate::ValidateLibraryMobiles()
     MobileFile.open(MobileFileName);
     if (!MobileFile.is_open())
     { // File does not exist - Very bad!
-      LogIt("Validate::ValidateLibraryMobiles - Open mobile file failed");
-      _endthread();
+      FatalError("Validate::ValidateLibraryMobiles - Open mobile file failed");
     }
     LineCount = 0;
     Stuff = "";
@@ -369,13 +363,11 @@ void Validate::ValidateLibraryObjects()
   LogIt(LogBuf);
   if (ChgDir(HomeDir))
   { // Change directory failed
-    LogIt("Validate::ValidateLibraryObjects - Change directory to HomeDir failed");
-    _endthread();
+    FatalError("Validate::ValidateLibraryObjects - Change directory to HomeDir failed");
   }
   if (ChgDir(OBJECTS_DIR))
   { // Change directory failed
-    LogIt("Validate::ValidateLibraryObjects - Change directory to OBJECTS_DIR failed");
-    _endthread();
+    FatalError("Validate::ValidateLibraryObjects - Change directory to OBJECTS_DIR failed");
   }
   // Get list of all LibarryObjects files
   for (const auto &entry : fs::directory_iterator("./"))
@@ -391,8 +383,7 @@ void Validate::ValidateLibraryObjects()
     ObjectFile.open(ObjectFileName);
     if (!ObjectFile.is_open())
     { // File does not exist - Very bad!
-      LogIt("Validate::ValidateLibraryObjects - Open object file failed");
-      _endthread();
+      FatalError("Validate::ValidateLibraryObjects - Open object file failed");
     }
     LineCount = 0;
     Stuff = "";
@@ -555,14 +546,12 @@ void Validate::ValidateLibraryRooms()
   LogIt(LogBuf);
   if (ChgDir(HomeDir))
   { // Change directory failed
-    LogIt("Validate::ValidateRooms - Change directory to HomeDir failed");
-    _endthread();
+    FatalError("Validate::ValidateRooms - Change directory to HomeDir failed");
   }
   // Get list of all LibraryRooms files
   if (ChgDir(ROOMS_DIR))
   { // Change directory failed
-    LogIt("Validate::ValidateLibraryRooms - Change directory to ROOMS_DIR failed");
-    _endthread();
+    FatalError("Validate::ValidateLibraryRooms - Change directory to ROOMS_DIR failed");
   }
   for (const auto &entry : fs::directory_iterator("./"))
   {
@@ -577,8 +566,7 @@ void Validate::ValidateLibraryRooms()
     RoomFile.open(RoomFileName);
     if (!RoomFile.is_open())
     { // File does not exist - Very bad!
-      LogIt("Validate::ValidateLibraryRooms - Open room file failed");
-      _endthread();
+      FatalError("Validate::ValidateLibraryRooms - Open room file failed");
     }
     LineCount = 0;
     Stuff = "";
@@ -708,14 +696,12 @@ void Validate::ValidateLibraryShops()
   LogIt(LogBuf);
   if (ChgDir(HomeDir))
   { // Change directory failed
-    LogIt("Validate::ValidateLibraryShops - Change directory to HomeDir failed");
-    _endthread();
+    FatalError("Validate::ValidateLibraryShops - Change directory to HomeDir failed");
   }
   // Get list of all LibraryShops files
   if (ChgDir(SHOPS_DIR))
   { // Change directory failed
-    LogIt("Validate::ValidateLibraryShops - Change directory to SHOPS_DIR failed");
-    _endthread();
+    FatalError("Validate::ValidateLibraryShops - Change directory to SHOPS_DIR failed");
   }
   for (const auto &entry : fs::directory_iterator("./"))
   {
@@ -730,8 +716,7 @@ void Validate::ValidateLibraryShops()
     ShopFile.open(ShopFileName);
     if (!ShopFile.is_open())
     { // File does not exist - Very bad!
-      LogIt("Validate::ValidateLibraryShops - Open shop file failed");
-      _endthread();
+      FatalError("Validate::ValidateLibraryShops - Open shop file failed");
     }
     LineCount = 0;
     Stuff = "";
@@ -808,14 +793,12 @@ void Validate::ValidateLibraryWorldMobiles()
   LogIt(LogBuf);
   if (ChgDir(HomeDir))
   { // Change directory failed
-    LogIt("Validate::ValidateLibraryWorldMobiles - Change directory to HomeDir failed");
-    _endthread();
+    FatalError("Validate::ValidateLibraryWorldMobiles - Change directory to HomeDir failed");
   }
   // Get list of all LibraryWorldMobiles files
   if (ChgDir(WORLD_MOBILES_DIR))
   { // Change directory failed
-    LogIt("Validate::ValidateLibraryWorldMobiles - Change directory to WORLD_MOBILES_DIR failed");
-    _endthread();
+    FatalError("Validate::ValidateLibraryWorldMobiles - Change directory to WORLD_MOBILES_DIR failed");
   }
   for (const auto& entry : fs::directory_iterator("./"))
   {
@@ -835,8 +818,7 @@ void Validate::ValidateLibraryWorldMobiles()
     WorldMobileFile.open(WorldMobileFileName);
     if (!WorldMobileFile.is_open())
     { // File does not exist - Very bad!
-      LogIt("Validate::ValidateLibraryWorldMobiles - Open world mobile file failed");
-      _endthread();
+      FatalError("Validate::ValidateLibraryWorldMobiles - Open world mobile file failed");
     }
     //************
     //* MobileId *
@@ -916,14 +898,12 @@ void Validate::ValidateRunningPlayers()
   LogIt(LogBuf);
   if (ChgDir(HomeDir))
   { // Change directory failed
-    LogIt("Validate::ValidateRunningPlayers - Change directory to HomeDir failed");
-    _endthread();
+    FatalError("Validate::ValidateRunningPlayers - Change directory to HomeDir failed");
   }
   // Get list of all RunningPlayers files
   if (ChgDir(PLAYER_DIR))
   { // Change directory failed
-    LogIt("Validate::ValidateRunningPlayers - Change directory to PLAYER_DIR failed");
-    _endthread();
+    FatalError("Validate::ValidateRunningPlayers - Change directory to PLAYER_DIR failed");
   }
   for (const auto &entry : fs::directory_iterator("./"))
   {
@@ -938,8 +918,7 @@ void Validate::ValidateRunningPlayers()
     PlayerFile.open(PlayerFileName);
     if (!PlayerFile.is_open())
     { // File does not exist - Very bad!
-      LogIt("Validate::ValidateRunningPlayers - Open player file failed");
-      _endthread();
+      FatalError("Validate::ValidateRunningPlayers - Open player file failed");
     }
     LineCount = 0;
     Stuff = "";
@@ -1024,14 +1003,12 @@ void Validate::ValidateRunningPlayersPlayerEqu()
   LogIt(LogBuf);
   if (ChgDir(HomeDir))
   { // Change directory failed
-    LogIt("Validate::ValidateRunningPlayersPlayerEqu - Change directory to HomeDir failed");
-    _endthread();
+    FatalError("Validate::ValidateRunningPlayersPlayerEqu - Change directory to HomeDir failed");
   }
   // Get list of all RunningPlayersPlayerEqu files
   if (ChgDir(PLAYER_EQU_DIR))
   { // Change directory failed
-    LogIt("Validate::ValidateRunningPlayersPlayerEqu - Change directory to PLAYER_EQU_DIR failed");
-    _endthread();
+    FatalError("Validate::ValidateRunningPlayersPlayerEqu - Change directory to PLAYER_EQU_DIR failed");
   }
   for (const auto &entry : fs::directory_iterator("./"))
   {
@@ -1046,8 +1023,7 @@ void Validate::ValidateRunningPlayersPlayerEqu()
     PlayerEquFile.open(PlayerEquFileName);
     if (!PlayerEquFile.is_open())
     { // File does not exist - Very bad!
-      LogIt("Validate::ValidateRunningPlayersPlayerEqu - Open player file failed");
-      _endthread();
+      FatalError("Validate::ValidateRunningPlayersPlayerEqu - Open player file failed");
     }
     LineCount = 0;
     Stuff = "";
@@ -1118,14 +1094,12 @@ void Validate::ValidateRunningPlayersPlayerObj()
   LogIt(LogBuf);
   if (ChgDir(HomeDir))
   { // Change directory failed
-    LogIt("Validate::ValidateRunningPlayersPlayerObj - Change directory to HomeDir failed");
-    _endthread();
+    FatalError("Validate::ValidateRunningPlayersPlayerObj - Change directory to HomeDir failed");
   }
   // Get list of all RunningPlayersPlayerObj files
   if (ChgDir(PLAYER_OBJ_DIR))
   { // Change directory failed
-    LogIt("Validate::ValidateRunningPlayersPlayerObj - Change directory to PLAYER_OBJ_DIR failed");
-    _endthread();
+    FatalError("Validate::ValidateRunningPlayersPlayerObj - Change directory to PLAYER_OBJ_DIR failed");
   }
   for (const auto& entry : fs::directory_iterator("./"))
   {
@@ -1140,8 +1114,7 @@ void Validate::ValidateRunningPlayersPlayerObj()
     PlayerObjFile.open(PlayerObjFileName);
     if (!PlayerObjFile.is_open())
     { // File does not exist - Very bad!
-      LogIt("Validate::ValidateRunningPlayersPlayerObj - Open player file failed");
-      _endthread();
+      FatalError("Validate::ValidateRunningPlayersPlayerObj - Open player file failed");
     }
     LineCount = 0;
     Stuff = "";
@@ -1199,14 +1172,12 @@ void Validate::ValidateRunningRoomMob()
   LogIt(LogBuf);
   if (ChgDir(HomeDir))
   { // Change directory failed
-    LogIt("Validate::ValidateRunningRoomMob - Change directory to HomeDir failed");
-    _endthread();
+    FatalError("Validate::ValidateRunningRoomMob - Change directory to HomeDir failed");
   }
   // Get list of all RunningRoomMob files
   if (ChgDir(ROOM_MOB_DIR))
   { // Change directory failed
-    LogIt("Validate::ValidateRunningRoomMob - Change directory to ROOM_MOB_DIR failed");
-    _endthread();
+    FatalError("Validate::ValidateRunningRoomMob - Change directory to ROOM_MOB_DIR failed");
   }
   for (const auto &entry : fs::directory_iterator("./"))
   {
@@ -1225,8 +1196,7 @@ void Validate::ValidateRunningRoomMob()
     RoomMobFile.open(RoomMobFileName);
     if (!RoomMobFile.is_open())
     { // File does not exist - Very bad!
-      LogIt("Validate::ValidateRunningRoomMob - Open world mobile file failed");
-      _endthread();
+      FatalError("Validate::ValidateRunningRoomMob - Open world mobile file failed");
     }
     //**********
     //* RoomId *
@@ -1309,14 +1279,12 @@ void Validate::ValidateRunningRoomObj()
   LogIt(LogBuf);
   if (ChgDir(HomeDir))
   { // Change directory failed
-    LogIt("Validate::ValidateRunningRoomObj - Change directory to HomeDir failed");
-    _endthread();
+    FatalError("Validate::ValidateRunningRoomObj - Change directory to HomeDir failed");
   }
   // Get list of all RunningRoomObj files
   if (ChgDir(ROOM_OBJ_DIR))
   { // Change directory failed
-    LogIt("Validate::ValidateRunningRoomObj - Change directory to ROOM_OBJ_DIR failed");
-    _endthread();
+    FatalError("Validate::ValidateRunningRoomObj - Change directory to ROOM_OBJ_DIR failed");
   }
   for (const auto &entry : fs::directory_iterator("./"))
   {
@@ -1335,8 +1303,7 @@ void Validate::ValidateRunningRoomObj()
     RoomObjFile.open(RoomObjFileName);
     if (!RoomObjFile.is_open())
     { // File does not exist - Very bad!
-      LogIt("Validate::ValidateRunningRoomObj - Open world mobile file failed");
-      _endthread();
+      FatalError("Validate::ValidateRunningRoomObj - Open world mobile file failed");
     }
     //**********
     //* RoomId *

@@ -74,16 +74,14 @@ void Mobile::AddMobToRoom(string RoomId, string MobileId)
   if (RoomId == "")
   {
     LogBuf = "Mobile::AddMobToRoom - RoomId is blank";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   RoomMobTmpFileName += ".tmp.txt";
   RoomMobTmpFile.open(RoomMobTmpFileName);
   if (!RoomMobTmpFile.is_open())
   {
     LogBuf = "Mobile::AddMobToRoom - Open RoomMob temp file failed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   if (NewRoomMobFile)
   { // New room mobile file, write the mobile and return
@@ -164,8 +162,7 @@ void Mobile::AddMobToRoom(string RoomId, string MobileId)
   { // If the file is empty, delete it for and abort ... it should never be empty
     Remove(RoomMobTmpFileName);
     LogBuf = "Mobile::AddMobToRoom - RoomMob file size is not > 0!!";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
 }
 
@@ -224,8 +221,7 @@ void Mobile::CreateMobPlayer(string PlayerName, string MobileId)
     if (!MobPlayerFile.is_open())
     {
       LogBuf = "Mobile::CreateMobPlayer - Open MobPlayerile file failed 1";
-      LogIt(LogBuf);
-      _endthread();
+      FatalError(LogBuf);
     }
   }
   else
@@ -234,8 +230,7 @@ void Mobile::CreateMobPlayer(string PlayerName, string MobileId)
     if (!MobPlayerFile.is_open())
     {
       LogBuf = "Mobile::CreateMobPlayer - Open MobPlayerile file failed 2";
-      LogIt(LogBuf);
-      _endthread();
+      FatalError(LogBuf);
     }
   }
   if (!NewFile)
@@ -263,8 +258,7 @@ void Mobile::CreateMobStatsFileWrite(string Directory, string MobileIdForFight, 
   if (!MobStatsFile.is_open())
   { // Open file failed
     LogBuf = "Mobile::CreateMobStatsFileWrite - Open for " + Directory + " " + MobileIdForFight + " failed.";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   MobStatsFile << Stuff << endl;
   MobStatsFile.close();
@@ -286,8 +280,7 @@ void Mobile::CreatePlayerMob(string PlayerName, string MobileId)
   if (!PlayerMobFile.is_open())
   {
     LogBuf = "Mobile::CreatePlayerMob - Open PlayerMob file failed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   PlayerMobFile << MobileId << endl;
   PlayerMobFile.close();
@@ -331,8 +324,7 @@ void Mobile::DeleteMobPlayer(string PlayerName, string MobileId)
   if (!MobPlayerFileTmp.is_open())
   {
     LogBuf = "Mobile::DeleteMobPlayer - Open MobPlayer temp file failed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   // Write temp MobPlayer file
   MobileIdDeleted = false;
@@ -574,8 +566,7 @@ string Mobile::GetMobDesc1(string MobileId)
   if (!MobileFile.is_open())
   {
     LogBuf = "Mobile::GetMobDesc1 - Mobile does not exist!";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   Stuff = "";
   while (StrLeft(Stuff, 6) != "Desc1:")
@@ -689,8 +680,7 @@ void Mobile::PutMobBackInRoom(string PlayerName, string RoomIdBeforeFleeing)
     if (!MobStatsHitPointsFile.is_open())
     {
       LogBuf = "Mobile::PutMobBackInRoom - Open MobStatsHitPointsFile file failed (read)";
-      LogIt(LogBuf);
-      _endthread();
+      FatalError(LogBuf);
     }
     Stuff = "";
     getline(MobStatsHitPointsFile, Stuff);
@@ -740,8 +730,7 @@ void Mobile::RemoveMobFromRoom(string RoomId, string MobileId)
   if (!RoomMobFile.is_open())
   {
     LogBuf = "Mobile::RemoveMobFromRoom - Open RoomMob file failed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   // Open temp RoomMob file
   RoomMobTmpFileName =  ROOM_MOB_DIR;
@@ -749,16 +738,14 @@ void Mobile::RemoveMobFromRoom(string RoomId, string MobileId)
   if (RoomId == "")
   {
     LogBuf = "RoomId is blank 2";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   RoomMobTmpFileName += ".tmp.txt";
   RoomMobTmpFile.open(RoomMobTmpFileName);
   if (!RoomMobTmpFile.is_open())
   {
     LogBuf = "Mobile::RemoveMobFromRoom - Open RoomMob temp file failed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   // Write temp RoomMob file
   MobileIdRemoved = false;
@@ -801,8 +788,7 @@ void Mobile::RemoveMobFromRoom(string RoomId, string MobileId)
   if (!MobileIdRemoved)
   { // Mobile not removed, this is definitely BAD!
     LogBuf = "Mobile::RemoveMobFromRoom - Mobile not removed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   BytesInFile = RoomMobTmpFile.tellp();
   RoomMobFile.close();
@@ -1014,8 +1000,7 @@ void Mobile::WhereMob(string MobileIdSearch)
   if (ChgDir(ROOM_MOB_DIR))
   { // Change directory failed
     LogBuf = "Mobile::WhereMob - Change directory to ROOM_MOB_DIR failed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   for (const auto &entry : fs::directory_iterator("./"))
   {
@@ -1030,8 +1015,7 @@ void Mobile::WhereMob(string MobileIdSearch)
     if (!RoomMobFile.is_open())
     { // File does not exist - Very bad!
       LogBuf = "Mobile::WhereMob - Open RoomMob file failed";
-      LogIt(LogBuf);
-      _endthread();
+      FatalError(LogBuf);
     }
     RoomName = StrLeft(FileName, StrGetLength(FileName) - 4);
     Stuff = "";
@@ -1066,8 +1050,7 @@ void Mobile::WhereMob(string MobileIdSearch)
   if (ChgDir(HomeDir))
   { // Change directory failed
     LogBuf = "Mobile::WhereMob - Change directory to HomeDir failed";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
 }
 
@@ -1105,8 +1088,7 @@ void Mobile::UpdateMobInWorld(string MobileId, string AddRemove)
   if (!MobInWorldFile.is_open())
   {
     LogBuf = "Mobile::UpdateMobInWorld - Open Mobiles InWorld file failed for: " + MobInWorldFileName;
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   if (AddRemove == "add")
   { // Mobile is being added to the world
@@ -1217,8 +1199,7 @@ void Mobile::GetNextMobNbr()
   if (!NextMobNbrFile.is_open())
   {
     LogBuf = "Mobile::GetNextMobNbr - Open NextMobileNumber file failed (read)";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   Stuff = "";
   getline(NextMobNbrFile, Stuff);
@@ -1236,8 +1217,7 @@ void Mobile::GetNextMobNbr()
   if (!NextMobNbrFile.is_open())
   {
     LogBuf = "Mobile::GetNextMobNbr - Open NextMobileNumber file failed (write)";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
   NextMobNbrFile << NextMobNbrString << endl;
   NextMobNbrFile.close();
@@ -1362,8 +1342,7 @@ void Mobile::OpenFile(string MobileId)
   if (!MobileFile.is_open())
   {
     LogBuf = "Mobile::OpenFile - Mobile does not exist!";
-    LogIt(LogBuf);
-    _endthread();
+    FatalError(LogBuf);
   }
 }
 

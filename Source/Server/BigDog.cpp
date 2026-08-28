@@ -218,6 +218,13 @@ void PrintIt(string Message)
   cout << Message;
 }
 
+void FatalError(string Message)
+{
+  PrintIt(Message);
+  LogIt(Message);
+  exit(1);
+}
+
 // Sleep for specified Milliseconds
 void Sleep(int MilliSeconds)
 {

@@ -16,12 +16,12 @@
 #include <bitset>           // Allows bit manipulation
 #include <cctype>           // String functions like tolower, toupper
 #include <chrono>           // clocks, time points, durations (see GetTimeSeconds)
+#include <cstdlib>          // exit()
 #include <direct.h>         // _chdir()
 #include <filesystem>       // Read/Write files, reanme/delete files, get all files in a directory
 #include <fstream>          // std::fstream
 #include <iostream>         // std::getline
 #include <math.h>           // Math functions like pow, ceil, floor
-#include <process.h>        // _endthread()
 #include <sstream>          // String 'stream' functions (see StrGetWord)
 #include <string>           // std::string
 #include <thread>           // only used for Sleep() - pause the game
@@ -267,6 +267,7 @@ bool    DeleteNode();
 void    DeletePlayerMob(string PlayerName);
 bool    EndOfDnodeList();
 void    Events();
+void    FatalError(string Message);
 bool    FileExist(string Name);
 string  FormatCommas(string String);
 int     GetCount();
