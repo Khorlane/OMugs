@@ -66,7 +66,7 @@ bool Descriptor::DeleteNode()
   Dnode *pDnode;
   int    Result;
 
-  if (!pDnodeCursor->DnodeFd)
+  if (pDnodeCursor->DnodeFd == -1)
   {
     return false;
   }
@@ -90,7 +90,7 @@ bool Descriptor::DeleteNode()
 
 bool Descriptor::EndOfDnodeList()
 {
-  return pDnodeCursor->DnodeFd ? false : true;
+  return pDnodeCursor->DnodeFd == -1;
 }
 
 /***********************************************************
@@ -108,7 +108,7 @@ Dnode *Descriptor::GetDnode()
 
 void Descriptor::InitDescriptor()
 {
-  pDnodeHead              = new Dnode(0, "");
+  pDnodeHead              = new Dnode(-1, "");
   pDnodeHead->pDnodeNext  = pDnodeHead;
   pDnodeHead->pDnodePrev  = pDnodeHead;
   pDnodeCursor            = pDnodeHead;

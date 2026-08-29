@@ -6907,7 +6907,7 @@ void Communication::SockNewConnection()
   SocketSize  = sizeof(Sock);
   // Return a new socket for a newly created connection (pg 63)
   SocketHandle = accept(ListenSocket, (struct sockaddr *)&Sock, &SocketSize);
-  if (!SocketHandle)
+  if (SocketHandle == -1)
   {
     sprintf(Buf, "%s", strerror(errno));
     LogBuf = "Communication::SockNewConnection - Error: accept: " + (string)Buf;
