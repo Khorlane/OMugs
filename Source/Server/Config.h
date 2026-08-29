@@ -15,8 +15,11 @@
 #include <algorithm>        // Functions used on ranges of elements (see StrMakeLower)
 #include <bitset>           // Allows bit manipulation
 #include <cctype>           // String functions like tolower, toupper
+#include <cerrno>           // errno
 #include <chrono>           // clocks, time points, durations (see GetTimeSeconds)
+#include <cstdio>           // sprintf
 #include <cstdlib>          // exit()
+#include <cstring>          // strlen, memset, strerror
 #include <filesystem>       // Read/Write files, reanme/delete files, get all files in a directory
 #include <fstream>          // std::fstream
 #include <iostream>         // std::getline
