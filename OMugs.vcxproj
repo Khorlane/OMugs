@@ -78,8 +78,8 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>Source\Server;Source\Osi;Source\Tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <CppLanguageStandard>c++20</CppLanguageStandard>
+      <CLanguageStandard>c17</CLanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
