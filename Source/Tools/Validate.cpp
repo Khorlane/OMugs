@@ -16,6 +16,19 @@
 ************************************************************/
 
 /***********************************************************
+* Private functions                                        *
+************************************************************/
+
+static void ValidateGetLine(istream &InputFile, string &Line)
+{
+  getline(InputFile, Line);
+  if (!Line.empty() && Line.back() == '\r')
+  {
+    Line.pop_back();
+  }
+}
+
+/***********************************************************
 * Validate constructor                                     *
 ************************************************************/
 
@@ -162,7 +175,7 @@ void Validate::ValidateLibraryLoot()
     }
     LineCount = 0;
     Stuff = "";
-    getline(LootFile, Stuff);
+    ValidateGetLine(LootFile, Stuff);
     while (Stuff != "")
     { // For all lines
       LineCount++;
@@ -185,7 +198,7 @@ void Validate::ValidateLibraryLoot()
         LogValErr(Message, FileName);
       }
       Stuff = "";
-      getline(LootFile, Stuff);
+      ValidateGetLine(LootFile, Stuff);
     }
     LootFile.close();
   }
@@ -238,7 +251,7 @@ void Validate::ValidateLibraryMobiles()
     }
     LineCount = 0;
     Stuff = "";
-    getline(MobileFile, Stuff);
+    ValidateGetLine(MobileFile, Stuff);
     while (Stuff != "")
     { // For all lines
       LineCount++;
@@ -334,7 +347,7 @@ void Validate::ValidateLibraryMobiles()
         }
       }
       Stuff = "";
-      getline(MobileFile, Stuff);
+      ValidateGetLine(MobileFile, Stuff);
     }
     MobileFile.close();
   }
@@ -387,7 +400,7 @@ void Validate::ValidateLibraryObjects()
     }
     LineCount = 0;
     Stuff = "";
-    getline(ObjectFile, Stuff);
+    ValidateGetLine(ObjectFile, Stuff);
     while (Stuff != "")
     { // For all lines
       LineCount++;
@@ -436,7 +449,7 @@ void Validate::ValidateLibraryObjects()
           //* ArmorValue: *
           //***************
           Stuff = "";
-          getline(ObjectFile, Stuff);
+          ValidateGetLine(ObjectFile, Stuff);
           LineCount++;
           FieldName  = StrGetWord(Stuff, 1);
           FieldValue = StrGetWord(Stuff, 2);
@@ -450,7 +463,7 @@ void Validate::ValidateLibraryObjects()
           //* ArmorWear: *
           //**************
           Stuff = "";
-          getline(ObjectFile, Stuff);
+          ValidateGetLine(ObjectFile, Stuff);
           LineCount++;
           FieldName  = StrGetWord(Stuff, 1);
           FieldValue = StrGetWord(Stuff, 2);
@@ -478,7 +491,7 @@ void Validate::ValidateLibraryObjects()
           //* WeaponType: *
           //***************
           Stuff = "";
-          getline(ObjectFile, Stuff);
+          ValidateGetLine(ObjectFile, Stuff);
           LineCount++;
           FieldName  = StrGetWord(Stuff, 1);
           FieldValue = StrGetWord(Stuff, 2);
@@ -501,7 +514,7 @@ void Validate::ValidateLibraryObjects()
           //* WeaponDamage: *
           //*****************
           Stuff = "";
-          getline(ObjectFile, Stuff);
+          ValidateGetLine(ObjectFile, Stuff);
           LineCount++;
           FieldName  = StrGetWord(Stuff, 1);
           FieldValue = StrGetWord(Stuff, 2);
@@ -514,7 +527,7 @@ void Validate::ValidateLibraryObjects()
         }
       }
       Stuff = "";
-      getline(ObjectFile, Stuff);
+      ValidateGetLine(ObjectFile, Stuff);
     }
     ObjectFile.close();
   }
@@ -570,7 +583,7 @@ void Validate::ValidateLibraryRooms()
     }
     LineCount = 0;
     Stuff = "";
-    getline(RoomFile, Stuff);
+    ValidateGetLine(RoomFile, Stuff);
     while (Stuff != "End of Room")
     { // For all lines
       LineCount++;
@@ -662,7 +675,7 @@ void Validate::ValidateLibraryRooms()
         }
       }
       Stuff = "";
-      getline(RoomFile, Stuff);
+      ValidateGetLine(RoomFile, Stuff);
       if (RoomFile.eof())
       { // End of file reached
         Stuff = "End of Room";
@@ -720,7 +733,7 @@ void Validate::ValidateLibraryShops()
     }
     LineCount = 0;
     Stuff = "";
-    getline(ShopFile, Stuff);
+    ValidateGetLine(ShopFile, Stuff);
     while (Stuff != "End of Shop")
     { // For all lines
       LineCount++;
@@ -729,7 +742,7 @@ void Validate::ValidateLibraryShops()
       if (FieldName != "Item:")
       { // Not an item line
         Stuff = "";
-        getline(ShopFile, Stuff);
+        ValidateGetLine(ShopFile, Stuff);
         if (ShopFile.eof())
         { // ObjectId file not found
           if (Stuff != "End of Shop")
@@ -761,7 +774,7 @@ void Validate::ValidateLibraryShops()
         LogValErr(Message, FileName);
       }
       Stuff = "";
-      getline(ShopFile, Stuff);
+      ValidateGetLine(ShopFile, Stuff);
     }
     ShopFile.close();
   }
@@ -842,7 +855,7 @@ void Validate::ValidateLibraryWorldMobiles()
     //***********************
     LineCount = 0;
     Stuff = "";
-    getline(WorldMobileFile, Stuff);
+    ValidateGetLine(WorldMobileFile, Stuff);
     while (Stuff != "")
     { // For all lines
       LineCount++;
@@ -869,7 +882,7 @@ void Validate::ValidateLibraryWorldMobiles()
         }
       }
       Stuff = "";
-      getline(WorldMobileFile, Stuff);
+      ValidateGetLine(WorldMobileFile, Stuff);
     }
     WorldMobileFile.close();
   }
@@ -922,7 +935,7 @@ void Validate::ValidateRunningPlayers()
     }
     LineCount = 0;
     Stuff = "";
-    getline(PlayerFile, Stuff);
+    ValidateGetLine(PlayerFile, Stuff);
     while (Stuff != "")
     { // For all lines
       LineCount++;
@@ -974,7 +987,7 @@ void Validate::ValidateRunningPlayers()
         }
       }
       Stuff = "";
-      getline(PlayerFile, Stuff);
+      ValidateGetLine(PlayerFile, Stuff);
     }
     PlayerFile.close();
   }
@@ -1027,7 +1040,7 @@ void Validate::ValidateRunningPlayersPlayerEqu()
     }
     LineCount = 0;
     Stuff = "";
-    getline(PlayerEquFile, Stuff);
+    ValidateGetLine(PlayerEquFile, Stuff);
     while (Stuff != "")
     { // For all lines
       LineCount++;
@@ -1066,7 +1079,7 @@ void Validate::ValidateRunningPlayersPlayerEqu()
         LogValErr(Message, FileName);
       }
       Stuff = "";
-      getline(PlayerEquFile, Stuff);
+      ValidateGetLine(PlayerEquFile, Stuff);
     }
     PlayerEquFile.close();
   }
@@ -1118,7 +1131,7 @@ void Validate::ValidateRunningPlayersPlayerObj()
     }
     LineCount = 0;
     Stuff = "";
-    getline(PlayerObjFile, Stuff);
+    ValidateGetLine(PlayerObjFile, Stuff);
     while (Stuff != "")
     { // For all lines
       LineCount++;
@@ -1141,7 +1154,7 @@ void Validate::ValidateRunningPlayersPlayerObj()
         LogValErr(Message, FileName);
       }
       Stuff = "";
-      getline(PlayerObjFile, Stuff);
+      ValidateGetLine(PlayerObjFile, Stuff);
     }
     PlayerObjFile.close();
   }
@@ -1220,7 +1233,7 @@ void Validate::ValidateRunningRoomMob()
     //***********************
     LineCount = 0;
     Stuff = "";
-    getline(RoomMobFile, Stuff);
+    ValidateGetLine(RoomMobFile, Stuff);
     while (Stuff != "")
     { // For all lines
       LineCount++;
@@ -1249,7 +1262,7 @@ void Validate::ValidateRunningRoomMob()
         LogValErr(Message, FileName);
       }
       Stuff = "";
-      getline(RoomMobFile, Stuff);
+      ValidateGetLine(RoomMobFile, Stuff);
     }
     RoomMobFile.close();
   }
@@ -1327,7 +1340,7 @@ void Validate::ValidateRunningRoomObj()
     //***********************
     LineCount = 0;
     Stuff = "";
-    getline(RoomObjFile, Stuff);
+    ValidateGetLine(RoomObjFile, Stuff);
     while (Stuff != "")
     { // For all lines
       LineCount++;
@@ -1350,7 +1363,7 @@ void Validate::ValidateRunningRoomObj()
         LogValErr(Message, FileName);
       }
       Stuff = "";
-      getline(RoomObjFile, Stuff);
+      ValidateGetLine(RoomObjFile, Stuff);
     }
     RoomObjFile.close();
   }
