@@ -18,6 +18,8 @@
 * Define Dnode class                                       *
 ************************************************************/
 
+class Player;
+
 class Dnode
 {
 
