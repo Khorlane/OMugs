@@ -85,7 +85,8 @@ void Log::OpenLogFile()
     LogSaveFileName  = StrLeft(LogFileName, StrGetLength(LogFileName)-4);
     LogSaveFileName += ".";
     LogSaveFileName += LogTime;
-    LogSaveFileName += ".txt.";
+    // POSIX keeps a trailing dot that Windows used to normalize away.
+    LogSaveFileName += ".txt";
     Rename(LogFileName, LogSaveFileName);
   }
   LogFile.open(LogFileName);
