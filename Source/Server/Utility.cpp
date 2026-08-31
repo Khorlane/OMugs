@@ -205,6 +205,19 @@ string Utility::PronounSubstitute(string MsgText)
 }
 
 /***********************************************************
+* Strip trailing \r from Line returned by getline()        *
+***********************************************************/
+
+void Utility::ReadTextLine(istream &InputFile, string &Line)
+{
+  getline(InputFile, Line);
+  if (!Line.empty() && Line.back() == '\r')
+  {
+    Line.pop_back();
+  }
+}
+
+/***********************************************************
 * Translate a word                                        *
 ***********************************************************/
 
