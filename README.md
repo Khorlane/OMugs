@@ -12,7 +12,7 @@ The OMugs project began after spending considerable time creating a game using
 the CircleMUD server. There are a number of similarities between OMugs and
 CircleMUD and DIKU, because CircleMUD is a derivative of DIKU. See
 www.circlemud.org and www.dikumud.com for more information about those MUD
-servers. Also see `Beginning.doc` in the `Doc` directory for more information
+servers. Also see `Beginning.md` in the `Doc` directory for more information
 about the beginnings of OMugs.
 
 ## Current Status
