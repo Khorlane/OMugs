@@ -86,7 +86,7 @@ string Utility::GetHomeDir()
     FatalError("Utility::GetHomeDir - Open HomeDir file failed");
   }
   Buffer = "";
-  getline(HomeDirFile, Buffer);
+  ReadTextLine(HomeDirFile, Buffer);
   HomeDir = Buffer;
   HomeDirFile.close();
   return HomeDir;
@@ -134,13 +134,13 @@ string Utility::GetSqlStmt(string SqlStmtId)
     FatalError("Utility::GetSqlStmt - Open SqlStmt file failed");
   }
   Stuff = "";
-  getline(SqlStmtFile, Stuff);
+  ReadTextLine(SqlStmtFile, Stuff);
   while (Stuff != "")
   { // Read SQL statement
     SqlStmt += Stuff;
     SqlStmt += " ";
     Stuff = "";
-    getline(SqlStmtFile, Stuff);
+    ReadTextLine(SqlStmtFile, Stuff);
   }
   SqlStmtFile.close();
   SqlStmt = StrSqueeze(SqlStmt);
@@ -202,6 +202,19 @@ string Utility::PronounSubstitute(string MsgText)
     StrReplace(MsgText, "$tHimselfHerself", PronounHimselfHerself);
   }
   return MsgText;
+}
+
+/***********************************************************
+* Strip trailing \r from Line returned by getline()        *
+***********************************************************/
+
+void Utility::ReadTextLine(istream &InputFile, string &Line)
+{
+  getline(InputFile, Line);
+  if (!Line.empty() && Line.back() == '\r')
+  {
+    Line.pop_back();
+  }
 }
 
 /***********************************************************

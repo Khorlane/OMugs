@@ -9,7 +9,7 @@
 * Includes                                                 *
 ************************************************************/
 
-#include "WinSock2.h"
+#include <unistd.h>
 #include "Descriptor.h"
 
 /***********************************************************
@@ -71,10 +71,10 @@ bool Descriptor::DeleteNode()
     return false;
   }
   // Close the socket (pg 70)
-  Result = ::closesocket(pDnodeCursor->DnodeFd);
+  Result = ::close(pDnodeCursor->DnodeFd);
   if (Result != 0)
   {
-    PrintIt("Descriptor::DeleteNode - Error: closesocket");
+    PrintIt("Descriptor::DeleteNode - Error: close");
     exit(1);
   }
   pDnodeActor = NULL;

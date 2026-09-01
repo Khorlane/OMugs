@@ -362,6 +362,7 @@ string  StrTrimRight(string Str1);
 string  StrVectorGetAt(vector<string> &StrVector1, int Position);
 void    StrVectorSetAt(vector<string> &StrVector1, int Position, string Str1);
 int     StrWordCount(string String);
+void    ReadTextLine(istream &InputFile, string &Line);
 string  TranslateWord(string Word);
 void    UpdateMobInWorld(string MobileId, string AddRemove);
 bool    ValidateIt(string ValidationType);

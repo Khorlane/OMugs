@@ -199,7 +199,7 @@ bool Player::IsNameValid(string Name)
   }
   Name = StrMakeLower(Name);
   NameIn = "";
-  getline(ValidNameFile, NameIn);
+  ReadTextLine(ValidNameFile, NameIn);
   NameIn = StrMakeLower(NameIn);
   while (NameIn != "")
   { // Read all names
@@ -209,7 +209,7 @@ bool Player::IsNameValid(string Name)
       return true;
     }
     NameIn = "";
-    getline(ValidNameFile, NameIn);
+    ReadTextLine(ValidNameFile, NameIn);
   }
   ValidNameFile.close();
   return false;
@@ -1216,7 +1216,7 @@ bool Player::OpenFile(string Name, string Mode)
 void Player::ReadLine()
 {
   Stuff = "";
-  getline(PlayerFile, Stuff);
+  ReadTextLine(PlayerFile, Stuff);
 }
 
 /***********************************************************

@@ -1070,6 +1070,11 @@ void SpawnMobileNoMove(string MobileId)
   World::SpawnMobileNoMove(MobileId);
 }
 
+void ReadTextLine(istream &InputFile, string &Line)
+{
+  Utility::ReadTextLine(InputFile, Line);
+}
+
 string TranslateWord(string Word)
 {
   return Utility::TranslateWord(Word);

@@ -100,7 +100,7 @@ void WhoIsOnline::ParsePlayer()
   Online    = "";
   Title     = "";
   Stuff = "";
-  getline(PlayerFile, Stuff);
+  ReadTextLine(PlayerFile, Stuff);
   while (PlayerFile.peek() != EOF)
   { // Name
     if (StrLeft(Stuff, 5) == "Name:")
@@ -138,7 +138,7 @@ void WhoIsOnline::ParsePlayer()
       Title = StrRight(Stuff, StrGetLength(Stuff) - 6);
     }
     Stuff = "";
-    getline(PlayerFile, Stuff);
+    ReadTextLine(PlayerFile, Stuff);
   }
   PlayerFile.close();
   if (Online != "Yes")

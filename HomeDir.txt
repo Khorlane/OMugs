@@ -1,1 +1,1 @@
-C:\\OMugs\\
+/mnt/c/OMugs/

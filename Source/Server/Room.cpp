@@ -60,7 +60,7 @@ string Room::GetRoomId(string RoomId)
   }
   // RoomId
   Stuff = "";
-  getline(RoomFile, Stuff);
+  ReadTextLine(RoomFile, Stuff);
   if (StrLeft(Stuff, 7) != "RoomId:")
   { // Very bad, where did the RoomId go anyway?
     FatalError("Room::GetRoomId - RoomId: not found");
@@ -90,13 +90,13 @@ string Room::GetRoomName(string RoomId)
 
   // RoomName
   Stuff = "";
-  getline(RoomFile, Stuff);
+  ReadTextLine(RoomFile, Stuff);
   Stuff = "";
-  getline(RoomFile, Stuff);
+  ReadTextLine(RoomFile, Stuff);
   Stuff = "";
-  getline(RoomFile, Stuff);
+  ReadTextLine(RoomFile, Stuff);
   Stuff = "";
-  getline(RoomFile, Stuff);
+  ReadTextLine(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "RoomName:")
   { // Very bad, where did the RoomName go anyway?
     FatalError("Room::GetRoomName - RoomName: not found");
@@ -118,6 +118,7 @@ string Room::GetValidMobRoomExits(string RoomId)
   string    RoomFileName;
   string    ValidMobExits;
 
+  DEBUGIT(5);
   RoomFileName = ROOMS_DIR;
   RoomFileName += RoomId;
   RoomFileName += ".txt";
@@ -131,7 +132,7 @@ string Room::GetValidMobRoomExits(string RoomId)
   while (Stuff != "End of Exits")
   { // Loop - process all exits
     Stuff = "";
-    getline(RoomFile, Stuff);
+    ReadTextLine(RoomFile, Stuff);
     if (StrLeft(Stuff, 13) == "ExitToRoomId:")
     { // An Exit has been found
       ExitToRoomId = StrGetWord(Stuff, 2);
@@ -173,7 +174,7 @@ bool Room::IsExit(string MudCmdIsExit)
   while (Stuff != "End of Exits")
   { // Loop until Exit is found or end of file
     Stuff = "";
-    getline(RoomFile, Stuff);
+    ReadTextLine(RoomFile, Stuff);
     if (StrLeft(Stuff, 9) == "ExitName:")
     { // Ok, an Exit has been found
       ExitName = StrGetWord(Stuff, 2);
@@ -220,7 +221,7 @@ bool Room::IsExit(string MudCmdIsExit)
       while (StrLeft(Stuff, 13) != "ExitToRoomId:")
       { // Position to ExitToRoomId line
         Stuff = "";
-        getline(RoomFile, Stuff);
+        ReadTextLine(RoomFile, Stuff);
       }
       ExitToRoomId = StrGetWord(Stuff, 2);
       MovePlayer(pDnodeActor, ExitToRoomId);
@@ -272,7 +273,7 @@ bool Room::IsRoom(string RoomId)
   if (RoomFile.is_open())
   {
     Stuff = "";
-    getline(RoomFile, Stuff);
+    ReadTextLine(RoomFile, Stuff);
     RoomFile.close();
     if (StrLeft(Stuff, 7) != "RoomId:")
     {
@@ -306,9 +307,9 @@ bool Room::IsRoomType(string RoomId, string RoomType)
   }
   // RoomType
   Stuff = "";
-  getline(RoomFile, Stuff);
+  ReadTextLine(RoomFile, Stuff);
   Stuff = "";
-  getline(RoomFile, Stuff);
+  ReadTextLine(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "RoomType:")
   { // Very bad, where did the RoomType go anyway?
     FatalError("Room::IsRoomType - RoomType: not found");
@@ -448,20 +449,20 @@ void Room::ShowRoomDesc(Dnode *pDnode)
 {
   // RoomDesc
   Stuff = "";
-  getline(RoomFile, Stuff);
+  ReadTextLine(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "RoomDesc:")
   {
     FatalError("Room::ShowRoomDesc - RoomDesc: not found");
   }
   // Room Description
   Stuff = "";
-  getline(RoomFile, Stuff);
+  ReadTextLine(RoomFile, Stuff);
   while (Stuff != "End of RoomDesc")
   {
     pDnode->PlayerOut += Stuff;
     pDnode->PlayerOut += "\r\n";
     Stuff = "";
-    getline(RoomFile, Stuff);
+    ReadTextLine(RoomFile, Stuff);
   }
 }
 
@@ -473,20 +474,20 @@ void Room::ShowRoomExitDesc()
 {
   // ExitDesc
   Stuff = "";
-  getline(RoomFile, Stuff);
+  ReadTextLine(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "ExitDesc:")
   {
     FatalError("Room::ShowRoomExitDesc - ExitDesc: not found");
   }
   // Exit Description
   Stuff = "";
-  getline(RoomFile, Stuff);
+  ReadTextLine(RoomFile, Stuff);
   while (StrLeft(Stuff, 13) != "ExitToRoomId:")
   {
     pDnodeActor->PlayerOut += Stuff;
     pDnodeActor->PlayerOut += "\r\n";
     Stuff = "";
-    getline(RoomFile, Stuff);
+    ReadTextLine(RoomFile, Stuff);
   }
   pDnodeActor->pPlayer->CreatePrompt();
   pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
@@ -506,7 +507,7 @@ void Room::ShowRoomExits(Dnode *pDnode)
   while (Stuff != "End of Exits")
   {
     Stuff = "";
-    getline(RoomFile, Stuff);
+    ReadTextLine(RoomFile, Stuff);
     if (StrLeft(Stuff, 9) == "ExitName:")
     {
       NoExits = false;
@@ -535,7 +536,7 @@ void Room::ShowRoomName(Dnode *pDnode)
 
   // RoomId
   Stuff = "";
-  getline(RoomFile, Stuff);
+  ReadTextLine(RoomFile, Stuff);
   if (StrLeft(Stuff, 7) != "RoomId:")
   {
     FatalError("Room::ShowRoomName - RoomId: not found");
@@ -547,7 +548,7 @@ void Room::ShowRoomName(Dnode *pDnode)
   }
   // RoomType
   Stuff = "";
-  getline(RoomFile, Stuff);
+  ReadTextLine(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "RoomType:")
   {
     FatalError("Room::ShowRoomName - RoomType: not found");
@@ -555,7 +556,7 @@ void Room::ShowRoomName(Dnode *pDnode)
   RoomType = StrGetWords(Stuff, 2);
   // Terrain
   Stuff = "";
-  getline(RoomFile, Stuff);
+  ReadTextLine(RoomFile, Stuff);
   if (StrLeft(Stuff, 8) != "Terrain:")
   {
     FatalError("Room::ShowRoomName - Terrain: not found");
@@ -563,7 +564,7 @@ void Room::ShowRoomName(Dnode *pDnode)
   Terrain = StrGetWord(Stuff, 2);
   // RoomName
   Stuff = "";
-  getline(RoomFile, Stuff);
+  ReadTextLine(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "RoomName:")
   {
     FatalError("Room::ShowRoomName - RoomName: not found");

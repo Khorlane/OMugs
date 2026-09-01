@@ -1,7 +1,7 @@
 /***********************************************************
 * OMugs - Online Multi-User Game Server                    *
 * File:   Communication.cpp                                *
-* Usage:  Winsock tcp/ip telnet player communications      *
+* Usage:  TCP/IP telnet player communications              *
 * Author: Steve Bryant                                     *
 ************************************************************/
 
@@ -9,7 +9,13 @@
 * Includes                                                 *
 ************************************************************/
 
-#include "Winsock2.h"
+#include <arpa/inet.h>
+#include <cerrno>
+#include <fcntl.h>
+#include <netinet/in.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <unistd.h>
 #include "Communication.h"
 
 /***********************************************************
@@ -327,6 +333,7 @@ void Communication::ShowPlayersInRoom(Dnode *pDnode)
 
 void Communication::SockCheckForNewConnections()
 {
+  int                   MaxSocket;
   int                   SocketCount;
   static struct timeval TimeOut{};
 
@@ -337,6 +344,7 @@ void Communication::SockCheckForNewConnections()
   FD_ZERO(&OutSet);
   FD_ZERO(&ExcSet);
   FD_SET(ListenSocket, &InpSet);
+  MaxSocket = ListenSocket;
   // Check status of connections
   SetpDnodeCursorFirst();
   while (!EndOfDnodeList())
@@ -345,10 +353,14 @@ void Communication::SockCheckForNewConnections()
     FD_SET(pDnodeActor->DnodeFd, &InpSet);
     FD_SET(pDnodeActor->DnodeFd, &OutSet);
     FD_SET(pDnodeActor->DnodeFd, &ExcSet);
+    if (pDnodeActor->DnodeFd > MaxSocket)
+    {
+      MaxSocket = pDnodeActor->DnodeFd;
+    }
     SetpDnodeCursorNext();
   }
   // Detect socket state (pg 159)
-  SocketCount = select(-1, &InpSet, &OutSet, &ExcSet, &TimeOut);
+  SocketCount = select(MaxSocket + 1, &InpSet, &OutSet, &ExcSet, &TimeOut);
   if (SocketCount == -1)
   { // Something is wrong
     sprintf(Buf,"%s", strerror(errno));
@@ -371,10 +383,10 @@ void Communication::SockClosePort(int Port)
 
   DEBUGIT(1);
   // Close the socket (pg 70)
-  Result = ::closesocket(ListenSocket);
+  Result = ::close(ListenSocket);
   if (Result!= 0)
   {
-    LogBuf = "Communication::~Communication - Error: closesocket";
+    LogBuf = "Communication::~Communication - Error: close";
     FatalError(LogBuf);
   }
   sprintf(Buf, "%d", Port);
@@ -388,33 +400,19 @@ void Communication::SockClosePort(int Port)
 
 void Communication::SockOpenPort(int Port)
 {
-  unsigned long FionbioParm;
+  int           Flags;
   struct        linger      ld{};
   int           OptionValue;
   int           Result;
   struct        sockaddr_in sa{};
-  WORD          VersionRequested;
-  WSADATA       WsaData;
 
   DEBUGIT(1);
-  FionbioParm       = 1;
   ld.l_onoff        = 0;
   ld.l_linger       = 0;
   OptionValue       = 1;
-  VersionRequested  = MAKEWORD(1, 1);
-  // Initialize WinSock API (pg 320)
-  Result = WSAStartup(VersionRequested, &WsaData);
-  if (Result != 0)
-  {
-    sprintf(Buf, "%s", strerror(errno));
-    LogBuf = "WinSock not available!: " + (string)Buf;
-    LogIt(LogBuf);
-    PrintIt("Communication::SockOpenPort - WinSock not available");
-    exit(1);
-  }
   // Establish a streaming socket (pg 51)
   ListenSocket = socket(AF_INET, SOCK_STREAM, 0);
-  if (ListenSocket == SOCKET_ERROR)
+  if (ListenSocket == -1)
   {
     sprintf(Buf, "%s", strerror(errno));
     LogBuf = "Communication:SockOpenPort - Error: initializing socket: " + (string)Buf;
@@ -468,13 +466,22 @@ void Communication::SockOpenPort(int Port)
     exit(1);
   }
   // Make socket nonblocking (pg 286)
-  Result = ioctlsocket(ListenSocket, FIONBIO, &FionbioParm);
-  if (Result != 0)
+  Flags = fcntl(ListenSocket, F_GETFL, 0);
+  if (Flags == -1)
   {
     sprintf(Buf, "%s", strerror(errno));
-    LogBuf = "Communication:SockOpenPort - Error: ioctlsocket: " + (string)Buf;
+    LogBuf = "Communication:SockOpenPort - Error: fcntl: " + (string)Buf;
     LogIt(LogBuf);
-    PrintIt("Communication::SockOpenPort - Error: ioctlsocket");
+    PrintIt("Communication::SockOpenPort - Error: fcntl");
+    exit(1);
+  }
+  Result = fcntl(ListenSocket, F_SETFL, Flags | O_NONBLOCK);
+  if (Result == -1)
+  {
+    sprintf(Buf, "%s", strerror(errno));
+    LogBuf = "Communication:SockOpenPort - Error: fcntl: " + (string)Buf;
+    LogIt(LogBuf);
+    PrintIt("Communication::SockOpenPort - Error: fcntl");
     exit(1);
   }
   // Listen on port and limit pending connections (pg 60)
@@ -484,7 +491,7 @@ void Communication::SockOpenPort(int Port)
     sprintf(Buf, "%s", strerror(errno));
     LogBuf = "Communication:SockOpenPort - Error: listen: " + (string)Buf;
     LogIt(LogBuf);
-    ::closesocket(ListenSocket);
+    ::close(ListenSocket);
     PrintIt("Communication::SockOpenPort - Error: listen");
     exit(1);
   }
@@ -550,7 +557,23 @@ void Communication::SockRecv()
       { // Receive
         memset(InpStr, '\0', sizeof(InpStr));
         RecvByteCount = ::recv(pDnodeActor->DnodeFd, InpStr, MAX_INPUT_LENGTH-1, 0);
-        if (RecvByteCount == 0)
+        if (RecvByteCount == -1)
+        {
+          if (errno == EWOULDBLOCK || errno == EAGAIN || errno == EINTR)
+          { // Nothing worth processing
+           RecvByteCount = 0;
+          }
+          else
+          { // Socket receive error, close the connection
+            pDnodeActor->PlayerStateBye = true;
+            if (pDnodeActor->PlayerStatePlaying)
+            { // Player is playing, so save them
+              pDnodeActor->PlayerStatePlaying = false;
+              pDnodeActor->pPlayer->Save();
+            }
+          }
+        }
+        else if (RecvByteCount == 0)
         { // Should be input but there is none -- disconnected ??
           pDnodeActor->PlayerStateBye = true;
           if (pDnodeActor->PlayerStatePlaying)
@@ -558,10 +581,6 @@ void Communication::SockRecv()
             pDnodeActor->PlayerStatePlaying = false;
             pDnodeActor->pPlayer->Save();
           }
-        }
-        if (WSAGetLastError() == WSAEWOULDBLOCK || WSAGetLastError() == WSAEINTR)
-        { // Nothing worth processing
-         RecvByteCount = 0;
         }
         if (RecvByteCount > 0)
         { // Got something ... append it to player input
@@ -805,7 +824,7 @@ void Communication::CommandArrayLoad()
   while (ValidCmdsFile.peek() != EOF)
   {
     Stuff = "";
-    getline(ValidCmdsFile, Stuff);
+    ReadTextLine(ValidCmdsFile, Stuff);
     ValidCmds.push_back(Stuff);
   }
   ValidCmdsFile.close();
@@ -4434,13 +4453,13 @@ void Communication::DoMotd()
     FatalError(LogBuf);
   }
   Stuff = "";
-  getline(MotdFile, Stuff);
+  ReadTextLine(MotdFile, Stuff);
   while (Stuff != "End of Motd")
   {
     Stuff += "\r\n";
     pDnodeActor->PlayerOut += Stuff;
     Stuff = "";
-    getline(MotdFile, Stuff);
+    ReadTextLine(MotdFile, Stuff);
   }
   MotdFile.close();
   if (pDnodeActor->PlayerStatePlaying)
@@ -5172,9 +5191,9 @@ void Communication::DoShow()
     else
     { // Help file is open
       HelpText = "";
-      getline(HelpFile, HelpText);    // Skip first line
+      ReadTextLine(HelpFile, HelpText);    // Skip first line
       HelpText = "";
-      getline(HelpFile, HelpText);
+      ReadTextLine(HelpFile, HelpText);
       while (HelpText != "End of Help")
       { // Read the whole file
         if (StrLeft(HelpText, 5) == "Help:")
@@ -5183,7 +5202,7 @@ void Communication::DoShow()
           pDnodeActor->PlayerOut += "\r\n";
         }
         HelpText = "";
-        getline(HelpFile, HelpText);
+        ReadTextLine(HelpFile, HelpText);
       }
       HelpFile.close();
     }
@@ -5208,7 +5227,7 @@ void Communication::DoShow()
     else
     { // Social file is open
       SocialText = "";
-      getline(SocialFile, SocialText);
+      ReadTextLine(SocialFile, SocialText);
       while (SocialText != "End of Socials")
       { // Read the whole file
         if (StrLeft(SocialText, 9) == "Social : ")
@@ -5217,7 +5236,7 @@ void Communication::DoShow()
           pDnodeActor->PlayerOut += "\r\n";
         }
         SocialText = "";
-        getline(SocialFile, SocialText);
+        ReadTextLine(SocialFile, SocialText);
       }
       SocialFile.close();
     }
@@ -6514,13 +6533,13 @@ void Communication::LogonGreeting()
   pDnodeActor->PlayerOut += VERSION;
   pDnodeActor->PlayerOut += "\r\n";
   Stuff = "";
-  getline(GreetingFile, Stuff);
+  ReadTextLine(GreetingFile, Stuff);
   while (Stuff != "End of Greeting")
   {
     Stuff += "\r\n";
     pDnodeActor->PlayerOut += Stuff;
     Stuff = "";
-    getline(GreetingFile, Stuff);
+    ReadTextLine(GreetingFile, Stuff);
   }
   GreetingFile.close();
 }
@@ -6896,14 +6915,13 @@ void Communication::RepositionDnodeCursor()
 
 void Communication::SockNewConnection()
 {
-  unsigned long       FionbioParm;
+  int                 Flags;
   int                 Result;
   struct sockaddr_in  Sock{};
   int                 SocketHandle;
-  int                 SocketSize;
+  socklen_t           SocketSize;
   string              IpAddress;
     
-  FionbioParm = 1;
   SocketSize  = sizeof(Sock);
   // Return a new socket for a newly created connection (pg 63)
   SocketHandle = accept(ListenSocket, (struct sockaddr *)&Sock, &SocketSize);
@@ -6915,11 +6933,18 @@ void Communication::SockNewConnection()
   }
   IpAddress = inet_ntoa(Sock.sin_addr);
   // Make socket nonblocking (pg 286)
-  Result = ioctlsocket(ListenSocket, FIONBIO, &FionbioParm);
-  if (Result != 0)
+  Flags = fcntl(SocketHandle, F_GETFL, 0);
+  if (Flags == -1)
   {
     sprintf(Buf, "%s", strerror(errno));
-    LogBuf = "Communication::SockNewConnection - Error: ioctlsocket " + (string)Buf;
+    LogBuf = "Communication::SockNewConnection - Error: fcntl " + (string)Buf;
+    FatalError(LogBuf);
+  }
+  Result = fcntl(SocketHandle, F_SETFL, Flags | O_NONBLOCK);
+  if (Result == -1)
+  {
+    sprintf(Buf, "%s", strerror(errno));
+    LogBuf = "Communication::SockNewConnection - Error: fcntl " + (string)Buf;
     FatalError(LogBuf);
   }
   sprintf(Buf, "%d", SocketHandle);
@@ -6948,7 +6973,16 @@ void Communication::SockSend(const char *arg)
     return;
   }
   Length = strlen(arg);
-  Written = ::send(pDnodeActor->DnodeFd, arg, Length, 0);
+  Written = ::send(pDnodeActor->DnodeFd, arg, Length, MSG_NOSIGNAL);
+  if (Written == -1)
+  {
+    if (errno == EWOULDBLOCK || errno == EAGAIN || errno == EINTR)
+    { // Try again on a later pass
+      return;
+    }
+    pDnodeActor->PlayerStateBye = true;
+    return;
+  }
   if (Written == Length)
   { // Everything was sent
     pDnodeActor->PlayerOut = "";
@@ -7213,7 +7247,7 @@ void Communication::ViolenceMobileLoot(string Loot)
   }
   NoLoot = true;
   Stuff = "";
-  getline(MobileLootFile, Stuff);
+  ReadTextLine(MobileLootFile, Stuff);
   while (Stuff != "")
   {
     LootFlag = ViolenceMobileLootHandOut(Stuff);
@@ -7222,7 +7256,7 @@ void Communication::ViolenceMobileLoot(string Loot)
       NoLoot = false;
     }
     Stuff = "";
-    getline(MobileLootFile, Stuff);
+    ReadTextLine(MobileLootFile, Stuff);
   }
   MobileLootFile.close();
   if (NoLoot)

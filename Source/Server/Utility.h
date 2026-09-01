@@ -31,6 +31,7 @@ class Utility
     static  int     GetRandomNumber(int Limit);
     static  string  GetSqlStmt(string SqlStmtId);
     static  string  PronounSubstitute(string MsgText);
+    static  void    ReadTextLine(istream &InputFile, string &Line);
     static  string  TranslateWord(string Word);
 };
 

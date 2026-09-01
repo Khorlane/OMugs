@@ -175,7 +175,7 @@ string Social::ReadLine()
 {
   string MsgText;
   MsgText = "";
-  getline(SocialFile, MsgText);
+  ReadTextLine(SocialFile, MsgText);
   return MsgText;
 }
 

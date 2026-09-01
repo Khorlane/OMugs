@@ -53,12 +53,12 @@ void Log::CloseLogFile()
 void Log::LogIt(string LogBuf)
 {
   string DisplayCurrentTime;
+  char TimeBuf[20];
 
   time_t now = chrono::system_clock::to_time_t(chrono::system_clock::now());
-  string s(30, '\0');
-  strftime(&s[0], s.size(), "%Y-%m-%d %H:%M:%S ", localtime(&now));
-  DisplayCurrentTime = s;
-  LogBuf  = DisplayCurrentTime + LogBuf;
+  strftime(TimeBuf, sizeof(TimeBuf), "%Y-%m-%d %H:%M:%S", localtime(&now));
+  DisplayCurrentTime = TimeBuf;
+  LogBuf  = DisplayCurrentTime + " " + LogBuf;
   LogBuf += "\n";
   LogFile << LogBuf;
   LogFile.flush();
@@ -85,7 +85,8 @@ void Log::OpenLogFile()
     LogSaveFileName  = StrLeft(LogFileName, StrGetLength(LogFileName)-4);
     LogSaveFileName += ".";
     LogSaveFileName += LogTime;
-    LogSaveFileName += ".txt.";
+    // POSIX keeps a trailing dot that Windows used to normalize away.
+    LogSaveFileName += ".txt";
     Rename(LogFileName, LogSaveFileName);
   }
   LogFile.open(LogFileName);

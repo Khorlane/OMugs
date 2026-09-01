@@ -89,7 +89,7 @@ void Buffer::GetScriptLine()
     LogIt(LogBuf);
   }
   Stuff = "";
-  getline(ScriptFile, Stuff);
+  ReadTextLine(ScriptFile, Stuff);
   CurrentLineNumber++;
   while (ScriptFile.peek() != EOF)
   { // Skip blank lines
@@ -98,7 +98,7 @@ void Buffer::GetScriptLine()
       break;
     }
     Stuff = "";
-    getline(ScriptFile, Stuff);
+    ReadTextLine(ScriptFile, Stuff);
     CurrentLineNumber++;
   }
   InputPosition = 0;
