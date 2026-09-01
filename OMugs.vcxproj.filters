@@ -202,9 +202,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
     <Text Include="HomeDir.txt" />
-    <Text Include="zNotes.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

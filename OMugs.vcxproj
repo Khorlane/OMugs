@@ -146,8 +146,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="HomeDir.txt" />
-    <Text Include="ReadMe.txt" />
-    <Text Include="zNotes.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitattributes" />
