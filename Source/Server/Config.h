@@ -37,7 +37,7 @@ namespace fs = filesystem;
 * Macros                                                   *
 ************************************************************/
 
-#define VERSION                 "2026.08.28"
+#define VERSION                 "2026.09.01"
 #define DEBUGIT(x)              if (DEBUG_LVL >= x) LogIt((string)__FUNCTION__)
 #define DEBUG_LVL               1      // 0 to turn off, 1 or more to turn on
 
