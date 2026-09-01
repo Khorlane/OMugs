@@ -43,12 +43,17 @@ of the active command-line server build.
 
 `Running\`
 
-Contains files created and maintained by OMugs.
+Contains the runtime directory skeleton and required control seed files.
+Most files created and maintained by OMugs while the server runs are ignored.
 
 `Source\Server\`
 
 Contains the source code for the Online Multi-User Game Server, including the
 command-line entry point.
+
+`Source\Osi\`
+
+Contains OSI script parsing and runtime support.
 
 `Source\Tools\`
 

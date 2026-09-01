@@ -1,15 +1,18 @@
 # Ignore these directories
 .vs/
 Debug/
-Doc/
-Library/
 Log/
 Players/
 Res/
-Running/
 Tmp/
-Utility/
-WebSite/
+
+# Running runtime state
+Running/**
+!Running/
+!Running/**/
+!Running/**/.gitkeep
+!Running/Control/Calendar.txt
+!Running/Control/NextMobileNumber.txt
 
 # Ignore these files
 zNotes.txt
