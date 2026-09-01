@@ -125,7 +125,7 @@ void Help::ReadLine()
 {
   string Buffer;
   Buffer = "";
-  getline (HelpFile, Buffer);
+  ReadTextLine(HelpFile, Buffer);
   HelpText = Buffer;
 }
 

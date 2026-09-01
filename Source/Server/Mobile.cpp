@@ -96,7 +96,7 @@ void Mobile::AddMobToRoom(string RoomId, string MobileId)
   // Write temp RoomMob file
   MobileIdAdded = false;
   Stuff = "";
-  getline(RoomMobFile, Stuff);
+  ReadTextLine(RoomMobFile, Stuff);
   while (Stuff != "")
   {
     if (MobileIdAdded)
@@ -104,7 +104,7 @@ void Mobile::AddMobToRoom(string RoomId, string MobileId)
       Stuff += "\n";
       RoomMobTmpFile <<  Stuff << endl;
       Stuff = "";
-      getline(RoomMobFile, Stuff);
+      ReadTextLine(RoomMobFile, Stuff);
       continue;
     }
     MobileIdCheck = StrGetWord(Stuff, 2);
@@ -118,7 +118,7 @@ void Mobile::AddMobToRoom(string RoomId, string MobileId)
       Stuff += "\n";
       RoomMobTmpFile << Stuff << endl;
       Stuff = "";
-      getline(RoomMobFile, Stuff);
+      ReadTextLine(RoomMobFile, Stuff);
       continue;
     }
     if (MobileId == MobileIdCheck)
@@ -133,14 +133,14 @@ void Mobile::AddMobToRoom(string RoomId, string MobileId)
       RoomMobTmpFile << TmpStr << endl;
       MobileIdAdded = true;
       Stuff = "";
-      getline(RoomMobFile, Stuff);
+      ReadTextLine(RoomMobFile, Stuff);
       continue;
     }
     // None of the above conditions satisfied, just write it
     Stuff += "\n";
     RoomMobTmpFile << Stuff << endl;
     Stuff = "";
-    getline(RoomMobFile, Stuff);
+    ReadTextLine(RoomMobFile, Stuff);
   }
   if (!MobileIdAdded)
   { // New mobile goes at the end
@@ -184,7 +184,7 @@ int Mobile::CountMob(string MobileId)
   if (MobInWorldFile.is_open())
   { // Get current count
     Stuff = "";
-    getline(MobInWorldFile,Stuff);
+    ReadTextLine(MobInWorldFile,Stuff);
     MobInWorldCount = stoi(Stuff);
     MobInWorldFile.close();
   }
@@ -329,7 +329,7 @@ void Mobile::DeleteMobPlayer(string PlayerName, string MobileId)
   // Write temp MobPlayer file
   MobileIdDeleted = false;
   Stuff = "";
-  getline(MobPlayerFile, Stuff);
+  ReadTextLine(MobPlayerFile, Stuff);
   while (Stuff != "")
   {
     if (MobileIdDeleted)
@@ -337,7 +337,7 @@ void Mobile::DeleteMobPlayer(string PlayerName, string MobileId)
       Stuff += "\n";
       MobPlayerFileTmp << Stuff << endl;
       Stuff = "";
-      getline(MobPlayerFile, Stuff);
+      ReadTextLine(MobPlayerFile, Stuff);
       continue;
     }
     MobileIdCheck = StrGetWord(Stuff, 1);
@@ -346,14 +346,14 @@ void Mobile::DeleteMobPlayer(string PlayerName, string MobileId)
     { // Found it, delete it
       MobileIdDeleted = true;
       Stuff = "";
-      getline(MobPlayerFile, Stuff);
+      ReadTextLine(MobPlayerFile, Stuff);
       continue;
     }
     // None of the above conditions satisfied, just write it
     Stuff += "\n";
     MobPlayerFileTmp << Stuff << endl;
     Stuff = "";
-    getline(MobPlayerFile, Stuff);
+    ReadTextLine(MobPlayerFile, Stuff);
   }
   BytesInFile = MobPlayerFileTmp.tellp();
   MobPlayerFile.close();
@@ -467,7 +467,7 @@ Mobile *Mobile::IsMobInRoom(string MobileName)
     return NULL;
   }
   Stuff = "";
-  getline(RoomMobFile,Stuff);
+  ReadTextLine(RoomMobFile,Stuff);
   while (Stuff != "")
   { // Process each mobile in the room
     MobileId = StrGetWord(Stuff, 2);
@@ -489,7 +489,7 @@ Mobile *Mobile::IsMobInRoom(string MobileName)
       return pMobile;
     }
     Stuff = "";
-    getline(RoomMobFile, Stuff);
+    ReadTextLine(RoomMobFile, Stuff);
   }
   RoomMobFile.close();
   //***************************************************
@@ -501,7 +501,7 @@ Mobile *Mobile::IsMobInRoom(string MobileName)
     return NULL;
   }
   Stuff = "";
-  getline(RoomMobFile, Stuff);
+  ReadTextLine(RoomMobFile, Stuff);
   while (Stuff != "")
   { // Process each mobile in the room
     MobileId      = StrGetWord(Stuff, 2);
@@ -537,7 +537,7 @@ Mobile *Mobile::IsMobInRoom(string MobileName)
       delete pMobile;
     }
     Stuff = "";
-    getline(RoomMobFile, Stuff);
+    ReadTextLine(RoomMobFile, Stuff);
   }
   RoomMobFile.close();
   return NULL;
@@ -572,7 +572,7 @@ string Mobile::GetMobDesc1(string MobileId)
   while (StrLeft(Stuff, 6) != "Desc1:")
   {
     Stuff = "";
-    getline(MobileFile, Stuff);
+    ReadTextLine(MobileFile, Stuff);
   }
   Desc1 = StrRight(Stuff, StrGetLength(Stuff)-6);
   Desc1 = StrTrimLeft(Desc1);
@@ -600,7 +600,7 @@ bool Mobile::IsMobileIdInRoom(string RoomId, string MobileId)
     return false;
   }
   Stuff = "";
-  getline(RoomMobFile, Stuff);
+  ReadTextLine(RoomMobFile, Stuff);
   while (Stuff != "")
   { // Process each mobile in the room
     MobileIdCheck = StrGetWord(Stuff, 2);
@@ -610,7 +610,7 @@ bool Mobile::IsMobileIdInRoom(string RoomId, string MobileId)
       return true;
     }
     Stuff = "";
-    getline(RoomMobFile, Stuff);
+    ReadTextLine(RoomMobFile, Stuff);
   }
   // No matching mobile found
   RoomMobFile.close();
@@ -667,7 +667,7 @@ void Mobile::PutMobBackInRoom(string PlayerName, string RoomIdBeforeFleeing)
   }
   // For each mobile still in MobPlayer file(non-fighting mobiles), put it back in room
   Stuff = "";
-  getline(MobPlayerFile, Stuff);
+  ReadTextLine(MobPlayerFile, Stuff);
   while (Stuff != "")
   {
     MobileId = StrGetWord(Stuff, 1);
@@ -683,7 +683,7 @@ void Mobile::PutMobBackInRoom(string PlayerName, string RoomIdBeforeFleeing)
       FatalError(LogBuf);
     }
     Stuff = "";
-    getline(MobStatsHitPointsFile, Stuff);
+    ReadTextLine(MobStatsHitPointsFile, Stuff);
     MobStatsHitPointsFile.close();
     MobHitPointsTotal = StrGetWord(Stuff, 1);
     MobHitPointsLeft  = StrGetWord(Stuff, 2);
@@ -699,7 +699,7 @@ void Mobile::PutMobBackInRoom(string PlayerName, string RoomIdBeforeFleeing)
     AddMobToRoom(RoomIdBeforeFleeing, MobileId);
     UpdateMobInWorld(MobileId, "remove");
     Stuff = "";
-    getline(MobPlayerFile, Stuff);
+    ReadTextLine(MobPlayerFile, Stuff);
   }
   MobPlayerFile.close();
   Remove(MobPlayerFileName);
@@ -750,7 +750,7 @@ void Mobile::RemoveMobFromRoom(string RoomId, string MobileId)
   // Write temp RoomMob file
   MobileIdRemoved = false;
   Stuff = "";
-  getline(RoomMobFile, Stuff);
+  ReadTextLine(RoomMobFile, Stuff);
   while (Stuff != "")
   {
     if (MobileIdRemoved)
@@ -758,7 +758,7 @@ void Mobile::RemoveMobFromRoom(string RoomId, string MobileId)
       Stuff += "\n";
       RoomMobTmpFile << Stuff << endl;
       Stuff = "";
-      getline(RoomMobFile, Stuff);
+      ReadTextLine(RoomMobFile, Stuff);
       continue;
     }
     MobileIdCheck = StrGetWord(Stuff, 2);
@@ -776,14 +776,14 @@ void Mobile::RemoveMobFromRoom(string RoomId, string MobileId)
         RoomMobTmpFile << Stuff << endl;
       }
       Stuff = "";
-      getline(RoomMobFile, Stuff);
+      ReadTextLine(RoomMobFile, Stuff);
       continue;
     }
     // None of the above conditions satisfied, just write it
     Stuff += "\n";
     RoomMobTmpFile << Stuff << endl;
     Stuff = "";
-    getline(RoomMobFile, Stuff);
+    ReadTextLine(RoomMobFile, Stuff);
   }
   if (!MobileIdRemoved)
   { // Mobile not removed, this is definitely BAD!
@@ -834,7 +834,7 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
     return;
   }
   Stuff = "";
-  getline(RoomMobFile, Stuff);
+  ReadTextLine(RoomMobFile, Stuff);
   while (Stuff != "")
   {
     MobileCount = StrGetWord(Stuff, 1);
@@ -888,7 +888,7 @@ void Mobile::ShowMobsInRoom(Dnode *pDnode)
     }
     delete pMobile;
     Stuff = "";
-    getline(RoomMobFile, Stuff);
+    ReadTextLine(RoomMobFile, Stuff);
   }
   RoomMobFile.close();
   // Remove mobs, that attacked a player, from room
@@ -1019,7 +1019,7 @@ void Mobile::WhereMob(string MobileIdSearch)
     }
     RoomName = StrLeft(FileName, StrGetLength(FileName) - 4);
     Stuff = "";
-    getline(RoomMobFile, Stuff);
+    ReadTextLine(RoomMobFile, Stuff);
     while (Stuff != "")
     {
       MobileId      = StrGetWord(Stuff, 2);
@@ -1043,7 +1043,7 @@ void Mobile::WhereMob(string MobileIdSearch)
         pDnodeActor->PlayerOut += "\r\n";
       }
       Stuff = "";
-      getline(RoomMobFile, Stuff);
+      ReadTextLine(RoomMobFile, Stuff);
     }
     RoomMobFile.close();
   }
@@ -1079,7 +1079,7 @@ void Mobile::UpdateMobInWorld(string MobileId, string AddRemove)
   if (MobInWorldFile.is_open())
   { // Get current count
     Stuff = "";
-    getline(MobInWorldFile, Stuff);
+    ReadTextLine(MobInWorldFile, Stuff);
     MobInWorldCount = stoi(Stuff);
     MobInWorldFile.close();
   }
@@ -1164,17 +1164,17 @@ void Mobile::ExamineMob(string MobileId)
   while (Stuff != "Desc3:")
   {
     Stuff = "";
-    getline(MobileFile, Stuff); // Do not use ReadLine() here
+    ReadTextLine(MobileFile, Stuff); // Do not use ReadLine() here
   }
   // Mobile Description 3
   Stuff = "";
-  getline(MobileFile, Stuff); // Do not use ReadLine() here
+  ReadTextLine(MobileFile, Stuff); // Do not use ReadLine() here
   while (Stuff != "End Desc3")
   {
     pDnodeActor->PlayerOut += Stuff;
     pDnodeActor->PlayerOut += "\r\n";
     Stuff = "";
-    getline(MobileFile, Stuff); // Do not use ReadLine() here
+    ReadTextLine(MobileFile, Stuff); // Do not use ReadLine() here
   }
   pDnodeActor->PlayerOut += "&N";
   CloseFile();
@@ -1202,7 +1202,7 @@ void Mobile::GetNextMobNbr()
     FatalError(LogBuf);
   }
   Stuff = "";
-  getline(NextMobNbrFile, Stuff);
+  ReadTextLine(NextMobNbrFile, Stuff);
   NextMobNbrFile.close();
   // Increment next mobile number
   Stuff = StrTrimLeft(Stuff);
@@ -1263,12 +1263,12 @@ string Mobile::MobTalk()
   MobileMsg += "\r\n";
   // Select random message number
   Stuff = "";
-  getline(MobTalkFile, Stuff);
+  ReadTextLine(MobTalkFile, Stuff);
   MsgCount = stoi(StrGetWord(Stuff, 4));
   RndMsgNbr = GetRandomNumber(MsgCount);
   // Search for selected message number
   Stuff = "";
-  getline(MobTalkFile, Stuff);
+  ReadTextLine(MobTalkFile, Stuff);
   while (stoi(StrGetWord(Stuff, 2)) != RndMsgNbr)
   { // Find the selected message
     if (MobTalkFile.eof())
@@ -1285,11 +1285,11 @@ string Mobile::MobTalk()
       return MobileMsg;
     }
     Stuff = "";
-    getline(MobTalkFile, Stuff);
+    ReadTextLine(MobTalkFile, Stuff);
   }
   // Message found
   Stuff = "";
-  getline(MobTalkFile, Stuff);
+  ReadTextLine(MobTalkFile, Stuff);
   while (Stuff != "End of Message")
   { // Read the message
     if (MobTalkFile.eof())
@@ -1308,7 +1308,7 @@ string Mobile::MobTalk()
     MobileMsg += Stuff;
     MobileMsg += "\r\n";
     Stuff = "";
-    getline(MobTalkFile, Stuff);
+    ReadTextLine(MobTalkFile, Stuff);
   }
   MobTalkFile.close();
   return MobileMsg;
@@ -1454,7 +1454,7 @@ void Mobile::ParseStuff()
 void Mobile::ReadLine()
 {
   Stuff = "";
-  getline(MobileFile, Stuff);
+  ReadTextLine(MobileFile, Stuff);
   Stuff = StrTrimLeft(Stuff);
   Stuff = StrTrimRight(Stuff);
 }

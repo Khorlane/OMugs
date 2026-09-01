@@ -121,7 +121,7 @@ int Violence::GetMobileArmor(string MobileId)
     FatalError("Violence::GetArmor - Open MobStatsArmorFile file failed (read)");
   }
   Stuff = "";
-  getline(MobStatsArmorFile, Stuff);;
+  ReadTextLine(MobStatsArmorFile, Stuff);;
   MobStatsArmorFile.close();
   // Return mobile's Armor
   Stuff = StrTrimLeft(Stuff);
@@ -150,7 +150,7 @@ string Violence::GetMobileAttack(string MobileId)
     FatalError("Violence::GetMobileAttack - Open MobStatsAttack file failed (read)");
   }
   Stuff = "";
-  getline(MobStatsAttackFile, Stuff);
+  ReadTextLine(MobStatsAttackFile, Stuff);
   MobStatsAttackFile.close();
   // Return mobile's Attack
   Stuff = StrTrimLeft(Stuff);
@@ -179,7 +179,7 @@ int Violence::GetMobileDamage(string MobileId)
     FatalError("Violence::GetMobileDamage - Open MobStatsDamageFile file failed (read)");
   }
   Stuff = "";
-  getline(MobStatsDamageFile, Stuff);
+  ReadTextLine(MobStatsDamageFile, Stuff);
   MobStatsDamageFile.close();
   // Return mobile's Damage
   Stuff = StrTrimLeft(Stuff);
@@ -208,7 +208,7 @@ string Violence::GetMobileDesc1(string MobileId)
     FatalError("Violence::GetMobileDesc1 - Open MobStatsDesc1 file failed (read)");
   }
   Stuff = "";
-  getline(MobStatsDesc1File, Stuff);
+  ReadTextLine(MobStatsDesc1File, Stuff);
   MobStatsDesc1File.close();
   // Return mobile's Desc1
   Stuff = StrTrimLeft(Stuff);
@@ -236,7 +236,7 @@ string Violence::GetMobileExpPointsLevel(string MobileId)
     FatalError("Violence::GetMobileExpPointsLevel - Open MobStatsExpPointsFile file failed (read)");
   }
   Stuff = "";
-  getline(MobStatsExpPointsFile, Stuff);
+  ReadTextLine(MobStatsExpPointsFile, Stuff);
   MobStatsExpPointsFile.close();
   // Return mobile's ExpPoints
   Stuff = StrTrimLeft(Stuff);
@@ -264,7 +264,7 @@ string Violence::GetMobileHitPoints(string MobileId)
     FatalError("Violence::WhackMobile - Open MobStatsHitPointsFile file failed (read)");
   }
   Stuff = "";
-  getline(MobStatsHitPointsFile, Stuff);
+  ReadTextLine(MobStatsHitPointsFile, Stuff);
   MobStatsHitPointsFile.close();
   MobHitPoints = Stuff;
   return Stuff;
@@ -290,7 +290,7 @@ string Violence::GetMobileLoot(string MobileId)
     FatalError("Violence::GetMobileLoot - Open MobStatsLoot file failed (read)");
   }
   Stuff = "";
-  getline(MobStatsLootFile, Stuff);
+  ReadTextLine(MobStatsLootFile, Stuff);
   MobStatsLootFile.close();
   // Return mobile's Loot
   Stuff = StrTrimLeft(Stuff);
@@ -319,7 +319,7 @@ string Violence::GetMobileRoom(string MobileId)
     FatalError("Violence::GetMobileRoom - Open MobStatsRoom file failed (read)");
   }
   Stuff = "";
-  getline(MobStatsRoomFile, Stuff);
+  ReadTextLine(MobStatsRoomFile, Stuff);
   MobStatsRoomFile.close();
   // Return mobile's Room
   Stuff = StrTrimLeft(Stuff);
@@ -351,7 +351,7 @@ string Violence::GetMobPlayerMobileId(string PlayerName, int i)
   for (j = 1; j <= i; j++)
   {
     MobileId = "";
-    getline(MobPlayerFile, MobileId);
+    ReadTextLine(MobPlayerFile, MobileId);
   }
   MobPlayerFile.close();
   MobileId = StrTrimLeft(MobileId);
@@ -382,7 +382,7 @@ string Violence::GetPlayerMobMobileId(string PlayerName)
     FatalError("Violence::GetPlayerMobMobileId - Open PlayerMob file failed");
   }
   MobileId = "";
-  getline(PlayerMobFile, MobileId);
+  ReadTextLine(PlayerMobFile, MobileId);
   PlayerMobFile.close();
   MobileId = StrTrimLeft(MobileId);
   MobileId = StrTrimRight(MobileId);

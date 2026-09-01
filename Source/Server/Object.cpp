@@ -106,14 +106,14 @@ bool Object::AddObjToPlayerEqu(string WearPosition, string ObjectId)
   // Write temp PlayerEqu file
   ObjectIdAdded = false;
   Stuff = "";
-  getline(PlayerEquFile, Stuff);
+  ReadTextLine(PlayerEquFile, Stuff);
   while (Stuff != "")
   {
     if (ObjectIdAdded)
     { // New object has been written, just write the rest of the objects
       PlayerEquFileTmp << Stuff << endl;
       Stuff = "";
-      getline(PlayerEquFile, Stuff);
+      ReadTextLine(PlayerEquFile, Stuff);
       continue;
     }
     WearPositionCheck = StrGetWord(Stuff, 1);
@@ -124,7 +124,7 @@ bool Object::AddObjToPlayerEqu(string WearPosition, string ObjectId)
       ObjectIdAdded = true;
       PlayerEquFileTmp << Stuff << endl;
       Stuff = "";
-      getline(PlayerEquFile, Stuff);
+      ReadTextLine(PlayerEquFile, Stuff);
       continue;
     }
     if (WearPosition == WearPositionCheck)
@@ -133,13 +133,13 @@ bool Object::AddObjToPlayerEqu(string WearPosition, string ObjectId)
       ObjectIdAdded = true; // Not really added
       PlayerEquFileTmp << Stuff << endl;
       Stuff = "";
-      getline(PlayerEquFile, Stuff);
+      ReadTextLine(PlayerEquFile, Stuff);
       continue;
     }
     // None of the above conditions satisfied, just write it
     PlayerEquFileTmp << Stuff << endl;
     Stuff = "";
-    getline(PlayerEquFile, Stuff);
+    ReadTextLine(PlayerEquFile, Stuff);
   }
   if (!ObjectIdAdded)
   { // New object is alphabetically last
@@ -202,14 +202,14 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId)
   // Write temp PlayerObj file
   ObjectIdAdded = false;
   Stuff = "";
-  getline(PlayerObjFile, Stuff);
+  ReadTextLine(PlayerObjFile, Stuff);
   while (Stuff != "")
   {
     if (ObjectIdAdded)
     { // New object has been written, just write the rest of the objects
       PlayerObjFileTmp << Stuff << endl;
       Stuff = "";
-      getline(PlayerObjFile, Stuff);
+      ReadTextLine(PlayerObjFile, Stuff);
       continue;
     }
     ObjectIdCheck = StrGetWord(Stuff, 2);
@@ -220,7 +220,7 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId)
       ObjectIdAdded = true;
       PlayerObjFileTmp << Stuff << endl;
       Stuff = "";
-      getline(PlayerObjFile, Stuff);
+      ReadTextLine(PlayerObjFile, Stuff);
       continue;
     }
     if (ObjectId == ObjectIdCheck)
@@ -233,13 +233,13 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId)
       PlayerObjFileTmp << ObjectId << endl;
       ObjectIdAdded = true;
       Stuff = "";
-      getline(PlayerObjFile, Stuff);
+      ReadTextLine(PlayerObjFile, Stuff);
       continue;
     }
     // None of the above conditions satisfied, just write it
     PlayerObjFileTmp << Stuff << endl;
     Stuff = "";
-    getline(PlayerObjFile, Stuff);
+    ReadTextLine(PlayerObjFile, Stuff);
   }
   if (!ObjectIdAdded)
   { // New object is alphabetically last
@@ -306,7 +306,7 @@ void Object::AddObjToRoom(string RoomId, string ObjectId)
   // Write temp RoomObj file
   ObjectIdAdded = false;
   Stuff = "";
-  getline(RoomObjFile, Stuff);
+  ReadTextLine(RoomObjFile, Stuff);
   while (Stuff != "")
   {
     if (ObjectIdAdded)
@@ -314,7 +314,7 @@ void Object::AddObjToRoom(string RoomId, string ObjectId)
       Stuff += "\n";
       RoomObjFileTmp << Stuff << endl;
       Stuff = "";
-      getline(RoomObjFile, Stuff);
+      ReadTextLine(RoomObjFile, Stuff);
       continue;
     }
     ObjectIdCheck = StrGetWord(Stuff, 2);
@@ -325,7 +325,7 @@ void Object::AddObjToRoom(string RoomId, string ObjectId)
       ObjectIdAdded = true;
       RoomObjFileTmp << Stuff << endl;
       Stuff = "";
-      getline(RoomObjFile, Stuff);
+      ReadTextLine(RoomObjFile, Stuff);
       continue;
     }
     if (ObjectId == ObjectIdCheck)
@@ -339,13 +339,13 @@ void Object::AddObjToRoom(string RoomId, string ObjectId)
       RoomObjFileTmp << ObjectId << endl;
       ObjectIdAdded = true;
       Stuff = "";
-      getline(RoomObjFile, Stuff);
+      ReadTextLine(RoomObjFile, Stuff);
       continue;
     }
     // None of the above conditions satisfied, just write it
     RoomObjFileTmp << Stuff << endl;
     Stuff = "";
-    getline(RoomObjFile, Stuff);
+    ReadTextLine(RoomObjFile, Stuff);
   }
   if (!ObjectIdAdded)
   { // New object is alphabetically last
@@ -382,7 +382,7 @@ int Object::CalcPlayerArmorClass()
     return ArmorClass;
   }
   Stuff = "";
-  getline(PlayerEquFile, Stuff);
+  ReadTextLine(PlayerEquFile, Stuff);
   while (Stuff != "")
   {
     ObjectId = StrGetWord(Stuff, 2);
@@ -391,7 +391,7 @@ int Object::CalcPlayerArmorClass()
     delete pObject;
     pObject = NULL;
     Stuff = "";
-    getline(PlayerEquFile, Stuff);
+    ReadTextLine(PlayerEquFile, Stuff);
   }
   PlayerEquFile.close();
   return ArmorClass;
@@ -424,7 +424,7 @@ void Object::IsObjInPlayerEqu(string ObjectName)
     return;
   }
   Stuff = "";
-  getline(PlayerEquFile, Stuff);
+  ReadTextLine(PlayerEquFile, Stuff);
   while (Stuff != "")
   { // For each player equipment object 
     ObjectId = StrGetWord(Stuff, 2);
@@ -448,7 +448,7 @@ void Object::IsObjInPlayerEqu(string ObjectName)
       }
     }
     Stuff = "";
-    getline(PlayerEquFile, Stuff);
+    ReadTextLine(PlayerEquFile, Stuff);
   }
   PlayerEquFile.close();
   //***************************************************
@@ -461,7 +461,7 @@ void Object::IsObjInPlayerEqu(string ObjectName)
     return;
   }
   Stuff = "";
-  getline(PlayerEquFile, Stuff);
+  ReadTextLine(PlayerEquFile, Stuff);
   while (Stuff != "")
   { // For each player equipment object 
     ObjectId = StrGetWord(Stuff, 2);
@@ -488,7 +488,7 @@ void Object::IsObjInPlayerEqu(string ObjectName)
       pObject = NULL;
     }
     Stuff = "";
-    getline(PlayerEquFile, Stuff);
+    ReadTextLine(PlayerEquFile, Stuff);
   }
   PlayerEquFile.close();
   // Object not found in player's inventory
@@ -523,7 +523,7 @@ void Object::IsObjInPlayerInv(string ObjectName)
     return;
   }
   Stuff = "";
-  getline(PlayerObjFile, Stuff);
+  ReadTextLine(PlayerObjFile, Stuff);
   while (Stuff != "")
   { // For all items in player inventory
     ObjectId = StrGetWord(Stuff, 2);
@@ -548,7 +548,7 @@ void Object::IsObjInPlayerInv(string ObjectName)
       }
     }
     Stuff = "";
-    getline(PlayerObjFile, Stuff);
+    ReadTextLine(PlayerObjFile, Stuff);
   }
   PlayerObjFile.close();
   //***************************************************
@@ -561,7 +561,7 @@ void Object::IsObjInPlayerInv(string ObjectName)
     return;
   }
   Stuff = "";
-  getline(PlayerObjFile, Stuff);
+  ReadTextLine(PlayerObjFile, Stuff);
   while (Stuff != "")
   { // For all items in player inventory
     ObjectId = StrGetWord(Stuff, 2);
@@ -589,7 +589,7 @@ void Object::IsObjInPlayerInv(string ObjectName)
       pObject = NULL;
     }
     Stuff = "";
-    getline(PlayerObjFile, Stuff);
+    ReadTextLine(PlayerObjFile, Stuff);
   }
   PlayerObjFile.close();
   // Object not found in player's inventory
@@ -623,7 +623,7 @@ void Object::IsObjInRoom(string ObjectName)
     return;
   }
   Stuff = "";
-  getline(RoomObjFile, Stuff);
+  ReadTextLine(RoomObjFile, Stuff);
   while (Stuff != "")
   { // For each item in room
     ObjectId = StrGetWord(Stuff, 2);
@@ -647,7 +647,7 @@ void Object::IsObjInRoom(string ObjectName)
       }
     }
     Stuff = "";
-    getline(RoomObjFile, Stuff);
+    ReadTextLine(RoomObjFile, Stuff);
   }
   RoomObjFile.close();
   //***************************************************
@@ -660,7 +660,7 @@ void Object::IsObjInRoom(string ObjectName)
     return;
   }
   Stuff = "";
-  getline(RoomObjFile, Stuff);
+  ReadTextLine(RoomObjFile, Stuff);
   while (Stuff != "")
   { // For each item in room
     ObjectId = StrGetWord(Stuff, 2);
@@ -687,7 +687,7 @@ void Object::IsObjInRoom(string ObjectName)
       pObject = NULL;
     }
     Stuff = "";
-    getline(RoomObjFile, Stuff);
+    ReadTextLine(RoomObjFile, Stuff);
   }
   RoomObjFile.close();
   // Object not found in room
@@ -756,14 +756,14 @@ void Object::RemoveObjFromPlayerEqu(string ObjectId)
   // Write temp PlayerEqu file
   ObjectIdRemoved = false;
   Stuff = "";
-  getline(PlayerEquFile, Stuff);
+  ReadTextLine(PlayerEquFile, Stuff);
   while (Stuff != "")
   {
     if (ObjectIdRemoved)
     { // Object has been removed, just write the rest of the objects
       PlayerEquFileTmp << Stuff << endl;
       Stuff = "";
-      getline(PlayerEquFile, Stuff);
+      ReadTextLine(PlayerEquFile, Stuff);
       continue;
     }
     ObjectIdCheck = StrGetWord(Stuff, 2);
@@ -771,13 +771,13 @@ void Object::RemoveObjFromPlayerEqu(string ObjectId)
     { // Found it, skipping it will remove it from the file
       ObjectIdRemoved = true;
       Stuff = "";
-      getline(PlayerEquFile, Stuff);
+      ReadTextLine(PlayerEquFile, Stuff);
       continue;
     }
     // None of the above conditions satisfied, just write it
     PlayerEquFileTmp << Stuff << endl;
     Stuff = "";
-    getline(PlayerEquFile, Stuff);
+    ReadTextLine(PlayerEquFile, Stuff);
   }
   if (!ObjectIdRemoved)
   { // Object not removed, this is definitely BAD!
@@ -837,14 +837,14 @@ void Object::RemoveObjFromPlayerInv(string ObjectId, int Count)
   // Write temp PlayerObj file
   ObjectIdRemoved = false;
   Stuff = "";
-  getline(PlayerObjFile, Stuff);
+  ReadTextLine(PlayerObjFile, Stuff);
   while (Stuff != "")
   {
     if (ObjectIdRemoved)
     { // Object has been removed, just write the rest of the objects
       PlayerObjFileTmp << Stuff << endl;
       Stuff = "";
-      getline(PlayerObjFile, Stuff);
+      ReadTextLine(PlayerObjFile, Stuff);
       continue;
     }
     ObjectIdCheck = StrGetWord(Stuff, 2);
@@ -861,13 +861,13 @@ void Object::RemoveObjFromPlayerInv(string ObjectId, int Count)
         PlayerObjFileTmp << ObjectId << endl;
       }
       Stuff = "";
-      getline(PlayerObjFile, Stuff);
+      ReadTextLine(PlayerObjFile, Stuff);
       continue;
     }
     // None of the above conditions satisfied, just write it
     PlayerObjFileTmp << Stuff << endl;
     Stuff = "";
-    getline(PlayerObjFile, Stuff);
+    ReadTextLine(PlayerObjFile, Stuff);
   }
   if (!ObjectIdRemoved)
   { // Object not removed, this is definitely BAD!
@@ -927,14 +927,14 @@ void Object::RemoveObjFromRoom(string ObjectId)
   // Write temp RoomObj file
   ObjectIdRemoved = false;
   Stuff = "";
-  getline(RoomObjFile, Stuff);
+  ReadTextLine(RoomObjFile, Stuff);
   while (Stuff != "")
   {
     if (ObjectIdRemoved)
     { // Object has been removed, just write the rest of the objects
       RoomObjFileTmp << Stuff << endl;
       Stuff = "";
-      getline(RoomObjFile, Stuff);
+      ReadTextLine(RoomObjFile, Stuff);
       continue;
     }
     ObjectIdCheck = StrGetWord(Stuff, 2);
@@ -951,13 +951,13 @@ void Object::RemoveObjFromRoom(string ObjectId)
         RoomObjFileTmp << ObjectId << endl;
       }
       Stuff = "";
-      getline(RoomObjFile, Stuff);
+      ReadTextLine(RoomObjFile, Stuff);
       continue;
     }
     // None of the above conditions satisfied, just write it
     RoomObjFileTmp << Stuff << endl;
     Stuff = "";
-    getline(RoomObjFile, Stuff);
+    ReadTextLine(RoomObjFile, Stuff);
   }
   if (!ObjectIdRemoved)
   { // Object not removed, this is definitely BAD!
@@ -1020,7 +1020,7 @@ void Object::ShowPlayerEqu(Dnode *pDnodeTgt1)
   pDnodeActor->PlayerOut += "Equipment\r\n";
   pDnodeActor->PlayerOut += "---------\r\n";
   Stuff = "";
-  getline(PlayerEquFile, Stuff);
+  ReadTextLine(PlayerEquFile, Stuff);
   while (Stuff != "")
   {
     WearPosition = StrGetWord(Stuff, 1);
@@ -1033,7 +1033,7 @@ void Object::ShowPlayerEqu(Dnode *pDnodeTgt1)
     delete pObject;
     pObject = NULL;
     Stuff = "";
-    getline(PlayerEquFile, Stuff);
+    ReadTextLine(PlayerEquFile, Stuff);
   }
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
@@ -1069,7 +1069,7 @@ void Object::ShowPlayerInv()
   pDnodeActor->PlayerOut += "Inventory\r\n";
   pDnodeActor->PlayerOut += "---------\r\n";
   Stuff = "";
-  getline(PlayerObjFile, Stuff);
+  ReadTextLine(PlayerObjFile, Stuff);
   while (Stuff != "")
   {
     ObjectCount = StrGetWord(Stuff, 1);
@@ -1081,7 +1081,7 @@ void Object::ShowPlayerInv()
     delete pObject;
     pObject = NULL;
     Stuff = "";
-    getline(PlayerObjFile, Stuff);
+    ReadTextLine(PlayerObjFile, Stuff);
   }
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->pPlayer->CreatePrompt();
@@ -1110,7 +1110,7 @@ void Object::ShowObjsInRoom(Dnode *pDnode)
     return;
   }
   Stuff = "";
-  getline(RoomObjFile, Stuff);
+  ReadTextLine(RoomObjFile, Stuff);
   while (Stuff != "")
   { // For each object in the room
     ObjectCount = StrGetWord(Stuff, 1);
@@ -1126,7 +1126,7 @@ void Object::ShowObjsInRoom(Dnode *pDnode)
     delete pObject;
     pObject = NULL;
     Stuff = "";
-    getline(RoomObjFile, Stuff);
+    ReadTextLine(RoomObjFile, Stuff);
   }
   RoomObjFile.close();
 }
@@ -1181,7 +1181,7 @@ void Object::WhereObjPlayerEqu(string ObjectIdSearch)
     }
     PlayerName = StrLeft(FileName, StrGetLength(FileName) - 4);
     Stuff = "";
-    getline(PlayerEquFile, Stuff);
+    ReadTextLine(PlayerEquFile, Stuff);
     while (Stuff != "")
     {
       ObjectId      = StrGetWord(Stuff, 2);
@@ -1194,7 +1194,7 @@ void Object::WhereObjPlayerEqu(string ObjectIdSearch)
         pDnodeActor->PlayerOut += "\r\n";
       }
       Stuff = "";
-      getline(PlayerEquFile, Stuff);
+      ReadTextLine(PlayerEquFile, Stuff);
     }
     PlayerEquFile.close();
   }
@@ -1244,7 +1244,7 @@ void Object::WhereObjPlayerObj(string ObjectIdSearch)
     }
     PlayerName = StrLeft(FileName, StrGetLength(FileName) - 4);
     Stuff = "";
-    getline(PlayerObjFile, Stuff);
+    ReadTextLine(PlayerObjFile, Stuff);
     while (Stuff != "")
     {
       ObjectId      = StrGetWord(Stuff, 2);
@@ -1257,7 +1257,7 @@ void Object::WhereObjPlayerObj(string ObjectIdSearch)
         pDnodeActor->PlayerOut += "\r\n";
       }
       Stuff = "";
-      getline(PlayerObjFile, Stuff);
+      ReadTextLine(PlayerObjFile, Stuff);
     }
     PlayerObjFile.close();
   }
@@ -1307,7 +1307,7 @@ void Object::WhereObjRoomObj(string ObjectIdSearch)
     }
     RoomName = StrLeft(FileName, StrGetLength(FileName) - 4);
     Stuff = "";
-    getline(RoomObjFile, Stuff);
+    ReadTextLine(RoomObjFile, Stuff);
     while (Stuff != "")
     { // For each room object
       ObjectId = StrGetWord(Stuff, 2);
@@ -1320,7 +1320,7 @@ void Object::WhereObjRoomObj(string ObjectIdSearch)
         pDnodeActor->PlayerOut += "\r\n";
       }
       Stuff = "";
-      getline(RoomObjFile, Stuff);
+      ReadTextLine(RoomObjFile, Stuff);
     }
     RoomObjFile.close();
   }
@@ -1345,17 +1345,17 @@ void Object::ExamineObj(string ObjectId)
   while (Stuff != "Desc3:")
   {
     Stuff = "";
-    getline(ObjectFile, Stuff); // Do not use ReadLine() here
+    ReadTextLine(ObjectFile, Stuff); // Do not use ReadLine() here
   }
   // Object Description 3
   Stuff = "";
-  getline(ObjectFile, Stuff); // Do not use ReadLine() here
+  ReadTextLine(ObjectFile, Stuff); // Do not use ReadLine() here
   while (Stuff != "End Desc3")
   {
     pDnodeActor->PlayerOut += Stuff;
     pDnodeActor->PlayerOut += "\r\n";
     Stuff = "";
-    getline(ObjectFile, Stuff); // Do not use ReadLine() here
+    ReadTextLine(ObjectFile, Stuff); // Do not use ReadLine() here
   }
   pDnodeActor->PlayerOut += "&N";
   CloseFile();
@@ -1493,7 +1493,7 @@ void Object::ParseStuff()
 void Object::ReadLine()
 {
   Stuff = "";
-  getline(ObjectFile, Stuff);
+  ReadTextLine(ObjectFile, Stuff);
   Stuff = StrTrimLeft(Stuff);
   Stuff = StrTrimRight(Stuff);
 }

@@ -86,7 +86,7 @@ void World::CreateSpawnMobileEvents()
       FatalError("World::CreateSpawnMobileEvents - Open World Mobile file failed");
     }
     Stuff = "";
-    getline(WorldMobileFile, Stuff);
+    ReadTextLine(WorldMobileFile, Stuff);
     if (StrGetWord(Stuff, 1) != "MaxInWorld:")
     { // World mobile file format error MaxInWorld
       FatalError("World::CreateSpawnMobileEvents - World mobile file format error MaxInWorld");
@@ -102,14 +102,14 @@ void World::CreateSpawnMobileEvents()
     //* Create 'spawn mobile' event *
     //*******************************
     Stuff = "";
-    getline(WorldMobileFile, Stuff);
+    ReadTextLine(WorldMobileFile, Stuff);
     if (StrGetWord(Stuff, 1) != "RoomId:")
     { // World mobile file format error RoomId
       FatalError("World::CreateSpawnMobileEvents - World mobile file format error RoomId");
     }
     RoomId = StrGetWord(Stuff, 2);
     Stuff = "";
-    getline(WorldMobileFile, Stuff);
+    ReadTextLine(WorldMobileFile, Stuff);
     if (StrGetWord(Stuff, 1) != "Interval:")
     { // World mobile file format error Interval
       FatalError("World::CreateSpawnMobileEvents - World mobile file format error Interval");
@@ -213,7 +213,7 @@ void World::CheckSpawnMobileEvents()
       FatalError("World::CheckSpawnMobileEvents - Open Events file failed");
     }
     Stuff = "";
-    getline(EventFile, Stuff);
+    ReadTextLine(EventFile, Stuff);
     while (Stuff != "")
     { // Get RoomId, MobileId, then spawn the mob
       MobileId = StrGetWord(Stuff, 1);
@@ -225,7 +225,7 @@ void World::CheckSpawnMobileEvents()
       ControlMobSpawnFileName += MobileId;
       Remove(ControlMobSpawnFileName);
       Stuff = "";
-      getline(EventFile, Stuff);
+      ReadTextLine(EventFile, Stuff);
     }
     // Event completed, remove it
     EventFile.close();
@@ -358,7 +358,7 @@ bool World::HealMobilesFightCheck(string Dir, string MobileId)
       FatalError(TmpStr);
     }
     Stuff = "";
-    getline(MobPlayerFile, Stuff);
+    ReadTextLine(MobPlayerFile, Stuff);
     while (Stuff != "")
     { // Read all lines
       if (Stuff == MobileId)
@@ -366,7 +366,7 @@ bool World::HealMobilesFightCheck(string Dir, string MobileId)
         MobFighting = true; 
       }
       Stuff = "";
-      getline(MobPlayerFile, Stuff);
+      ReadTextLine(MobPlayerFile, Stuff);
     }
     MobPlayerFile.close();
   }  
@@ -585,7 +585,7 @@ void World::MakeMobilesMove2()
   TimerStart = clock();
   TimerStop  = TimerStart + 100;
   RoomMobFileName = "";
-  getline(RoomMobListFile, RoomMobFileName);
+  ReadTextLine(RoomMobListFile, RoomMobFileName);
   while (RoomMobFileName != "")
   { // Process all rooms that have mobiles in them
     if (clock() > TimerStop)
@@ -595,7 +595,7 @@ void World::MakeMobilesMove2()
       TmpStr += "\n";
       RoomMobListTempFile << TmpStr << endl;
       RoomMobFileName = "";
-      getline(RoomMobListFile, RoomMobFileName);
+      ReadTextLine(RoomMobListFile, RoomMobFileName);
       continue;
     }
     RoomId = StrLeft(RoomMobFileName, StrGetLength(RoomMobFileName) - 4);
@@ -605,7 +605,7 @@ void World::MakeMobilesMove2()
     if (!RoomMobFile.is_open())
     { // No RoomMob file? Really, I guess all the mobs got themselves killed
       RoomMobFileName = "";
-      getline(RoomMobListFile, RoomMobFileName);
+      ReadTextLine(RoomMobListFile, RoomMobFileName);
       continue;
     }
     Stuff = "";
@@ -667,7 +667,7 @@ void World::MakeMobilesMove2()
     }
     RoomMobFile.close();
     RoomMobFileName = "";
-    getline(RoomMobListFile, RoomMobFileName);
+    ReadTextLine(RoomMobListFile, RoomMobFileName);
   }
   // Close files
   RoomMobMoveFile.close();
@@ -747,7 +747,7 @@ void World::MakeMobilesMove3()
   TimerStart = clock();
   TimerStop  = TimerStart + 100;
   Stuff = "";
-  getline(RoomMobMoveFile, Stuff);
+  ReadTextLine(RoomMobMoveFile, Stuff);
   while (Stuff != "")
   { // For each mob to be moved
     if (clock() > TimerStop)
@@ -756,7 +756,7 @@ void World::MakeMobilesMove3()
       Stuff += "\n";
       RoomMobMoveTempFile << Stuff << endl;
       Stuff = "";
-      getline(RoomMobMoveFile, Stuff);
+      ReadTextLine(RoomMobMoveFile, Stuff);
       continue;
     }
     MobileId     = StrGetWord(Stuff, 1);
@@ -765,7 +765,7 @@ void World::MakeMobilesMove3()
     if (!IsMobileIdInRoom(RoomId, MobileId))
     { // Mob not in room anymore, prolly get itself killed, so can't be moved
       Stuff = "";
-      getline(RoomMobMoveFile, Stuff);
+      ReadTextLine(RoomMobMoveFile, Stuff);
       continue;
     }
     MobileDesc1  = GetMobDesc1(MobileId);
@@ -796,7 +796,7 @@ void World::MakeMobilesMove3()
     }
     // Read next line
     Stuff = "";
-    getline(RoomMobMoveFile, Stuff);
+    ReadTextLine(RoomMobMoveFile, Stuff);
   }
   // Close RoomMobMove files
   RoomMobMoveFile.close();
