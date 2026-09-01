@@ -47,6 +47,7 @@ void World::CreateSpawnMobileEvents()
   string     WorldMobileFileName;
   int        Years;
 
+  DEBUGIT(5);
   if (ChgDir(HomeDir))
   { // Change directory failed
     FatalError("World::CreateSpawnMobileEvents - Change directory to HomeDir failed");
@@ -179,6 +180,7 @@ void World::CheckSpawnMobileEvents()
   string     MobileId;
   string     RoomId;
 
+  DEBUGIT(5);
   sprintf(Buf, "%d", GetTimeSeconds());
   CheckTime = Buf;
   if (ChgDir(CONTROL_EVENTS_DIR))
@@ -241,6 +243,7 @@ void World::CheckSpawnMobileEvents()
 
 void World::Events()
 {
+  DEBUGIT(5);
   CreateSpawnMobileEvents();
   CheckSpawnMobileEvents();
   MakeMobilesMove();
@@ -260,6 +263,7 @@ void World::HealMobiles()
   int        PositionOfDot;
   string     RoomId;
 
+  DEBUGIT(5);
   if (ChgDir(MOB_STATS_HPT_DIR))
   { // Change directory failed
     FatalError("World::HealMobiles - Change directory to MOB_STATS_HPT_DIR failed");
@@ -312,6 +316,7 @@ bool World::HealMobilesFightCheck(string Dir, string MobileId)
   string     MobPlayerFileName;
   bool       MobFighting;
 
+  DEBUGIT(5);
   MobFighting = false;
   if (Dir == "MobPlayer")
   { // Checking MobPlayer
@@ -385,6 +390,7 @@ void World::MakeMobilesMove()
   bool       Success1;
   bool       Success2;
 
+  DEBUGIT(5);
   //********************************
   //* Check for existance of files *
   //********************************
@@ -462,6 +468,7 @@ void World::MakeMobilesMove1()
   ofstream       RoomMobListFile;
   string         RoomMobListFileName;
 
+  DEBUGIT(5);
   // Open MakeMobList file
   RoomMobListFileName =  CONTROL_DIR;
   RoomMobListFileName += "RoomMobList.txt";
@@ -547,6 +554,7 @@ void World::MakeMobilesMove2()
   clock_t    TimerStop;
   string     ValidMobRoomExits;
 
+  DEBUGIT(5);
   // Open MakeMobList file
   RoomMobListFileName  = CONTROL_DIR;
   RoomMobListFileName += "RoomMobList.txt";
@@ -712,6 +720,7 @@ void World::MakeMobilesMove3()
   clock_t    TimerStart;
   clock_t    TimerStop;
 
+  DEBUGIT(5);
   //******************************
   //* Initization and open files *
   //******************************
@@ -831,6 +840,7 @@ void World::Osi(string ScriptType, string ScriptId)
   int          SymbolCount;
   ifstream     ScriptFile;
 
+  DEBUGIT(5);
   // Build script file name
   ScriptFileName  = SCRIPTS_DIR;
   ScriptFileName += ScriptType;
@@ -881,6 +891,7 @@ void World::SpawnMobile(string MobileId, string RoomId)
   string   MobileAction;
   string   SpawnMsg;
 
+  DEBUGIT(5);
   //********************
   //* Spawn the mobile *
   //********************
@@ -916,6 +927,7 @@ void World::SpawnMobileNoMove(string MobileId)
   ofstream   ControlMobNoMoveFile;
   string     ControlMobNoMoveFileName;
 
+  DEBUGIT(5);
   ControlMobNoMoveFileName  = CONTROL_MOB_NOMOVE_DIR;
   ControlMobNoMoveFileName += MobileId;
   ControlMobNoMoveFile.open(ControlMobNoMoveFileName);

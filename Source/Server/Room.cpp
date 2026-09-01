@@ -118,6 +118,7 @@ string Room::GetValidMobRoomExits(string RoomId)
   string    RoomFileName;
   string    ValidMobExits;
 
+  DEBUGIT(5);
   RoomFileName = ROOMS_DIR;
   RoomFileName += RoomId;
   RoomFileName += ".txt";
