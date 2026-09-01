@@ -1216,7 +1216,7 @@ bool Player::OpenFile(string Name, string Mode)
 void Player::ReadLine()
 {
   Stuff = "";
-  getline(PlayerFile, Stuff);
+  ReadTextLine(PlayerFile, Stuff);
 }
 
 /***********************************************************

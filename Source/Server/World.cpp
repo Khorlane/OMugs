@@ -601,7 +601,7 @@ void World::MakeMobilesMove2()
       continue;
     }
     Stuff = "";
-    getline(RoomMobFile, Stuff);
+    ReadTextLine(RoomMobFile, Stuff);
     while (Stuff != "")
     { // For each mobile in room
       MobCount = stoi(StrGetWord(Stuff, 1));
@@ -655,7 +655,7 @@ void World::MakeMobilesMove2()
         }
       }
       Stuff = "";
-      getline(RoomMobFile, Stuff);
+      ReadTextLine(RoomMobFile, Stuff);
     }
     RoomMobFile.close();
     RoomMobFileName = "";
