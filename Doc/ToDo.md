@@ -41,6 +41,14 @@
   `BuyNotExist`, `BuySuccess`, `BuyNotAfford`, `SellSuccess`, and
   `SellNotExist`
 
+## Warning Cleanup
+
+- The WSL/GCC build currently suppresses these warnings in `OMugs.vcxproj`:
+  `-Wno-unused-but-set-variable`, `-Wno-conversion`, `-Wno-switch`,
+  `-Wno-char-subscripts`, `-Wno-comment`, and `-Wno-unused-variable`.
+- Review these suppressions later if we decide to clean up warning-producing
+  source code directly.
+
 ## Misc
 
 - Externalize starting hit points, move points, starting room, greeting, etc.

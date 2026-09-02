@@ -81,6 +81,7 @@
       <AdditionalIncludeDirectories>Source\Server;Source\Osi;Source\Tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CppLanguageStandard>c++20</CppLanguageStandard>
       <CLanguageStandard>c17</CLanguageStandard>
+      <AdditionalOptions>-Wno-unused-but-set-variable -Wno-conversion -Wno-switch -Wno-char-subscripts -Wno-comment -Wno-unused-variable %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
