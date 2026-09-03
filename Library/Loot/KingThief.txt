@@ -1,7 +1,7 @@
 2 15 DateCake
 1 15 LambLeg
 2 30 RedApple
-1 10 WaterSKin
+1 10 WaterSkin
 1 05 GoldRing
 1 05 GoldAnklet
 1 05 GoldStud

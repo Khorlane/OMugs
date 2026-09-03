@@ -65,6 +65,7 @@ bool Object::AddObjToPlayerEqu(string WearPosition, string ObjectId)
 {
   bool       NewPlayerEquFile;
   bool       ObjectIdAdded;
+  string     ObjectIdSave;
   string     PlayerEquFileName;
   string     PlayerEquFileNameTmp;
   ifstream   PlayerEquFile;
@@ -73,6 +74,7 @@ bool Object::AddObjToPlayerEqu(string WearPosition, string ObjectId)
   bool       WearWieldFailed;
 
   WearWieldFailed = false;
+  ObjectIdSave = ObjectId;
   ObjectId = StrMakeLower(ObjectId);
   // Open PlayerEqu file
   PlayerEquFileName =  PLAYER_EQU_DIR;
@@ -97,8 +99,8 @@ bool Object::AddObjToPlayerEqu(string WearPosition, string ObjectId)
   WearPosition = TranslateWord(WearPosition);
   if (NewPlayerEquFile)
   { // New player equipment file, write the object and return
-    ObjectId = WearPosition + " " + ObjectId;
-    PlayerEquFileTmp << ObjectId << endl;
+    ObjectIdSave = WearPosition + " " + ObjectIdSave;
+    PlayerEquFileTmp << ObjectIdSave << endl;
     PlayerEquFileTmp.close();
     Rename(PlayerEquFileNameTmp, PlayerEquFileName);
     return WearWieldFailed;
@@ -119,8 +121,8 @@ bool Object::AddObjToPlayerEqu(string WearPosition, string ObjectId)
     WearPositionCheck = StrGetWord(Stuff, 1);
     if (WearPosition < WearPositionCheck)
     { // Add new object in alphabetical order by translated WearPosition
-      ObjectId = WearPosition + " " + ObjectId;
-      PlayerEquFileTmp << ObjectId << endl;
+      ObjectIdSave = WearPosition + " " + ObjectIdSave;
+      PlayerEquFileTmp << ObjectIdSave << endl;
       ObjectIdAdded = true;
       PlayerEquFileTmp << Stuff << endl;
       Stuff = "";
@@ -143,8 +145,8 @@ bool Object::AddObjToPlayerEqu(string WearPosition, string ObjectId)
   }
   if (!ObjectIdAdded)
   { // New object is alphabetically last
-    ObjectId = WearPosition + " " + ObjectId;
-    PlayerEquFileTmp << ObjectId << endl;
+    ObjectIdSave = WearPosition + " " + ObjectIdSave;
+    PlayerEquFileTmp << ObjectIdSave << endl;
     ObjectIdAdded = true;
   }
   PlayerEquFile.close();
@@ -163,6 +165,7 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId)
   bool       NewPlayerObjFile;
   bool       ObjectIdAdded;
   string     ObjectIdCheck;
+  string     ObjectIdSave;
   int        ObjCount;
   string     PlayerObjFileName;
   string     PlayerObjFileNameTmp;
@@ -170,6 +173,7 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId)
   ofstream   PlayerObjFileTmp;
 
   pDnodeTgt = pDnodeTgt1;
+  ObjectIdSave = ObjectId;
   ObjectId = StrMakeLower(ObjectId);
   // Open PlayerObj file
   PlayerObjFileName =  PLAYER_OBJ_DIR;
@@ -193,8 +197,8 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId)
   }
   if (NewPlayerObjFile)
   { // New player inventory file, write the object and return
-    ObjectId = "1 " + ObjectId;
-    PlayerObjFileTmp << ObjectId << endl;
+    ObjectIdSave = "1 " + ObjectIdSave;
+    PlayerObjFileTmp << ObjectIdSave << endl;
     PlayerObjFileTmp.close();
     Rename(PlayerObjFileNameTmp, PlayerObjFileName);
     return;
@@ -213,10 +217,11 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId)
       continue;
     }
     ObjectIdCheck = StrGetWord(Stuff, 2);
+    ObjectIdCheck = StrMakeLower(ObjectIdCheck);
     if (ObjectId < ObjectIdCheck)
     { // Add new object in alphabetical order
-      ObjectId = "1 " + ObjectId;
-      PlayerObjFileTmp << ObjectId << endl;
+      ObjectIdSave = "1 " + ObjectIdSave;
+      PlayerObjFileTmp << ObjectIdSave << endl;
       ObjectIdAdded = true;
       PlayerObjFileTmp << Stuff << endl;
       Stuff = "";
@@ -229,8 +234,8 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId)
       ObjCount++;
       sprintf(Buf, "%d", ObjCount);
       TmpStr = (string)Buf;
-      ObjectId = TmpStr + " " + ObjectId;
-      PlayerObjFileTmp << ObjectId << endl;
+      ObjectIdSave = TmpStr + " " + ObjectIdSave;
+      PlayerObjFileTmp << ObjectIdSave << endl;
       ObjectIdAdded = true;
       Stuff = "";
       ReadTextLine(PlayerObjFile, Stuff);
@@ -243,8 +248,8 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId)
   }
   if (!ObjectIdAdded)
   { // New object is alphabetically last
-    ObjectId = "1 " + ObjectId;
-    PlayerObjFileTmp << ObjectId << endl;
+    ObjectIdSave = "1 " + ObjectIdSave;
+    PlayerObjFileTmp << ObjectIdSave << endl;
     ObjectIdAdded = true;
   }
   PlayerObjFile.close();
@@ -262,12 +267,14 @@ void Object::AddObjToRoom(string RoomId, string ObjectId)
   bool       NewRoomObjFile;
   bool       ObjectIdAdded;
   string     ObjectIdCheck;
+  string     ObjectIdSave;
   int        ObjCount;
   string     RoomObjFileName;
   string     RoomObjFileNameTmp;
   ifstream   RoomObjFile;
   ofstream   RoomObjFileTmp;
 
+  ObjectIdSave = ObjectId;
   ObjectId = StrMakeLower(ObjectId);
   // Open RoomObj file
   RoomObjFileName =  ROOM_OBJ_DIR;
@@ -291,8 +298,8 @@ void Object::AddObjToRoom(string RoomId, string ObjectId)
   }
   if (NewRoomObjFile)
   { // New room object file, write the object and return
-    ObjectId = "1 " + ObjectId;
-    RoomObjFileTmp << ObjectId << endl;
+    ObjectIdSave = "1 " + ObjectIdSave;
+    RoomObjFileTmp << ObjectIdSave << endl;
     RoomObjFileTmp.close();
     ErrorCode = Rename(RoomObjFileNameTmp, RoomObjFileName);
     if (ErrorCode.value() != 0)
@@ -318,10 +325,11 @@ void Object::AddObjToRoom(string RoomId, string ObjectId)
       continue;
     }
     ObjectIdCheck = StrGetWord(Stuff, 2);
+    ObjectIdCheck = StrMakeLower(ObjectIdCheck);
     if (ObjectId < ObjectIdCheck)
     { // Add new object in alphabetical order
-      ObjectId = "1 " + ObjectId;
-      RoomObjFileTmp << ObjectId << endl;
+      ObjectIdSave = "1 " + ObjectIdSave;
+      RoomObjFileTmp << ObjectIdSave << endl;
       ObjectIdAdded = true;
       RoomObjFileTmp << Stuff << endl;
       Stuff = "";
@@ -334,9 +342,9 @@ void Object::AddObjToRoom(string RoomId, string ObjectId)
       ObjCount++;
       sprintf(Buf, "%d", ObjCount);
       TmpStr = Buf;
-      ObjectId = TmpStr + " " + ObjectId;
-      ObjectId += "\n";
-      RoomObjFileTmp << ObjectId << endl;
+      ObjectIdSave = TmpStr + " " + ObjectIdSave;
+      ObjectIdSave += "\n";
+      RoomObjFileTmp << ObjectIdSave << endl;
       ObjectIdAdded = true;
       Stuff = "";
       ReadTextLine(RoomObjFile, Stuff);
@@ -349,8 +357,8 @@ void Object::AddObjToRoom(string RoomId, string ObjectId)
   }
   if (!ObjectIdAdded)
   { // New object is alphabetically last
-    ObjectId = "1 " + ObjectId;
-    RoomObjFileTmp << ObjectId << endl;
+    ObjectIdSave = "1 " + ObjectIdSave;
+    RoomObjFileTmp << ObjectIdSave << endl;
     ObjectIdAdded = true;
   }
   RoomObjFile.close();
@@ -429,7 +437,8 @@ void Object::IsObjInPlayerEqu(string ObjectName)
   { // For each player equipment object 
     ObjectId = StrGetWord(Stuff, 2);
     ObjectName = StrMakeLower(ObjectName);
-    if (ObjectName == ObjectId)
+    ObjectIdCheck = StrMakeLower(ObjectId);
+    if (ObjectName == ObjectIdCheck)
     { // Found a match
       pObject = new Object(ObjectId);
       if (pObject)
@@ -528,7 +537,8 @@ void Object::IsObjInPlayerInv(string ObjectName)
   { // For all items in player inventory
     ObjectId = StrGetWord(Stuff, 2);
     ObjectName = StrMakeLower(ObjectName);
-    if (ObjectName == ObjectId)
+    ObjectIdCheck = StrMakeLower(ObjectId);
+    if (ObjectName == ObjectIdCheck)
     { // Found a match
       pObject = new Object(ObjectId);
       if (pObject)
@@ -628,7 +638,8 @@ void Object::IsObjInRoom(string ObjectName)
   { // For each item in room
     ObjectId = StrGetWord(Stuff, 2);
     ObjectName = StrMakeLower(ObjectName);
-    if (ObjectName == ObjectId)
+    ObjectIdCheck = StrMakeLower(ObjectId);
+    if (ObjectName == ObjectIdCheck)
     { // Found a match
       pObject = new Object(ObjectId);
       if (pObject)
@@ -767,6 +778,7 @@ void Object::RemoveObjFromPlayerEqu(string ObjectId)
       continue;
     }
     ObjectIdCheck = StrGetWord(Stuff, 2);
+    ObjectIdCheck = StrMakeLower(ObjectIdCheck);
     if (ObjectId == ObjectIdCheck)
     { // Found it, skipping it will remove it from the file
       ObjectIdRemoved = true;
@@ -807,6 +819,7 @@ void Object::RemoveObjFromPlayerInv(string ObjectId, int Count)
   int        BytesInFile;
   bool       ObjectIdRemoved;
   string     ObjectIdCheck;
+  string     ObjectIdSave;
   int        ObjCount;
   string     PlayerObjFileName;
   string     PlayerObjFileNameTmp;
@@ -847,7 +860,8 @@ void Object::RemoveObjFromPlayerInv(string ObjectId, int Count)
       ReadTextLine(PlayerObjFile, Stuff);
       continue;
     }
-    ObjectIdCheck = StrGetWord(Stuff, 2);
+    ObjectIdSave = StrGetWord(Stuff, 2);
+    ObjectIdCheck = StrMakeLower(ObjectIdSave);
     if (ObjectId == ObjectIdCheck)
     { // Found it, subtract 'count' from ObjCount
       ObjCount = stoi(StrGetWord(Stuff, 1));
@@ -857,8 +871,8 @@ void Object::RemoveObjFromPlayerInv(string ObjectId, int Count)
       {
         sprintf(Buf, "%d", ObjCount);
         TmpStr = Buf;
-        ObjectId = TmpStr + " " + ObjectId;
-        PlayerObjFileTmp << ObjectId << endl;
+        ObjectIdSave = TmpStr + " " + ObjectIdSave;
+        PlayerObjFileTmp << ObjectIdSave << endl;
       }
       Stuff = "";
       ReadTextLine(PlayerObjFile, Stuff);
@@ -897,6 +911,7 @@ void Object::RemoveObjFromRoom(string ObjectId)
   int        BytesInFile;
   bool       ObjectIdRemoved;
   string     ObjectIdCheck;
+  string     ObjectIdSave;
   int        ObjCount;
   string     RoomObjFileName;
   string     RoomObjFileNameTmp;
@@ -937,7 +952,8 @@ void Object::RemoveObjFromRoom(string ObjectId)
       ReadTextLine(RoomObjFile, Stuff);
       continue;
     }
-    ObjectIdCheck = StrGetWord(Stuff, 2);
+    ObjectIdSave = StrGetWord(Stuff, 2);
+    ObjectIdCheck = StrMakeLower(ObjectIdSave);
     if (ObjectId == ObjectIdCheck)
     { // Found it, subtract 1 from count
       ObjCount = stoi(StrGetWord(Stuff, 1));
@@ -947,8 +963,8 @@ void Object::RemoveObjFromRoom(string ObjectId)
       {
         sprintf(Buf, "%d", ObjCount);
         TmpStr = Buf;
-        ObjectId = TmpStr + " " + ObjectId;
-        RoomObjFileTmp << ObjectId << endl;
+        ObjectIdSave = TmpStr + " " + ObjectIdSave;
+        RoomObjFileTmp << ObjectIdSave << endl;
       }
       Stuff = "";
       ReadTextLine(RoomObjFile, Stuff);

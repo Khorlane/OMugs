@@ -8,7 +8,7 @@ Item: PaddedLeatherBracers
 Item: PaddedLeatherBreastplate
 Item: PaddedLeatherGreaves
 Item: ThickLeatherSandals
-Item: thickLeatherBuckler
+Item: ThickLeatherBuckler
 Item: PaddedShoulderArmor
 Item: PaddedLeatherHelmet
 
