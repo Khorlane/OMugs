@@ -210,6 +210,7 @@ bool Player::IsNameValid(string Name)
     }
     NameIn = "";
     ReadTextLine(ValidNameFile, NameIn);
+    NameIn = StrMakeLower(NameIn);
   }
   ValidNameFile.close();
   return false;
