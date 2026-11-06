@@ -217,7 +217,7 @@ void Mobile::CreateMobPlayer(string PlayerName, string MobileId)
   }
   if (NewFile)
   { // Create new file
-    MobPlayerFile.open(MobPlayerFileName);
+    MobPlayerFile.open(MobPlayerFileName, ios::out);
     if (!MobPlayerFile.is_open())
     {
       LogBuf = "Mobile::CreateMobPlayer - Open MobPlayerile file failed 1";

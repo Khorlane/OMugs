@@ -7126,7 +7126,7 @@ void Communication::ViolenceMobileDied(string MobileBeenWhacked,
   int      MobileLevel;
   string   MobileLoot;
 
-  MobileExpPointsLevel = (MobileId);
+  MobileExpPointsLevel = GetMobileExpPointsLevel(MobileId);
   MobileExpPoints      = stoi(StrGetWord(MobileExpPointsLevel, 1));
   MobileLevel          = stoi(StrGetWord(MobileExpPointsLevel, 2));
   MobileLoot           = GetMobileLoot(MobileId);
