@@ -840,7 +840,7 @@ void Validate::ValidateLibraryWorldMobiles()
     MobileIdFileName += MOBILES_DIR;
     MobileIdFileName += MobileId;
     MobileIdFileName += ".txt";
-    if (!FileExist(MobileIdFileName))
+    if (!FileExist(ffn(MobileIdFileName)))
     { // MobileId file not found
       Message  = "Mobile file";
       Message += " '";
@@ -1251,7 +1251,7 @@ void Validate::ValidateRunningRoomMob()
       MobileIdFileName += MOBILES_DIR;
       MobileIdFileName += MobileId;
       MobileIdFileName += ".txt";
-      if (!FileExist(MobileIdFileName))
+      if (!FileExist(ffn(MobileIdFileName)))
       { // MobileId file not found
         Message  = "Mobile file";
         Message += " '";
