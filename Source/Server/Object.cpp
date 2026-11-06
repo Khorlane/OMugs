@@ -70,6 +70,7 @@ bool Object::AddObjToPlayerEqu(string WearPosition, string ObjectId)
   string     PlayerEquFileNameTmp;
   ifstream   PlayerEquFile;
   ofstream   PlayerEquFileTmp;
+  string     Stuff;
   string     WearPositionCheck;
   bool       WearWieldFailed;
 
@@ -171,6 +172,7 @@ void Object::AddObjToPlayerInv(Dnode *pDnodeTgt1, string ObjectId)
   string     PlayerObjFileNameTmp;
   ifstream   PlayerObjFile;
   ofstream   PlayerObjFileTmp;
+  string     Stuff;
 
   pDnodeTgt = pDnodeTgt1;
   ObjectIdSave = ObjectId;
@@ -273,6 +275,7 @@ void Object::AddObjToRoom(string RoomId, string ObjectId)
   string     RoomObjFileNameTmp;
   ifstream   RoomObjFile;
   ofstream   RoomObjFileTmp;
+  string     Stuff;
 
   ObjectIdSave = ObjectId;
   ObjectId = StrMakeLower(ObjectId);
@@ -377,6 +380,7 @@ int Object::CalcPlayerArmorClass()
   string      ObjectId;
   ifstream    PlayerEquFile;
   string      PlayerEquFileName;
+  string      Stuff;
   string      WearPosition;
 
   ArmorClass = 0;
@@ -417,6 +421,7 @@ void Object::IsObjInPlayerEqu(string ObjectName)
   string      ObjectNameCheck;
   string      PlayerEquFileName;
   ifstream    PlayerEquFile;
+  string      Stuff;
 
   // Open PlayerEqu file
   PlayerEquFileName =  PLAYER_EQU_DIR;
@@ -517,6 +522,7 @@ void Object::IsObjInPlayerInv(string ObjectName)
   string      ObjectNameCheck;
   string      PlayerObjFileName;
   ifstream    PlayerObjFile;
+  string      Stuff;
 
   // Open PlayerObj file
   PlayerObjFileName =  PLAYER_OBJ_DIR;
@@ -618,6 +624,7 @@ void Object::IsObjInRoom(string ObjectName)
   string      ObjectNameCheck;
   string      RoomObjFileName;
   ifstream    RoomObjFile;
+  string      Stuff;
 
   // Open RoomObj file
   RoomObjFileName =  ROOM_OBJ_DIR;
@@ -717,7 +724,7 @@ void Object::IsObject(string ObjectId)
   ObjectFileName =  OBJECTS_DIR;
   ObjectFileName += ObjectId;
   ObjectFileName += ".txt";
-  if (FileExist(ObjectFileName))
+  if (FileExist(ffn(ObjectFileName)))
   {
     pObject = new Object(ObjectId);
     return;
@@ -742,6 +749,7 @@ void Object::RemoveObjFromPlayerEqu(string ObjectId)
   string     PlayerEquFileNameTmp;
   ifstream   PlayerEquFile;
   ofstream   PlayerEquFileTmp;
+  string     Stuff;
 
   ObjectId = StrMakeLower(ObjectId);
   // Open PlayerEqu file
@@ -825,6 +833,7 @@ void Object::RemoveObjFromPlayerInv(string ObjectId, int Count)
   string     PlayerObjFileNameTmp;
   ifstream   PlayerObjFile;
   ofstream   PlayerObjFileTmp;
+  string     Stuff;
 
   ObjectId = StrMakeLower(ObjectId);
   // Open PlayerObj file
@@ -917,6 +926,7 @@ void Object::RemoveObjFromRoom(string ObjectId)
   string     RoomObjFileNameTmp;
   ifstream   RoomObjFile;
   ofstream   RoomObjFileTmp;
+  string     Stuff;
 
   ObjectId = StrMakeLower(ObjectId);
   // Open RoomObj file
@@ -1003,6 +1013,7 @@ void Object::ShowPlayerEqu(Dnode *pDnodeTgt1)
   string     ObjectId;
   ifstream   PlayerEquFile;
   string     PlayerEquFileName;
+  string     Stuff;
   string     WearPosition;
 
   pDnodeTgt = pDnodeTgt1;
@@ -1067,6 +1078,7 @@ void Object::ShowPlayerInv()
   string      ObjectId;
   ifstream    PlayerObjFile;
   string      PlayerObjFileName;
+  string      Stuff;
 
   // Open PlayerObj file
   PlayerObjFileName =  PLAYER_OBJ_DIR;
@@ -1115,6 +1127,7 @@ void Object::ShowObjsInRoom(Dnode *pDnode)
   string      ObjectId;
   ifstream    RoomObjFile;
   string      RoomObjFileName;
+  string      Stuff;
 
   // Open RoomObj file
   RoomObjFileName =  ROOM_OBJ_DIR;
@@ -1169,6 +1182,7 @@ void Object::WhereObjPlayerEqu(string ObjectIdSearch)
   string      PlayerEquFileName;
   ifstream    PlayerEquFile;
   string      PlayerName;
+  string      Stuff;
 
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += "Objects in player equipment";
@@ -1232,6 +1246,7 @@ void Object::WhereObjPlayerObj(string ObjectIdSearch)
   string     PlayerObjFileName;
   ifstream   PlayerObjFile;
   string     PlayerName;
+  string     Stuff;
 
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += "Objects in player inventory";
@@ -1295,6 +1310,7 @@ void Object::WhereObjRoomObj(string ObjectIdSearch)
   string     RoomName;
   string     RoomObjFileName;
   ifstream   RoomObjFile;
+  string     Stuff;
 
   pDnodeActor->PlayerOut += "\r\n";
   pDnodeActor->PlayerOut += "Objects in rooms";
@@ -1401,7 +1417,7 @@ void Object::OpenFile(string ObjectId)
   ObjectFileName =  OBJECTS_DIR;
   ObjectFileName += ObjectId;
   ObjectFileName += ".txt";
-  ObjectFile.open(ObjectFileName);
+  ObjectFile.open(ffn(ObjectFileName));
   if (!ObjectFile.is_open())
   {
     LogBuf = "Object::OpenFile - Object does not exist!";
