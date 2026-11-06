@@ -36,6 +36,52 @@ int Utility::CalcPct(int Dividend, int Divisor)
 }
 
 /***********************************************************
+* Find a file name without regard to case                 *
+***********************************************************/
+
+string Utility::ffn(string FileName)
+{
+  fs::path FilePath(FileName);
+  string Directory = FilePath.parent_path().string();
+  string SearchName = StrMakeLower(FilePath.filename().string());
+  string MatchName;
+  string EntryName;
+  error_code ErrorCode;
+
+  if (Directory == "")
+  {
+    Directory = ".";
+  }
+  fs::directory_iterator Entries(Directory, ErrorCode);
+  if (ErrorCode)
+  {
+    return FileName;
+  }
+  for (const auto &entry : Entries)
+  {
+    if (!entry.is_regular_file())
+    {
+      continue;
+    }
+    EntryName = entry.path().filename().string();
+    if (StrMakeLower(EntryName) == SearchName)
+    {
+      if (MatchName != "")
+      {
+        FatalError("Utility::ffn - Multiple matches in '" + Directory +
+                   "' for '" + FileName + "': '" + MatchName + "', '" + EntryName + "'");
+      }
+      MatchName = EntryName;
+    }
+  }
+  if (MatchName == "")
+  {
+    return FileName;
+  }
+  return (FilePath.parent_path() / MatchName).string();
+}
+
+/***********************************************************
 * Insert commas into a nueric string                      *
 ***********************************************************/
 

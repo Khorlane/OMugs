@@ -271,6 +271,7 @@ bool    EndOfDnodeList();
 void    Events();
 void    FatalError(string Message);
 bool    FileExist(string Name);
+string  ffn(string FileName);
 string  FormatCommas(string String);
 int     GetCount();
 string  GetHomeDir();

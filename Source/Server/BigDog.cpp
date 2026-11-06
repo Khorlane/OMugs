@@ -1075,6 +1075,11 @@ void ReadTextLine(istream &InputFile, string &Line)
   Utility::ReadTextLine(InputFile, Line);
 }
 
+string ffn(string FileName)
+{
+  return Utility::ffn(FileName);
+}
+
 string TranslateWord(string Word)
 {
   return Utility::TranslateWord(Word);

@@ -562,7 +562,7 @@ string Mobile::GetMobDesc1(string MobileId)
   MobileFileName =  MOBILES_DIR;
   MobileFileName += MobileId;
   MobileFileName += ".txt";
-  MobileFile.open(MobileFileName);
+  MobileFile.open(ffn(MobileFileName));
   if (!MobileFile.is_open())
   {
     LogBuf = "Mobile::GetMobDesc1 - Mobile does not exist!";
@@ -630,7 +630,7 @@ Mobile *Mobile::IsMobValid(string MobileId)
   MobileFileName =  MOBILES_DIR;
   MobileFileName += MobileId;
   MobileFileName += ".txt";
-  if (FileExist(MobileFileName))
+  if (FileExist(ffn(MobileFileName)))
   {
     pMobile = new Mobile(MobileId);
     return pMobile;
@@ -1338,7 +1338,7 @@ void Mobile::OpenFile(string MobileId)
   MobileFileName =  MOBILES_DIR;
   MobileFileName += MobileId;
   MobileFileName += ".txt";
-  MobileFile.open(MobileFileName);
+  MobileFile.open(ffn(MobileFileName));
   if (!MobileFile.is_open())
   {
     LogBuf = "Mobile::OpenFile - Mobile does not exist!";

@@ -26,6 +26,7 @@ class Utility
 // Public functions static
   public:
     static  int     CalcPct(int Dividend, int Divisor);
+    static  string  ffn(string FileName);
     static  string  FormatCommas(string String);
     static  string  GetHomeDir();
     static  int     GetRandomNumber(int Limit);
