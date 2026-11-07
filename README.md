@@ -1,32 +1,19 @@
 # OMugs
 
-OMugs is an Online Multi-User Game Server. It is a MUD server written from
-scratch in C++ and is a member of the combat-oriented family of MUDs. The
-concepts used to build OMugs are by no means original, but the implementation
-is original to this codebase.
+OMugs is an Online Multi-User Game Server. It is a MUD server written from scratch in C++ and is a member of the combat-oriented family of MUDs. The concepts used to build OMugs are by no means original, but the implementation of those concepts, namely OMugs, is original.
 
-Coding of OMugs began in 2002 and the first release went live on March 7, 2003.
-By the end of 2003, the codebase was complete and supported 61 commands.
+Coding of OMugs began in 2002 and the first release went live on March 7, 2003. By early 2004, the project had completed 62 documented server components.
 
-The OMugs project began after spending considerable time creating a game using
-the CircleMUD server. There are a number of similarities between OMugs and
-CircleMUD and DIKU, because CircleMUD is a derivative of DIKU. See
-www.circlemud.org and www.dikumud.com for more information about those MUD
-servers. Also see `Beginning.md` in the `Doc` directory for more information
+The OMugs project began after spending considerable time creating a game using the CircleMUD server. See www.circlemud.org for more information about that MUD server. Also see `Beginning.md` in the `Doc` directory for more information
 about the beginnings of OMugs.
+
+OMugs ran only on Windows until 2026. In 2021, work began to replace Microsoft Foundation Classes (MFC) with standard C++. In 2026, OMugs became a command-line server, and Winsock was replaced with POSIX sockets as part of the Linux port.
 
 ## Current Status
 
-OMugs is now a command-line server. Project development remains centered on
-Microsoft Visual Studio 2026, using WSL for Linux compilation and testing. The
-intended operational environment is a remote Linux server.
+OMugs is a command-line server that runs on Linux. Development uses Microsoft Visual Studio 2026 on Windows 11, with WSL for Linux builds and testing. The server is deployed to a separate Linux host.
 
 ## Project Layout
-
-`Debug\`
-
-Contains the object files for the project, plus other files Visual Studio
-creates and uses to manage the project.
 
 `Doc\`
 
@@ -36,37 +23,25 @@ Contains documentation for OMugs.
 
 Contains files that are read by OMugs and used to define the world.
 
-`Res\`
-
-Contains legacy application icon and cursor resources that are no longer part
-of the active command-line server build.
-
 `Running\`
 
-Contains the runtime directory skeleton and required control seed files.
-Most files created and maintained by OMugs while the server runs are ignored.
+Contains the runtime directories and files.
 
 `Source\Server\`
 
-Contains the source code for the Online Multi-User Game Server, including the
-command-line entry point.
+Contains the Online Multi-User Game Server (OMugs) source code.
 
 `Source\Osi\`
 
-Contains OSI script parsing and runtime support.
+Contains OSI (OMugs Script Interpreter) source code.
 
 `Source\Tools\`
 
-Contains the source code for non-UI tools, like validation.
-
-`Tmp\`
-
-Temporary files. This directory should be empty most of the time.
+Contains tools source code.
 
 `Utility\`
 
-Miscellaneous tools, including the room generator and the Who Is Online XML
-generator for the website.
+Miscellaneous mud admin scripts.
 
 `WebSite\`
 
@@ -74,12 +49,8 @@ The HolyQuest website.
 
 `HomeDir.txt`
 
-Contains one line that specifies the OMugs home directory. For the current WSL
-debug configuration this is `/mnt/c/OMugs/`.
-
-All other directories and files are Visual Studio or Git related.
+Contains a single line that specifies the OMugs home directory.
 
 ## License
 
-This project is licensed under the [Unlicense](LICENSE), which releases the
-code into the public domain.
+This project is licensed under the [Unlicense](LICENSE), which releases the code into the public domain.
