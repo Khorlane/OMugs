@@ -51,6 +51,7 @@
 
 ## Misc
 
+- Fix the Advance command to validate that the third aurgument is numeric before the stoi call
 - Externalize starting hit points, move points, starting room, greeting, etc.
   In other words, most if not all `Config.h` stuff
 - Complete move points implementation
