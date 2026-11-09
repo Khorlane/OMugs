@@ -187,7 +187,7 @@ void Validate::ValidateLibraryLoot()
       ObjectIdFileName += OBJECTS_DIR;
       ObjectIdFileName += ObjectId;
       ObjectIdFileName += ".txt";
-      if (!FileExist(ObjectIdFileName))
+      if (!FileExist(ffn(ObjectIdFileName)))
       { // ObjectId file not found
         Message  = "Object file";
         Message += " '";
@@ -763,7 +763,7 @@ void Validate::ValidateLibraryShops()
       ObjectIdFileName += OBJECTS_DIR;
       ObjectIdFileName += ObjectId;
       ObjectIdFileName += ".txt";
-      if (!FileExist(ObjectIdFileName))
+      if (!FileExist(ffn(ObjectIdFileName)))
       { // ObjectId file not found
         Message  = "Object file";
         Message += " '";
@@ -1068,7 +1068,7 @@ void Validate::ValidateRunningPlayersPlayerEqu()
       ObjectIdFileName += OBJECTS_DIR;
       ObjectIdFileName += ObjectId;
       ObjectIdFileName += ".txt";
-      if (!FileExist(ObjectIdFileName))
+      if (!FileExist(ffn(ObjectIdFileName)))
       { // ObjectId file not found
         Message  = "Object file";
         Message += " '";
@@ -1143,7 +1143,7 @@ void Validate::ValidateRunningPlayersPlayerObj()
       ObjectIdFileName += OBJECTS_DIR;
       ObjectIdFileName += ObjectId;
       ObjectIdFileName += ".txt";
-      if (!FileExist(ObjectIdFileName))
+      if (!FileExist(ffn(ObjectIdFileName)))
       { // ObjectId file not found
         Message  = "Object file";
         Message += " '";
@@ -1352,7 +1352,7 @@ void Validate::ValidateRunningRoomObj()
       ObjectIdFileName += OBJECTS_DIR;
       ObjectIdFileName += ObjectId;
       ObjectIdFileName += ".txt";
-      if (!FileExist(ObjectIdFileName))
+      if (!FileExist(ffn(ObjectIdFileName)))
       { // ObjectId file not found
         Message  = "Object file";
         Message += " '";
