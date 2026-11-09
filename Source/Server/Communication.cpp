@@ -5503,8 +5503,8 @@ void Communication::DoTime()
   DEBUGIT(1);
   // Server time
   time_t now = chrono::system_clock::to_time_t(chrono::system_clock::now());
-  string s(30, '\0');
-  strftime(&s[0], s.size(), "%Y-%m-%d %H:%M:%S", localtime(&now));
+  char s[20];
+  strftime(&s[0], sizeof(s), "%Y-%m-%d %H:%M:%S", localtime(&now));
   DisplayCurrentTime = s;
   pDnodeActor->PlayerOut += "Current server time is: ";
   pDnodeActor->PlayerOut += DisplayCurrentTime;
