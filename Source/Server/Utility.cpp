@@ -336,8 +336,8 @@ string Utility::TranslateWord(string Word)
   if (Word == "06")           return "Worn on chest:           ";
   if (Word == "07")           return "Worn on back:            ";
   if (Word == "08")           return "Worn on arms:            ";
-  if (Word == "09")           return "Worn on left wrist       ";
-  if (Word == "10")           return "Worn on right wrist      ";
+  if (Word == "09")           return "Worn on left wrist:      ";
+  if (Word == "10")           return "Worn on right wrist:     ";
   if (Word == "11")           return "Worn on hands:           ";
   if (Word == "12")           return "Worn on left finger:     ";
   if (Word == "13")           return "Worn on right finger:    ";
