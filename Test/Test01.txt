@@ -1,0 +1,40 @@
+who
+afk
+who
+afk
+who
+color
+look
+color off
+look
+color on
+look
+load obj waterskin
+inventory
+destroy waterskin
+load obj waterskin
+inventory
+drink waterskin
+inventory
+load obj redapple
+inventory
+drop apple
+inventory
+get apple
+inventory
+examine apple
+eat redapple
+inventory
+help
+help give
+money
+motd
+played
+say Hi everyone
+sit
+sleep
+wake
+stand
+status
+time
+quit
