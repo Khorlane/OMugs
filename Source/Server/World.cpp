@@ -32,6 +32,7 @@ void World::CreateSpawnMobileEvents()
   int        Count;
   int        CurrentTime;
   int        Days;
+  error_code DirectoryError;
   fstream    EventFile;
   string     EventFileName;
   string     EventTime;
@@ -52,11 +53,12 @@ void World::CreateSpawnMobileEvents()
   { // Change directory failed
     FatalError("World::CreateSpawnMobileEvents - Change directory to HomeDir failed");
   }
-  if (ChgDir(WORLD_MOBILES_DIR))
-  { // Change directory failed
-    FatalError("World::CreateSpawnMobileEvents - Change directory to WORLD_MOBILES_DIR failed");
+  fs::directory_iterator Entries(WORLD_MOBILES_DIR, DirectoryError);
+  if (DirectoryError)
+  { // Open directory failed
+    FatalError("World::CreateSpawnMobileEvents - Open WORLD_MOBILES_DIR failed");
   }
-  for (const auto &entry : fs::directory_iterator("./"))
+  for (const auto &entry : Entries)
   {
     if (entry.is_directory())
     { // Skip directories
@@ -69,18 +71,14 @@ void World::CreateSpawnMobileEvents()
       continue;
     }
     //* Have we already created a spawn event for this MobileId?
-    ControlMobSpawnFileName =  HomeDir;
-    ControlMobSpawnFileName += CONTROL_MOB_SPAWN_DIR;
+    ControlMobSpawnFileName =  CONTROL_MOB_SPAWN_DIR;
     ControlMobSpawnFileName += MobileId;
-    ControlMobSpawnFile.open(ControlMobSpawnFileName);
-    if (ControlMobSpawnFile.is_open())
+    if (FileExist(ControlMobSpawnFileName))
     { // The NoMoreSpawnEventsFlag is set for this mobile
-      ControlMobSpawnFile.close();
       continue;
     }
     //* Check MaxInWorld against actual 'in world' count
-    WorldMobileFileName = HomeDir + WORLD_MOBILES_DIR + WorldMobileFileName;
-    WorldMobileFile.open(WorldMobileFileName);
+    WorldMobileFile.open(entry.path());
     if (!WorldMobileFile.is_open())
     { // File does not exist - Very bad!
       FatalError("World::CreateSpawnMobileEvents - Open World Mobile file failed");
@@ -91,8 +89,8 @@ void World::CreateSpawnMobileEvents()
     { // World mobile file format error MaxInWorld
       FatalError("World::CreateSpawnMobileEvents - World mobile file format error MaxInWorld");
     }
+    Limit    = stoi(StrGetWord(Stuff, 2));
     Count    = CountMob(MobileId);
-    Limit    = stoi(StrGetWord(Stuff,2));
     if (Count >= Limit)
     { // No spawn event needed
       WorldMobileFile.close();
@@ -131,8 +129,7 @@ void World::CreateSpawnMobileEvents()
     CurrentTime += Years;
     sprintf(Buf, "%d", CurrentTime);
     EventTime = Buf;
-    EventFileName =  HomeDir;
-    EventFileName += CONTROL_EVENTS_DIR;
+    EventFileName =  CONTROL_EVENTS_DIR;
     EventFileName += "M";
     EventFileName += EventTime;
     EventFileName += ".txt";
@@ -147,7 +144,7 @@ void World::CreateSpawnMobileEvents()
       TmpStr += " ";
       TmpStr += RoomId;
       TmpStr += "\r\n";
-      EventFile << TmpStr << endl;
+      EventFile << TmpStr;
       Count++;
     }
     EventFile.close();
@@ -160,10 +157,6 @@ void World::CreateSpawnMobileEvents()
     }
     ControlMobSpawnFile.close();
   }
-  if (ChgDir(HomeDir))
-  { // Change directory failed
-    FatalError("World::CreateSpawnMobileEvents - Change directory to HomeDir failed");
-  }
 }
 
 /***********************************************************
@@ -174,6 +167,7 @@ void World::CheckSpawnMobileEvents()
 {
   string     CheckTime;
   string     ControlMobSpawnFileName;
+  error_code DirectoryError;
   ifstream   EventFile;
   string     EventFileName;
   string     EventTime;
@@ -183,11 +177,12 @@ void World::CheckSpawnMobileEvents()
   DEBUGIT(5);
   sprintf(Buf, "%d", GetTimeSeconds());
   CheckTime = Buf;
-  if (ChgDir(CONTROL_EVENTS_DIR))
-  { // Change directory failed
-    FatalError("World::CheckSpawnMobileEvents - Change directory to CONTROL_EVENTS_DIR failed");
+  fs::directory_iterator Entries(CONTROL_EVENTS_DIR, DirectoryError);
+  if (DirectoryError)
+  { // Open directory failed
+    FatalError("World::CheckSpawnMobileEvents - Open CONTROL_EVENTS_DIR failed");
   }
-  for (const auto &entry : fs::directory_iterator("./"))
+  for (const auto &entry : Entries)
   {
     if (entry.is_directory())
     { // Skip directories
@@ -230,10 +225,6 @@ void World::CheckSpawnMobileEvents()
     // Event completed, remove it
     EventFile.close();
     Remove(EventFileName);
-  }
-  if (ChgDir(HomeDir))
-  { // Change directory failed
-    FatalError("World::CheckSpawnMobileEvents - Change directory to HomeDir failed");
   }
 }
 

@@ -22,6 +22,7 @@
 
 - Make `Mobile::CountMob` count wounded mobs
 - Make wimpy mobs flee when almost dead
+- Populate mobs immediately on a fresh world start. Use Interval: only for respawns.
 
 ## Players
 
