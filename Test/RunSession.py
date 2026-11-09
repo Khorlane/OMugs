@@ -1,3 +1,4 @@
+import argparse
 import getpass
 import re
 import socket
@@ -12,6 +13,7 @@ TEST_DIR = Path(__file__).resolve().parent
 DEFAULT_HOST = "129.212.241.43"
 DEFAULT_PORT = 7373
 TIMEOUT = 30
+COMMAND_DELAY = 1.0
 GAME_PROMPT = rb"(?:^|\n)-?\d+H -?\d+M > "
 ANSI_COLOR = re.compile(r"\x1b\[([0-9;]*)m")
 ANSI_COLOR_BYTES = re.compile(ANSI_COLOR.pattern.encode("ascii"))
@@ -105,7 +107,9 @@ def run_session(host, port, name, password, commands, record):
         send(password, secret=True)
         receive(sock, record, GAME_PROMPT, "the game prompt after login")
 
-        for command in commands:
+        for index, command in enumerate(commands):
+            if index:
+                time.sleep(COMMAND_DELAY)
             send(command)
             if command.lower() == "quit":
                 receive(sock, record, rb"Bye Bye!", "quit confirmation and disconnect", until_close=True)
@@ -113,11 +117,11 @@ def run_session(host, port, name, password, commands, record):
                 receive(sock, record, GAME_PROMPT, f"the game prompt after {command!r}")
 
 
-def main():
-    scenario = TEST_DIR / "Test01.txt"
+def main(scenario_name="Test01.txt"):
+    scenario = TEST_DIR / scenario_name
     commands = [line.strip() for line in scenario.read_text(encoding="utf-8-sig").splitlines() if line.strip()]
     if not commands or commands[-1].lower() != "quit" or any(line.lower() == "quit" for line in commands[:-1]):
-        raise ValueError("Test01.txt must have one quit command, at the end.")
+        raise ValueError(f"{scenario.name} must have one quit command, at the end.")
 
     print(f"OMugs session test: {scenario.name}")
     host = DEFAULT_HOST
@@ -171,8 +175,11 @@ def main():
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Run an OMugs test scenario.")
+    parser.add_argument("scenario", nargs="?", default="Test01.txt", help="Scenario file (default: Test01.txt)")
+    args = parser.parse_args()
     try:
-        raise SystemExit(main())
+        raise SystemExit(main(args.scenario))
     except (OSError, ValueError, EOFError, KeyboardInterrupt) as error:
         print(f"ERROR: {error or 'Session interrupted.'}")
         raise SystemExit(1) from None

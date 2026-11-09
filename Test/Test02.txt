@@ -1,0 +1,91 @@
+inventory
+equipment
+load obj shortsword
+load obj goatskinhelmet
+load obj goatskingorget
+load obj goatskinshoulderarmor
+load obj goatskinbreastplate
+load obj goatskincloak
+load obj goatskinbracers
+load obj goatskingloves
+load obj goatskinbelt
+load obj goatskingreaves
+load obj goatskinsandals
+load obj goatskinbuckler
+load obj goldring
+load obj silverring
+load obj goldstud
+load obj silverstud
+load obj goldbracelet
+load obj silverbracelet
+load obj goldanklet
+load obj silveranklet
+inventory
+equipment
+wear goatskinhelmet
+wear goatskingorget
+wear goatskinshoulderarmor
+wear goatskinbreastplate
+wear goatskincloak
+wear goatskinbracers
+wear goatskingloves
+wear goatskinbelt
+wear goatskingreaves
+wear goatskinsandals
+wear goatskinbuckler
+wear goldring left
+wear silverring right
+wear goldstud left
+wear silverstud right
+wear goldbracelet left
+wear silverbracelet right
+wear goldanklet left
+wear silveranklet right
+wield shortsword
+inventory
+equipment
+remove goatskinhelmet
+remove goatskingorget
+remove goatskinshoulderarmor
+remove goatskinbreastplate
+remove goatskincloak
+remove goatskinbracers
+remove goatskingloves
+remove goatskinbelt
+remove goatskingreaves
+remove goatskinsandals
+remove goatskinbuckler
+remove goldring
+remove silverring
+remove goldstud
+remove silverstud
+remove goldbracelet
+remove silverbracelet
+remove goldanklet
+remove silveranklet
+remove shortsword
+inventory
+equipment
+destroy goatskinhelmet
+destroy goatskingorget
+destroy goatskinshoulderarmor
+destroy goatskinbreastplate
+destroy goatskincloak
+destroy goatskinbracers
+destroy goatskingloves
+destroy goatskinbelt
+destroy goatskingreaves
+destroy goatskinsandals
+destroy goatskinbuckler
+destroy goldring
+destroy silverring
+destroy goldstud
+destroy silverstud
+destroy goldbracelet
+destroy silverbracelet
+destroy goldanklet
+destroy silveranklet
+destroy shortsword
+inventory
+equipment
+quit
