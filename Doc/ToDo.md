@@ -34,6 +34,8 @@
 - Containers
 - Clean up `pObject = new Object` code. What if `<object>.txt` does not exist
   for some reason? A pointer to object is still returned?
+- Add spawning of objects like the fountain in JesseSquare8
+- Make objects like the fountain drinkable
 
 ## Shops
 
