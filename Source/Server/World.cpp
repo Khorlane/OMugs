@@ -491,7 +491,6 @@ void World::MakeMobilesMove1()
 
 void World::MakeMobilesMove2()
 {
-  ifstream   ControlMobNoMoveFile;
   string     ControlMobNoMoveFileName;
   int        ExitCount;
   int        ExitNumber;
@@ -584,11 +583,7 @@ void World::MakeMobilesMove2()
       //* Is the MobNoMoveFlag set?
       ControlMobNoMoveFileName =  CONTROL_MOB_NOMOVE_DIR;
       ControlMobNoMoveFileName += MobileIdCheck;
-      if (ControlMobNoMoveFile.is_open())
-      { // The MobNoMoveFlag is set for this mobile
-        ControlMobNoMoveFile.close();
-      }
-      else
+      if (!FileExist(ffn(ControlMobNoMoveFileName)))
       { // Mobile may move
         for (i = 1; i <= MobCount; i++)
         { // For each mobile occurrence
