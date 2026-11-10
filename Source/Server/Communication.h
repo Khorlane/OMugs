@@ -43,7 +43,8 @@ class Communication
     Dnode   static *GetTargetDnode( string TargetName);
     bool    static  IsFighting();
     bool    static  IsSleeping();
-    void    static  SendGmcpRoom(Dnode *pDnode, string RoomId, string RoomName);
+    void    static  SendGmcpRoom(Dnode *pDnode, string RoomId, string RoomName,
+                                const vector<pair<string, string>> &Exits);
     void    static  SendToAll( string PlayerMsg,  string AllMsg);
     void    static  SendToRoom( string TargetRoomId,  string MsgText);
     void    static  ShowPlayersInRoom(Dnode *pDnode);

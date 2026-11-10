@@ -18,10 +18,12 @@ OMugs is a command-line server that runs on Linux. Development uses Microsoft Vi
 HolyQuest offers GMCP (Telnet option 201). A client that accepts it receives `HolyQuest.Room` after login or reconnect and whenever the game shows the current room, including after movement and `look`:
 
 ```text
-HolyQuest.Room {"id":"PalaceWay9","name":"Palace Way"}
+HolyQuest.Room {"id":"JesseSquare8","name":"Jesse Square","exits":{"E":"SpringGateStreet7","S":"ValleyGateAvenue12","W":"PalaceWay9"}}
 ```
 
-Use `id` as the mapper's room key and `name` as the display label. Plain Telnet clients still receive the usual game text. The in-game `roominfo on/off` setting controls only the visible room text, not GMCP.
+Use `id` as the mapper's room key and `name` as the display label. `exits` maps each outgoing exit to its destination room ID. Compass and vertical directions use `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`, `U`, or `D`; named exits such as `ArmorShop` keep their names. No reverse exits are implied. A room with no exits sends an empty object.
+
+Plain Telnet clients still receive the usual game text. The in-game `roominfo on/off` setting controls only the visible room text, not GMCP.
 
 ## Project Layout
 

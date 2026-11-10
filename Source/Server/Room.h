@@ -12,6 +12,7 @@
 * Includes                                                 *
 ************************************************************/
 
+#include <utility>
 #include "Config.h"
 #include "Communication.h"
 #include "Dnode.h"
@@ -38,6 +39,7 @@ class Room
     bool    static  IsExit(string MudCmdIsExit);
     bool    static  IsRoom(string RoomId);
     bool    static  IsRoomType(string RoomId, string RoomType);
+    void    static  SendRoomInfo(Dnode *pDnode, bool ShowText);
     void    static  ShowRoom(Dnode *pDnode);
 
 // Private functions static
@@ -46,10 +48,11 @@ class Room
     void    static  MoveFollowers(Dnode *pDnode, string ExitToRoomId);
     void    static  MovePlayer(Dnode *pDnode, string ExitToRoomId);
     bool    static  OpenFile(Dnode *pDnode);
-    void    static  ShowRoomDesc(Dnode *pDnode);
+    void    static  ReadRoomDesc(Dnode *pDnode, bool ShowText);
+    vector<pair<string, string>> static ReadRoomExits();
+    string  static  ReadRoomName(Dnode *pDnode, bool ShowText);
     void    static  ShowRoomExitDesc();
-    void    static  ShowRoomExits(Dnode *pDnode);
-    void    static  ShowRoomName(Dnode *pDnode);
+    void    static  ShowRoomExits(Dnode *pDnode, const vector<pair<string, string>> &Exits);
 };
 
 #endif

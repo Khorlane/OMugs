@@ -66,6 +66,22 @@ namespace
     Json += '"';
     return Json;
   }
+
+  string GmcpExitKey(string ExitName)
+  {
+    string Direction = StrMakeLower(ExitName);
+    if (Direction == "north"     || Direction == "n")  return "N";
+    if (Direction == "northeast" || Direction == "ne") return "NE";
+    if (Direction == "east"      || Direction == "e")  return "E";
+    if (Direction == "southeast" || Direction == "se") return "SE";
+    if (Direction == "south"     || Direction == "s")  return "S";
+    if (Direction == "southwest" || Direction == "sw") return "SW";
+    if (Direction == "west"      || Direction == "w")  return "W";
+    if (Direction == "northwest" || Direction == "nw") return "NW";
+    if (Direction == "up"        || Direction == "u")  return "U";
+    if (Direction == "down"      || Direction == "d")  return "D";
+    return ExitName;
+  }
 }
 
 /***********************************************************
@@ -92,7 +108,8 @@ Communication::~Communication()
 * Queue room metadata for a GMCP client                   *
 ************************************************************/
 
-void Communication::SendGmcpRoom(Dnode *pDnode, string RoomId, string RoomName)
+void Communication::SendGmcpRoom(Dnode *pDnode, string RoomId, string RoomName,
+                                 const vector<pair<string, string>> &Exits)
 {
   if (pDnode->GmcpStatus != Dnode::GmcpOn)
   {
@@ -100,7 +117,28 @@ void Communication::SendGmcpRoom(Dnode *pDnode, string RoomId, string RoomName)
   }
 
   string Message = "HolyQuest.Room {\"id\":" + GmcpJsonString(RoomId);
-  Message += ",\"name\":" + GmcpJsonString(RoomName) + "}";
+  Message += ",\"name\":" + GmcpJsonString(RoomName) + ",\"exits\":{";
+  vector<string> ExitKeys;
+  for (const auto &Exit : Exits)
+  {
+    if (Exit.first.empty() || Exit.second.empty())
+    {
+      continue;
+    }
+    string Key = GmcpExitKey(Exit.first);
+    string LookupKey = StrMakeLower(Key);
+    if (find(ExitKeys.begin(), ExitKeys.end(), LookupKey) != ExitKeys.end())
+    { // Movement uses the first matching exit in the room file.
+      continue;
+    }
+    if (!ExitKeys.empty())
+    {
+      Message += ',';
+    }
+    ExitKeys.push_back(LookupKey);
+    Message += GmcpJsonString(Key) + ":" + GmcpJsonString(Exit.second);
+  }
+  Message += "}}";
   pDnode->SocketOut += char(IAC);
   pDnode->SocketOut += char(SB);
   pDnode->SocketOut += char(GMCP);
@@ -7059,8 +7097,7 @@ void Communication::SendCurrentGmcpRoom()
 {
   if (pDnodeActor->GmcpStatus == Dnode::GmcpOn && pDnodeActor->PlayerStatePlaying)
   {
-    string RoomId = pDnodeActor->pPlayer->RoomId;
-    SendGmcpRoom(pDnodeActor, RoomId, Room::GetRoomName(RoomId));
+    Room::SendRoomInfo(pDnodeActor, false);
   }
 }
 

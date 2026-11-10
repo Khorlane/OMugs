@@ -330,19 +330,33 @@ bool Room::IsRoomType(string RoomId, string RoomType)
 }
 
 /***********************************************************
+* Send room metadata and optionally show the room text     *
+************************************************************/
+
+void Room::SendRoomInfo(Dnode *pDnode, bool ShowText)
+{
+  if (!OpenFile(pDnode))
+  {
+    FatalError("Room::SendRoomInfo - Room does not exist");
+  }
+  string RoomName = ReadRoomName(pDnode, ShowText);
+  ReadRoomDesc(pDnode, ShowText);
+  auto Exits = ReadRoomExits();
+  CloseFile();
+  if (ShowText)
+  {
+    ShowRoomExits(pDnode, Exits);
+  }
+  Communication::SendGmcpRoom(pDnode, pDnode->pPlayer->RoomId, RoomName, Exits);
+}
+
+/***********************************************************
 * Show the room to the player                              *
 ************************************************************/
 
 void Room::ShowRoom(Dnode *pDnode)
 {
-  if (!OpenFile(pDnode))
-  { // If the file isn't there, then the Room does not exit, doh!
-    FatalError("Room::ShowRoom - Room does not exist");
-  }
-  ShowRoomName(pDnode);
-  ShowRoomDesc(pDnode);
-  ShowRoomExits(pDnode);
-  CloseFile();
+  SendRoomInfo(pDnode, true);
   ShowPlayersInRoom(pDnode);
   ShowObjsInRoom(pDnode);
   ShowMobsInRoom(pDnode);
@@ -446,22 +460,29 @@ bool Room::OpenFile(Dnode *pDnode)
 * Show the room description to the player                  *
 ************************************************************/
 
-void Room::ShowRoomDesc(Dnode *pDnode)
+void Room::ReadRoomDesc(Dnode *pDnode, bool ShowText)
 {
   // RoomDesc
   Stuff = "";
   ReadTextLine(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "RoomDesc:")
   {
-    FatalError("Room::ShowRoomDesc - RoomDesc: not found");
+    FatalError("Room::ReadRoomDesc - RoomDesc: not found");
   }
   // Room Description
   Stuff = "";
   ReadTextLine(RoomFile, Stuff);
   while (Stuff != "End of RoomDesc")
   {
-    pDnode->PlayerOut += Stuff;
-    pDnode->PlayerOut += "\r\n";
+    if (RoomFile.fail())
+    {
+      FatalError("Room::ReadRoomDesc - End of RoomDesc not found");
+    }
+    if (ShowText)
+    {
+      pDnode->PlayerOut += Stuff;
+      pDnode->PlayerOut += "\r\n";
+    }
     Stuff = "";
     ReadTextLine(RoomFile, Stuff);
   }
@@ -495,29 +516,46 @@ void Room::ShowRoomExitDesc()
 }
 
 /***********************************************************
-* Show the room exits to the player                        *
+* Read the outgoing exits from the current room file       *
 ************************************************************/
 
-void Room::ShowRoomExits(Dnode *pDnode)
+vector<pair<string, string>> Room::ReadRoomExits()
 {
-  bool    NoExits;
-
-  NoExits = true;
-  pDnode->PlayerOut += "&C";
-  pDnode->PlayerOut += "Exits:";
+  vector<pair<string, string>> Exits;
   while (Stuff != "End of Exits")
   {
     Stuff = "";
     ReadTextLine(RoomFile, Stuff);
+    if (RoomFile.fail())
+    {
+      FatalError("Room::ReadRoomExits - End of Exits not found");
+    }
     if (StrLeft(Stuff, 9) == "ExitName:")
     {
-      NoExits = false;
-      Stuff = StrGetWord(Stuff, 2);
-      pDnode->PlayerOut += " ";
-      pDnode->PlayerOut += Stuff;
+      Exits.emplace_back(StrGetWord(Stuff, 2), "");
+    }
+    else if (StrLeft(Stuff, 13) == "ExitToRoomId:" && !Exits.empty() && Exits.back().second.empty())
+    {
+      Exits.back().second = StrGetWord(Stuff, 2);
     }
   }
-  if (NoExits)
+  return Exits;
+}
+
+/***********************************************************
+* Show the room exits to the player                        *
+************************************************************/
+
+void Room::ShowRoomExits(Dnode *pDnode, const vector<pair<string, string>> &Exits)
+{
+  pDnode->PlayerOut += "&C";
+  pDnode->PlayerOut += "Exits:";
+  for (const auto &Exit : Exits)
+  {
+    pDnode->PlayerOut += " ";
+    pDnode->PlayerOut += Exit.first;
+  }
+  if (Exits.empty())
   {
     pDnode->PlayerOut += " None";
   }
@@ -525,10 +563,10 @@ void Room::ShowRoomExits(Dnode *pDnode)
 }
 
 /***********************************************************
-* Show the room name to the player                         *
+* Read the room name and optionally show it                *
 ************************************************************/
 
-void Room::ShowRoomName(Dnode *pDnode)
+string Room::ReadRoomName(Dnode *pDnode, bool ShowText)
 {
   string  RoomId;
   string  RoomType;
@@ -540,19 +578,19 @@ void Room::ShowRoomName(Dnode *pDnode)
   ReadTextLine(RoomFile, Stuff);
   if (StrLeft(Stuff, 7) != "RoomId:")
   {
-    FatalError("Room::ShowRoomName - RoomId: not found");
+    FatalError("Room::ReadRoomName - RoomId: not found");
   }
   RoomId = StrGetWord(Stuff, 2);
   if (RoomId != pDnode->pPlayer->RoomId)
   {
-    FatalError("Room::ShowRoomName - RoomId mis-match");
+    FatalError("Room::ReadRoomName - RoomId mis-match");
   }
   // RoomType
   Stuff = "";
   ReadTextLine(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "RoomType:")
   {
-    FatalError("Room::ShowRoomName - RoomType: not found");
+    FatalError("Room::ReadRoomName - RoomType: not found");
   }
   RoomType = StrGetWords(Stuff, 2);
   // Terrain
@@ -560,7 +598,7 @@ void Room::ShowRoomName(Dnode *pDnode)
   ReadTextLine(RoomFile, Stuff);
   if (StrLeft(Stuff, 8) != "Terrain:")
   {
-    FatalError("Room::ShowRoomName - Terrain: not found");
+    FatalError("Room::ReadRoomName - Terrain: not found");
   }
   Terrain = StrGetWord(Stuff, 2);
   // RoomName
@@ -568,11 +606,14 @@ void Room::ShowRoomName(Dnode *pDnode)
   ReadTextLine(RoomFile, Stuff);
   if (StrLeft(Stuff, 9) != "RoomName:")
   {
-    FatalError("Room::ShowRoomName - RoomName: not found");
+    FatalError("Room::ReadRoomName - RoomName: not found");
   }
   RoomName = StrGetWords(Stuff, 2);
   StrTrimLeft(RoomName);
-  Communication::SendGmcpRoom(pDnode, RoomId, RoomName);
+  if (!ShowText)
+  {
+    return RoomName;
+  }
   // Build player output
   pDnode->PlayerOut += "\r\n";
   pDnode->PlayerOut += "&C";
@@ -593,4 +634,5 @@ void Room::ShowRoomName(Dnode *pDnode)
     pDnode->PlayerOut += "&N";
   }
   pDnode->PlayerOut += "\r\n";
+  return RoomName;
 }
