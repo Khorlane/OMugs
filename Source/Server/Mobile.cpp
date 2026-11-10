@@ -57,7 +57,10 @@ void Mobile::AddMobToRoom(string RoomId, string MobileId)
   string     RoomMobTmpFileName;
 
   UpdateMobInWorld(MobileId, "add");
-  MobileId = StrMakeLower(MobileId);
+  if (StrFindFirstChar(MobileId, '.') == -1)
+  { // Wounded mobiles must keep the casing of their stats files
+    MobileId = StrMakeLower(MobileId);
+  }
   // Open RoomMob file
   RoomMobFileName =  ROOM_MOB_DIR;
   RoomMobFileName += RoomId;
@@ -664,7 +667,6 @@ void Mobile::PutMobBackInRoom(string PlayerName, string RoomIdBeforeFleeing)
   while (Stuff != "")
   {
     MobileId = StrGetWord(Stuff, 1);
-    MobileId = StrMakeLower(MobileId);
     // Read mobile stats hit points file
     MobStatsHitPointsFileName = MOB_STATS_HPT_DIR;
     MobStatsHitPointsFileName += MobileId;
@@ -714,7 +716,10 @@ void Mobile::RemoveMobFromRoom(string RoomId, string MobileId)
   ofstream   RoomMobTmpFile;
 
   UpdateMobInWorld(MobileId, "remove");
-  MobileId = StrMakeLower(MobileId);
+  if (StrFindFirstChar(MobileId, '.') == -1)
+  { // Match the stored casing for wounded mobiles
+    MobileId = StrMakeLower(MobileId);
+  }
   // Open RoomMob file
   RoomMobFileName =  ROOM_MOB_DIR;
   RoomMobFileName += RoomId;
