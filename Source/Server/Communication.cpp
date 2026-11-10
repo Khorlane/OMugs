@@ -6601,7 +6601,7 @@ void Communication::LogonWaitMaleFemale()
 void Communication::LogonWaitName()
 {
   // Fix name so first letter is upper case, rest are lower case
-  pDnodeActor->PlayerName = StrMakeFirstUpper(CmdStr);
+  pDnodeActor->PlayerName = StrMakeFirstUpper(StrMakeLower(CmdStr));
   if (pDnodeActor->PlayerNewCharacter == "Y")
   { // New player
     pDnodeActor->PlayerStateWaitNameConfirmation = true;
