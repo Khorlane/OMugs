@@ -87,7 +87,6 @@ void Mobile::AddMobToRoom(string RoomId, string MobileId)
   { // New room mobile file, write the mobile and return
     TmpStr  = "1 ";
     TmpStr += MobileId;
-    TmpStr += "\n";
     RoomMobTmpFile << TmpStr << endl;
     RoomMobTmpFile.close();
     Rename(RoomMobTmpFileName, RoomMobFileName);
@@ -101,7 +100,6 @@ void Mobile::AddMobToRoom(string RoomId, string MobileId)
   {
     if (MobileIdAdded)
     { // New mobile has been written, just write the rest of the mobiles
-      Stuff += "\n";
       RoomMobTmpFile <<  Stuff << endl;
       Stuff = "";
       ReadTextLine(RoomMobFile, Stuff);
@@ -112,10 +110,8 @@ void Mobile::AddMobToRoom(string RoomId, string MobileId)
     { // Add new mobile in alphabetical order
       TmpStr  = "1 ";
       TmpStr += MobileId;
-      TmpStr += "\n";
       RoomMobTmpFile << TmpStr << endl;
       MobileIdAdded = true;
-      Stuff += "\n";
       RoomMobTmpFile << Stuff << endl;
       Stuff = "";
       ReadTextLine(RoomMobFile, Stuff);
@@ -129,7 +125,6 @@ void Mobile::AddMobToRoom(string RoomId, string MobileId)
       TmpStr = Buf;
       TmpStr += " ";
       TmpStr += MobileId;
-      TmpStr += "\n";
       RoomMobTmpFile << TmpStr << endl;
       MobileIdAdded = true;
       Stuff = "";
@@ -137,7 +132,6 @@ void Mobile::AddMobToRoom(string RoomId, string MobileId)
       continue;
     }
     // None of the above conditions satisfied, just write it
-    Stuff += "\n";
     RoomMobTmpFile << Stuff << endl;
     Stuff = "";
     ReadTextLine(RoomMobFile, Stuff);
@@ -146,7 +140,6 @@ void Mobile::AddMobToRoom(string RoomId, string MobileId)
   { // New mobile goes at the end
     TmpStr  = "1 ";
     TmpStr += MobileId;
-    TmpStr += "\n";
     RoomMobTmpFile << TmpStr << endl;
     MobileIdAdded = true;
   }
@@ -755,7 +748,6 @@ void Mobile::RemoveMobFromRoom(string RoomId, string MobileId)
   {
     if (MobileIdRemoved)
     { // Mobile has been removed, just write the rest of the mobiles
-      Stuff += "\n";
       RoomMobTmpFile << Stuff << endl;
       Stuff = "";
       ReadTextLine(RoomMobFile, Stuff);
@@ -771,16 +763,15 @@ void Mobile::RemoveMobFromRoom(string RoomId, string MobileId)
       {
         sprintf(Buf, "%d", MobCount);
         TmpStr = Buf;
-        MobileId = TmpStr + " " + MobileId;
-        MobileId += "\n";
-        RoomMobTmpFile << Stuff << endl;
+        TmpStr += " ";
+        TmpStr += MobileId;
+        RoomMobTmpFile << TmpStr << endl;
       }
       Stuff = "";
       ReadTextLine(RoomMobFile, Stuff);
       continue;
     }
     // None of the above conditions satisfied, just write it
-    Stuff += "\n";
     RoomMobTmpFile << Stuff << endl;
     Stuff = "";
     ReadTextLine(RoomMobFile, Stuff);

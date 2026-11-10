@@ -500,7 +500,6 @@ void World::MakeMobilesMove1()
   {
     TmpStr = item;
     TmpStr = StrGetWord(TmpStr, 2);
-    TmpStr += "\n";
     RoomMobListFile << TmpStr << endl;
   }
   RoomMobListFile.close();
@@ -583,7 +582,6 @@ void World::MakeMobilesMove2()
     { // Time to stop so cpu is not maxed
       MobListNotCompleted = true;
       TmpStr  = RoomMobFileName;
-      TmpStr += "\n";
       RoomMobListTempFile << TmpStr << endl;
       RoomMobFileName = "";
       ReadTextLine(RoomMobListFile, RoomMobFileName);
@@ -647,7 +645,6 @@ void World::MakeMobilesMove2()
               TmpStr += RoomId;
               TmpStr += " ";
               TmpStr += ExitToRoomId;
-              TmpStr += "\n";
               RoomMobMoveFile << TmpStr << endl;
             }
           }
@@ -744,7 +741,6 @@ void World::MakeMobilesMove3()
     if (clock() > TimerStop)
     { // Time to stop so cpu is not maxed
       MobMoveNotCompleted = true;
-      Stuff += "\n";
       RoomMobMoveTempFile << Stuff << endl;
       Stuff = "";
       ReadTextLine(RoomMobMoveFile, Stuff);
