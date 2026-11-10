@@ -246,6 +246,7 @@ void World::Events()
 
 void World::HealMobiles()
 {
+  error_code DirectoryError;
   bool       MobFighting;
   string     MobileId;
   string     MobNbr;
@@ -255,15 +256,16 @@ void World::HealMobiles()
   string     RoomId;
 
   DEBUGIT(5);
-  if (ChgDir(MOB_STATS_HPT_DIR))
-  { // Change directory failed
-    FatalError("World::HealMobiles - Change directory to MOB_STATS_HPT_DIR failed");
+  fs::directory_iterator Entries(MOB_STATS_HPT_DIR, DirectoryError);
+  if (DirectoryError)
+  { // Open directory failed
+    FatalError("World::HealMobiles - Open MOB_STATS_HPT_DIR failed");
   }
   //*************************
   //* Heal no-fighting mobs *
   //*************************
   // Get a list of all MobStats\HitPoints files
-  for (const auto &entry : fs::directory_iterator("./"))
+  for (const auto &entry : Entries)
   {
     if (entry.is_directory())
     { // Skip directories
@@ -271,12 +273,12 @@ void World::HealMobiles()
     }
     MobStatsHitPointsFileName = entry.path().filename().string();
     MobileId = StrLeft(MobStatsHitPointsFileName, StrGetLength(MobStatsHitPointsFileName) - 4);
-    MobFighting = HealMobilesFightCheck("MobPlayer", MobileId);
+    MobFighting = HealMobilesFightCheck(MOB_PLAYER_DIR, MobileId);
     if (MobFighting)
     { // Mobile is fighting, no heal
       continue;
     }
-    MobFighting = HealMobilesFightCheck("PlayerMob", MobileId);
+    MobFighting = HealMobilesFightCheck(PLAYER_MOB_DIR, MobileId);
     if (MobFighting)
     { // Mobile is fighting, no heal
       continue;
@@ -291,10 +293,6 @@ void World::HealMobiles()
     MobileId = StrLeft(MobileId, PositionOfDot);
     AddMobToRoom(RoomId, MobileId);
   }
-  if (ChgDir(HomeDir))
-  { // Change directory failed
-    FatalError("World::HealMobiles - Change directory to HomeDir failed");
-  }
 }
 
 /***********************************************************
@@ -303,50 +301,28 @@ void World::HealMobiles()
 
 bool World::HealMobilesFightCheck(string Dir, string MobileId)
 {
+  error_code DirectoryError;
   ifstream   MobPlayerFile;
-  string     MobPlayerFileName;
   bool       MobFighting;
 
   DEBUGIT(5);
   MobFighting = false;
-  if (Dir == "MobPlayer")
-  { // Checking MobPlayer
-    if (ChgDir(MOB_PLAYER_DIR))
-    { // Change directory failed
-      FatalError("World::HealMobilesFightCheck - Change directory to MOB_PLAYER_DIR failed");
-    }
+  fs::directory_iterator Entries(Dir, DirectoryError);
+  if (DirectoryError)
+  { // Open directory failed
+    FatalError("World::HealMobilesFightCheck - Open directory failed: " + Dir);
   }
-  if (Dir == "PlayerMob")
-  { // Checking PlayerMob
-    if (ChgDir(PLAYER_MOB_DIR))
-    { // Change directory failed
-      FatalError("World::HealMobilesFightCheck - Change directory to PLAYER_MOB_DIR failed");
-    }
-  }
-  // Get a list of all MobPlayer files
-  for (const auto &entry : fs::directory_iterator("./"))
+  // Check the combat relationship files in this directory
+  for (const auto &entry : Entries)
   {
     if (entry.is_directory())
     { // Skip directories
       continue;
     }
-    MobPlayerFileName = entry.path().filename().string();
-    // Set file name based on Dir
-    if (Dir == "MobPlayer")
-    { // Checking MobPlayer
-      MobPlayerFileName =  MOB_PLAYER_DIR + MobPlayerFileName;
-    }
-    if (Dir == "PlayerMob")
-    { // Checking PlayerMob
-      MobPlayerFileName =  PLAYER_MOB_DIR + MobPlayerFileName;
-    }
-    MobPlayerFile.open(MobPlayerFileName);
+    MobPlayerFile.open(entry.path());
     if (!MobPlayerFile.is_open())
-    { // Failed to open MobPlayer or MobPlayer file
-      TmpStr  = "World::HealMobilesFightCheck - Open ";
-      TmpStr += Dir;
-      TmpStr += " file failed";
-      FatalError(TmpStr);
+    { // Failed to open a combat relationship file
+      FatalError("World::HealMobilesFightCheck - Open file failed: " + entry.path().string());
     }
     Stuff = "";
     ReadTextLine(MobPlayerFile, Stuff);
@@ -361,10 +337,6 @@ bool World::HealMobilesFightCheck(string Dir, string MobileId)
     }
     MobPlayerFile.close();
   }  
-  if (ChgDir(HomeDir))
-  { // Change directory failed
-    FatalError("World::HealMobilesFightCheck - Change directory to HomeDir failed");
-  }
   return MobFighting;
 }
 
