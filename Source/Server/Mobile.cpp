@@ -173,9 +173,7 @@ int Mobile::CountMob(string MobileId)
   string     MobInWorldFileName;
   
   // Open Mobile InWorld file
-  MobInWorldFileName =  CONTROL_MOB_INWORLD_DIR;
-  MobInWorldFileName += MobileId;
-  MobInWorldFileName += ".txt";
+  MobInWorldFileName = GetMobInWorldFileName(MobileId);
   MobInWorldFile.open(MobInWorldFileName);
   if (MobInWorldFile.is_open())
   { // Get current count
@@ -1051,6 +1049,31 @@ void Mobile::WhereMob(string MobileIdSearch)
 }
 
 /***********************************************************
+* Use the library spelling for the mobile population file  *
+************************************************************/
+
+string Mobile::GetMobInWorldFileName(string MobileId)
+{
+  string     MobileFileName;
+  int        PositionOfDot;
+
+  PositionOfDot = StrFindFirstChar(MobileId, '.');
+  if (PositionOfDot > 1)
+  { // Get MobileId
+    MobileId = StrLeft(MobileId, PositionOfDot);
+  }
+  MobileFileName  = MOBILES_DIR;
+  MobileFileName += MobileId;
+  MobileFileName += ".txt";
+  MobileFileName = ffn(MobileFileName);
+  if (!FileExist(MobileFileName))
+  {
+    FatalError("Mobile::GetMobInWorldFileName - Mobile file not found: " + MobileFileName);
+  }
+  return CONTROL_MOB_INWORLD_DIR + fs::path(MobileFileName).filename().string();
+}
+
+/***********************************************************
 * Update mobiles in the world count                        *
 ************************************************************/
 
@@ -1059,18 +1082,10 @@ void Mobile::UpdateMobInWorld(string MobileId, string AddRemove)
   int        MobInWorldCount;
   fstream    MobInWorldFile;
   string     MobInWorldFileName;
-  int        PositionOfDot;
-  
+
   MobInWorldCount = 0;
-  PositionOfDot = StrFindFirstChar(MobileId, '.');
-  if (PositionOfDot > 1)
-  { // Get MobileId
-    MobileId = StrLeft(MobileId, PositionOfDot);
-  }
   // Open Mobile InWorld file
-  MobInWorldFileName =  CONTROL_MOB_INWORLD_DIR;
-  MobInWorldFileName += MobileId;
-  MobInWorldFileName += ".txt";
+  MobInWorldFileName = GetMobInWorldFileName(MobileId);
   MobInWorldFile.open(MobInWorldFileName, fstream::in);
   if (MobInWorldFile.is_open())
   { // Get current count

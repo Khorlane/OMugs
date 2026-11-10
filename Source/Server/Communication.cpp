@@ -4269,7 +4269,6 @@ void Communication::DoLoad()
   if (TmpStr == "mobile")
   { // Loading an mobile
     MobileId = StrGetWord(CmdStr, 3);
-    MobileId = StrMakeLower(MobileId);
     pMobile = IsMobValid(MobileId);
     if (!pMobile)
     { // Mobile does not exist
@@ -4278,6 +4277,7 @@ void Communication::DoLoad()
       pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
       return;
     }
+    MobileId = pMobile->MobileId;
     AddMobToRoom(pDnodeActor->pPlayer->RoomId, MobileId);
     SpawnMobileNoMove(MobileId);
     pDnodeActor->PlayerOut += "Load successful\r\n";

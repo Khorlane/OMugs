@@ -55,6 +55,7 @@ class Mobile
 
 // Private functions
   private:
+    static  string  GetMobInWorldFileName(string MobileId);
     void            CloseFile();
     void            OpenFile(string MobileId);
     void            ParseStuff();
