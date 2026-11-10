@@ -50,6 +50,9 @@ class Dnode
 
 // Protected variables
   protected:
+    enum TelnetState { TelnetData, TelnetCommand, TelnetOption, TelnetSubnegotiation, TelnetSubCommand };
+    enum GmcpState { GmcpOff, GmcpOffered, GmcpOn };
+
     Dnode          *pDnodeNext;
     Dnode          *pDnodePrev;
     Player         *pPlayer;
@@ -61,6 +64,7 @@ class Dnode
     clock_t         CmdTime3;
     int             DnodeFd;
     int             FightTick;
+    GmcpState       GmcpStatus = GmcpOff;
     int             HungerThirstTick;
     int             InputTick;
     string          PlayerInp;
@@ -83,7 +87,10 @@ class Dnode
     bool            PlayerStateWaitNewCharacter;
     bool            PlayerStateWaitPassword;
     int             PlayerWrongPasswordCount;
+    string          SocketOut;
     int             StatsTick;
+    TelnetState     TelnetInputState = TelnetData;
+    unsigned char   TelnetVerb = 0;
 };
 
 inline Dnode *pDnodeActor;

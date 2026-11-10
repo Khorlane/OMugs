@@ -10,6 +10,7 @@
 ************************************************************/
 
 #include "Room.h"
+#include "Communication.h"
 
 /***********************************************************
 * Globals                                                  *
@@ -571,6 +572,7 @@ void Room::ShowRoomName(Dnode *pDnode)
   }
   RoomName = StrGetWords(Stuff, 2);
   StrTrimLeft(RoomName);
+  Communication::SendGmcpRoom(pDnode, RoomId, RoomName);
   // Build player output
   pDnode->PlayerOut += "\r\n";
   pDnode->PlayerOut += "&C";

@@ -13,6 +13,16 @@ OMugs ran only on Windows until 2026. In 2021, work began to replace Microsoft F
 
 OMugs is a command-line server that runs on Linux. Development uses Microsoft Visual Studio 2026 on Windows 11, with WSL for Linux builds and testing. The server is deployed to a separate Linux host.
 
+## Mapper Protocol
+
+HolyQuest offers GMCP (Telnet option 201). A client that accepts it receives `HolyQuest.Room` after login or reconnect and whenever the game shows the current room, including after movement and `look`:
+
+```text
+HolyQuest.Room {"id":"PalaceWay9","name":"Palace Way"}
+```
+
+Use `id` as the mapper's room key and `name` as the display label. Plain Telnet clients still receive the usual game text. The in-game `roominfo on/off` setting controls only the visible room text, not GMCP.
+
 ## Project Layout
 
 `Doc\`

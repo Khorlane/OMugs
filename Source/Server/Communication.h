@@ -43,6 +43,7 @@ class Communication
     Dnode   static *GetTargetDnode( string TargetName);
     bool    static  IsFighting();
     bool    static  IsSleeping();
+    void    static  SendGmcpRoom(Dnode *pDnode, string RoomId, string RoomName);
     void    static  SendToAll( string PlayerMsg,  string AllMsg);
     void    static  SendToRoom( string TargetRoomId,  string MsgText);
     void    static  ShowPlayersInRoom(Dnode *pDnode);
@@ -129,9 +130,12 @@ class Communication
     void    static  LogonWaitNameConfirmation();
     void    static  LogonWaitNewCharacter();
     void    static  LogonWaitPassword();
+    void    static  ReadTelnetInput(const char *Input, int Length);
     void    static  RepositionDnodeCursor();
+    void    static  SendCurrentGmcpRoom();
+    void    static  SendTelnetOption(unsigned char Verb, unsigned char Option);
     void    static  SockNewConnection();
-    void    static  SockSend(const char *arg);
+    void    static  SockSend();
     void    static  UpdatePlayerStats();
     void    static  Violence();
     void    static  ViolenceMobile();

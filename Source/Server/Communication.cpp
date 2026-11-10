@@ -10,6 +10,7 @@
 ************************************************************/
 
 #include <arpa/inet.h>
+#include <arpa/telnet.h>
 #include <cerrno>
 #include <fcntl.h>
 #include <netinet/in.h>
@@ -36,6 +37,37 @@ Mobile *IsMobValid(string MobileId);                            // Mobile
 void    ShowRoom(Dnode *pDnode);                                // Room
 void    ShowPlayerEqu(Dnode *pDnodeTgt1);                       // Object
 
+namespace
+{
+  const unsigned char GMCP = 201;
+
+  string GmcpJsonString(string Text)
+  {
+    const char Hex[] = "0123456789abcdef";
+    string     Json = "\"";
+
+    for (unsigned char Byte : Text)
+    {
+      if (Byte < 0x20)
+      {
+        Json += "\\u00";
+        Json += Hex[Byte >> 4];
+        Json += Hex[Byte & 0x0f];
+      }
+      else
+      {
+        if (Byte == '"' || Byte == '\\')
+        {
+          Json += '\\';
+        }
+        Json += char(Byte);
+      }
+    }
+    Json += '"';
+    return Json;
+  }
+}
+
 /***********************************************************
  * Communication class constructor                         *
  ***********************************************************/
@@ -55,6 +87,34 @@ Communication::~Communication()
 ////////////////////////////////////////////////////////////
 // Public functions static                                //
 ////////////////////////////////////////////////////////////
+
+/***********************************************************
+* Queue room metadata for a GMCP client                   *
+************************************************************/
+
+void Communication::SendGmcpRoom(Dnode *pDnode, string RoomId, string RoomName)
+{
+  if (pDnode->GmcpStatus != Dnode::GmcpOn)
+  {
+    return;
+  }
+
+  string Message = "HolyQuest.Room {\"id\":" + GmcpJsonString(RoomId);
+  Message += ",\"name\":" + GmcpJsonString(RoomName) + "}";
+  pDnode->SocketOut += char(IAC);
+  pDnode->SocketOut += char(SB);
+  pDnode->SocketOut += char(GMCP);
+  for (unsigned char Byte : Message)
+  {
+    if (Byte == IAC)
+    {
+      pDnode->SocketOut += char(IAC);
+    }
+    pDnode->SocketOut += char(Byte);
+  }
+  pDnode->SocketOut += char(IAC);
+  pDnode->SocketOut += char(SE);
+}
 
 /***********************************************************
 *  Return pointer of target, if target in 'playing' state  *
@@ -584,8 +644,7 @@ void Communication::SockRecv()
         }
         if (RecvByteCount > 0)
         { // Got something ... append it to player input
-          pDnodeActor->PlayerInp += InpStr;
-          pDnodeActor->InputTick = 0;
+          ReadTelnetInput(InpStr, RecvByteCount);
         }
       }
     }
@@ -698,9 +757,11 @@ void Communication::SockRecv()
     if (StrGetLength(pDnodeActor->PlayerOut) > 0)
     { // Player has output, handle color codes
       Color();
-      // 'send' resquires a standard c string
-      SockSend(pDnodeActor->PlayerOut.c_str());
+      // Keep text and Telnet frames in one queue so partial sends cannot interleave them.
+      pDnodeActor->SocketOut += pDnodeActor->PlayerOut;
+      pDnodeActor->PlayerOut.clear();
     }
+    SockSend();
     //**********************
     //* Is player quiting? *
     //**********************
@@ -6779,6 +6840,7 @@ void Communication::LogonWaitPassword()
             pDnodeActor->PlayerOut += "\r\n";
             pDnodeActor->PlayerOut += "Reconnection successful.";
             pDnodeActor->PlayerOut += "\r\n";
+            SendCurrentGmcpRoom();
             pDnodeActor->pPlayer->CreatePrompt();
             pDnodeActor->PlayerOut += pDnodeActor->pPlayer->GetOutput();
             LogBuf  = "Reconnecting player ";
@@ -6891,8 +6953,92 @@ void Communication::LogonWaitPassword()
 }
 
 /***********************************************************
- * Reposition Dnode cursor                                 *
- ***********************************************************/
+* Strip Telnet commands before queuing player input       *
+************************************************************/
+
+void Communication::ReadTelnetInput(const char *Input, int Length)
+{
+  for (int i = 0; i < Length; i++)
+  {
+    unsigned char Byte = Input[i];
+    switch (pDnodeActor->TelnetInputState)
+    {
+      case Dnode::TelnetData:
+        if (Byte == IAC)
+        {
+          pDnodeActor->TelnetInputState = Dnode::TelnetCommand;
+          continue;
+        }
+        break;
+
+      case Dnode::TelnetCommand:
+        pDnodeActor->TelnetInputState = Dnode::TelnetData;
+        if (Byte == IAC)
+        { // A doubled IAC represents a data byte.
+          break;
+        }
+        if (Byte == DO || Byte == DONT || Byte == WILL || Byte == WONT)
+        {
+          pDnodeActor->TelnetVerb = Byte;
+          pDnodeActor->TelnetInputState = Dnode::TelnetOption;
+        }
+        else if (Byte == SB)
+        {
+          pDnodeActor->TelnetInputState = Dnode::TelnetSubnegotiation;
+        }
+        continue;
+
+      case Dnode::TelnetOption:
+        pDnodeActor->TelnetInputState = Dnode::TelnetData;
+        if (pDnodeActor->TelnetVerb == DO)
+        {
+          if (Byte != GMCP || pDnodeActor->GmcpStatus == Dnode::GmcpOff)
+          {
+            SendTelnetOption(WONT, Byte);
+          }
+          else if (pDnodeActor->GmcpStatus == Dnode::GmcpOffered)
+          {
+            pDnodeActor->GmcpStatus = Dnode::GmcpOn;
+            SendCurrentGmcpRoom();
+          }
+        }
+        else if (pDnodeActor->TelnetVerb == DONT && Byte == GMCP)
+        {
+          if (pDnodeActor->GmcpStatus == Dnode::GmcpOn)
+          {
+            SendTelnetOption(WONT, GMCP);
+          }
+          pDnodeActor->GmcpStatus = Dnode::GmcpOff;
+        }
+        else if (pDnodeActor->TelnetVerb == WILL)
+        {
+          SendTelnetOption(DONT, Byte);
+        }
+        continue;
+
+      case Dnode::TelnetSubnegotiation:
+        if (Byte == IAC)
+        {
+          pDnodeActor->TelnetInputState = Dnode::TelnetSubCommand;
+        }
+        continue;
+
+      case Dnode::TelnetSubCommand:
+        pDnodeActor->TelnetInputState = Byte == SE ? Dnode::TelnetData : Dnode::TelnetSubnegotiation;
+        continue;
+    }
+
+    if (Byte != '\0')
+    { // Telnet can send CR NUL for Enter.
+      pDnodeActor->PlayerInp += char(Byte);
+      pDnodeActor->InputTick = 0;
+    }
+  }
+}
+
+/***********************************************************
+* Reposition Dnode cursor                                 *
+************************************************************/
 
 void Communication::RepositionDnodeCursor()
 {
@@ -6909,9 +7055,25 @@ void Communication::RepositionDnodeCursor()
   }
 }
 
+void Communication::SendCurrentGmcpRoom()
+{
+  if (pDnodeActor->GmcpStatus == Dnode::GmcpOn && pDnodeActor->PlayerStatePlaying)
+  {
+    string RoomId = pDnodeActor->pPlayer->RoomId;
+    SendGmcpRoom(pDnodeActor, RoomId, Room::GetRoomName(RoomId));
+  }
+}
+
+void Communication::SendTelnetOption(unsigned char Verb, unsigned char Option)
+{
+  pDnodeActor->SocketOut += char(IAC);
+  pDnodeActor->SocketOut += char(Verb);
+  pDnodeActor->SocketOut += char(Option);
+}
+
 /***********************************************************
- * New connection                                          *
- ***********************************************************/
+* Accept a new connection                                 *
+************************************************************/
 
 void Communication::SockNewConnection()
 {
@@ -6955,6 +7117,8 @@ void Communication::SockNewConnection()
   LogBuf += IpAddress;
   LogIt(LogBuf);
   pDnodeActor = new Dnode(SocketHandle, IpAddress);
+  pDnodeActor->GmcpStatus = Dnode::GmcpOffered;
+  SendTelnetOption(WILL, GMCP);
   AppendIt();
   StateConnections = true;
 }
@@ -6963,17 +7127,15 @@ void Communication::SockNewConnection()
  * Send message                                            *
  ***********************************************************/
 
-void Communication::SockSend(const char *arg)
+void Communication::SockSend()
 {
-  int Length;
-  int Written;
+  string &SocketOut = pDnodeActor->SocketOut;
 
-  if (!arg || arg[0] == '\0')
+  if (SocketOut.empty())
   {
     return;
   }
-  Length = strlen(arg);
-  Written = ::send(pDnodeActor->DnodeFd, arg, Length, MSG_NOSIGNAL);
+  ssize_t Written = ::send(pDnodeActor->DnodeFd, SocketOut.data(), SocketOut.size(), MSG_NOSIGNAL);
   if (Written == -1)
   {
     if (errno == EWOULDBLOCK || errno == EAGAIN || errno == EINTR)
@@ -6983,14 +7145,7 @@ void Communication::SockSend(const char *arg)
     pDnodeActor->PlayerStateBye = true;
     return;
   }
-  if (Written == Length)
-  { // Everything was sent
-    pDnodeActor->PlayerOut = "";
-  }
-  else
-  { // Some was not sent
-    pDnodeActor->PlayerOut = StrRight(pDnodeActor->PlayerOut, Length-Written);
-  }
+  SocketOut.erase(0, Written);
 }
 
 /***********************************************************

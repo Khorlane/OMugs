@@ -68,7 +68,38 @@ def enable_console_color():
     return bool(kernel32.SetConsoleMode(console, mode.value | processed_output | virtual_terminal_processing))
 
 
-def receive(sock, record, pattern, description, until_close=False):
+class TelnetText:
+    def __init__(self):
+        self.pending = b""
+
+    def read(self, sock, chunk):
+        text = bytearray()
+        chunk = self.pending + chunk
+        self.pending = b""
+        while chunk:
+            plain, marker, chunk = chunk.partition(b"\xff")
+            text.extend(plain)
+            if not marker:
+                break
+            if not chunk or (0xfb <= chunk[0] <= 0xfe and len(chunk) < 2):
+                self.pending = marker + chunk
+                break
+            verb = chunk[0]
+            if verb == 0xff:
+                text.append(verb)
+            if 0xfb <= verb <= 0xfe:
+                # This runner only wants plain text, so refuse all options.
+                if verb == 0xfb:
+                    sock.sendall(b"\xff\xfe" + chunk[1:2])
+                elif verb == 0xfd:
+                    sock.sendall(b"\xff\xfc" + chunk[1:2])
+                chunk = chunk[2:]
+            else:
+                chunk = chunk[1:]
+        return text
+
+
+def receive(sock, telnet, record, pattern, description, until_close=False):
     response = bytearray()
     deadline = time.monotonic() + TIMEOUT
     try:
@@ -82,7 +113,7 @@ def receive(sock, record, pattern, description, until_close=False):
                 if until_close and re.search(pattern, ANSI_COLOR_BYTES.sub(b"", response)):
                     return
                 raise RuntimeError(f"Server disconnected while waiting for {description}.")
-            response.extend(chunk)
+            response.extend(telnet.read(sock, chunk))
             if not until_close and re.search(pattern, ANSI_COLOR_BYTES.sub(b"", response)):
                 return
     except TimeoutError:
@@ -95,26 +126,28 @@ def receive(sock, record, pattern, description, until_close=False):
 
 def run_session(host, port, name, password, commands, record):
     with socket.create_connection((host, port), timeout=TIMEOUT) as sock:
+        telnet = TelnetText()
+
         def send(line, secret=False):
             record(("[password masked]" if secret else line) + "\n")
             sock.sendall((line + "\r\n").encode("utf-8"))
 
-        receive(sock, record, rb"Create a new character Y-N\?", "the welcome prompt")
+        receive(sock, telnet, record, rb"Create a new character Y-N\?", "the welcome prompt")
         send("n")
-        receive(sock, record, rb"Name\?", "the character name prompt")
+        receive(sock, telnet, record, rb"Name\?", "the character name prompt")
         send(name)
-        receive(sock, record, rb"Password\?", "the password prompt")
+        receive(sock, telnet, record, rb"Password\?", "the password prompt")
         send(password, secret=True)
-        receive(sock, record, GAME_PROMPT, "the game prompt after login")
+        receive(sock, telnet, record, GAME_PROMPT, "the game prompt after login")
 
         for index, command in enumerate(commands):
             if index:
                 time.sleep(COMMAND_DELAY)
             send(command)
             if command.lower() == "quit":
-                receive(sock, record, rb"Bye Bye!", "quit confirmation and disconnect", until_close=True)
+                receive(sock, telnet, record, rb"Bye Bye!", "quit confirmation and disconnect", until_close=True)
             else:
-                receive(sock, record, GAME_PROMPT, f"the game prompt after {command!r}")
+                receive(sock, telnet, record, GAME_PROMPT, f"the game prompt after {command!r}")
 
 
 def main(scenario_name="Test01.txt"):
